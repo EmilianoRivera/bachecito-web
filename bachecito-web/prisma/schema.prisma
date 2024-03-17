@@ -1,0 +1,100 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+    shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+model Administrdor {
+  adm_id                            Int                                @id @default(autoincrement())
+  adm_contrasena                    String
+  adm_fechanac                      DateTime
+  adm_correo                        String
+  adm_token                         Int
+  nomad_id                          Int                                @unique
+  Nombre_Administrador              Nombre_Administrador               @relation(fields: [nomad_id], references: [nomad_id])
+  Usuarios_Baneados_permanentemente Usuarios_Baneados_permanentemente?
+  Usuarios_Baneados_temporalmente   Usuarios_Baneados_temporalmente?
+}
+
+model Alcaldia {
+  alc_id     Int       @id @unique
+  alc_nombre String    @unique
+  Reportes   Reportes?
+}
+
+model Estado_reporte {
+  edo_id      Int       @id @default(autoincrement())
+  edo_reporte Boolean?
+  edo_tipo    Int
+  Reportes    Reportes?
+}
+
+model Nombre_Administrador {
+  nomad_id     Int           @id @default(autoincrement())
+  nomad_nombre String
+  nomad_appat  String
+  nomad_apmat  String
+  Administrdor Administrdor?
+}
+
+model Nombre_Usuario {
+  nomu_id     Int      @id @default(autoincrement())
+  nomu_nombre String
+  nomu_appat  String
+  nomu_apmat  String
+  Usuario     Usuario?
+}
+
+model Reportes {
+  rep_id           Int            @id @default(autoincrement())
+  rep_ubicacion    String
+  rep_descripcion  String
+  rep_imagenURL    String
+  usu_id           Int            @unique
+  alc_id           Int            @unique
+  rep_fechaReporte DateTime
+  edo_id           Int            @unique
+  Alcaldia         Alcaldia       @relation(fields: [alc_id], references: [alc_id])
+  Estado_reporte   Estado_reporte @relation(fields: [edo_id], references: [edo_id])
+  Usuario          Usuario        @relation(fields: [usu_id], references: [usu_id])
+}
+
+model Usuario {
+  usu_id                            Int                                @id @default(autoincrement())
+  usu_contrasena                    String
+  usu_fechanac                      DateTime
+  usu_correo                        String
+  usu_estado_cuenta                 Boolean
+  nomu_id                           Int                                @unique
+  Reportes                          Reportes?
+  Nombre_Usuario                    Nombre_Usuario                     @relation(fields: [nomu_id], references: [nomu_id])
+  Usuarios_Baneados_permanentemente Usuarios_Baneados_permanentemente?
+  Usuarios_Baneados_temporalmente   Usuarios_Baneados_temporalmente?
+}
+
+model Usuarios_Baneados_permanentemente {
+  ubp_id                      Int          @id @default(autoincrement())
+  ubp_motivo_de_baneo         String
+  ubp_fecha_de_baneo          DateTime
+  ubp_estado_baneo_permanente Boolean      @default(false)
+  usu_id                      Int          @unique
+  adm_id                      Int          @unique
+  Administrdor                Administrdor @relation(fields: [adm_id], references: [adm_id])
+  Usuario                     Usuario      @relation(fields: [usu_id], references: [usu_id])
+}
+
+model Usuarios_Baneados_temporalmente {
+  ubt_id                 Int          @id @default(autoincrement())
+  ubt_motivo_de_baneo    String
+  ubt_fecha_de_baneo     DateTime
+  ubt_duracion_del_baneo DateTime
+  ubt_cantidad_de_baneos Int
+  usu_id                 Int          @unique
+  adm_id                 Int          @unique
+  Administrdor           Administrdor @relation(fields: [adm_id], references: [adm_id])
+  Usuario                Usuario      @relation(fields: [usu_id], references: [usu_id])
+}
