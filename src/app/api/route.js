@@ -9,6 +9,24 @@ export async function GET( request) {
 }
 
 
+export async function POST( request) {
+    const {
+        uid
+    } = await request.json()
+
+    const nuevoNombreUsuario = await prisma.usuario.create({
+        data: {
+            nomu_fb_uid: uid
+
+        }
+    })
+    return NextResponse.json(nuevoNombreUsuario)
+}
+
+
+
+
+
 /*export async function POST(request) {
 
     try {

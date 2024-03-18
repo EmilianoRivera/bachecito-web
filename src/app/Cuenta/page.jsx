@@ -241,6 +241,7 @@ function Registro() {
       };
       addDoc(usuariosCollection, nuevoUsuario);
       alert("SE GUARDO SI OLA");
+      registroHeroku(uid)
     } catch (error) {
       console.error("Error al crear la cuenta: ", error);
       alert(error.message);

@@ -3,9 +3,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-    shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
 model Administrdor {
@@ -43,9 +43,10 @@ model Nombre_Administrador {
 
 model Nombre_Usuario {
   nomu_id     Int      @id @default(autoincrement())
-  nomu_nombre String
-  nomu_appat  String
-  nomu_apmat  String
+  nomu_nombre String?
+  nomu_appat  String?
+  nomu_apmat  String?
+  nomu_fb_uid String
   Usuario     Usuario?
 }
 
