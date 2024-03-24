@@ -214,9 +214,23 @@ function Registro() {
 
   //VALIDACIÓN Checkbox--------------------------------------------------------------------------------------------------------------------
   const [checkBoxChecked, setCheckBoxChecked] = useState(false);
-
+/*
+ const handleSingUpPostgre= async (uid) => {
+    const res = await fetch("/api", {
+      method:"POST", 
+      body: JSON.stringify({ uid }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+    
+    const data = await res.json()
+    console.log(data)
+}
+*/
   const handleSignUp = async (event) => {
     // Crear la cuenta delusuario con email y contraseña
+    
     try {
       event.preventDefault();
       const userCredential = await createUserWithEmailAndPassword(
@@ -238,10 +252,12 @@ function Registro() {
         apellidoMaterno: apmat,
         fechaNacimiento: fechaNacimiento,
         correo: email,
+        estadoCuenta: true,
       };
+     // console.log(uid)
+    //  handleSingUpPostgre(uid)
       addDoc(usuariosCollection, nuevoUsuario);
       alert("SE GUARDO SI OLA");
-      registroHeroku(uid)
     } catch (error) {
       console.error("Error al crear la cuenta: ", error);
       alert(error.message);
