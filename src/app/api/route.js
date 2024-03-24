@@ -2,11 +2,28 @@ import { NextResponse } from "next/server";
 import { prisma } from "@/libs/prisma";
 
 export async function GET( request) {
-    const alcaldias =await  prisma.alcaldia.findMany()
+    const usuarios =await  prisma.nombre_Usuario.findMany()
 
-    console.log(alcaldias) 
-    return NextResponse.json(alcaldias)
+    console.log(usuarios) 
+    return NextResponse.json(usuarios)
 }
+
+/* 
+export async function POST( request) {
+    const {uid} = await request.json()
+    console.log(uid)
+
+    const nuevoNombreUsuario = await prisma.nombre_Usuario.create({
+        data: {
+            nomu_fb_uid: uid,
+            
+        }
+    })
+    return NextResponse.json(nuevoNombreUsuario)
+}
+ */
+
+
 
 
 /*export async function POST(request) {

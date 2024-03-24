@@ -2,15 +2,12 @@
 "use client"
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
-
+import ReportesComponente  from "@/components/Reportes";
 import React from 'react';
 import './Reportes.css';
-
-//Aqui se tienen que hacer el despliegue de los reportes
-
-
-
+{/*OTRA COSA, AQUI LA LOGICA DE DESPLEGAR LOS REPORTES, ESTA EN OTRO ARCHIVO, LO HICE COMPONENTE PARA REUZARLO EN VARIAS PARTES, EL COMPONENTE SE LLAMA ReportesComponente */}
 export default function Reportes() {
+    
     const router = useRouter();
     useEffect(() => {
         const mouse = newV2();
@@ -112,110 +109,11 @@ export default function Reportes() {
                     Guardados”.
                 </p>
             </div>
+            <div>
 
-            <div className="reportes-boxes">
-                <div className="box2" id="box2">
-                    <div className="column-left">
-                        <div className="fotografía">
-                            <img src="" alt="" />
-                        </div>
-                        <div className="column-left-inferior">
-                            <div className="fecha">
-
-                            </div>
-
-                            <div className="contador">
-                                <div className="icon">
-                                    <img
-                                        src="https://i.postimg.cc/s2ZYz740/exclamacion-de-diamante.png"
-                                        className="logo" 
-                                    />
-                                </div>
-                                <div className="number">
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div className="column-right">
-                        <div className="column-right-superior">
-                            <div className="estado">
-
-                            </div>
-
-                            <div className="guardar">
-                                    <img
-                                        src="https://i.postimg.cc/52PmmT4T/estrella.png"
-                                        className="icon-star" 
-                                    />
-                            </div>
-                        </div>
-
-                        <div className="ubicacion">
-                            <h3>Ubicación</h3>
-                            <div className="box-ubi">
-
-                            </div>
-                        </div>
-
-                        <div className="descripcion">
-                            <h3>Descripción</h3>
-                            <div className="box-des">
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            <ReportesComponente />
             </div>
-
             
         </div>
     );
 }
-/*     const [data, setData] = useState(null)
-
-    useEffect(() => {
-      async function fetchData() {
-        const res = await fetch("/api/usuario", {
-            method: "GET", 
-            headers: {
-                "Content-Type": "application/json"
-            }
-        });
-        const data = await res.json()
-        setData(data)
-    }  
-    fetchData()
-}, [])
-
-if (!data) {
-    return <div>Cargando...</div>;
-}
-return (
-    <div>
-            {data.map((reporte, index) => (
-                <div key={index}>
-                    <p>Ubicacion: {reporte.rep_ubicacion}</p>
-                    <p>Descripcion:{reporte.rep_descripcion}</p>
-                    <p>Imagen: {reporte.rep_imagenURL}</p>
-                    <p>Alcaldia: {reporte.alcaldia.alc_nombre}</p>
-                  {/*   <p>Estado Reporte: {reporte.estado_reporte.edo_tipo}</p>
-                    
-                    <p>Nombre de reporte: {reporte.nombre_Usuario.nomu_nombre}</p> 
-                </div>
-            ))}
-        </div>
-    );
-  
-} */
-   /* 
-return (
-    <div>
-        <p>Correo: {data.usu_correo}</p>
-        <p>Estado de cuenta: {data.usu_estado_cuenta ? 'Activa' : 'Inactiva'}</p>
-        <p>Nombre de usuario: {data.nombre_Usuario}</p>
-    </div>
-); */
-
-
