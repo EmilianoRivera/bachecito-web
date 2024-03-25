@@ -1,6 +1,7 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { auth, db } from "../../../firebase";
+import { useRouter } from "next/navigation";
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
@@ -10,6 +11,7 @@ import {
 import { collection, addDoc } from "firebase/firestore";
 import "./registro.css";
 function Registro() {
+  const { push, pathname } = useRouter();
   const [active, setActive] = useState(false);
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
   const [canSubmit, setCanSubmit] = useState(false);
@@ -215,8 +217,6 @@ function Registro() {
   //VALIDACIÓN Checkbox--------------------------------------------------------------------------------------------------------------------
   const [checkBoxChecked, setCheckBoxChecked] = useState(false);
   const handleSignUp = async (event) => {
-    // Crear la cuenta delusuario con email y contraseña
-    
     try {
       event.preventDefault();
       const userCredential = await createUserWithEmailAndPassword(
@@ -240,10 +240,9 @@ function Registro() {
         correo: email,
         estadoCuenta: true,
       };
-     // console.log(uid)
-    //  handleSingUpPostgre(uid)
       addDoc(usuariosCollection, nuevoUsuario);
       alert("SE GUARDO SI OLA");
+      push("/Cuenta/Usuario/Perfil");
     } catch (error) {
       console.error("Error al crear la cuenta: ", error);
       alert(error.message);
@@ -259,14 +258,12 @@ function Registro() {
         password
       );
       const user = userCredential.user;
-
-      // Verificar si el correo electrónico está verificado
       if (user && !user.emailVerified) {
         alert("Por favor, verifica tu correo electrónico para iniciar sesión.");
         signOut(auth);
       } else {
-        // Aquí puedes realizar acciones adicionales después del inicio de sesión exitoso
         alert("Inicio de sesión exitoso");
+        push("/Cuenta/Usuario/Perfil");
         console.log("Usuario inició sesión con éxito:", user);
       }
     } catch (error) {

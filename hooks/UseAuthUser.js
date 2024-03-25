@@ -17,7 +17,7 @@ export const useAuthUser = () => {
         setisLogged(false);
       } else {
         setisLogged(true);
-        if (pathname === "/login" || pathname === "/register") {
+        if (pathname === "/Cuenta") {
           push("/");
         }
       }
