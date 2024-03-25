@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import { auth, db } from "../../../../../firebase"; // Asegúrate de importar los objetos 'auth' y 'firestore' de tu configuración de Firebase
 import AuthContext from "../../../../../context/AuthContext";
 import { useAuthUser } from "../../../../../hooks/UseAuthUser";
-import { collection, getDocs, query, where} from "firebase/firestore";
+import {  updateDoc,collection, query, where, getDocs } from 'firebase/firestore';
 
 export default function Inicio() {
   useAuthUser();
@@ -45,11 +45,29 @@ export default function Inicio() {
     signOut(auth)
       .then(() => {
         console.log('Cierre de sesión exitoso');
-        router.push("/login"); // Redirige al usuario a la página de inicio de sesión
+        router.push("/Cuenta"); // Redirige al usuario a la página de inicio de sesión
       })
       .catch((error) => {
         console.error('Error al cerrar sesión:', error);
       });
+  };
+  const eliminarCuenta = async () => {
+    try {
+      const reportesRef = collection(db, 'usuarios');
+      const q = query(reportesRef, where('uid', '==', userData.uid));
+      const querySnapshot = await getDocs(q);
+  
+      querySnapshot.forEach(async (doc) => {
+  
+        await updateDoc(doc.ref, { estadoCuenta: false });
+        console.log('cuenta desactivada');
+        alert('Cuenta desactivada, esperamos verte de nuevo(:')
+        handleSignOut();
+  
+      });
+    } catch (error) {
+      console.error('Error al desactivar la cuenta:', error);
+    }
   };
 
   return (
@@ -58,6 +76,7 @@ export default function Inicio() {
         <>
           <h1>Hola, {userData.nombre} {userData.apellidoPaterno} {userData.apellidoMaterno}</h1>
           <button onClick={handleSignOut}>Cerrar sesión</button>
+          <button onClick={eliminarCuenta}>Desactivar Cuenta</button>
         </>
       )}
       {isLogged && !userData && <p>Cargando datos del usuario...</p>}

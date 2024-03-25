@@ -8,7 +8,7 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import { collection, addDoc } from "firebase/firestore";
+import { updateDoc,collection, query, where, getDocs, addDoc} from "firebase/firestore";
 import "./registro.css";
 function Registro() {
   const { push, pathname } = useRouter();
@@ -258,18 +258,45 @@ function Registro() {
         password
       );
       const user = userCredential.user;
+  
       if (user && !user.emailVerified) {
         alert("Por favor, verifica tu correo electrónico para iniciar sesión.");
         signOut(auth);
       } else {
-        alert("Inicio de sesión exitoso");
-        push("/Cuenta/Usuario/Perfil");
-        console.log("Usuario inició sesión con éxito:", user);
+        if (user && !user.estadoCuenta) {
+          const confirm = window.confirm("Tu cuenta ha sido desactivada. ¿Deseas restablecerla?");
+          if (confirm) {
+            const reportesRef = collection(db, 'usuarios');
+            const q = query(reportesRef, where('uid', '==', user.uid));
+            const querySnapshot = await getDocs(q);
+  
+            querySnapshot.forEach(async (doc) => {
+              await updateDoc(doc.ref, {
+                estadoCuenta: true
+              });
+            });
+  
+            alert("Cuenta restablecida correctamente");
+            push("/Cuenta/Usuario/Perfil");
+            console.log("Usuario inició sesión con éxito:", user);
+          } else {
+            // Si el usuario hace clic en "No", no se inicia sesión
+            signOut(auth);
+            alert("Inicio de sesión cancelado");
+
+          }
+        } else {
+          alert("Inicio de sesión exitoso");
+          push("/Cuenta/Usuario/Perfil");
+          console.log("Usuario inició sesión con éxito:", user);
+        }
       }
     } catch (error) {
       setError(error.message);
     }
   };
+  
+  
 
   return (
     <div className="body">
