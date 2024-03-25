@@ -214,20 +214,6 @@ function Registro() {
 
   //VALIDACIÓN Checkbox--------------------------------------------------------------------------------------------------------------------
   const [checkBoxChecked, setCheckBoxChecked] = useState(false);
-/*
- const handleSingUpPostgre= async (uid) => {
-    const res = await fetch("/api", {
-      method:"POST", 
-      body: JSON.stringify({ uid }),
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-    
-    const data = await res.json()
-    console.log(data)
-}
-*/
   const handleSignUp = async (event) => {
     // Crear la cuenta delusuario con email y contraseña
     
