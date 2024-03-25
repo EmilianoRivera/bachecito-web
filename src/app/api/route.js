@@ -1,20 +1,23 @@
 import { NextResponse } from "next/server";
-import {  db, collection} from "../../../firebase";
+import {  db, collection, getDocs} from "../../../firebase.js";
 
 export async function GET(request) {
   try {
-    // Obtener la colección de usuarios desde Firebase
-    const reportesSnapshot = await db.collection("Reportes").get();
+    // Obtener la colección de reportes desde Firebase
+    const reportesRef = collection(db, 'usuarios')
 
-    // Crear un array para almacenar los usuarios
+    // Obtener todos los documentos de la colección
+    const reportesSnapshot = await getDocs(reportesRef);
+
+    // Crear un array para almacenar los reportes
     const reportes = [];
 
-    // Iterar sobre cada documento de usuario
+    // Iterar sobre cada documento de reporte
     reportesSnapshot.forEach((doc) => {
-      // Obtener los datos del usuario
-      const usuario = doc.data();
-      // Agregar el usuario al array
-      reportes.push(usuario);
+      // Obtener los datos del reporte
+      const reporte = doc.data();
+      // Agregar el reporte al array
+      reportes.push(reporte);
     });
 
     // Devolver los reportes en la respuesta
