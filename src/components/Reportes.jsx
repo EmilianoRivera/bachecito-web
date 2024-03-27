@@ -1,4 +1,5 @@
-"use client";import { useEffect, useState } from "react";
+"use client";
+import { useEffect, useState } from "react";
 import "../app/Reportes/Reportes.css";
 import React from "react";
 

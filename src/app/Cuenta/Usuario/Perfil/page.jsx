@@ -7,7 +7,7 @@ function Perfil() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch('/api');
+        const response = await fetch('/api'); // Ruta correcta para obtener los usuarios
         if (!response.ok) {
           throw new Error('Failed to fetch data');
         }
