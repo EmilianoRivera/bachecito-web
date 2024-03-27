@@ -1,10 +1,13 @@
-
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import Link from 'next/link';
 import './Navbar.css';
+import AuthContext from "../../context/AuthContext";
+import { useAuthUser } from "../../hooks/UseAuthUser";
 
 function Navbar() {
+  useAuthUser();
+  const { isLogged } = useContext(AuthContext);
   const [menuActive, setMenuActive] = useState(false);
   const [showMenuIcon, setShowMenuIcon] = useState(false);
 
@@ -24,6 +27,7 @@ function Navbar() {
   };
 
   return (
+    
     <div className={`navBar ${menuActive ? 'showMenu' : ''}`}>
       <Link href="/" className="bachecito26">
         <img
@@ -41,20 +45,39 @@ function Navbar() {
           <span></span>
         </div>
       </div>
-
       <div className="menuItems">
-        <Link href="/Sobre_Nosotros" className="opc">
-          Sobre Nosotros
-        </Link>
-        <Link href="/Reportes" className="opc">
-          Reportes
-        </Link>
-        <Link href="/" className="opc">
-          Inicio
-        </Link>
-        <Link href="/Cuenta" className="opc btn--white prueba">
-          <span>Cuenta →</span>
-        </Link>
+        {isLogged && (
+          <>
+            <Link href="/Cuenta/Usuario/Perfil" className="opc btn--white prueba">
+            <span>Perfil →</span>
+          </Link>
+          <Link href="/" className="opc">
+            Baches Guardados en el web
+          </Link>
+          <Link href="/Cuenta/InicioUsuario" className="opc">
+            Estadísticas
+          </Link>
+          <Link href="/Reportes" className="opc">
+            Reportes
+          </Link>
+          </>
+        )}
+        {!isLogged && (
+          <>
+           <Link href="/Sobre_Nosotros" className="opc">
+           Sobre Nosotros
+         </Link>
+         <Link href="/Reportes" className="opc">
+           Reportes
+         </Link>
+         <Link href="/" className="opc">
+           Inicio
+         </Link>
+         <Link href="/Cuenta" className="opc btn--white prueba">
+           <span>Cuenta →</span>
+         </Link>
+         </>
+        )}
       </div>
     </div>
   );

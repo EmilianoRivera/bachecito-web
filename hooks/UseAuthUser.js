@@ -6,7 +6,7 @@ import AuthContext from "../context/AuthContext";
 
 export const useAuthUser = () => {
   const { push, pathname } = useRouter();
-  const { setisLogged } = useContext(AuthContext); // Asegúrate de usar el mismo nombre aquí
+  const { setisLogged } = useContext(AuthContext);
 
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
@@ -17,7 +17,7 @@ export const useAuthUser = () => {
         setisLogged(false);
       } else {
         setisLogged(true);
-        if (pathname === "/login" || pathname === "/register") {
+        if (pathname === "/Cuenta") {
           push("/");
         }
       }

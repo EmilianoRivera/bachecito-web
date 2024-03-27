@@ -12,8 +12,9 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body>
+      <ContextAuthProvider>
         <Navbar />
-        <ContextAuthProvider>
+        
         {children}
         </ContextAuthProvider>
       
