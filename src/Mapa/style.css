@@ -1,0 +1,10 @@
+#map {
+    width: 960px;   /*tamaño del div donde está el mapa*/
+    height:500px;
+    }
+
+.custom .leaflet-popup-tip,
+    .custom .leaflet-popup-content-wrapper {
+        background: #Ffd100;        /*este es el color de fondo de la descripción*/
+        color: #000;                /*este es el color de letra de la descripción*/
+    }
