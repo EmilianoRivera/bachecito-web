@@ -1,9 +1,49 @@
 "use client";
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import './perfil.css';
+import { signOut } from "firebase/auth";
+import { useRouter } from "next/navigation";
+import { auth, db } from "../../../../../firebase"; 
+import AuthContext from "../../../../../context/AuthContext";
+import { useAuthUser } from "../../../../../hooks/UseAuthUser";
+import {  updateDoc,collection, query, where, getDocs } from 'firebase/firestore';
+
+export default function Perfil(){
+  useAuthUser();
+  const router = useRouter();
+  const { isLogged } = useContext(AuthContext);
+  const [userData, setUserData] = useState(null);
+//Obtener datos del usuario
+  useEffect(() => {
+
+    const fetchUserData = async () => {
+      if (isLogged) {
+        try {
+          // Realizar la consulta para obtener los datos del usuario
+          const userQuery = query(collection(db, 'usuarios'), where('uid', '==', auth.currentUser.uid));
+          const userDocs = await getDocs(userQuery);
 
 
-function Perfil() {
+          // Si hay documentos en el resultado de la consulta
+          if (!userDocs.empty) {
+            // Obtener el primer documento (debería haber solo uno)
+            const userDoc = userDocs.docs[0];
+            // Obtener los datos del documento
+            const userData = userDoc.data();
+            // Establecer los datos del usuario en el estado
+            setUserData(userData);
+          } else {
+            console.log("No se encontró el documento del usuario");
+          }
+        } catch (error) {
+          console.error("Error al obtener los datos del usuario:", error);
+        }
+      }
+    };
+
+    fetchUserData();
+  }, [isLogged]);
+
   const [windowWidth, setWindowWidth] = useState(0);
   const [showLeftSide, setShowLeftSide] = useState(false);
   const [showToggleButton, setShowToggleButton] = useState(false);
@@ -43,29 +83,61 @@ function Perfil() {
     setShowLeftSide(!showLeftSide);
   };
 
+  //cerrar sesion y desactivar cuenta
+  const CerrarSesion = () => {
+    signOut(auth)
+      .then(() => {
+        console.log('Cierre de sesión exitoso');
+        router.push("/Cuenta"); 
+      })
+      .catch((error) => {
+        console.error('Error al cerrar sesión:', error);
+      });
+  };
+
+
+  const eliminarCuenta = async () => {
+    try {
+      const reportesRef = collection(db, 'usuarios');
+      const q = query(reportesRef, where('uid', '==', userData.uid));
+      const querySnapshot = await getDocs(q);
+  
+      querySnapshot.forEach(async (doc) => {
+  
+        await updateDoc(doc.ref, { estadoCuenta: false });
+        console.log('cuenta desactivada');
+        alert('Cuenta desactivada, esperamos verte de nuevo(:')
+        CerrarSesion();
+  
+      });
+    } catch (error) {
+      console.error('Error al desactivar la cuenta:', error);
+    }
+  };
 
   return (
     <div className="container-perfil">
+        {isLogged && userData && (
       <div id="leftSide" style={{ display: showLeftSide ? 'block' : 'none' }}>
         <div class="profile-card">
           <div class="profile-image">
             <img src="https://i.pinimg.com/564x/34/f9/c2/34f9c2822cecb80691863fdf76b29dc0.jpg" alt="Imagen de perfil"/>
           </div>
           <div class="profile-details">
-            <div class="nombre">Nombre (s) </div>
+            <div class="nombre">{userData.nombre} </div>
             <div class="name-fields">
-              <div class="field appat">Apellido</div>
-              <div class="field apmat">Apellido</div>
+              <div class="field appat">{userData.apellidoPaterno}</div>
+              <div class="field apmat">{userData.apellidoMaterno}</div>
             </div>
-            <div class="fecha-nac">fecha-nac: </div>
-            <div class="email">correo@gmail.com</div>
+            <div class="fecha-nac">{userData.fechaNacimiento} </div>
+            <div class="email">{userData.correo}</div>
             <div class="buttons">
-              <button class="cerrar-sesion-btn">Cerrar Sesión</button>
-              <button class="desactivar-cuenta-btn">Desactivar Cuenta</button>
+              <button class="cerrar-sesion-btn" onClick={CerrarSesion}>Cerrar Sesión</button>
+              <button class="desactivar-cuenta-btn"  onClick={eliminarCuenta}>Desactivar Cuenta</button>
             </div>
           </div>
         </div>
-      </div>
+      </div>)}
       <div className='line-vertical'></div>
       <div className="right-side">
         <div className='encabezado-historial'>
@@ -207,10 +279,8 @@ function Perfil() {
         </button>
       )}
       </div>
-     
+      {isLogged && !userData && <p>Cargando datos del usuario...</p>}
     </div>
+    
   );
 }
-
-
-export default Perfil;
