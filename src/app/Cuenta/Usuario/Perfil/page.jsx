@@ -2,7 +2,7 @@
 import { useContext, useState, useEffect } from 'react';
 import { signOut } from "firebase/auth";
 import { useRouter } from "next/navigation";
-import { auth, db } from "../../../../../firebase"; // Asegúrate de importar los objetos 'auth' y 'firestore' de tu configuración de Firebase
+import { auth, db } from "../../../../../firebase"; 
 import AuthContext from "../../../../../context/AuthContext";
 import { useAuthUser } from "../../../../../hooks/UseAuthUser";
 import {  updateDoc,collection, query, where, getDocs } from 'firebase/firestore';
@@ -11,7 +11,7 @@ export default function Inicio() {
   useAuthUser();
   const router = useRouter();
   const { isLogged } = useContext(AuthContext);
-  const [userData, setUserData] = useState(null); // Estado para almacenar los datos del usuario
+  const [userData, setUserData] = useState(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -39,13 +39,13 @@ export default function Inicio() {
     };
 
     fetchUserData();
-  }, [isLogged]); // Ejecutar el efecto cuando el estado de autenticación cambie
+  }, [isLogged]);
 
   const handleSignOut = () => {
     signOut(auth)
       .then(() => {
         console.log('Cierre de sesión exitoso');
-        router.push("/Cuenta"); // Redirige al usuario a la página de inicio de sesión
+        router.push("/Cuenta"); 
       })
       .catch((error) => {
         console.error('Error al cerrar sesión:', error);
