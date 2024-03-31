@@ -13,6 +13,7 @@ export default function Perfil(){
   const router = useRouter();
   const { isLogged } = useContext(AuthContext);
   const [userData, setUserData] = useState(null);
+  const [reportes, setReportes] = useState([]);
 //Obtener datos del usuario
   useEffect(() => {
 
@@ -43,6 +44,39 @@ export default function Perfil(){
 
     fetchUserData();
   }, [isLogged]);
+
+  //REPORTES
+  useEffect(() => {
+    const obtenerReportes = async () => {
+      // Verificar si userData no es null y tiene la propiedad uid
+      if (userData && userData.uid) {
+        const reportesRef = collection(db, 'reportes');
+        const q = query(reportesRef, where('uidUsuario', '==', userData.uid));
+  
+        try {
+          const querySnapshot = await getDocs(q);
+          const fetchedReportes = [];
+          querySnapshot.forEach((doc) => {
+            fetchedReportes.push({
+              id: doc.id,
+              ...doc.data(),
+            });
+          });
+          console.log('Reportes obtenidos de la base de datos:', fetchedReportes);
+          setReportes(fetchedReportes);
+        } catch (error) {
+          console.error('Error al obtener reportes:', error);
+        }
+      }
+    };
+    obtenerReportes();
+  }, [userData]);
+  
+  useEffect(() => {
+    console.log('Estado actual de reportes:', reportes);
+  }, [reportes]);
+  
+
 
   const [windowWidth, setWindowWidth] = useState(0);
   const [showLeftSide, setShowLeftSide] = useState(false);
@@ -94,8 +128,7 @@ export default function Perfil(){
         console.error('Error al cerrar sesión:', error);
       });
   };
-
-
+  
   const eliminarCuenta = async () => {
     try {
       const reportesRef = collection(db, 'usuarios');
@@ -121,8 +154,11 @@ export default function Perfil(){
       <div id="leftSide" style={{ display: showLeftSide ? 'block' : 'none' }}>
         <div class="profile-card">
           <div class="profile-image">
-            <img src="https://i.pinimg.com/564x/34/f9/c2/34f9c2822cecb80691863fdf76b29dc0.jpg" alt="Imagen de perfil"/>
-          </div>
+          {userData.imagen ? (
+    <img src={userData.imagen} alt="Imagen de perfil" />
+  ) : (
+    <img src="https://i.pinimg.com/564x/34/f9/c2/34f9c2822cecb80691863fdf76b29dc0.jpg" alt="Imagen de perfil predeterminada" />
+  )} </div>
           <div class="profile-details">
             <div class="nombre">{userData.nombre} </div>
             <div class="name-fields">
@@ -143,14 +179,15 @@ export default function Perfil(){
         <div className='encabezado-historial'>
           <h2>Tu historial de reportes:</h2>
         </div>
+        {reportes.map((reporte, index) => (
                 <div className="box2" id="box2">
                     <div className="column-left">
                         <div className="fotografía">
-                            <img src="" alt="" />
+                            <img src={reporte.imagenURL} alt="" style={{ maxWidth: '100%', maxHeight: '100%' }}/>
                         </div>
                         <div className="column-left-inferior">
                             <div className="fecha">
-
+                            {reporte.fechaReporte}
 
                             </div>
 
@@ -174,7 +211,7 @@ export default function Perfil(){
                     <div className="column-right">
                         <div className="column-right-superior">
                             <div className="estado">
-
+                            {reporte.estado}
 
                             </div>
 
@@ -189,10 +226,10 @@ export default function Perfil(){
 
 
                         <div className="ubicacion">
-                            <h3>Ubicación</h3>
+                            <h3>Ubicación:</h3>
                             <div className="box-ubi">
 
-
+                            {reporte.ubicacion}
                             </div>
                         </div>
 
@@ -200,75 +237,14 @@ export default function Perfil(){
                         <div className="descripcion">
                             <h3>Descripción</h3>
                             <div className="box-des">
-
+                            {reporte.descripcion}
 
                             </div>
                         </div>
                     </div>
                 </div>
-                <div className="box2" id="box2">
-                    <div className="column-left">
-                        <div className="fotografía">
-                            <img src="" alt="" />
-                        </div>
-                        <div className="column-left-inferior">
-                            <div className="fecha">
-
-
-                            </div>
-
-
-                            <div className="contador">
-                                <div className="icon">
-                                    <img
-                                        src="https://i.postimg.cc/s2ZYz740/exclamacion-de-diamante.png"
-                                        className="logo"
-                                    />
-                                </div>
-                                <div className="number">
-
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-
-                    <div className="column-right">
-                        <div className="column-right-superior">
-                            <div className="estado">
-
-
-                            </div>
-
-
-                            <div className="guardar">
-                                    <img
-                                        src="https://i.postimg.cc/52PmmT4T/estrella.png"
-                                        className="icon-star"
-                                    />
-                            </div>
-                        </div>
-
-
-                        <div className="ubicacion">
-                            <h3>Ubicación</h3>
-                            <div className="box-ubi">
-
-
-                            </div>
-                        </div>
-
-
-                        <div className="descripcion">
-                            <h3>Descripción</h3>
-                            <div className="box-des">
-
-
-                            </div>
-                        </div>
-                    </div>
-                </div>  
+                    ))}
+            
                 {showToggleButton && (
         <button id="toggleButton" onClick={toggleLeftSide}>
           {showLeftSide ? (

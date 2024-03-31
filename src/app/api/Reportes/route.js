@@ -4,7 +4,7 @@ import { db, collection, getDocs } from "../../../../firebase";
 export async function GET(request) {
   try {
     // Obtener la colección de reportes desde Firebase
-    const reportesRef = collection(db, 'Reportes')
+    const reportesRef = collection(db, 'reportes')
 
     // Obtener todos los documentos de la colección
     const reportesSnapshot = await getDocs(reportesRef);
