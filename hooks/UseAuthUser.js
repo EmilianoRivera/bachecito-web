@@ -11,7 +11,6 @@ export const useAuthUser = () => {
   useEffect(() => {
     onAuthStateChanged(auth, (user) => {
       let userLogged = user === null ? false : true;
-
       if (!userLogged) {
         push("/Cuenta");
         setisLogged(false);

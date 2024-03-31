@@ -216,6 +216,26 @@ function Registro() {
 
   //VALIDACIÓN Checkbox--------------------------------------------------------------------------------------------------------------------
   const [checkBoxChecked, setCheckBoxChecked] = useState(false);
+/* 
+  const adminSignIn = async () => {
+    const reportesRef = collection(db, 'usuarios');
+    const q = query(reportesRef, where('uid', '==', user.uid));
+    const querySnapshot = await getDocs(q);
+
+    querySnapshot.forEach(async (doc) => {
+      const userData = doc.data();
+      if (userData.rol === 'admin') {
+        alert("Inicio de sesión exitoso");
+        push("/Cuenta/Administrador/Dashboard");
+        console.log("Usuario inició sesión con éxito:", user);
+      } else {
+        // Si el usuario no es un administrador, cerrar sesión
+        signOut(auth);
+        alert("No tienes permiso para iniciar sesión como administrador");
+      }
+    });
+  }
+ */
   const handleSignUp = async (event) => {
     try {
       event.preventDefault();
@@ -240,6 +260,7 @@ function Registro() {
         correo: email,
         estadoCuenta: true,
       };
+
       addDoc(usuariosCollection, nuevoUsuario);
       alert("SE GUARDO SI OLA");
       push("/Cuenta/Usuario/Perfil");
@@ -251,18 +272,43 @@ function Registro() {
 
   const handleSignIn = async (event) => {
     event.preventDefault();
+
+
     try {
+      const reportesRef = collection(db, 'usuarios');
+      const q = query(reportesRef, where('uid', '==', user.uid));
+      const querySnapshot = await getDocs(q);
+  
+      querySnapshot.forEach(async (doc) => {
+        const userData = doc.data();
+        console.log("ADMINNNNNNNNNNNNNNNNNNN ", userData)
+        if (userData.rol === 'admin') {
+          alert("Inicio de sesión exitoso");
+          push("/Cuenta/Administrador");
+          console.log("Usuario inició sesión con éxito:", user);
+        } else {
+          // Si el usuario no es un administrador, cerrar sesión
+          signOut(auth);
+        
+        }
+      });
+
+
+
+
+
       const userCredential = await signInWithEmailAndPassword(
         auth,
         email,
         password
       );
       const user = userCredential.user;
-  
+      
       if (user && !user.emailVerified) {
         alert("Por favor, verifica tu correo electrónico para iniciar sesión.");
         signOut(auth);
       } else {
+
         if (user && !user.estadoCuenta) {
           const confirm = window.confirm("Tu cuenta ha sido desactivada. ¿Deseas restablecerla?");
           if (confirm) {
@@ -433,6 +479,9 @@ function Registro() {
             <a id="olvi-contra" href="#">
               ¿Olvidaste tu contraseña? 😰
             </a>
+            <a id="admin-ini" href="/Cuenta/Administrador">
+              Administrador 😰
+            </a>
             <button id="iniciarSesion-btn">Iniciar Sesión</button>
           </form>
         </div>
@@ -448,10 +497,12 @@ function Registro() {
               >
                 Iniciar Sesión
               </button>
+              
             </div>
             <div className="toggle-panel toggle-right">
               <h1 className="title-2">¿No tienes una cuenta? 😠</h1>
               <p className="p-advertencia">¡No esperes más y regístrate!</p>
+             
               <button
                 className="cuentita"
                 id="register"
