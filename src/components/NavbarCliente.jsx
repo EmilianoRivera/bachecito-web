@@ -48,7 +48,7 @@ function NavbarCliente() {
           <Link href="/" className="opc">
             Baches Guardados en el web
           </Link>
-          <Link href="/Cuenta/InicioUsuario" className="opc">
+          <Link href="/Cuenta/Usuario/Estadisticas" className="opc">
             Estadísticas
           </Link>
           <Link href="/Reportes" className="opc">

@@ -10,7 +10,6 @@ import "leaflet/dist/images/marker-icon-2x.png";
 import "leaflet/dist/images/marker-shadow.png";
 import { useEffect, useState } from "react";
 
-const mensaje = "HOLA ";
 const polygon = [
   [19.592749, -99.12369],
   [19.588528, -99.126953],
@@ -736,12 +735,13 @@ const Map = () => {
 
     fetchData();
   }, []);
-  function reverse(ubi) {
+  function reverse(ubi, descripcion) {
     //aplicar logica para pasar de ubicacion a coordenadas y eso mandarlo al marcador
   }
 
   rep.map((rep) => {
-    reverse(rep.ubicacion)
+    reverse(rep.ubicacion, rep.descripcion)
+    console.log(rep)
   });
   return (
     <div>
@@ -777,7 +777,7 @@ const Map = () => {
           }
           position={[19.453986, -99.17505]}
         >
-          <Popup>{mensaje}</Popup>
+          <Popup>HOLA</Popup>
         </Marker>
       </MapContainer>
     </div>
