@@ -1,101 +1,216 @@
-"use client"
-import { useContext, useState, useEffect } from 'react';
-import { signOut } from "firebase/auth";
-import { useRouter } from "next/navigation";
-import { auth, db } from "../../../../../firebase"; 
-import AuthContext from "../../../../../context/AuthContext";
-import { useAuthUser } from "../../../../../hooks/UseAuthUser";
-import {  updateDoc,collection, query, where, getDocs } from 'firebase/firestore';
+"use client";
+import React, { useState, useEffect } from 'react';
+import './perfil.css';
 
-export default function Inicio() {
-  useAuthUser();
-  const router = useRouter();
-  const { isLogged } = useContext(AuthContext);
-  const [userData, setUserData] = useState(null);
+
+function Perfil() {
+  const [windowWidth, setWindowWidth] = useState(0);
+  const [showLeftSide, setShowLeftSide] = useState(false);
+  const [showToggleButton, setShowToggleButton] = useState(false);
+
 
   useEffect(() => {
+    // Handler para el cambio de tamaño de la ventana
+    function handleResize() {
+      const width = window.innerWidth;
+      setWindowWidth(width);
 
-/*     async function fetchData() {
-      try {
-        const response = await fetch('/api'); // Ruta correcta para obtener los usuarios
-        if (!response.ok) {
-          throw new Error('Failed to fetch data');
-        }
-        const data = await response.json();
-        setUsuarios(data);
-      } catch (error) {
-        console.error('Error fetching data:', error);
+
+      if (width <= 800) {
+        setShowLeftSide(false);
+        setShowToggleButton(true);
+      } else {
+        setShowLeftSide(true);
+        setShowToggleButton(false);
       }
     }
- */
-
-    const fetchUserData = async () => {
-      if (isLogged) {
-        try {
-          // Realizar la consulta para obtener los datos del usuario
-          const userQuery = query(collection(db, 'usuarios'), where('uid', '==', auth.currentUser.uid));
-          const userDocs = await getDocs(userQuery);
 
 
-          // Si hay documentos en el resultado de la consulta
-          if (!userDocs.empty) {
-            // Obtener el primer documento (debería haber solo uno)
-            const userDoc = userDocs.docs[0];
-            // Obtener los datos del documento
-            const userData = userDoc.data();
-            // Establecer los datos del usuario en el estado
-            setUserData(userData);
-          } else {
-            console.log("No se encontró el documento del usuario");
-          }
-        } catch (error) {
-          console.error("Error al obtener los datos del usuario:", error);
-        }
-      }
-    };
+    // Configuración inicial
+    handleResize();
 
-    fetchUserData();
-  }, [isLogged]);
 
-  const handleSignOut = () => {
-    signOut(auth)
-      .then(() => {
-        console.log('Cierre de sesión exitoso');
-        router.push("/Cuenta"); 
-      })
-      .catch((error) => {
-        console.error('Error al cerrar sesión:', error);
-      });
+    // Agregar el listener del evento resize
+    window.addEventListener('resize', handleResize);
+
+
+    // Limpieza del listener del evento resize
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
+
+
+  const toggleLeftSide = () => {
+    setShowLeftSide(!showLeftSide);
   };
-  const eliminarCuenta = async () => {
-    try {
-      const reportesRef = collection(db, 'usuarios');
-      const q = query(reportesRef, where('uid', '==', userData.uid));
-      const querySnapshot = await getDocs(q);
-  
-      querySnapshot.forEach(async (doc) => {
-  
-        await updateDoc(doc.ref, { estadoCuenta: false });
-        console.log('cuenta desactivada');
-        alert('Cuenta desactivada, esperamos verte de nuevo(:')
-        handleSignOut();
-  
-      });
-    } catch (error) {
-      console.error('Error al desactivar la cuenta:', error);
-    }
-  };
+
 
   return (
-    <div>
-      {isLogged && userData && (
-        <>
-          <h1>Hola, {userData.nombre} {userData.apellidoPaterno} {userData.apellidoMaterno}</h1>
-          <button onClick={handleSignOut}>Cerrar sesión</button>
-          <button onClick={eliminarCuenta}>Desactivar Cuenta</button>
-        </>
+    <div className="container-perfil">
+      <div id="leftSide" style={{ display: showLeftSide ? 'block' : 'none' }}>
+        <div class="profile-card">
+          <div class="profile-image">
+            <img src="https://i.pinimg.com/564x/34/f9/c2/34f9c2822cecb80691863fdf76b29dc0.jpg" alt="Imagen de perfil"/>
+          </div>
+          <div class="profile-details">
+            <div class="nombre">Nombre (s) </div>
+            <div class="name-fields">
+              <div class="field appat">Apellido</div>
+              <div class="field apmat">Apellido</div>
+            </div>
+            <div class="fecha-nac">fecha-nac: </div>
+            <div class="email">correo@gmail.com</div>
+            <div class="buttons">
+              <button class="cerrar-sesion-btn">Cerrar Sesión</button>
+              <button class="desactivar-cuenta-btn">Desactivar Cuenta</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className='line-vertical'></div>
+      <div className="right-side">
+        <div className='encabezado-historial'>
+          <h2>Tu historial de reportes:</h2>
+        </div>
+                <div className="box2" id="box2">
+                    <div className="column-left">
+                        <div className="fotografía">
+                            <img src="" alt="" />
+                        </div>
+                        <div className="column-left-inferior">
+                            <div className="fecha">
+
+
+                            </div>
+
+
+                            <div className="contador">
+                                <div className="icon">
+                                    <img
+                                        src="https://i.postimg.cc/s2ZYz740/exclamacion-de-diamante.png"
+                                        className="logo"
+                                    />
+                                </div>
+                                <div className="number">
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div className="column-right">
+                        <div className="column-right-superior">
+                            <div className="estado">
+
+
+                            </div>
+
+
+                            <div className="guardar">
+                                    <img
+                                        src="https://i.postimg.cc/52PmmT4T/estrella.png"
+                                        className="icon-star"
+                                    />
+                            </div>
+                        </div>
+
+
+                        <div className="ubicacion">
+                            <h3>Ubicación</h3>
+                            <div className="box-ubi">
+
+
+                            </div>
+                        </div>
+
+
+                        <div className="descripcion">
+                            <h3>Descripción</h3>
+                            <div className="box-des">
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div className="box2" id="box2">
+                    <div className="column-left">
+                        <div className="fotografía">
+                            <img src="" alt="" />
+                        </div>
+                        <div className="column-left-inferior">
+                            <div className="fecha">
+
+
+                            </div>
+
+
+                            <div className="contador">
+                                <div className="icon">
+                                    <img
+                                        src="https://i.postimg.cc/s2ZYz740/exclamacion-de-diamante.png"
+                                        className="logo"
+                                    />
+                                </div>
+                                <div className="number">
+
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                    <div className="column-right">
+                        <div className="column-right-superior">
+                            <div className="estado">
+
+
+                            </div>
+
+
+                            <div className="guardar">
+                                    <img
+                                        src="https://i.postimg.cc/52PmmT4T/estrella.png"
+                                        className="icon-star"
+                                    />
+                            </div>
+                        </div>
+
+
+                        <div className="ubicacion">
+                            <h3>Ubicación</h3>
+                            <div className="box-ubi">
+
+
+                            </div>
+                        </div>
+
+
+                        <div className="descripcion">
+                            <h3>Descripción</h3>
+                            <div className="box-des">
+
+
+                            </div>
+                        </div>
+                    </div>
+                </div>  
+                {showToggleButton && (
+        <button id="toggleButton" onClick={toggleLeftSide}>
+          {showLeftSide ? (
+            <img src="https://i.postimg.cc/kMxkBZBm/angulo-izquierdo.png" alt="Cerrar" />
+          ) : (
+            <img src="https://i.postimg.cc/NMkBsTBm/angulo-derecho.png" alt="Abrir" />
+          )}
+        </button>
       )}
-      {isLogged && !userData && <p>Cargando datos del usuario...</p>}
+      </div>
+     
     </div>
   );
 }
+
+
+export default Perfil;
