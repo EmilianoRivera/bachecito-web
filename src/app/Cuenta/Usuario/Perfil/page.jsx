@@ -14,12 +14,28 @@ export default function Inicio() {
   const [userData, setUserData] = useState(null);
 
   useEffect(() => {
+
+/*     async function fetchData() {
+      try {
+        const response = await fetch('/api'); // Ruta correcta para obtener los usuarios
+        if (!response.ok) {
+          throw new Error('Failed to fetch data');
+        }
+        const data = await response.json();
+        setUsuarios(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    }
+ */
+
     const fetchUserData = async () => {
       if (isLogged) {
         try {
           // Realizar la consulta para obtener los datos del usuario
           const userQuery = query(collection(db, 'usuarios'), where('uid', '==', auth.currentUser.uid));
           const userDocs = await getDocs(userQuery);
+
 
           // Si hay documentos en el resultado de la consulta
           if (!userDocs.empty) {
