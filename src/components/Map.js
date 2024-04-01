@@ -1,22 +1,16 @@
-export default function s () {
-  var southWest = L.latLng(19.0, -99.5), //estas son para que cuando se haga más para abajo, se regrese a donde estaba, mas que nada para que no se pueda ir a otros continentes
-  northEast = L.latLng(19.6, -98.8),
-  bounds = L.latLngBounds(southWest, northEast);
+"use client";
+import { MapContainer, Marker, TileLayer, Popup, Polygon } from "react-leaflet";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
+import MarkerIcon from "../../node_modules/leaflet/dist/images/marker-icon.png";
+import MarkerShadow from "../../node_modules/leaflet/dist/images/marker-shadow.png";
+import "leaflet/dist/images/layers.png";
+import "leaflet/dist/images/layers-2x.png";
+import "leaflet/dist/images/marker-icon-2x.png";
+import "leaflet/dist/images/marker-shadow.png";
+import { useEffect, useState } from "react";
 
-var map = L.map("map", {
-  center: [19.453986, -99.17505], //primera visualización del mapa, son las coordenadas de la escuela
-  zoom: 18, //este es el zoom maximo del mapa, probar con 18, 17, 16 y 15 (creo que sólo se puede con esas pero con 18 se ven todas las calles bien)
-  maxBounds: bounds,
-  maxBoundsViscosity: 1.0,
-});
-
-L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
-  attribution:
-    '&copy;<a href="http://osm.org/copyright" target="blanck">OpenStreetMap</a> | Bachecito 26 &copy<a href="" target="blanck">Aviso de Privacidad</a>',
-}).addTo(map); //esta es la parte de los créditos del mapa, se puede quitar según yo la "attribution"
-
-//Parte del área del polígono con el que se delimitó a la cdmx, no mover nada de acá
-var area = [
+const polygon = [
   [19.592749, -99.12369],
   [19.588528, -99.126953],
   [19.586227, -99.133731],
@@ -723,65 +717,71 @@ var area = [
   [19.591994, -99.119454],
 ];
 
-L.polygon(area, { color: "green", opacity: 0.6 }).addTo(map); //acá los colores del polígono del mapa, estos sí se pueden editar
-
-document
-  .getElementById("coordForm")
-  .addEventListener("submit", function (event) {
-    event.preventDefault();
-    var lat = parseFloat(document.getElementById("lat").value); //acá es la función para obtener los valores del formulario de las coordenadas
-    var lng = parseFloat(document.getElementById("lng").value);
-    if (!isNaN(lat) && !isNaN(lng)) {
-      map.setView([lat, lng], 18); //cuando se da "Mostrar mapa (el botón)" se muestra el mapa en zoom 18 en las coordenadas que ingresó el usuario
-
-      var photoIcon = L.icon({
-        iconUrl: "../EjemploTres/Imagenes/alerta.svg", //este es el ícono, se puede cambiar, pero de preferencia en .svg pq en png se ve feo JAKSAJSJ
-        iconSize: [38, 95],
-        popupAnchor: [0, -15],
-      });
-
-      //acá va la descripción del reporte, no sé que es alt pq use una plantilla jeje
-      var customPopup =
-        "<img src='../EjemploTres/Imagenes/bache.jpg' alt='ALERTA' width='200px'/><br/>Este es el ejemplo de un reporte con descripción 😱";
-
-      // Función para realizar la geocodificación inversa
-      function reverseGeocode(lat, lng) {
-        var url =
-          "https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=" +
-          lat +
-          "&lon=" +
-          lng;
-        return fetch(url)
-          .then((response) => response.json())
-          .then((data) => data.display_name)
-          .catch((error) =>
-            console.error("Error al obtener la dirección:", error)
-          );
+const Map = () => {
+  const [rep, setRep] = useState([]);
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const res = await fetch("/api/Reportes");
+        if (!res.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const data = await res.json();
+        setRep(data);
+      } catch (error) {
+        console.log("Error fetching data: ", error);
       }
-
-      // Obtener la dirección y actualizar la descripción del marcador
-      reverseGeocode(lat, lng).then((address) => {
-        var customPopup =
-          "<img src='../EjemploMarcador/Imagenes/bache.jpg' alt='ALERTA' width='200px'/><br/>Este es el ejemplo de un reporte con descripción 😱<br/>Dirección: " +
-          address;
-
-        var customOptions = {
-          maxWidth: "200",
-          className: "custom",
-        };
-
-        var marker = L.marker([lat, lng], { icon: photoIcon })
-          .bindPopup(customPopup, customOptions)
-          .addTo(map);
-      });
-
-      //este ya es el marcador, el addTo(map) hace que se agregue al mapa y L.marker son las coordenadas donde se va a poner, en este caso las que ingresó el usuario
-      //var marker = L.marker([lat, lng], {icon: photoIcon}).bindPopup(customPopup, customOptions).addTo(map);
-    } else {
-      alert("Por favor ingresa coordenadas válidas.");
     }
+
+    fetchData();
+  }, []);
+  function reverse(ubi, descripcion) {
+    //aplicar logica para pasar de ubicacion a coordenadas y eso mandarlo al marcador
+  }
+
+  rep.map((rep) => {
+    reverse(rep.ubicacion, rep.descripcion)
+    console.log(rep)
   });
+  return (
+    <div>
+      <MapContainer
+        style={{
+          height: "500px",
+          width: "500px",
+        }}
+        center={[19.453986, -99.17505]}
+        zoom={10.2}
+        scrollWheelZoom={false}
+        maxBounds={[
+          [19.0, -99.5],
+          [19.6, -98.8],
+        ]}
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+        />
+        <Polygon color="purple" positions={polygon} />
+        <Marker
+          icon={
+            new L.Icon({
+              iconUrl: MarkerIcon.src,
+              iconRetinaUrl: MarkerIcon.src,
+              iconSize: [25, 41],
+              iconAnchor: [12.5, 41],
+              popupAnchor: [0, -41],
+              shadowUrl: MarkerShadow.src,
+              shadowSize: [41, 41],
+            })
+          }
+          position={[19.453986, -99.17505]}
+        >
+          <Popup>HOLA</Popup>
+        </Marker>
+      </MapContainer>
+    </div>
+  );
+};
 
-L.control.locate().addTo(map);
-
-}
+export default Map;

@@ -1,0 +1,6 @@
+.centered {
+    position: fixed; /* Permite centrar en relación a la ventana del navegador */
+    top: 50%; /* Coloca el elemento a la mitad de la ventana */
+    left: 50%;
+    transform: translate(-50%, -50%); /* Mueve el elemento hacia arriba y hacia la izquierda, centrando el contenido */
+  }

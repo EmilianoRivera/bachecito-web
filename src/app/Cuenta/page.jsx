@@ -1,18 +1,33 @@
 "use client";
 import React, { useState, useEffect } from "react";
 import { auth, db } from "../../../firebase";
+import { useRouter } from "next/navigation";
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import { collection, addDoc } from "firebase/firestore";
+import {
+  updateDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+  addDoc,
+} from "firebase/firestore";
 import "./registro.css";
 function Registro() {
+  const { push, pathname } = useRouter();
   const [active, setActive] = useState(false);
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
   const [canSubmit, setCanSubmit] = useState(false);
+const router= useRouter()
+
+  const handleAdminLinkClick = (event ) => {
+    event.preventDefault();
+    router.push("/Cuenta/Administrador")
+  }
 
   const handleButtonClick = () => {
     setActive(!active);
@@ -214,9 +229,7 @@ function Registro() {
 
   //VALIDACIÓN Checkbox--------------------------------------------------------------------------------------------------------------------
   const [checkBoxChecked, setCheckBoxChecked] = useState(false);
-
   const handleSignUp = async (event) => {
-    // Crear la cuenta delusuario con email y contraseña
     try {
       event.preventDefault();
       const userCredential = await createUserWithEmailAndPassword(
@@ -238,10 +251,12 @@ function Registro() {
         apellidoMaterno: apmat,
         fechaNacimiento: fechaNacimiento,
         correo: email,
+        estadoCuenta: true,
       };
+
       addDoc(usuariosCollection, nuevoUsuario);
       alert("SE GUARDO SI OLA");
-      registroHeroku(uid)
+      push("/Cuenta/Usuario/Perfil");
     } catch (error) {
       console.error("Error al crear la cuenta: ", error);
       alert(error.message);
@@ -250,6 +265,7 @@ function Registro() {
 
   const handleSignIn = async (event) => {
     event.preventDefault();
+
     try {
       const userCredential = await signInWithEmailAndPassword(
         auth,
@@ -257,15 +273,50 @@ function Registro() {
         password
       );
       const user = userCredential.user;
-
-      // Verificar si el correo electrónico está verificado
       if (user && !user.emailVerified) {
         alert("Por favor, verifica tu correo electrónico para iniciar sesión.");
         signOut(auth);
       } else {
-        // Aquí puedes realizar acciones adicionales después del inicio de sesión exitoso
-        alert("Inicio de sesión exitoso");
-        console.log("Usuario inició sesión con éxito:", user);
+        if (user && !user.estadoCuenta) {
+          const confirm = window.confirm(
+            "Tu cuenta ha sido desactivada. ¿Deseas restablecerla?"
+          );
+          if (confirm) {
+            const reportesRef = collection(db, "usuarios");
+            const q = query(reportesRef, where("uid", "==", user.uid));
+            const querySnapshot = await getDocs(q);
+
+            let estadoCuenta;
+
+            querySnapshot.forEach((doc) => {
+              const data = doc.data();
+              estadoCuenta = data.estadoCuenta;
+            });
+
+            if (estadoCuenta === false) {
+              const confirm = window.confirm(
+                "Tu cuenta ha sido desactivada. ¿Deseas restablecerla?"
+              );
+              if (confirm) {
+                querySnapshot.forEach(async (doc) => {
+                  await updateDoc(doc.ref, {
+                    estadoCuenta: true,
+                  });
+                });
+                alert("Cuenta restablecida correctamente");
+                push("/Cuenta/Usuario/Perfil");
+                console.log("Usuario inició sesión con éxito:", user);
+              } else {
+                signOut(auth);
+                alert("Inicio de sesión cancelado");
+              }
+            } else {
+              alert("Inicio de sesión exitoso");
+              push("/Cuenta/Usuario/Perfil");
+              console.log("Usuario inició sesión con éxito:", user);
+            }
+          }
+        }
       }
     } catch (error) {
       setError(error.message);
@@ -407,6 +458,9 @@ function Registro() {
             <a id="olvi-contra" href="#">
               ¿Olvidaste tu contraseña? 😰
             </a>
+            <a id="admin-ini" href="#" onClick={handleAdminLinkClick}>
+              Administrador 😰
+            </a>
             <button id="iniciarSesion-btn">Iniciar Sesión</button>
           </form>
         </div>
@@ -426,6 +480,7 @@ function Registro() {
             <div className="toggle-panel toggle-right">
               <h1 className="title-2">¿No tienes una cuenta? 😠</h1>
               <p className="p-advertencia">¡No esperes más y regístrate!</p>
+
               <button
                 className="cuentita"
                 id="register"
@@ -452,3 +507,4 @@ function Registro() {
 }
 
 export default Registro;
+/*pipii no se hacer comits*/
