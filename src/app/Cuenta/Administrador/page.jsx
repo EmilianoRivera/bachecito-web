@@ -17,7 +17,6 @@ function Administrador() {
   const [password, setPassword] = useState("");
 
 
-  console.log(email, " ", password)
   const handleSignIn = async (event) => {
     event.preventDefault();
     try {

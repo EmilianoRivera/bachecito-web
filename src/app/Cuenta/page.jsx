@@ -22,6 +22,12 @@ function Registro() {
   const [active, setActive] = useState(false);
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
   const [canSubmit, setCanSubmit] = useState(false);
+const router= useRouter()
+
+  const handleAdminLinkClick = (event ) => {
+    event.preventDefault();
+    router.push("/Cuenta/Administrador")
+  }
 
   const handleButtonClick = () => {
     setActive(!active);
@@ -452,7 +458,7 @@ function Registro() {
             <a id="olvi-contra" href="#">
               ¿Olvidaste tu contraseña? 😰
             </a>
-            <a id="admin-ini" href="/Cuenta/Administrador">
+            <a id="admin-ini" href="#" onClick={handleAdminLinkClick}>
               Administrador 😰
             </a>
             <button id="iniciarSesion-btn">Iniciar Sesión</button>
