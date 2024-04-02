@@ -30,7 +30,7 @@ function ReportesComponente() {
       <div className="box2" id="box2">
           <div key={index} className="columnm-left">
             <div className="fotografía">
-              <img src={report.imagenURL} alt="" />
+              <img src={report.imagenURL} alt="" style={{ maxWidth: '100%', maxHeight: '100%' }}/>
             </div>
 
             <div className="column-left-inferior">
@@ -59,13 +59,13 @@ function ReportesComponente() {
               </div>
 
               <div className="ubicacion">
-                <h3>Ubicación: {report.ubicacion}</h3>
-                <div className="box-ubi"></div>
+                <h3>Ubicación: </h3>
+                <div className="box-ubi">{report.ubicacion}</div>
               </div>
 
               <div className="descripcion">
-                <h3>Descripción: {report.descripcion}</h3>
-                <div className="box-des"></div>
+                <h3>Descripción: </h3>
+                <div className="box-des">{report.descripcion}</div>
               </div>
             </div>
           </div>
