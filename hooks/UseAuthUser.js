@@ -1,10 +1,10 @@
 import { useEffect, useContext } from "react";
 import { onAuthStateChanged } from "firebase/auth";
-import { auth } from "../firebase";
+import { auth, db } from "../firebase";
 import { useRouter } from "next/navigation";
 import AuthContext from "../context/AuthContext";
 import {getDoc, doc} from "firebase/firestore"
-import {db} from "../firebase"
+
 
 export const useAuthUser = () => {
   const { push, pathname } = useRouter();
@@ -17,12 +17,17 @@ export const useAuthUser = () => {
         push("/Cuenta");
         setisLogged(false);
         setIsAdmin(false); // Asegúrate de restablecer isAdmin cuando el usuario no esté autenticado
+        console.log("viene por aca")
       } else {
         setisLogged(true);
         const docRef = doc(db, "usuarios", user.uid);
+        console.log("este es mi docref: ", docRef)
+        console.log("este es el usuario: ", user , " este es su uid: ", user.uid)
         getDoc(docRef).then((doc) => {
+          console.log("NUEVOOOOOOOOOO", doc)
           if (doc.exists()) {
             const userData = doc.data();
+            
             const isAdmin = userData.rol === "admin";
             setIsAdmin(isAdmin);
             if (pathname === "/Cuenta" && isAdmin) {
@@ -31,6 +36,7 @@ export const useAuthUser = () => {
               push("/"); // Redireccionar al inicio si el usuario no es administrador
             }
           } else {
+            console.log("llega a que es false")
             setIsAdmin(false);
             if (pathname === "/Cuenta") {
               push("/"); // Redireccionar al inicio si el usuario no existe en la base de datos
