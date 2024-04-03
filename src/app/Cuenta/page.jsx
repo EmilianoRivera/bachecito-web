@@ -499,4 +499,4 @@ function Registro() {
 }
 
 export default Registro;
-/*pipii no se hacer comits*/
+/pipii no se hacer comits/
