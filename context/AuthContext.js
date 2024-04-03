@@ -5,8 +5,7 @@ const Context = createContext({});
 
 export function ContextAuthProvider({ children }) {
   const [isLogged, setisLogged] = useState(false);
-  const [isAdmin, setIsAdmin] = useState(false); // Nuevo estado para isAdmin
-
+  const [isAdmin, setIsAdmin] = useState(false); 
   return (
     <Context.Provider value={{ isLogged, setisLogged, isAdmin, setIsAdmin }}>
       {children}

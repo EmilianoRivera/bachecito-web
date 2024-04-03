@@ -31,49 +31,57 @@ function Administrador() {
         alert("Por favor, verifica tu correo electrónico para iniciar sesión.");
         signOut(auth);
       } else {
-        if (user && !user.estadoCuenta) {
-          const confirm = window.confirm("Tu cuenta ha sido desactivada. ¿Deseas restablecerla?");
-          if (confirm) {
-            const reportesRef = collection(db, 'usuarios');
-            const q = query(reportesRef, where('uid', '==', user.uid));
-            const querySnapshot = await getDocs(q);
+        const reportesRef = collection(db, "usuarios");
+        const q = query(reportesRef, where("uid", "==", user.uid));
+        const querySnapshot = await getDocs(q);
   
+        let estadoCuenta;
+  
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          estadoCuenta = data.estadoCuenta;
+        });
+  
+        if (estadoCuenta === false) {
+          const confirm = window.confirm(
+            "Tu cuenta ha sido desactivada. ¿Deseas restablecerla?"
+          );
+          if (confirm) {
             querySnapshot.forEach(async (doc) => {
               await updateDoc(doc.ref, {
-                estadoCuenta: true
+                estadoCuenta: true,
               });
             });
-  
             alert("Cuenta restablecida correctamente");
             push("/Cuenta/Administrador/Dashboard");
             console.log("Usuario inició sesión con éxito:", user);
           } else {
-            // Si el usuario hace clic en "No", no se inicia sesión
             signOut(auth);
             alert("Inicio de sesión cancelado");
-
           }
         } else {
-            const reportesRef = collection(db, 'usuarios');
-            const q = query(reportesRef, where('uid', '==', user.uid));
-            const querySnapshot = await getDocs(q);
-    
-            querySnapshot.forEach(async (doc) => {
-              const userData = doc.data();
-              if (userData.rol === 'admin') {
-                alert("Inicio de sesión exitoso");
-                push("/Cuenta/Administrador/Dashboard");
-                console.log("Usuario inició sesión con éxito:", user);
-              } else {
-                // Si el usuario no es un administrador, cerrar sesión
-                signOut(auth);
-                alert("No tienes permiso para iniciar sesión como administrador");
-              }
-            });
+          // Verificar si el usuario es un administrador
+          let isAdmin = false;
+          querySnapshot.forEach((doc) => {
+            const userData = doc.data();
+            if (userData.rol === "admin") {
+              isAdmin = true;
+            }
+          });
+  
+          if (isAdmin) {
+            alert("Inicio de sesión exitoso");
+            push("/Cuenta/Administrador/Dashboard");
+            console.log("Usuario inició sesión como administrador:", user);
+          } else {
+            // Si el usuario no es un administrador, cerrar sesión
+            signOut(auth);
+            alert("No tienes permiso para iniciar sesión como administrador");
+          }
         }
       }
     } catch (error) {
-      console.log(error.message)
+      console.log(error.message);
     }
   };
   
