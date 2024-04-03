@@ -60,7 +60,6 @@ function Administrador() {
             alert("Inicio de sesión cancelado");
           }
         } else {
-          // Verificar si el usuario es un administrador
           let isAdmin = false;
           querySnapshot.forEach((doc) => {
             const userData = doc.data();
@@ -74,7 +73,6 @@ function Administrador() {
             push("/Cuenta/Administrador/Dashboard");
             console.log("Usuario inició sesión como administrador:", user);
           } else {
-            // Si el usuario no es un administrador, cerrar sesión
             signOut(auth);
             alert("No tienes permiso para iniciar sesión como administrador");
           }
