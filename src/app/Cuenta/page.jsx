@@ -22,12 +22,12 @@ function Registro() {
   const [active, setActive] = useState(false);
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
   const [canSubmit, setCanSubmit] = useState(false);
-const router= useRouter()
+  const router = useRouter();
 
-  const handleAdminLinkClick = (event ) => {
+  const handleAdminLinkClick = (event) => {
     event.preventDefault();
-    router.push("/Cuenta/Administrador")
-  }
+    router.push("/Cuenta/Administrador");
+  };
 
   const handleButtonClick = () => {
     setActive(!active);
@@ -277,45 +277,37 @@ const router= useRouter()
         alert("Por favor, verifica tu correo electrónico para iniciar sesión.");
         signOut(auth);
       } else {
-        if (user && !user.estadoCuenta) {
+        const reportesRef = collection(db, "usuarios");
+        const q = query(reportesRef, where("uid", "==", user.uid));
+        const querySnapshot = await getDocs(q);
+
+        let estadoCuenta;
+
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          estadoCuenta = data.estadoCuenta;
+        });
+        if (estadoCuenta === false) {
           const confirm = window.confirm(
             "Tu cuenta ha sido desactivada. ¿Deseas restablecerla?"
           );
           if (confirm) {
-            const reportesRef = collection(db, "usuarios");
-            const q = query(reportesRef, where("uid", "==", user.uid));
-            const querySnapshot = await getDocs(q);
-
-            let estadoCuenta;
-
-            querySnapshot.forEach((doc) => {
-              const data = doc.data();
-              estadoCuenta = data.estadoCuenta;
+            querySnapshot.forEach(async (doc) => {
+              await updateDoc(doc.ref, {
+                estadoCuenta: true,
+              });
             });
-
-            if (estadoCuenta === false) {
-              const confirm = window.confirm(
-                "Tu cuenta ha sido desactivada. ¿Deseas restablecerla?"
-              );
-              if (confirm) {
-                querySnapshot.forEach(async (doc) => {
-                  await updateDoc(doc.ref, {
-                    estadoCuenta: true,
-                  });
-                });
-                alert("Cuenta restablecida correctamente");
-                push("/Cuenta/Usuario/Perfil");
-                console.log("Usuario inició sesión con éxito:", user);
-              } else {
-                signOut(auth);
-                alert("Inicio de sesión cancelado");
-              }
-            } else {
-              alert("Inicio de sesión exitoso");
-              push("/Cuenta/Usuario/Perfil");
-              console.log("Usuario inició sesión con éxito:", user);
-            }
+            alert("Cuenta restablecida correctamente");
+            push("/Cuenta/Usuario/Perfil");
+            console.log("Usuario inició sesión con éxito:", user);
+          } else {
+            signOut(auth);
+            alert("Inicio de sesión cancelado");
           }
+        } else {
+          alert("Inicio de sesión exitoso");
+          push("/Cuenta/Usuario/Perfil");
+          console.log("Usuario inició sesión con éxito:", user);
         }
       }
     } catch (error) {
@@ -507,4 +499,4 @@ const router= useRouter()
 }
 
 export default Registro;
-/*pipii no se hacer comits*/
+/pipii no se hacer comits/

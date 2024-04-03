@@ -28,7 +28,8 @@ function ReportesComponente() {
       {rep.map((report, index) => (
     <div className="reportes-boxes">
       <div className="box2" id="box2">
-          <div key={index} className="columnm-left">
+        <div key={index} className="prueba">
+          <div className="columnm-left">
             <div className="fotografía">
               <img src={report.imagenURL} alt="" style={{ maxWidth: '100%', maxHeight: '100%' }}/>
             </div>
@@ -47,7 +48,9 @@ function ReportesComponente() {
               </div>
             </div>
 
-            <div className="column-right">
+            
+          </div>
+          <div className="column-right">
               <div className="column-right-superior">
                 <div className="estado">{report.estado}</div>
                 <div className="guardar">
@@ -67,8 +70,9 @@ function ReportesComponente() {
                 <h3>Descripción: </h3>
                 <div className="box-des">{report.descripcion}</div>
               </div>
-            </div>
           </div>
+        </div>
+          
       </div>
     </div>
         ))}
