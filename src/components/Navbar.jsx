@@ -79,7 +79,7 @@ function Navbar() {
                 <Link href="/Cuenta/Usuario/Estadisticas" className="opc">
                   Estadísticas
                 </Link>
-                <Link href="/Reportes" className="opc">
+                <Link href="/Cuenta/Usuario/Reportes" className="opc">
                   Reportes
                 </Link>
               </>

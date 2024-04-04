@@ -1,16 +1,21 @@
 import Map from "@/components/Map";
+
 import dynamic from "next/dynamic";
 const DynamicMap = dynamic(() => import("@/components/Map"), {
   ssr: false,
 });
 export default function Estadisticas() {
   return (
+
     <div className="container">
       <div className="izquierda-mapa">
+
+
         <div className="filtros">
           <div className="fecha"></div>
           <div className="alcaldia"></div>
           <div className="estado"></div>
+
         </div>
 
         <div className="totalReportes">
@@ -43,5 +48,6 @@ export default function Estadisticas() {
         <DynamicMap />
       </div>
     </div>
+
   );
 }

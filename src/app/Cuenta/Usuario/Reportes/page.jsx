@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
 import ReportesComponente  from "@/components/Reportes";
 import React from 'react';
-import './Reportes.css';
+import './reportes.css';
 import RutaProtegida from "@/components/RutaProtegida";
 
 {/*OTRA COSA, AQUI LA LOGICA DE DESPLEGAR LOS REPORTES, ESTA EN OTRO ARCHIVO, LO HICE COMPONENTE PARA REUZARLO EN VARIAS PARTES, EL COMPONENTE SE LLAMA ReportesComponente */}

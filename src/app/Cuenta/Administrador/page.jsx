@@ -55,7 +55,7 @@ function Administrador() {
       };
     }, []);
   
-    const { push, pathname } = useRouter();
+    const { push } = useRouter();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -66,6 +66,7 @@ function Administrador() {
     try {
       const userCredential = await signInWithEmailAndPassword(
         auth,
+        
         email,
         password
       );
