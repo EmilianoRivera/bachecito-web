@@ -11,10 +11,8 @@ export const useAuthUser = () => {
   const pathname = usePathname();
   const { setisLogged, setIsAdmin } = useContext(AuthContext); 
   
-  console.log(pathname)
 
   useEffect(() => {
-console.log("Entro al use Effect")
 
     if(pathname === "/Reportes" || pathname === "/" || pathname === "/Sobre_Nosotros" ){
       push(pathname)
