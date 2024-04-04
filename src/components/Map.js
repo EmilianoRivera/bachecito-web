@@ -2,6 +2,8 @@
 import { MapContainer, Marker, TileLayer, Popup, Polygon } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import "./map.css"
+import "../app/Cuenta/Usuario/Estadisticas/style.css"
 import MarkerIcon from "../../node_modules/leaflet/dist/images/marker-icon.png";
 import MarkerShadow from "../../node_modules/leaflet/dist/images/marker-shadow.png";
 import "leaflet/dist/images/layers.png";
@@ -717,6 +719,13 @@ const polygon = [
   [19.591994, -99.119454],
 ];
 
+
+
+const polygonOptions = {
+  color: '#ff9f49', // Borde
+  fillColor: '#FFB471', // Relleno
+};
+
 const Map = () => {
   const [rep, setRep] = useState([]);
   useEffect(() => {
@@ -747,8 +756,8 @@ const Map = () => {
     <div>
       <MapContainer
         style={{
-          height: "500px",
-          width: "500px",
+          height: "85vh",
+          width: "59vw",
         }}
         center={[19.453986, -99.17505]}
         zoom={10.2}
@@ -757,12 +766,17 @@ const Map = () => {
           [19.0, -99.5],
           [19.6, -98.8],
         ]}
+        id="map"
       >
         <TileLayer
-          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
-        <Polygon color="purple" positions={polygon} />
+  url="https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=cB1pkcJ37buZmTAzdPhV"
+  attribution="Map data &copy; <a href='https://www.openstreetmap.org/'>OpenStreetMap</a> contributors, 
+    <a href='https://creativecommons.org/licenses/by-sa/2.0/'>CC-BY-SA</a>, 
+    Imagery © <a href='https://www.maptiler.com/'>MapTiler</a>"
+/>
+
+
+        <Polygon pathOptions={polygonOptions} positions={polygon} />
         <Marker
           icon={
             new L.Icon({
