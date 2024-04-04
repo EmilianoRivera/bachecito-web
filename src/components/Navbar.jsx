@@ -48,7 +48,6 @@ function Navbar() {
       <div className="menuItems">
         {isLogged && (
           <>
-          {console.log("HEEEEEEEEEEEEEEEEEEEEEEEEEEEEEERE", isAdmin)}
             {isAdmin ? (
               <>
               

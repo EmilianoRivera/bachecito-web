@@ -12,6 +12,7 @@ async function peticion() {
   const mapData = data.map((item) => {
     return item.uidUsuario;
   });
+
   return mapData;
 }
 const reportes = peticion();
