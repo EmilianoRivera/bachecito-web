@@ -2,8 +2,8 @@ import React from 'react'
 
 function Mapa() {
   return (
-    <div>Mapa</div>
-  )
+      <div>MAPA</div>
+    )
 }
 
 export default Mapa

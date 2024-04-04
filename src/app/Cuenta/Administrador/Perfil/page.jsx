@@ -20,18 +20,13 @@ export default function Dashboard(){
     const fetchUserData = async () => {
       if (isLogged) {
         try {
-          // Realizar la consulta para obtener los datos del usuario
           const userQuery = query(collection(db, 'usuarios'), where('uid', '==', auth.currentUser.uid));
           const userDocs = await getDocs(userQuery);
 
 
-          // Si hay documentos en el resultado de la consulta
           if (!userDocs.empty) {
-            // Obtener el primer documento (debería haber solo uno)
             const userDoc = userDocs.docs[0];
-            // Obtener los datos del documento
             const userData = userDoc.data();
-            // Establecer los datos del usuario en el estado
             setUserData(userData);
           } else {
             console.log("No se encontró el documento del usuario");
@@ -48,7 +43,6 @@ export default function Dashboard(){
   //REPORTES
   useEffect(() => {
     const obtenerReportes = async () => {
-      // Verificar si userData no es null y tiene la propiedad uid
       if (userData && userData.uid) {
         const reportesRef = collection(db, 'reportes');
         const q = query(reportesRef, where('uidUsuario', '==', userData.uid));
@@ -100,15 +94,12 @@ export default function Dashboard(){
     }
 
 
-    // Configuración inicial
     handleResize();
 
 
-    // Agregar el listener del evento resize
     window.addEventListener('resize', handleResize);
 
 
-    // Limpieza del listener del evento resize
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
@@ -117,7 +108,6 @@ export default function Dashboard(){
     setShowLeftSide(!showLeftSide);
   };
 
-  //cerrar sesion y desactivar cuenta
   const CerrarSesion = () => {
     signOut(auth)
       .then(() => {
@@ -149,6 +139,7 @@ export default function Dashboard(){
   };
 
   return (
+      
     <div className="container-perfil">
         {isLogged && userData && (
       <div id="leftSide" style={{ display: showLeftSide ? 'block' : 'none' }}>
