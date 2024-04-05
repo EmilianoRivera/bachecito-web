@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import "./globals.css";
 
+
 function HomePage() {
   const handleClick = (event) => {
     event.preventDefault(); // Evita el comportamiento predeterminado del enlace

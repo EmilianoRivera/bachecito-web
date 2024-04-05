@@ -1,0 +1,50 @@
+.container-general {
+    margin-top: 100px; /* Bajar 100px para dejar espacio para el navbar */
+    padding: 20px;
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .filtros {
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .filtros > div {
+    margin-bottom: 10px;
+  }
+  
+  .reportes {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .reportes > div {
+    background-color: #fff;
+    padding: 10px;
+    margin-bottom: 10px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .grafica-circular,
+  .grafica-barras,
+  .grafica-barras-hz {
+    margin-top: 20px;
+  }
+  
+  .grafica-circular,
+  .grafica-barras,
+  .grafica-barras-hz > div {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  }
+  

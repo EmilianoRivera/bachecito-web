@@ -5,6 +5,8 @@ import { useRouter } from 'next/navigation';
 import ReportesComponente  from "@/components/Reportes";
 import React from 'react';
 import './Reportes.css';
+import RutaProtegida from "@/components/RutaProtegida";
+
 {/*OTRA COSA, AQUI LA LOGICA DE DESPLEGAR LOS REPORTES, ESTA EN OTRO ARCHIVO, LO HICE COMPONENTE PARA REUZARLO EN VARIAS PARTES, EL COMPONENTE SE LLAMA ReportesComponente */}
 export default function Reportes() {
     
@@ -88,7 +90,8 @@ export default function Reportes() {
         };
     }, [router]);
     return (
-        <div className="main-containerReportes">
+       
+            <div className="main-containerReportes">
             <div className="box1" id="box1">
                 <div className="containerReportes" id="containerReportes">
                     <header>
@@ -115,5 +118,6 @@ export default function Reportes() {
             </div>
             
         </div>
+       
     );
 }
