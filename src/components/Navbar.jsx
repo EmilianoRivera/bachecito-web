@@ -66,6 +66,9 @@ function Navbar() {
                 <Link href="/Cuenta/Administrador/Perfil" className="opc">
                   Perfil
                 </Link>
+                <Link href="/Cuenta/Administrador/NuevoAdmin" className="opc">
+                  Nuevo Admin
+                </Link>
               </>
             ) : (
               <>
