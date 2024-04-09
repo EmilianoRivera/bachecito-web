@@ -1,283 +1,121 @@
 body {
-    background-color: white;
     font-family: 'Poppins', sans-serif;
     
   }
 
-        .main-containerReportes{
-            background-color: #ffffff;
-            width: 100%;
-            justify-content: center;
-            justify-items: center;
-            align-items: center;
-            align-content: center;
-            padding: 3vw;
-            margin-top: 10vh;
-        }
+  .main-containerReportes{
+    margin-left: 1rem;
+    background-color: #c9c9c9;
+    width: 90vw;
+    margin-top: 10vh;
+    height: 87vh;
+    z-index: 100;
+    position: relative;
+    overflow-y: auto;
+}
 
-        .box1{
-            width: 85%;
-            padding-top: 3vw;
-            padding-bottom: 3vw;
-            padding-left: 5vw;
-            padding-right: 5vw;
-            height: auto;
-            border-radius: 6vh;
-            margin-bottom: 5%;
-        }
+  table {
+    width: 100%;
+    border-collapse:separate;
+ border-radius: 2rem;
+  }
 
-        #box1{
-            background-color: #F1F1F1;
-        }
+  
 
-        .containerReportes {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: 100%;
-        }
+  .sticky-top{
+    border-radius: 2rem;
+    position: sticky;
+    top: 0;
+  }
+  th, td {
+    text-align: left;
+    border-top-left-radius: 2rem;
+    border-bottom-left-radius: 2rem;
+    border-right: .3rem solid #ffffff ;
+    border-top-right-radius: 2rem;
+    border-bottom-right-radius: 2rem;
+    text-align: center;
+  }
+  th {
+    padding-top:4px;
+    padding-bottom: 4px;
+    background-color: #FF9F49;
+    color: #ffffff;
+    padding-left: 12px;
+    padding-right: 12px;
+  }
 
-        header {
-        display: block;
-        position: relative;
-        width: 55vw;
-        height: 20vw;
-        }
+  td{
+    border-top: .3rem solid #ffffff ;
+    background-color: #f1f1f1;
+    padding-left: 12px;
+    padding-right: 12px;
+    height: 60px;
+  }
 
-        .containerReportes h1, .containerReportes span.copy {
-        font-family:monospace;
-        font-weight: bold;
-        font-size: 11vw;
-        display: block;
-        position: absolute;
-        top: 0px;
-        left: 0px;
-        line-height: 1;
-        height: 20vw;
-        margin: 0;
-        padding: 0;
-        text-shadow: -.15vw -.15vw 0 #000, .15vw -.15vw 0 #000, -.15vw .15vw 0 #000,
-        .15vw .15vw 0 #000;
-        }
+  tr:last-child td {
+    border-bottom: none;
+  }
+  
+  .eliminar {
+    display: none;
+    transition: .8s;
+}
 
-        .containerReportes h1 {
-        color: #fff6da;
-        z-index: 50;
-        }
+.eliminar-header {
+    transition: .8s;
+    display: none;
+}
 
-        .copy-1 {
-        transform: perspective(500px) translate3d(0, 0, -15px);
-        color: #FFD557;
-        z-index: 40;
-        }
+.Reportes:hover .eliminar {
+    transition: .8s;
+    display: table-cell;
+}
 
-        .copy-2 {
-        transform: perspective(500px) translate3d(0, 0, -30px);
-        color: #FF9F49;
-        z-index: 30;
-        }
+.show-header .eliminar-header {
+    transition: .8s;
+    display: table-cell;
+}
 
-        .copy-3 {
-        transform: perspective(500px) translate3d(0, 0, -45px);
-        color: #FF4D35;
-        z-index: 20;
-        }
+.btn-eliminarRP{
+  border: none;
+  width: 100%;
+  height: 2rem;
+}
 
-        .copy-4 {
-        transform: perspective(500px) translate3d(0, 0, -60px);
-        color: #D90416;
-        z-index: 10;
-        }
+.btn-eliminarRP img{
+  height: 100%;
+}
 
-        .reportes-boxes{
-            flex: 1;
-            overflow-y: auto; /* Agrega scroll vertical si el contenido es más largo que el área visible */
-            width: 95%;
-            column-gap: 5%; /* Espacio entre las columnas */
-            column-count: 2;
-        }
-        
+::-webkit-scrollbar {
+    width: 10px; /* Ancho de la barra de desplazamiento */
+}
 
-        .box2{
-            break-inside: avoid; /* Evita que los divs se rompan en medio de las columnas */
-            width: 100%;
-            padding: 6%;
-            border-radius: 6vh;
-            margin-bottom: 10%;
-            background-color: #F1F1F1;
-            display: flex;
-            box-sizing: border-box;
-        }
-        
-        .containerReportes p{
-            margin-bottom: 2vw;
-            margin-right: 2vw;
-            margin-left: 2vw;
-            font-size: 20px;
-            color: #323529;
-            font-weight: 100;
-        }
+::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Color del fondo de la barra de desplazamiento */
+}
 
-        .box1 h2{
-            color: #FFD557;
-        }
+::-webkit-scrollbar-thumb {
+    background: #d1d1d1; /* Color de la barra de desplazamiento */
+    border-radius: 5px; /* Radio de la esquina de la barra de desplazamiento */
+}
 
-        .box2 h3{
-            font-size: 1.5rem;
-            color: #FF7A3E;
-            margin-top: 0px;
-        }
+::-webkit-scrollbar-thumb:hover {
+    background: #c9c9c9; /* Color de la barra de desplazamiento al pasar el mouse sobre ella */
+}
 
-        .copy {
-            transition: transform 0.3s ease;
-        }
-        
-        /*.main-containerReportes:hover .copy {
-            transform: translateY(100px); 
-            transform: translateX(200px);
-            transform: translateZ(300px);
-        }   /* O cualquier transformación que desees */
-
-/*-----------------------Reportes------------------------*/
-        .column-left{
-            width: 45%;
-            height: 100%;
-            background: #F1F1F1;
-        }
-
-        .fotografía{
-            width: 100%;
-            height: 52vh;
-            background-color: #ffffff;
-            border-radius: 5vh;
-            margin-bottom: 25px;
-        }
-
-        .column-left-inferior{
-            height: 30px;
-            width: 100%;
-            background-color: #F1F1F1;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .fecha{
-            width: 65%;
-            border-radius: 5vh;
-            height: 38px;
-            background-color: #ffffff;
-            justify-content: center;
-            text-align: center;
-            display: flex;
-            color: #1E1E1E;
-            font-weight:400;
-            font-size: large;
-            padding-top: 9px;
-        }
-        
-        .contador{
-            margin-left: 5%;
-            margin-top: 7%;
-            width: 30%;
-            display:inline-block;
-            align-items: center;
-            justify-content: center;
-            background-color: #F1F1F1;
-            color:#949494;
-            font-weight:900;
-        }
-
-        .icon{
-            justify-content: center;
-            align-items: center;
-            align-content: center;
-            display: flex;
-        }
-
-        .logo{
-            width: 30px;
-            margin-bottom: 7px;
-        }
-
-        .number{
-            justify-content: center;
-            align-items: center;
-            align-content: center;
-            display: flex;
-            margin-top: -7px;
-        }
-
-        .column-right{
-            width: 50%;
-            margin-left: 5%;
-            padding: 0;
-            height: auto;
-        }
-
-        .column-right-superior{
-            background-color: #F1F1F1;
-            width: 100%;
-            display: flex;
-            height: 40px;
-        }
-
-        .estado{
-            width: 75%;
-            border-radius: 5vh;
-            height: 40px;
-            background-color: #ffffff;
-        }
-
-        .guardar{
-            margin-left: 10%;
-            justify-content: center;
-            align-items: center;
-        }
-        .icon-star{
-            height: 90%;
-            align-self: center;
-            justify-self: end;
-        }
-
-        .ubicacion{
-            width: 100%;
-            height: 150px;
-            display: block;
-            margin-bottom: 20px;
-            margin-top: 20px;
-        }
-
-        .box-ubi{
-            height: 80%;
-            background-color: #ffffff;
-            border-radius: 3vh;
-            margin-top: -25px;
-        }
-
-        .descripcion{
-            width: 100%;
-            height: 150px;
-        }
-
-        .box-des{
-            height: 80%;
-            margin-top: -25px;
-            background-color: #ffffff;
-            border-radius: 3vh;
-        }
-
-        @media (max-width: 800px) { /* Por ejemplo, cuando la pantalla es más estrecha que 800px */
-            .reportes-boxes {
-              column-count: 1; /* Cambia a una sola columna */
-            }
-            p{
-            font-size: 15px;
-            }
-            h2{
-                font-size: larger;
-            }
-            .box2 h3{
-                font-size: 1.2rem;
-            }
-          }
+.filtros2{
+  width: 70%;
+  height: 8vh;
+  background-color: #F1F1F1;
+  margin-bottom: 2vh;
+  border-radius: 1.5rem;
+  align-items: center;
+  display: flex;
+  position: relative;
+  z-index: 1000;
+ }
+ 
+ .filtros2 img{
+     width: 1.7rem;
+ }

@@ -123,6 +123,8 @@
     background-color: #ff9e49ce; 
     margin: 6px;
     transition: all 0.4s ease;
+    position: fi  xed;
+    z-index: 10000;
   }
   
   .menu-icon.span-anime span:first-child {
@@ -200,4 +202,80 @@
       align-items: right;
       justify-content: right;
     }
+  }
+
+  .ilusion{
+    background-color: #ffffffde;
+    width: 1000vw;
+    height: 60px;
+    top: 0;
+    position: fixed;
+    margin-left: -100vw;
+    z-index: -10;
+  }
+  .navBar.admin {
+    /* Estilos específicos para el navbar cuando isAdmin es true */
+    background-color: #bb0d0d93;
+      position: fixed;
+      /*Hay un problema en esta parte, pero todos los elementos con los que se 
+      quiera interactuar como botones deben de tener un z-index: 100;
+      y un position relative para que se pueda interactuar con ellos sobre del navbar
+      en el apartado de administrador */
+  }
+
+  .navBar.admin a{
+    color: #ff9f49;
+    margin: 0;
+  }
+
+  .navBar.admin .bachecito26{
+    color: #ff9f49;
+  }
+
+  .navBar.admin .menuItems{
+    display: flex;
+      flex-direction: column;
+      margin-top: 17vh;
+      width:4rem;
+      border-radius: 5rem;
+      margin-left: 93vw;
+      background-color: #F1F1F1;
+      height: 64vh;
+      padding-top: 5vh;
+      padding-bottom: 5vh;
+  }
+
+  .navBar.admin .opc-admin img{
+    width: 2rem;
+  }
+
+  .navBar.admin .opc-admin{
+    border-radius: 3rem;
+    transition: .2s;
+    position: relative;
+  }
+  .navBar.admin .opc-admin:hover{
+    background-color: #f1f1f1;
+    transform: translate(-20px);
+    border-radius: 3rem;
+    transition: .2s;
+  }
+
+  .hover-text {
+    position: absolute;
+    top: 1.3rem;
+    right: 110%;
+    opacity: 0; 
+    z-index: 10000;
+    transition: opacity 0.2s ease-in; 
+  }
+  
+  .opc-admin:hover .hover-text {
+    transform: translate(-20px);
+    transition: opacity 0.1s ease-out; 
+    opacity: 1; 
+  }
+
+  .navBar.admin .menuIcon{
+    display: none;
   }

@@ -150,17 +150,17 @@ export default function Dashboard(){
   ) : (
     <img src="https://i.pinimg.com/564x/34/f9/c2/34f9c2822cecb80691863fdf76b29dc0.jpg" alt="Imagen de perfil predeterminada" />
   )} </div>
-          <div class="profile-details">
-            <div class="nombre">{userData.nombre} </div>
-            <div class="name-fields">
-              <div class="field appat">{userData.apellidoPaterno}</div>
-              <div class="field apmat">{userData.apellidoMaterno}</div>
+          <div className="profile-details">
+            <div className="nombre">{userData.nombre} </div>
+            <div className="name-fields">
+              <div className="field appat">{userData.apellidoPaterno}</div>
+              <div className="field apmat">{userData.apellidoMaterno}</div>
             </div>
-            <div class="fecha-nac">{userData.fechaNacimiento} </div>
-            <div class="email">{userData.correo}</div>
-            <div class="buttons">
-              <button class="cerrar-sesion-btn" onClick={CerrarSesion}>Cerrar Sesión</button>
-              <button class="desactivar-cuenta-btn"  onClick={eliminarCuenta}>Desactivar Cuenta</button>
+            <div className="fecha-nac">{userData.fechaNacimiento} </div>
+            <div className="email">{userData.correo}</div>
+            <div className="buttons">
+              <button className="cerrar-sesion-btn" onClick={CerrarSesion}>Cerrar Sesión</button>
+              <button className="desactivar-cuenta-btn"  onClick={eliminarCuenta}>Desactivar Cuenta</button>
             </div>
           </div>
         </div>
