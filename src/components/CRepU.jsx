@@ -28,23 +28,27 @@ function CRep() {
   }, []);
 
   return (
-    <div className="reportes">
-      <div id="reportes-totales">
-        <h3>REPORTES TOTALES</h3>
-        {totalRep}
+    <div className="totalReportes">
+    <div className="encabezado">
+     
+      <h1>REPORTES TOTALES:</h1>
+      <div className="contador">   {totalRep}  </div>
+    </div>
+    <div className="estados">
+      <div className="in-red">
+        <div className="red"><span class="tooltip">Sin atender</span></div>
+        <div className="cont-reportes">  {repEstado.sinAtender}  </div>
       </div>
-
-      {/* Acceder directamente a las propiedades del objeto repEstado */}
-      <div id="reportes-no-completos">
-        No Resuelto: {repEstado.sinAtender}
+      <div className="in-yellow">
+        <div className="yellow"><span class="tooltip">En atención</span></div>
+        <div className="cont-reportes">  {repEstado.enAtencion} </div>
       </div>
-      <div id="reportes-en-proceso">
-        En Proceso: {repEstado.enAtencion}
-      </div>
-      <div id="reportes-reparados">
-        Resuelto: {repEstado.atendido}
+      <div className="in-green">
+        <div className="green"><span class="tooltip">Atendido</span></div>
+        <div className="cont-reportes">  {repEstado.atendido} </div>
       </div>
     </div>
+  </div>
   );
 }
 
