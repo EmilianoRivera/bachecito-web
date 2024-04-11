@@ -17,6 +17,8 @@ import {
   addDoc,
 } from "firebase/firestore";
 import "./registro.css";
+
+
 function Registro() {
   const { push, pathname } = useRouter();
   const [active, setActive] = useState(false);
@@ -499,4 +501,4 @@ function Registro() {
 }
 
 export default Registro;
-/pipii no se hacer comits/
+
