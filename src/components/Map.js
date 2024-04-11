@@ -10,6 +10,9 @@ import "leaflet/dist/images/layers.png";
 import "leaflet/dist/images/layers-2x.png";
 import "leaflet/dist/images/marker-icon-2x.png";
 import "leaflet/dist/images/marker-shadow.png";
+import atendidoIcon from '../imgs/BanderaVerdeConFondo.png';
+import enProcesoIcon from '../imgs/BanderaAmarillaConFondo.png';
+import sinAtenderIcon from '../imgs/BanderaRojaConFondo.png';
 import { useEffect, useState } from "react";
 const polygon = [
   [19.592749, -99.12369],
@@ -761,6 +764,18 @@ const Map = () => {
     fetchData();
   }, []);
 
+  function getIconUrl(estado) {
+    switch (estado) {
+      case "Atendido":
+        return atendidoIcon.src;
+      case "En atención":
+        return enProcesoIcon.src;
+      case "Sin Atender":
+        return sinAtenderIcon.src;
+      default:
+        return MarkerIcon.src; // Icono por defecto si el estado no coincide con ninguno de los casos anteriores
+    }
+  }
   async function reverse(ubi, descripcion) {
     try {
       const apiKey = 'AIzaSyDUhkmX0nWDYHvkG9fxVG-K1jCK6k-bSaI';
@@ -811,13 +826,9 @@ const Map = () => {
             position={[marker.coordenadas.lat, marker.coordenadas.lng]}
             icon={
               new L.Icon({
-                iconUrl: MarkerIcon.src,
-                iconRetinaUrl: MarkerIcon.src,
-                iconSize: [25, 41],
-                iconAnchor: [12.5, 41],
-                popupAnchor: [0, -41],
-                shadowUrl: MarkerShadow,
-                shadowSize: [41, 41],
+                iconUrl: getIconUrl(marker.estados),
+                iconRetinaUrl: getIconUrl(marker.estados),
+                iconSize: [25, 25],
               })
             }
           >
