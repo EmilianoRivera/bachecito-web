@@ -1,8 +1,15 @@
 "use client"
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
+const data = [
+  { name: "A", value: 10 },
+  { name: "B", value: 20 },
+  { name: "C", value: 30 },
+  { name: "D", value: 40 },
+  { name: "E", value: 50 },
+];
 
-export default function BarrasHz ({ data, width, height }) {
+export default function BarrasHz ({  width, height }) {
   const svgRef = useRef();
 
   useEffect(() => {
