@@ -1,5 +1,4 @@
 "use client"
-
 import React, { useState } from "react";
 import "./dash.css";
 import Barras from "@/components/Barras";
@@ -32,17 +31,17 @@ function Dashboard() {
   const [estado, setEstado] = useState("sin estado");
 
   const handleAlcaldiaChange = (e) => {
-    console.log("Alcaldía seleccionada:", e.target.value);
+   // console.log("Alcaldía seleccionada:", e.target.value);
   };
 
   const handleEstadoChange = (e) => {
-    console.log("Estado seleccionado:", e.target.value);
     setEstado(e.target.value)
+    
   };
 
   const handleFechaChange = (e) => {
     const selectedValue = e.target.value;
-    console.log("Fecha seleccionada:", selectedValue);
+  //  console.log("Fecha seleccionada:", selectedValue);
     setFiltroFecha(selectedValue);
   };
 
@@ -91,7 +90,7 @@ function Dashboard() {
       <div className="grafica-circular">
         <h3>ALCALDIAS CON MAS REPORTES</h3>
         <div className="circular">
-          <Circular width={500} height={300} estado={estado} />
+          <Circular width={500} height={300} estados={estado} />
         </div>
       </div>
       <div className="grafica-barras">

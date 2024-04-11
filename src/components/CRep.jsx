@@ -21,7 +21,7 @@ function CRep() {
         setTotalRep(data);
         setRepEstado(data2);
       } catch (error) {
-        console.log("Error fetching data: ", error);
+        console.error("Error fetching data: ", error);
       }
     }
     fetchData();
