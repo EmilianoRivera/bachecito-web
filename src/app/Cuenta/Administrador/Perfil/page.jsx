@@ -171,7 +171,7 @@ export default function Dashboard(){
           <h2>Tu historial de reportes:</h2>
         </div>
         {reportes.map((reporte, index) => (
-                <div className="box2" id="box2">
+                <div className="box2" id="box2" key={index}>
                     <div className="column-left">
                         <div className="fotografía">
                             <img src={reporte.imagenURL} alt="" style={{ maxWidth: '100%', maxHeight: '100%' }}/>
