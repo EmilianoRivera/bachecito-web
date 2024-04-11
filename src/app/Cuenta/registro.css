@@ -47,7 +47,7 @@
 }
 
 .container .title-2{
-    color: #6F6F6F;
+    color: #FFFFFF;
     font-size: 32px;
     text-align: center;
     font-weight: 900;
@@ -264,7 +264,11 @@
     height: 100%;
     overflow: hidden;
     transition: all 0.6s ease-in-out;
+
     z-index: 10;
+
+    /* z-index: 80; */
+
 }
 
 .container.active .toggle-container{
@@ -272,7 +276,9 @@
 }
 
 .toggle{
+
     background-image: url("https://i.postimg.cc/HxqFJnvy/imagen-cuenta.jpg");
+    background-image: url("https://i.postimg.cc/RFskT4SN/imagen-cuenta.jpg");
     background-size:cover; /* Ajusta la imagen para cubrir todo el contenedor */
     background-position: left;
     height: 100%;

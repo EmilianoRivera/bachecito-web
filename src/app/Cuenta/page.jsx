@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import { auth, db } from "../../../firebase";
 import { useRouter } from "next/navigation";
 import {
@@ -20,11 +20,13 @@ import "./registro.css";
 
 
 function Registro() {
-  const { push, pathname } = useRouter();
+  //elementos del router
+  const { push } = useRouter();
+  const router = useRouter();
+  //elementos de validaciones
   const [active, setActive] = useState(false);
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
   const [canSubmit, setCanSubmit] = useState(false);
-  const router = useRouter();
 
   const handleAdminLinkClick = (event) => {
     event.preventDefault();
@@ -472,7 +474,7 @@ function Registro() {
               </button>
             </div>
             <div className="toggle-panel toggle-right">
-              <h1 className="title-2">¿No tienes una cuenta? 😠</h1>
+              <h1 className="title-2">¿No tienes una cuenta? 😨</h1>
               <p className="p-advertencia">¡No esperes más y regístrate!</p>
 
               <button
@@ -501,4 +503,5 @@ function Registro() {
 }
 
 export default Registro;
+/* pipii no se hacer comits/ */
 

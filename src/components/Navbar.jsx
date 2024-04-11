@@ -48,7 +48,6 @@ function Navbar() {
       <div className="menuItems">
         {isLogged && (
           <>
-          {console.log("HEEEEEEEEEEEEEEEEEEEEEEEEEEEEEERE", isAdmin)}
             {isAdmin ? (
               <>
               
@@ -67,6 +66,9 @@ function Navbar() {
                 <Link href="/Cuenta/Administrador/Perfil" className="opc">
                   Perfil
                 </Link>
+                <Link href="/Cuenta/Administrador/NuevoAdmin" className="opc">
+                  Nuevo Admin
+                </Link>
               </>
             ) : (
               <>
@@ -79,7 +81,7 @@ function Navbar() {
                 <Link href="/Cuenta/Usuario/Estadisticas" className="opc">
                   Estadísticas
                 </Link>
-                <Link href="/Reportes" className="opc">
+                <Link href="/Cuenta/Usuario/Reportes" className="opc">
                   Reportes
                 </Link>
               </>
