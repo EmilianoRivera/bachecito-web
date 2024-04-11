@@ -24,9 +24,9 @@ function ReportesComponente() {
   }, []);
 
   return (
-    <div>
-      {rep.map((report, index) => (
+      
     <div className="reportes-boxes">
+    {rep.map((report, index) => (
       <div className="box2" id="box2">
         <div key={index} className="prueba">
           <div className="columnm-left">
@@ -74,7 +74,6 @@ function ReportesComponente() {
         </div>
           
       </div>
-    </div>
         ))}
     </div>
     

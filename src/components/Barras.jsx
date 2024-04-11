@@ -44,12 +44,12 @@ export default function Barras({ width, height }) {
     }
     fetchData();
   }, []);
-
+/* 
   console.log("SEMANAS", semanas);
   console.log("fechas", fechaMayor, " ", fechaMenor);
   console.log(dataAlcaldia);
   console.log("TOTAL DE REPORTES", totalReporte);
-  
+   */
   useEffect(() => {
     if (!data || !data.length) return;
 

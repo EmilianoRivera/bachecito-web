@@ -1,4 +1,5 @@
-import Map from "@/components/Map";
+
+import Map from "@/components/Map";S
 import CRep from "@/components/CRepU";
 import dynamic from "next/dynamic";
 const DynamicMap = dynamic(() => import("@/components/Map"), {
