@@ -1,8 +1,6 @@
-import Map from "@/components/Map";
-<<<<<<< HEAD
-=======
+
+import Map from "@/components/Map";S
 import CRep from "@/components/CRepU";
->>>>>>> 28eabae6cc344fab4489c8f152ce162625e7022c
 import dynamic from "next/dynamic";
 const DynamicMap = dynamic(() => import("@/components/Map"), {
   ssr: false,

@@ -1,24 +1,22 @@
-import React from 'react'
+"use client"
+import CRep from "@/components/CRepU";
 import dynamic from "next/dynamic";
-const DynamicMap = dynamic(() => import("@/components/MapAdmin"), {
+import Circular from "@/components/Circular2";
+const DynamicMap = dynamic(() => import("@/components/Map"), {
   ssr: false,
 });
-
-function Mapa() {
+export default function  MapAdmin() {
   return (
-      <div className='container-mapa-admin'>
-        <div className='filtros2'>
-          <div className="fecha"></div>
-          <div className="alcaldia"></div>
-          <div className="estado"></div>
-        </div>
-        <div className='mapa'>
-        <DynamicMap className='mapita'/>
-        </div>
-      </div>
-      
-      
-    )
-}
 
-export default Mapa
+    <div className="container">
+      <div className="izquierda-mapa">
+      <Circular></Circular>
+      </div>
+
+
+        <DynamicMap />
+      
+    </div>
+
+  );
+}

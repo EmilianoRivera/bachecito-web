@@ -215,7 +215,7 @@
   }
   .navBar.admin {
     /* Estilos específicos para el navbar cuando isAdmin es true */
-    background-color: #bb0d0d93;
+    background-color: #bb0d0d00;
       position: fixed;
       /*Hay un problema en esta parte, pero todos los elementos con los que se 
       quiera interactuar como botones deben de tener un z-index: 100;

@@ -1,4 +1,4 @@
-//Aqui va a ir el back pipipipipipipipipipi
+
 "use client"
 import { useEffect, useState } from "react";
 import '../app/Cuenta/Administrador/Reportes/Reportes.css';
@@ -67,3 +67,5 @@ export default function ReportesAdmin() {
         </div>
     );
 }
+
+
