@@ -29,6 +29,7 @@ export default function Reportes() {
         <thead>
           <tr>
             <th style={{ padding: "25px" }}>Fecha</th>
+            <th style={{ padding: "25px" }}>Folio</th>
             <th style={{ padding: "25px" }}>Fotografía</th>
             <th style={{ padding: "25px" }}>Alcaldía</th>
             <th style={{ padding: "25px" }}>Dirección</th>
@@ -39,6 +40,7 @@ export default function Reportes() {
           {reportes.map((reporte, index) => (
             <tr key={index}>
               <td>{reporte.fechaReporte}</td>
+              <td>{reporte.folio}</td>
               <td style={{ maxWidth: '150px', maxHeight: '150px', overflow: 'hidden' }}>
                 <img src={reporte.imagenURL} style={{ maxWidth: '100%', maxHeight: '100%', display: 'block' }} alt="Fotografía"/>
               </td>
