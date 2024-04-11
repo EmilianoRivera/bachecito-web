@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import * as d3 from "d3";
-
 function PieChart({ data }) {
   const [chartData, setChartData] = useState([]);
 
@@ -14,14 +13,16 @@ function PieChart({ data }) {
   }, [data]);
 
   useEffect(() => {
-    // Crear la gráfica de pastel
+    // Crear la gráfica de anillo
     const width = 300;
     const height = 300;
     const radius = Math.min(width, height) / 2;
+    const innerRadius = radius * 0.5; // Definir el radio interior
 
+    // Definir el esquema de colores personalizado
     const color = d3.scaleOrdinal()
       .domain(chartData.map(d => d.label))
-      .range(d3.schemeCategory10);
+      .range(["#FF5136", "#FFC63D", "#A4DF77"]); // Naranja, Verde, Rojo
 
     const svg = d3.select("#pie-chart")
       .append("svg")
@@ -31,8 +32,8 @@ function PieChart({ data }) {
       .attr("transform", `translate(${width / 2}, ${height / 2})`);
 
     const arc = d3.arc()
-      .innerRadius(0)
-      .outerRadius(radius);
+      .innerRadius(innerRadius) // Usar el radio interior
+      .outerRadius(radius); // Usar el radio exterior
 
     const pie = d3.pie()
       .value(d => d.value);
@@ -50,11 +51,13 @@ function PieChart({ data }) {
     arcs.append("text")
       .attr("transform", d => `translate(${arc.centroid(d)})`)
       .attr("text-anchor", "middle")
-      .text(d => d.data.label);
+      .text(d => `${d.data.label}: ${d3.format(".1%")(d.data.value / d3.sum(chartData, d => d.value))}`);
   }, [chartData]);
 
   return <div id="pie-chart"></div>;
 }
+
+
 
 function CRep() {
   const [totalRep, setTotalRep] = useState(0);
