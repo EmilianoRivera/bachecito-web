@@ -12,7 +12,7 @@ function CRep() {
         const reportesEst = await fetch("/api/reportesEstado");
 
         if (!reportesTot.ok && !reportesEst.ok) {
-          throw new Error("Failed to fetch data");
+          throw new Error("Failed to fetch data");      
         }
 
         const data = await reportesTot.json();
@@ -21,7 +21,7 @@ function CRep() {
         setTotalRep(data);
         setRepEstado(data2);
       } catch (error) {
-        console.log("Error fetching data: ", error);
+        console.error("Error fetching data: ", error);
       }
     }
     fetchData();

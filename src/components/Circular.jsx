@@ -1,7 +1,8 @@
+"use client"
 import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 
-export default function Circular({ width, height, estado }) {
+export default function Circular({ width, height, estados }) {
   //AQUI ESTAN LOS ESTADOS Y EL HOOK DE USEREF, QUE HACE REFERENCIA AL ELEMENTO SVG QUE ESTA EN EL HTML
   const svgRef = useRef();
   const tooltipRef = useRef();
@@ -9,7 +10,6 @@ export default function Circular({ width, height, estado }) {
   const [totalRep, setTotalRep] = useState(0);
   const [selectedSegment, setSelectedSegment] = useState(null);
   const [alcEstRep, setAlcEstRep] = useState();
-
   //SE ENCARGA DE HACER LAS PETICIONES A LOS ENDPOINTS PARA TRAER LA INFORMACIÓN QUE SE VA A GRAFICAR, EN EL SVG ES DONDE SE PINTAN LAS GRAFICAS
   useEffect(() => {
     async function fetchData() {
@@ -32,9 +32,9 @@ export default function Circular({ width, height, estado }) {
         setRep(dataArray);
         setTotalRep(data2);
         setAlcEstRep(data3);
-        console.log(data3);
+      
       } catch (error) {
-        console.log("Error fetching data: ", error);
+        console.error("Error fetching data: ", error);
       }
     }
 
@@ -43,12 +43,12 @@ export default function Circular({ width, height, estado }) {
   //FUNCION QUE SE ENCARGA DE ACTUALIZAR LA GRAFICA CON BASE AL ESTADO
   function nuevaGraficaCircular(alcEstRep) {
 
-    
+    console.log("LLEGO")
   }
   //HOOK QUE SE ENCARGA DE CREAR LA GRAFICA CON BASE AL PORCETAJE QUE HAY DE REPORTES POR ALCALDIA, ESTA APARECE PRIMERO, SI HAY UN CAMBIA DE ESTADO YA APARECE LA GRAFICA DE LA FUNCION nuevaGraficaCircular
   useEffect(() => {
-    if (!rep || !rep.length) return;
-    else if (estado === "sin estado") {
+  console.log(estados)
+     if (estados === "sin estado") {
       const svg = d3.select(svgRef.current);
       const radius = Math.min(width, height) / 2;
       const color = d3.scaleOrdinal(d3.schemeCategory10);
@@ -103,14 +103,18 @@ export default function Circular({ width, height, estado }) {
 
       const tooltip = d3.select(tooltipRef.current);
       tooltip.style("visibility", "hidden");
-    }
+    
+     } else {
+      console.log("NUEVA GRAFICA")
+     }
+      
   }, [rep, height, width]);
 
   //ESTE USEEFFECT SE ENCARGA DE OCULTAR LOS ELEMENTOS, Y REVISAR QUE SI CAMBIA ALGO EN EL FILTRO DEL ESTADO, SE EJECUTE LA FUNCION QUE CAMBIA LA GRAFICA
   useEffect(() => {
     if (!selectedSegment) {
       d3.select(tooltipRef.current).style("visibility", "hidden");
-    } else if (estado === "sin estado") {
+    } else  {
       d3.select(tooltipRef.current).style("visibility", "visible");
       d3.select(tooltipRef.current)
         .select(".tooltip-label")
@@ -124,10 +128,7 @@ export default function Circular({ width, height, estado }) {
       d3.select(tooltipRef.current)
         .select(".tooltip-value")
         .text(`${percentage}%`);
-    } else {
-      console.log("NUEVA DATAA", alcEstRep);
-      nuevaGraficaCircular(alcEstRep);
-    }
+    } 
   }, [selectedSegment]);
 
   return (
