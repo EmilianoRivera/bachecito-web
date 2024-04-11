@@ -1,10 +1,13 @@
-
-"use client";
-import React, { useState, useEffect } from 'react';
+"use client"
+import React, { useState, useEffect, useContext } from 'react';
 import Link from 'next/link';
 import './Navbar.css';
+import AuthContext from "../../context/AuthContext";
+import { useAuthUser } from "../../hooks/UseAuthUser";
 
 function Navbar() {
+  useAuthUser();
+  const { isLogged, isAdmin } = useContext(AuthContext);
   const [menuActive, setMenuActive] = useState(false);
   const [showMenuIcon, setShowMenuIcon] = useState(false);
 
@@ -24,6 +27,7 @@ function Navbar() {
   };
 
   return (
+    
     <div className={`navBar ${menuActive ? 'showMenu' : ''}`}>
       <Link href="/" className="bachecito26">
         <img
@@ -41,20 +45,65 @@ function Navbar() {
           <span></span>
         </div>
       </div>
-
       <div className="menuItems">
-        <Link href="/Sobre_Nosotros" className="opc">
-          Sobre Nosotros
-        </Link>
-        <Link href="/Reportes" className="opc">
-          Reportes
-        </Link>
-        <Link href="/" className="opc">
-          Inicio
-        </Link>
-        <Link href="/Cuenta" className="opc btn--white prueba">
-          <span>Cuenta →</span>
-        </Link>
+        {isLogged && (
+          <>
+            {isAdmin ? (
+              <>
+              
+                <Link href="/Cuenta/Administrador/Dashboard" className="opc">
+                  Dashboard
+                </Link>
+                <Link href="/Cuenta/Administrador/Soporte" className="opc">
+                  Soporte
+                </Link>
+                <Link href="/Cuenta/Administrador/Mapa" className="opc">
+                  Mapa
+                </Link>
+                <Link href="/Cuenta/Administrador/Reportes" className="opc">
+                  Reportes
+                </Link>
+                <Link href="/Cuenta/Administrador/Perfil" className="opc">
+                  Perfil
+                </Link>
+                <Link href="/Cuenta/Administrador/NuevoAdmin" className="opc">
+                  Nuevo Admin
+                </Link>
+              </>
+            ) : (
+              <>
+                <Link href="/Cuenta/Usuario/Perfil" className="opc btn--white prueba">
+                  <span>Perfil →</span>
+                </Link>
+                <Link href="/" className="opc">
+                  Baches Guardados en el web
+                </Link>
+                <Link href="/Cuenta/Usuario/Estadisticas" className="opc">
+                  Estadísticas
+                </Link>
+                <Link href="/Cuenta/Usuario/Reportes" className="opc">
+                  Reportes
+                </Link>
+              </>
+            )}
+          </>
+        )}
+        {!isLogged && (
+          <>
+           <Link href="/Sobre_Nosotros" className="opc">
+             Sobre Nosotros
+           </Link>
+           <Link href="/Reportes" className="opc">
+             Reportes
+           </Link>
+           <Link href="/" className="opc">
+             Inicio
+           </Link>
+           <Link href="/Cuenta" className="opc btn--white prueba">
+             <span>Cuenta →</span>
+           </Link>
+         </>
+        )}
       </div>
     </div>
   );

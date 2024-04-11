@@ -90,11 +90,12 @@ body {
         }
 
         .reportes-boxes{
+            column-count: 2;
             flex: 1;
             overflow-y: auto; /* Agrega scroll vertical si el contenido es más largo que el área visible */
-            width: 95%;
-            column-gap: 5%; /* Espacio entre las columnas */
-            column-count: 2;
+            width: 45%;
+            display: flex;
+            flex-wrap: wrap;
         }
         
 
@@ -107,6 +108,7 @@ body {
             background-color: #F1F1F1;
             display: flex;
             box-sizing: border-box;
+            margin-right: 5%;
         }
         
         .containerReportes p{
@@ -151,6 +153,14 @@ body {
             background-color: #ffffff;
             border-radius: 5vh;
             margin-bottom: 25px;
+        }
+
+        .fotografía img{
+            border-radius: 3vh;
+        }
+
+        #imagenURL{
+            border-radius: 5vh;
         }
 
         .column-left-inferior{
@@ -227,6 +237,8 @@ body {
             border-radius: 5vh;
             height: 40px;
             background-color: #ffffff;
+            color: #000;
+            padding: 10px;
         }
 
         .guardar{
@@ -253,6 +265,8 @@ body {
             background-color: #ffffff;
             border-radius: 3vh;
             margin-top: -25px;
+            color: #000;
+            padding: 3px;
         }
 
         .descripcion{
@@ -265,6 +279,8 @@ body {
             margin-top: -25px;
             background-color: #ffffff;
             border-radius: 3vh;
+            color: #000;
+            padding: 3px;
         }
 
         @media (max-width: 800px) { /* Por ejemplo, cuando la pantalla es más estrecha que 800px */
