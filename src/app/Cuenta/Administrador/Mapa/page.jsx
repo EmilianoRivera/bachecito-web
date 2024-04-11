@@ -10,15 +10,7 @@ export default function  MapAdmin() {
 
     <div className="container">
       <div className="izquierda-mapa">
-
-
-
-
-        <div className="estadisticas">
-        <div className="pie-chart">
-          <Circular/>
-        </div>
-        </div>
+      <Circular></Circular>
       </div>
 
 
