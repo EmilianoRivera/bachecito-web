@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState} from "react";
 import { auth, db } from "../../../firebase";
 import { useRouter } from "next/navigation";
 import {
@@ -8,13 +8,30 @@ import {
   signInWithEmailAndPassword,
   signOut,
 } from "firebase/auth";
-import { updateDoc,collection, query, where, getDocs, addDoc} from "firebase/firestore";
+import {
+  updateDoc,
+  collection,
+  query,
+  where,
+  getDocs,
+  addDoc,
+} from "firebase/firestore";
 import "./registro.css";
+
+
 function Registro() {
-  const { push, pathname } = useRouter();
+  //elementos del router
+  const { push } = useRouter();
+  const router = useRouter();
+  //elementos de validaciones
   const [active, setActive] = useState(false);
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
   const [canSubmit, setCanSubmit] = useState(false);
+
+  const handleAdminLinkClick = (event) => {
+    event.preventDefault();
+    router.push("/Cuenta/Administrador");
+  };
 
   const handleButtonClick = () => {
     setActive(!active);
@@ -240,6 +257,7 @@ function Registro() {
         correo: email,
         estadoCuenta: true,
       };
+
       addDoc(usuariosCollection, nuevoUsuario);
       alert("SE GUARDO SI OLA");
       push("/Cuenta/Usuario/Perfil");
@@ -251,6 +269,7 @@ function Registro() {
 
   const handleSignIn = async (event) => {
     event.preventDefault();
+
     try {
       const userCredential = await signInWithEmailAndPassword(
         auth,
@@ -258,32 +277,36 @@ function Registro() {
         password
       );
       const user = userCredential.user;
-  
       if (user && !user.emailVerified) {
         alert("Por favor, verifica tu correo electrónico para iniciar sesión.");
         signOut(auth);
       } else {
-        if (user && !user.estadoCuenta) {
-          const confirm = window.confirm("Tu cuenta ha sido desactivada. ¿Deseas restablecerla?");
+        const reportesRef = collection(db, "usuarios");
+        const q = query(reportesRef, where("uid", "==", user.uid));
+        const querySnapshot = await getDocs(q);
+
+        let estadoCuenta;
+
+        querySnapshot.forEach((doc) => {
+          const data = doc.data();
+          estadoCuenta = data.estadoCuenta;
+        });
+        if (estadoCuenta === false) {
+          const confirm = window.confirm(
+            "Tu cuenta ha sido desactivada. ¿Deseas restablecerla?"
+          );
           if (confirm) {
-            const reportesRef = collection(db, 'usuarios');
-            const q = query(reportesRef, where('uid', '==', user.uid));
-            const querySnapshot = await getDocs(q);
-  
             querySnapshot.forEach(async (doc) => {
               await updateDoc(doc.ref, {
-                estadoCuenta: true
+                estadoCuenta: true,
               });
             });
-  
             alert("Cuenta restablecida correctamente");
             push("/Cuenta/Usuario/Perfil");
             console.log("Usuario inició sesión con éxito:", user);
           } else {
-            // Si el usuario hace clic en "No", no se inicia sesión
             signOut(auth);
             alert("Inicio de sesión cancelado");
-
           }
         } else {
           alert("Inicio de sesión exitoso");
@@ -295,8 +318,6 @@ function Registro() {
       setError(error.message);
     }
   };
-  
-  
 
   return (
     <div className="body">
@@ -433,6 +454,9 @@ function Registro() {
             <a id="olvi-contra" href="#">
               ¿Olvidaste tu contraseña? 😰
             </a>
+            <a id="admin-ini" href="#" onClick={handleAdminLinkClick}>
+              Administrador 😰
+            </a>
             <button id="iniciarSesion-btn">Iniciar Sesión</button>
           </form>
         </div>
@@ -450,8 +474,9 @@ function Registro() {
               </button>
             </div>
             <div className="toggle-panel toggle-right">
-              <h1 className="title-2">¿No tienes una cuenta? 😠</h1>
+              <h1 className="title-2">¿No tienes una cuenta? 😨</h1>
               <p className="p-advertencia">¡No esperes más y regístrate!</p>
+
               <button
                 className="cuentita"
                 id="register"
@@ -478,4 +503,5 @@ function Registro() {
 }
 
 export default Registro;
-/*pipii no se hacer comits*/
+/* pipii no se hacer comits/ */
+

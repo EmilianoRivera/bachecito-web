@@ -1,0 +1,422 @@
+.container-perfil {
+  display: flex;
+  height: 88vh;
+  margin-top: 8.3vh;
+  font-family: 'Poppins', sans-serif;
+}
+
+
+.container-perfil h2{
+  font-size: 1.4rem;
+  color: #9D9D9D;
+  font-weight: 400;
+}
+
+
+.container-perfil h3{
+  font-size: 1.3rem;
+  color: #FF7A3E;
+  margin-top: 0px;
+}
+
+
+.line-vertical{
+width: 3px;
+background-color: #f1f1f1;
+  margin-top: 2vh;
+  height: 86vh;
+  margin-right: 1.5%;
+
+}
+
+
+#leftSide {
+  width: 30vw; /* Ancho de la parte izquierda */
+  min-width: 300px; /* Ancho de la parte izquierda */
+  overflow: hidden;
+  margin-top: 1%;
+  margin-left: 3%;
+}
+
+
+.right-side {
+  flex: 1;
+  overflow-y: auto; /* Agrega scroll vertical si el contenido es más largo que el área visible */
+  width: 95%;
+  overflow-x: hidden;
+  column-gap: 5%; /* Espacio entre las columnas */
+  column-count: 2;
+  margin-top: 3vh;
+  padding: 3vw;
+  position: relative;
+}
+
+
+.encabezado-historial{
+  position: fixed;
+  width: 100%;
+  margin-top: -11vh;
+  z-index: 50;
+  background-color: #ffffff;
+}
+
+
+
+
+.column-left{
+  width: 45%;
+  height: 100%;
+  background: #F1F1F1;
+}
+
+
+.fotografía{
+  width: 100%;
+  height: 52vh;
+  background-color: #ffffff;
+  border-radius: 5vh;
+  margin-bottom: 25px;
+}
+
+
+.column-left-inferior{
+  height: 30px;
+  width: 100%;
+  background-color: #F1F1F1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+
+.fecha{
+  width: 65%;
+  border-radius: 5vh;
+  height: 38px;
+  background-color: #ffffff;
+  justify-content: center;
+  text-align: center;
+  display: flex;
+  color: #1E1E1E;
+  font-weight:400;
+  font-size: large;
+  padding-top: 9px;
+}
+
+
+.contador{
+  margin-left: 5%;
+  margin-top: 7%;
+  width: 30%;
+  display:inline-block;
+  align-items: center;
+  justify-content: center;
+  background-color: #F1F1F1;
+  color:#949494;
+  font-weight:900;
+}
+
+
+.icon{
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  display: flex;
+}
+
+
+.logo{
+  width: 30px;
+  margin-bottom: 7px;
+}
+
+
+.number{
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  display: flex;
+  margin-top: -7px;
+}
+
+
+.column-right{
+  width: 50%;
+  margin-left: 5%;
+  padding: 0;
+  height: auto;
+}
+
+
+.column-right-superior{
+  background-color: #F1F1F1;
+  width: 100%;
+  display: flex;
+  height: 40px;
+}
+
+
+.estado{
+  width: 75%;
+  border-radius: 5vh;
+  height: 40px;
+  background-color: #ffffff;
+}
+
+
+.guardar{
+  margin-left: 10%;
+  justify-content: center;
+  align-items: center;
+}
+.icon-star{
+  height: 90%;
+  align-self: center;
+  justify-self: end;
+}
+
+
+.ubicacion{
+  width: 100%;
+  height: 150px;
+  display: block;
+  margin-bottom: 20px;
+  margin-top: 20px;
+}
+
+
+.box-ubi{
+  height: 80%;
+  background-color: #ffffff;
+  border-radius: 3vh;
+  margin-top: -15px;
+}
+
+
+.descripcion{
+  width: 100%;
+  height: 150px;
+}
+
+
+.box-des{
+  height: 80%;
+  margin-top: -15px;
+  background-color: #ffffff;
+  border-radius: 3vh;
+}
+
+
+.box2{
+break-inside: avoid; /* Evita que los divs se rompan en medio de las columnas */
+width: 100%;
+padding: 6%;
+border-radius: 6vh;
+margin-bottom: 10%;
+background-color: #F1F1F1;
+display: flex;
+box-sizing: border-box;
+}
+
+
+
+
+
+
+.profile-card {
+width: 25.6vw;
+min-width: 300px;
+background-color: #F1F1F1;
+border-radius: 30px;
+overflow: hidden;
+text-align: center;
+font-family: Arial, sans-serif;
+}
+
+
+.profile-image img {
+width: 15vw;
+height: 15vw;
+min-width: 150px;
+min-height: 150px;
+border-radius: 50%;
+object-fit: cover;
+margin-top: 20px;
+}
+
+
+.profile-details {
+padding-left: 10%;
+padding-right: 10%;
+padding-top: 5%;
+padding-bottom: 10%;
+}
+
+
+.name-fields {
+display: flex;
+justify-content: center;
+margin-bottom: 10px;
+}
+
+
+.name-fields .field {
+background-color: #ffffff;
+border-radius: 10px;
+padding: 10px;
+font-size: 14px;
+color: #555;
+margin: 0 5px;
+width: 50%;
+}
+
+
+.nombre,
+.fecha-nac,
+.email {
+background-color: #ffffff;
+padding: 10px;
+margin: 8px 0;
+border-radius: 10px;
+font-size: 14px;
+color: #555;
+}
+
+
+.buttons {
+margin-top: 20px;
+}
+
+
+.cerrar-sesion-btn,
+.desactivar-cuenta-btn {
+padding: 8px 16px;
+border-radius: 50px;
+font-weight: bold;
+cursor: pointer;
+}
+
+
+.cerrar-sesion-btn {
+background-color: #FF9F49;
+color: #fff;
+border: none;
+margin-right: 2%;
+width: 43%;
+transition: .5s;
+}
+
+
+.cerrar-sesion-btn:hover{
+color: #ffff;
+background-color: #FF4D35;
+transition: .5s;
+}
+
+
+.desactivar-cuenta-btn {
+color: #FF9F49;
+width: 55%;
+background-color: #fff;
+transition: .5s;
+border: 2px solid #FF9F49;
+}
+
+
+.desactivar-cuenta-btn:hover {
+color: #fff;
+width: 55%;
+background-color: #FF4D35;
+transition: .5s;
+border: 2px solid #FF4D35;
+}
+
+
+#toggleButton{
+position: fixed;
+bottom: 45vh; /* Puedes ajustar esta posición según tu diseño */
+left: 20px; /* Puedes ajustar esta posición según tu diseño */
+z-index: 999; /* Ajusta el valor de z-index si es necesario */
+background-color: #ffffff00;
+border: none;
+}
+
+
+#toggleButton img{
+width: 25px;
+}
+
+
+/* Media query para pantallas más pequeñas */
+@media (max-width: 800px) { /* Por ejemplo, cuando la pantalla es más estrecha que 800px */
+  .right-side {
+    column-count: 1; /* Cambia a una sola columna */
+  }
+  .encabezado-historial{
+    margin-top: -13vh;
+    background-color: #fff;
+    z-index: 50;
+  }
+  .right-side {
+  height: auto;
+  margin-top: 10vh;
+    padding: 10%;
+    margin-top: 5vh;
+    overflow-x: hidden;
+  }
+
+
+  .container-perfil h2{
+    font-size: 1.2rem;
+    color: #9D9D9D;
+    font-weight: 400;
+  }
+
+
+  .box2{
+    position: relative;
+min-width: 300px;
+padding: 30px;
+  }
+
+
+  .container-perfil h3{
+    font-size: 1.1rem;
+    color: #FF7A3E;
+    margin-top: -10px;
+}
+}
+
+
+@media (max-width: 1000px) {
+  .right-side {
+    margin-top: 5vh;
+    column-count: 1; /* Cambia a una sola columna */
+  }
+}
+
+
+::-webkit-scrollbar {
+  width: 5px; /* Ancho de la barra de desplazamiento */
+}
+
+
+/* Estilo para el riel de la barra de desplazamiento */
+::-webkit-scrollbar-track {
+  background-color: #f1f1f1; /* Color del fondo del riel */
+}
+
+
+/* Estilo para el pulgar (scrollbar) */
+::-webkit-scrollbar-thumb {
+  background-color: #949494; /* Color del pulgar */
+  border-radius: 6px; /* Borde redondeado del pulgar */
+  transition: .5s;
+}
+
+
+/* Cambia el color del pulgar cuando el mouse está sobre él */
+::-webkit-scrollbar-thumb:hover {
+  transition: 1s;
+  background-color: #FF9F49;
+}

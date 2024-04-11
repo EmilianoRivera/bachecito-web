@@ -3,12 +3,11 @@ import { createContext, useState } from "react";
 
 const Context = createContext({});
 
-// CONTEXT TO KNOW IF THE USER IS LOGGED IN
-
 export function ContextAuthProvider({ children }) {
   const [isLogged, setisLogged] = useState(false);
+  const [isAdmin, setIsAdmin] = useState(false); 
   return (
-    <Context.Provider value={{ isLogged, setisLogged }}>
+    <Context.Provider value={{ isLogged, setisLogged, isAdmin, setIsAdmin }}>
       {children}
     </Context.Provider>
   );
