@@ -89,6 +89,7 @@ body {
         z-index: 10;
         }
 
+
         .reportes-boxes{
             flex: 1;
             overflow-y: auto; /* Agrega scroll vertical si el contenido es más largo que el área visible */
@@ -99,7 +100,6 @@ body {
         
 
         .box2{
-            break-inside: avoid; /* Evita que los divs se rompan en medio de las columnas */
             width: 100%;
             padding: 6%;
             border-radius: 6vh;
@@ -151,6 +151,14 @@ body {
             background-color: #ffffff;
             border-radius: 5vh;
             margin-bottom: 25px;
+        }
+
+        .fotografía img{
+            border-radius: 3vh;
+        }
+
+        #imagenURL{
+            border-radius: 5vh;
         }
 
         .column-left-inferior{
@@ -227,6 +235,10 @@ body {
             border-radius: 5vh;
             height: 40px;
             background-color: #ffffff;
+            color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .guardar{
@@ -235,7 +247,7 @@ body {
             align-items: center;
         }
         .icon-star{
-            height: 90%;
+            height: 2.5rem;
             align-self: center;
             justify-self: end;
         }
@@ -253,6 +265,8 @@ body {
             background-color: #ffffff;
             border-radius: 3vh;
             margin-top: -25px;
+            color: #000;
+            padding: 3px;
         }
 
         .descripcion{
@@ -265,6 +279,8 @@ body {
             margin-top: -25px;
             background-color: #ffffff;
             border-radius: 3vh;
+            color: #000;
+            padding: 3px;
         }
 
         @media (max-width: 800px) { /* Por ejemplo, cuando la pantalla es más estrecha que 800px */
