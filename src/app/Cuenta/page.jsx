@@ -17,6 +17,8 @@ import {
   addDoc,
 } from "firebase/firestore";
 import "./registro.css";
+
+
 function Registro() {
   //elementos del router
   const { push } = useRouter();
@@ -502,3 +504,4 @@ function Registro() {
 
 export default Registro;
 /* pipii no se hacer comits/ */
+
