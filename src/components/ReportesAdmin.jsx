@@ -39,6 +39,7 @@ export default function ReportesAdmin() {
             <table>
                 <thead>
                     <tr className='sticky-top'>
+                        <th>FOLIO</th>
                         <th>FECHA</th>
                         <th>FOTOGRAFÍA</th>
                         <th>ESTADO</th>
@@ -50,6 +51,7 @@ export default function ReportesAdmin() {
                 <tbody>
                     {rep.map((report, index) => (
                         <tr className='Reportes' key={index} onMouseEnter={() => showDeleteHeader()} onMouseLeave={() => hideDeleteHeader()}>
+                            <td className='folio'>{report.folio}</td>
                             <td className='fecha'>{report.fechaReporte}</td>
                             <td className='fotografia' style={{ width: '120px', backgroundImage: `url(${report.imagenURL})`, backgroundSize: 'cover', backgroundPosition: 'center' }}></td>
                             <td className='estado'>{report.estado}</td>
