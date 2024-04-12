@@ -27,8 +27,7 @@ export default function Reportes() {
     fetchData();
   }, []);
   return (
-    <div className="main-containerReportes" id="tabla-reportes" style={{ marginTop: "100px" }}>
-      
+    <div className="main-containerReportes" style={{ marginTop: "100px" }}>
             <div className='filtros2'>
                 <div className="fecha"></div>
                 <div className="alcaldia"></div>
