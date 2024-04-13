@@ -10,6 +10,7 @@ import "react-datepicker/dist/react-datepicker.css";
 
 function Dashboard() {
   const alcaldiasCDMX = [
+    "Todas",
     "Azcapotzalco",
     "Coyoacán",
     "Cuajimalpa de Morelos",

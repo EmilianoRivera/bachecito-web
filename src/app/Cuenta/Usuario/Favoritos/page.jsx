@@ -2,9 +2,9 @@
 "use client";
 import React from 'react';
 import { useRef, useEffect, useState } from 'react';
-import "./favoritos.css";
+import "../Favoritos/favoritos.css";
 
-function HomePage() {
+function Favoritos() {
 
   const [showTitles, setShowTitles] = useState(true);
 
@@ -56,331 +56,169 @@ function HomePage() {
 
 
       <div className="scrollable-section">
-
         <div className="container-reportes">
-
-        <div className="column">
-          <div className="reportes-boxes">
-            <div className="box2" id="box2">
-              <div className="column-left">
-                <div className="fotografía">
-                  <img src="" alt="" />
-                </div>
-                <div className="column-left-inferior">
-                  <div className="fecha">
+          <div className="column">
+            <div className="reportes-boxes">
+              <div className="box2" id="box2">
+                <div className="column-left">
+                  <div className="fotografía">
+                    <img src="" alt="" />
                   </div>
+                  <div className="column-left-inferior">
+                    <div className="fecha">
+                    </div>
 
-                  <div className="contador">
-                    <div className="icon">
+                    <div className="contador">
+                      <div className="icon">
+                        <img
+                          src="https://i.postimg.cc/s2ZYz740/exclamacion-de-diamante.png"
+                          className="logo" 
+                        />
+                      </div>
+                      <div className="number">
+                        0
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="column-right">
+                  <div className="column-right-superior">
+                    <div className="estado" id='estado-sin-at'>
+                    </div>
+
+                    <div className="guardar">
                       <img
-                        src="https://i.postimg.cc/s2ZYz740/exclamacion-de-diamante.png"
-                        className="logo" 
+                        src="https://i.postimg.cc/W335wqws/estrella-2.png"
+                        className="icon-star" 
                       />
                     </div>
-                    <div className="number">
-                      0
+                  </div>
+
+                  <div className="ubicacion">
+                    <h3>Ubicación</h3>
+                    <div className="box-ubi">
                     </div>
                   </div>
-                </div>
-              </div>
 
-              <div className="column-right">
-                <div className="column-right-superior">
-                  <div className="estado" id='estado-sin-at'>
-                  </div>
-
-                  <div className="guardar">
-                    <img
-                      src="https://i.postimg.cc/W335wqws/estrella-2.png"
-                      className="icon-star" 
-                    />
-                  </div>
-                </div>
-
-                <div className="ubicacion">
-                  <h3>Ubicación</h3>
-                  <div className="box-ubi">
-                  </div>
-                </div>
-
-                <div className="descripcion">
-                  <h3>Descripción</h3>
-                  <div className="box-des">
+                  <div className="descripcion">
+                    <h3>Descripción</h3>
+                    <div className="box-des">
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-
-          <div className="reportes-boxes">
-            <div className="box2" id="box2">
-              <div className="column-left">
-                <div className="fotografía">
-                  <img src="" alt="" />
-                </div>
-                <div className="column-left-inferior">
-                  <div className="fecha">
+          <div className="column">
+            <div className="reportes-boxes">
+              <div className="box2" id="box2">
+                <div className="column-left">
+                  <div className="fotografía">
+                    <img src="" alt="" />
                   </div>
+                  <div className="column-left-inferior">
+                    <div className="fecha">
+                    </div>
 
-                  <div className="contador">
-                    <div className="icon">
+                    <div className="contador">
+                      <div className="icon">
+                        <img
+                          src="https://i.postimg.cc/s2ZYz740/exclamacion-de-diamante.png"
+                          className="logo" 
+                        />
+                      </div>
+                      <div className="number">
+                        0
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="column-right">
+                  <div className="column-right-superior">
+                    <div className="estado" id='estado-en-at'>
+                    </div>
+
+                    <div className="guardar">
                       <img
-                        src="https://i.postimg.cc/s2ZYz740/exclamacion-de-diamante.png"
-                        className="logo" 
+                        src="https://i.postimg.cc/W335wqws/estrella-2.png"
+                        className="icon-star" 
                       />
                     </div>
-                    <div className="number">
-                      0
+                  </div>
+
+                  <div className="ubicacion">
+                    <h3>Ubicación</h3>
+                    <div className="box-ubi">
                     </div>
                   </div>
-                </div>
-              </div>
 
-              <div className="column-right">
-                <div className="column-right-superior">
-                  <div className="estado" id='estado-sin-at'>
-                  </div>
-
-                  <div className="guardar">
-                    <img
-                      src="https://i.postimg.cc/W335wqws/estrella-2.png"
-                      className="icon-star" 
-                    />
-                  </div>
-                </div>
-
-                <div className="ubicacion">
-                  <h3>Ubicación</h3>
-                  <div className="box-ubi">
-                  </div>
-                </div>
-
-                <div className="descripcion">
-                  <h3>Descripción</h3>
-                  <div className="box-des">
+                  <div className="descripcion">
+                    <h3>Descripción</h3>
+                    <div className="box-des">
+                    </div>
                   </div>
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="reportes-boxes">
-            <div className="box2" id="box2">
-              <div className="column-left">
-                <div className="fotografía">
-                  <img src="" alt="" />
-                </div>
-                <div className="column-left-inferior">
-                  <div className="fecha">
+          <div className="column">
+            <div className="reportes-boxes">
+              <div className="box2" id="box2">
+                <div className="column-left">
+                  <div className="fotografía">
+                    <img src="" alt="" />
                   </div>
+                  <div className="column-left-inferior">
+                    <div className="fecha">
+                    </div>
 
-                  <div className="contador">
-                    <div className="icon">
+                    <div className="contador">
+                      <div className="icon">
+                        <img
+                          src="https://i.postimg.cc/s2ZYz740/exclamacion-de-diamante.png"
+                          className="logo" 
+                        />
+                      </div>
+                      <div className="number">
+                        0
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div className="column-right">
+                  <div className="column-right-superior">
+                    <div className="estado" id='estado-at'>
+                    </div>
+
+                    <div className="guardar">
                       <img
-                        src="https://i.postimg.cc/s2ZYz740/exclamacion-de-diamante.png"
-                        className="logo" 
+                        src="https://i.postimg.cc/W335wqws/estrella-2.png"
+                        className="icon-star" 
                       />
                     </div>
-                    <div className="number">
-                      0
+                  </div>
+
+                  <div className="ubicacion">
+                    <h3>Ubicación</h3>
+                    <div className="box-ubi">
                     </div>
                   </div>
-                </div>
-              </div>
 
-              <div className="column-right">
-                <div className="column-right-superior">
-                  <div className="estado" id='estado-sin-at'>
-                  </div>
-
-                  <div className="guardar">
-                    <img
-                      src="https://i.postimg.cc/W335wqws/estrella-2.png"
-                      className="icon-star" 
-                    />
-                  </div>
-                </div>
-
-                <div className="ubicacion">
-                  <h3>Ubicación</h3>
-                  <div className="box-ubi">
-                  </div>
-                </div>
-
-                <div className="descripcion">
-                  <h3>Descripción</h3>
-                  <div className="box-des">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-
-        <div className="column">
-          <div className="reportes-boxes">
-            <div className="box2" id="box2">
-              <div className="column-left">
-                <div className="fotografía">
-                  <img src="" alt="" />
-                </div>
-                <div className="column-left-inferior">
-                  <div className="fecha">
-                  </div>
-
-                  <div className="contador">
-                    <div className="icon">
-                      <img
-                        src="https://i.postimg.cc/s2ZYz740/exclamacion-de-diamante.png"
-                        className="logo" 
-                      />
+                  <div className="descripcion">
+                    <h3>Descripción</h3>
+                    <div className="box-des">
                     </div>
-                    <div className="number">
-                      0
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="column-right">
-                <div className="column-right-superior">
-                  <div className="estado" id='estado-en-at'>
-                  </div>
-
-                  <div className="guardar">
-                    <img
-                      src="https://i.postimg.cc/W335wqws/estrella-2.png"
-                      className="icon-star" 
-                    />
-                  </div>
-                </div>
-
-                <div className="ubicacion">
-                  <h3>Ubicación</h3>
-                  <div className="box-ubi">
-                  </div>
-                </div>
-
-                <div className="descripcion">
-                  <h3>Descripción</h3>
-                  <div className="box-des">
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
-
-
-        <div className="column">
-          <div className="reportes-boxes">
-            <div className="box2" id="box2">
-              <div className="column-left">
-                <div className="fotografía">
-                  <img src="" alt="" />
-                </div>
-                <div className="column-left-inferior">
-                  <div className="fecha">
-                  </div>
-
-                  <div className="contador">
-                    <div className="icon">
-                      <img
-                        src="https://i.postimg.cc/s2ZYz740/exclamacion-de-diamante.png"
-                        className="logo" 
-                      />
-                    </div>
-                    <div className="number">
-                      0
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="column-right">
-                <div className="column-right-superior">
-                  <div className="estado" id='estado-at'>
-                  </div>
-
-                  <div className="guardar">
-                    <img
-                      src="https://i.postimg.cc/W335wqws/estrella-2.png"
-                      className="icon-star" 
-                    />
-                  </div>
-                </div>
-
-                <div className="ubicacion">
-                  <h3>Ubicación</h3>
-                  <div className="box-ubi">
-                  </div>
-                </div>
-
-                <div className="descripcion">
-                  <h3>Descripción</h3>
-                  <div className="box-des">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="reportes-boxes">
-            <div className="box2" id="box2">
-              <div className="column-left">
-                <div className="fotografía">
-                  <img src="" alt="" />
-                </div>
-                <div className="column-left-inferior">
-                  <div className="fecha">
-                  </div>
-
-                  <div className="contador">
-                    <div className="icon">
-                      <img
-                        src="https://i.postimg.cc/s2ZYz740/exclamacion-de-diamante.png"
-                        className="logo" 
-                      />
-                    </div>
-                    <div className="number">
-                      0
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="column-right">
-                <div className="column-right-superior">
-                  <div className="estado" id='estado-at'>
-                  </div>
-
-                  <div className="guardar">
-                    <img
-                      src="https://i.postimg.cc/W335wqws/estrella-2.png"
-                      className="icon-star" 
-                    />
-                  </div>
-                </div>
-
-                <div className="ubicacion">
-                  <h3>Ubicación</h3>
-                  <div className="box-ubi">
-                  </div>
-                </div>
-
-                <div className="descripcion">
-                  <h3>Descripción</h3>
-                  <div className="box-des">
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
     </div>
       
 
@@ -388,6 +226,6 @@ function HomePage() {
   );
 }
 
-export default HomePage;
+export default Favoritos;
 
 
