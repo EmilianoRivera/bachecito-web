@@ -19,6 +19,7 @@ function NuevoAdmin() {
             sendEmailVerification(admin)
             alert("Se envió correo")
             const uid = admin.uid
+            
             const usuariosCollection = collection(db, "usuarios")
             const nuevoUsuario = {
                 uid: uid, 
@@ -28,7 +29,7 @@ function NuevoAdmin() {
                 fechaNacimiento: fechaNacimiento,
                 correo: correo,
                 estadoCuenta: true,
-                rol: "admin"
+                rol: "admin",
             }
             addDoc(usuariosCollection, nuevoUsuario)
             alert("Se guardó el usuario")

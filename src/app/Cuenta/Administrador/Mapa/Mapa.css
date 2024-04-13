@@ -1,0 +1,28 @@
+.container-mapa-admin{
+ margin-left: 1rem;
+ width: 90vw;
+ margin-top: 10vh;
+ height: 87vh;
+ display: block;
+}
+
+.filtros2{
+ width: 70%;
+ height: 8vh;
+ background-color: #F1F1F1;
+ margin-bottom: 2vh;
+ border-radius: 1.5rem;
+ align-items: center;
+ display: flex;
+ position: relative;
+ z-index: 1000;
+}
+
+.filtros2 img{
+    width: 1.7rem;
+}
+
+.mapita{
+    position: relative;
+    z-index: 10;
+}

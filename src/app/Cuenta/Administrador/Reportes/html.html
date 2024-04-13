@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tabla con Columna Oculta</title>
+<style>
+    table {
+        border-collapse: collapse;
+        width: 100%;
+    }
+
+    th, td {
+        border: 1px solid black;
+        padding: 8px;
+        text-align: left;
+    }
+
+    th {
+        background-color: #f2f2f2;
+    }
+
+    .hidden-column {
+        display: none;
+    }
+</style>
+</head>
+<body>
+
+<table id="miTabla">
+    <tr>
+        <th>Columna 1</th>
+        <th>Columna 2</th>
+        <th>Columna 3</th>
+        <th>Columna 4</th>
+        <th class="hidden-column">Columna Oculta</th>
+    </tr>
+    <tr onmouseover="showColumn(3)" onmouseout="hideColumn(3)">
+        <td>Dato 1</td>
+        <td>Dato 2</td>
+        <td>Dato 3</td>
+        <td>Dato 4</td>
+        <td class="hidden-column">Dato Oculto 1</td>
+    </tr>
+    
+    <!-- Añade más filas según sea necesario -->
+</table>
+
+<script>
+function showColumn(columnIndex) {
+    var table = document.getElementById('miTabla');
+    var rows = table.rows;
+    for (var i = 0; i < rows.length; i++) {
+        rows[i].cells[columnIndex].style.display = '';
+    }
+}
+
+function hideColumn(columnIndex) {
+    var table = document.getElementById('miTabla');
+    var rows = table.rows;
+    for (var i = 0; i < rows.length; i++) {
+        rows[i].cells[columnIndex].style.display = 'none';
+    }
+}
+</script>
+
+</body>
+</html>
