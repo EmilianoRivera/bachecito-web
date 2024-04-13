@@ -9,6 +9,7 @@ import "leaflet/dist/images/marker-icon-2x.png";
 import "leaflet/dist/images/marker-shadow.png";
 import { useEffect, useState } from "react";
 
+
 const polygon = [
   [19.592749, -99.12369],
   [19.588528, -99.126953],
@@ -774,6 +775,7 @@ const MapAdmin = () => {
 
 
         <Polygon pathOptions={polygonOptions} positions={polygon} />
+        
       </MapContainer>
     </div>
   );

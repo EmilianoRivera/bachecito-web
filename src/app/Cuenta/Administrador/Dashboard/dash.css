@@ -1,20 +1,21 @@
 .container-general {
-    margin-top: 100px; /* Bajar 100px para dejar espacio para el navbar */
-    padding: 20px;
-    background-color: #f5f5f5;
-    border-radius: 8px;
+    margin-top: 12vh; /* Bajar 100px para dejar espacio para el navbar */
+    background-color: #ebc1c1;
+    border-radius: 1.5rem;
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
     position: relative;
     z-index: 100;
-    width: 88vw;
+    margin-left: 1rem;
+    width: 90vw;
+    height: 87vh;
   }
   
   .filtros {
     display: flex;
     flex-direction: column;
     background-color: #fff;
+    border-radius: 1.5rem;
     padding: 20px;
-    border-radius: 8px;
     box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   }
   
