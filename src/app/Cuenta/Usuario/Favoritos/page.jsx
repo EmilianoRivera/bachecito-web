@@ -2,7 +2,7 @@
 "use client";
 import React from 'react';
 import { useRef, useEffect, useState } from 'react';
-import "../app/Cuenta/InicioUsuario/Favoritos/favoritos.css";
+import "./favoritos.css";
 
 function HomePage() {
 
