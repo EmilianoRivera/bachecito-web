@@ -5,7 +5,7 @@ import {createUserWithEmailAndPassword, sendEmailVerification}from "firebase/aut
 import { addDoc, collection } from 'firebase/firestore';
 import "./NuevoAdmin.css";
 
-function NuevoAdmin() {
+export default function NuevoAdmin() {
     const [username, setUsername] = useState('');
     const [appat, setAppat] = useState('');
     const [apmat, setApmat] = useState('');
@@ -74,14 +74,14 @@ function NuevoAdmin() {
 
     return (
 
-    <div className='body'>
+    <div className='body-registroAdmin'>
             
-        <div className='container'>
+        <div className='container-registroAdmin'>
 
         <div className='nuevo_admin'>
 
             <h2>Hola, este es un formulario para el nuevo admin :D</h2>
-            <div className='formulario'>
+            <div className='formulario-registroAdmin'>
                 <form onSubmit={registroAdmin}>
                     
                     <input
@@ -166,5 +166,3 @@ function NuevoAdmin() {
     </div>
   );
 }
-
-export default NuevoAdmin;

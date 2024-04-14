@@ -1,10 +1,5 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
 
-.body{
+.body-registroAdmin{
     background-color: #FFFFFF;
     display: flex;
     flex-direction: column;
@@ -13,7 +8,7 @@
     justify-content: center;*/
 }
 
-.container{
+.container-registroAdmin{
     background-color: #F1F1F1;
     border-radius: 30px;
     align-items: center;
@@ -30,12 +25,12 @@
     display: flex;
 }
 
-.container .nuevo_admin,.imagen {
+.container-registroAdmin .nuevo_admin,.imagen {
     flex: 1; /* Permite que los campos de entrada de los apellidos se expandan para llenar el espacio disponible */
     margin-right: -20%;/* Ajusta el margen entre los campos de entrada de los apellidos */
   }
 
-  .container .nuevo_admin,.imagen {
+  .container-registroAdmin .nuevo_admin,.imagen {
     margin-right: 0; /* Elimina el margen derecho del último campo de entrada de los apellidos */
   }
 
@@ -44,7 +39,7 @@
 
 }
 
-.formulario{
+.formulario-registroAdmin{
     height: 95%;
     width: 80%;
     margin-left: 10%;
@@ -64,7 +59,7 @@
   }
 
 
-.container .datos{
+.container-registroAdmin .datos{
     background-color: #FFF;
     border: none;
     margin: 8px 0;
@@ -78,17 +73,17 @@
     transition: outline 0.5s ease;
 }
 
-.container .datos:hover { /* Cambia el color del texto al pasar el mouse */
+.container-registroAdmin .datos:hover { /* Cambia el color del texto al pasar el mouse */
     outline-color: #FF9F49;
     border-color: #ff9f49; /* Agrega un borde naranja al pasar el mouse */
 }
 
-.container .datos::placeholder {
+.container-registroAdmin .datos::placeholder {
     color: #949494; /* Color del placeholder predeterminado */
     transition: color 0.5s ease; /* Transición suave */
 }
 
-.container .datos:hover::placeholder {
+.container-registroAdmin .datos:hover::placeholder {
     color: #ff9f49; /* Cambia el color del placeholder al pasar el mouse */
 }
 
