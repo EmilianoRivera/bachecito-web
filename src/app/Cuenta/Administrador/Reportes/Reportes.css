@@ -5,13 +5,13 @@ body {
 
   .main-containerReportes{
     margin-left: 1rem;
-    background-color: #c9c9c900;
+    background-color: #c0000000;
     width: 90vw;
-    margin-top: 5vh;
-    height: 87vh;
+    height: 85vh;
     z-index: 100;
     position: relative;
     overflow-y: auto;
+    top: -5vh;
 }
 
   table {
@@ -19,8 +19,6 @@ body {
     border-collapse:separate;
  border-radius: 2rem;
   }
-
-  
 
   .sticky-top{
     border-radius: 2rem;
