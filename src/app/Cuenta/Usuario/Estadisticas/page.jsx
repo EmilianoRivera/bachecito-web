@@ -2,6 +2,8 @@
 import Map from "@/components/Map";
 import CRep from "@/components/CRepU";
 import dynamic from "next/dynamic";
+import Alerta from "@/components/Alerta1"
+
 const DynamicMap = dynamic(() => import("@/components/Map"), {
   ssr: false,
 });
@@ -9,6 +11,8 @@ export default function Estadisticas() {
   return (
 
     <div className="container">
+      <Alerta pageId="Pagina-Estadisticas"></Alerta>
+
       <div className="izquierda-mapa">
 
 
