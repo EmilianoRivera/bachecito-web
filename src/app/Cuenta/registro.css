@@ -405,6 +405,7 @@ input[type="checkbox"]:checked::before {
 
 .privacy-policy {
     position: fixed;
+    margin-top: 50%;
     top: 0;
     left: 0;
     width: 50%;
@@ -413,6 +414,7 @@ input[type="checkbox"]:checked::before {
     display: flex;
     align-items: center; /* Centra verticalmente */
     justify-content: center; /* Centra horizontalmente */
+    z-index: 100;
   }
 
   .privacy-policy-content {
@@ -1253,13 +1255,13 @@ input[type="checkbox"]:checked::before {
         display: flex;
         align-items: center; /* Centra verticalmente */
         justify-content: center; /* Centra horizontalmente */
+        z-index: 100;
       }
     
       .privacy-policy-content {
         background-color: #fff;
         padding: 20px;
         border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
         max-width: 80%;
         max-height: 80%;
         overflow-y: auto;

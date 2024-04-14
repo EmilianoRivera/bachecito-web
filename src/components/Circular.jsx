@@ -10,6 +10,10 @@ export default function Circular({ width, height, estados }) {
   const [totalRep, setTotalRep] = useState(0);
   const [selectedSegment, setSelectedSegment] = useState(null);
   const [alcEstRep, setAlcEstRep] = useState();
+
+  const color = d3.scaleOrdinal()
+    .domain(rep.map(d => d.label))
+    .range(["#FF8A57", "#FFB54E", "#FFE75F", "#D3FF7A", "#90F49B", "#2EC4B6", "#49C3FB", "#65A6FA", "#5D9DD5", "#65A6FA", "#49C3FB", "#2EC4B6", "#90F49B", "#D3FF7A", "#FFE75F", "#FFB54E"]);
   //SE ENCARGA DE HACER LAS PETICIONES A LOS ENDPOINTS PARA TRAER LA INFORMACIÓN QUE SE VA A GRAFICAR, EN EL SVG ES DONDE SE PINTAN LAS GRAFICAS
   useEffect(() => {
     async function fetchData() {
@@ -51,7 +55,6 @@ export default function Circular({ width, height, estados }) {
      if (estados === "sin estado") {
       const svg = d3.select(svgRef.current);
       const radius = Math.min(width, height) / 2;
-      const color = d3.scaleOrdinal(d3.schemeCategory10);
 
       const pie = d3.pie().value((d) => d.value);
 
@@ -67,7 +70,7 @@ export default function Circular({ width, height, estados }) {
 
       arcs
         .append("path")
-        .attr("fill", (d, i) => color(i))
+        .attr("fill", (d) => color(d.data.label))
         .attr("d", arc)
         .on("mouseover", (event, d) => {
           setSelectedSegment(d);
