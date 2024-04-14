@@ -3,6 +3,7 @@ import React, { useState } from 'react';
 import {auth, db} from "../../../../../firebase";
 import {createUserWithEmailAndPassword, sendEmailVerification}from "firebase/auth";
 import { addDoc, collection } from 'firebase/firestore';
+import "./NuevoAdmin.css";
 
 function NuevoAdmin() {
     const [username, setUsername] = useState('');
@@ -72,80 +73,97 @@ function NuevoAdmin() {
     //apellido paterno, materno, fech nac, correo
 
     return (
-        <div>
-        <p>Ruta de mel</p>
-        <br /><br />
-        <h2>Hola, este es un formulario para el nuevo admin :D</h2>
 
-        <form onSubmit={registroAdmin}>
-            <label htmlFor="username">Nombre de Usuario: </label>
-            <input
-                type="text"
-                id="username"
-                name="username"
-                value={username}
-                onChange={handleUsername}
-                required
-            />
-            <br /><br />
+    <div className='body'>
+            
+        <div className='container'>
 
-            <label htmlFor="appat">Apellido Paterno: </label>
-            <input 
-                type="text"
-                id="appat"
-                name="appat"
-                value={appat}
-                onChange={handleAppat}
-                required
-            />
-            <br /><br />
+        <div className='nuevo_admin'>
 
-            <label htmlFor="apmat">Apellido Materno: </label>
-            <input 
-                type="text" 
-                id="apmat"
-                name="apmat"
-                value={apmat}
-                onChange={handleApmat}
-                required
-            />
-            <br /><br />
+            <h2>Hola, este es un formulario para el nuevo admin :D</h2>
+            <div className='formulario'>
+                <form onSubmit={registroAdmin}>
+                    
+                    <input
+                        className='datos'
+                        type="text"
+                        id="username"
+                        name="username"
+                        value={username}
+                        onChange={handleUsername}
+                        required
+                    />
+                    <br/>
 
-            <label htmlFor="fechaNacimiento">Fecha de nacimiento: </label>
-            <input 
-                type="date" 
-                id='fechaNacimiento'
-                name="fechaNacimiento"
-                value={fechaNacimiento}
-                onChange={handleFechaNacimiento}
-                required
-            />
-            <br /><br />
+                    <div className="apellidos-container">
+                        <input 
+                        className='datos'
+                        type="text"
+                        id="appat"
+                        name="appat"
+                        value={appat}
+                        onChange={handleAppat}
+                        required
+                    />
+                
+                    <input
+                        className='datos'
+                        type="text" 
+                        id="apmat"
+                        name="apmat"
+                        value={apmat}
+                        onChange={handleApmat}
+                        required
+                    />
+                    </div>
+                    
+                    <br/>
 
-            <label htmlFor="correo">Correo: </label>
-            <input 
-                type="text" 
-                id='correo'
-                name="correo"
-                value={correo}
-                onChange={handleCorreo}
-                required
-            />
-            <br /><br />
-            <label htmlFor="password">Contraseña: </label>
-            <input 
-                type="text" 
-                id='password'
-                name="password"
-                value={password}
-                onChange={handlePass}
-                required
-            />
-            <br /><br />
-            <button type="submit" >Enviar</button>
-        </form>
+                    <input 
+                        className='datos'
+                        type="date" 
+                        id='fechaNacimiento'
+                        name="fechaNacimiento"
+                        value={fechaNacimiento}
+                        onChange={handleFechaNacimiento}
+                        required
+                    />
+                    <br/>
+
+                    <input 
+                        className='datos'
+                        type="text" 
+                        id='correo'
+                        name="correo"
+                        value={correo}
+                        onChange={handleCorreo}
+                        required
+                    />
+                    <br/>
+                    <input 
+                        className='datos'
+                        type="text" 
+                        id='password'
+                        name="password"
+                        value={password}
+                        onChange={handlePass}
+                        required
+                    />
+                    <br/>
+
+                    <button type="submit">Enviar</button>
+                </form>
+            </div>
+
 
         </div>
+
+        <div className='imagen'>
+        </div>
+        
+        </div>
+
+    </div>
   );
 }
 
