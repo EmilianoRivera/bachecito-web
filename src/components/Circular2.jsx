@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import * as d3 from "d3";
+import "./Circular2.css";
+
 function PieChart({ data }) {
   const [chartData, setChartData] = useState([]);
 
@@ -14,16 +16,20 @@ function PieChart({ data }) {
 
   useEffect(() => {
     // Crear la gráfica de anillo
-    const width = 300;
-    const height = 300;
+    const width = 200;
+    const height = 200;
     const radius = Math.min(width, height) / 2;
-    const innerRadius = radius * 0.5; // Definir el radio interior
+    const innerRadius = radius * 0.45; // Definir el radio interior
 
     // Definir el esquema de colores personalizado
     const color = d3.scaleOrdinal()
       .domain(chartData.map(d => d.label))
       .range(["#FF5136", "#FFC63D", "#A4DF77"]); // Naranja, Verde, Rojo
 
+    // Limpia cualquier contenido existente en el elemento con id "pie-chart" para que no se repita la grafica 2 veces al importarla
+    d3.select("#pie-chart").selectAll("*").remove();
+
+    // Crear un nuevo SVG en el elemento "pie-chart"
     const svg = d3.select("#pie-chart")
       .append("svg")
       .attr("width", width)
@@ -86,23 +92,23 @@ function CRep() {
   }, []);
 
   return (
-    <div className="totalReportes">
-      <div className="encabezado">
+    <div className='totalReportes'>
+      <div className='encabezado'>
         <h1>REPORTES TOTALES:</h1>
-        <div className="contador">{totalRep}</div>
+        <div className='contador'>{totalRep}</div>
       </div>
-      <div className="estados">
-        <div className="in-red">
-          <div className="red"><span className="tooltip">Sin atender</span></div>
-          <div className="cont-reportes">{repEstado.sinAtender}</div>
+      <div className='estados'>
+        <div className='in-red'>
+          <div className='red'></div>
+          <div className='cont-reportes'>{repEstado.sinAtender}</div>
         </div>
-        <div className="in-yellow">
-          <div className="yellow"><span className="tooltip">En atención</span></div>
-          <div className="cont-reportes">{repEstado.enAtencion}</div>
+        <div className='in-yellow'>
+          <div className='yellow'></div>
+          <div className='cont-reportes'>{repEstado.enAtencion}</div>
         </div>
-        <div className="in-green">
-          <div className="green"><span className="tooltip">Atendido</span></div>
-          <div className="cont-reportes">{repEstado.atendido}</div>
+        <div className='in-green'>
+          <div className='green'></div>
+          <div className='cont-reportes'>{repEstado.atendido}</div>
         </div>
       </div>
       <PieChart data={repEstado} />

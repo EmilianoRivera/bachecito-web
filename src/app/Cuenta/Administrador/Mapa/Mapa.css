@@ -26,3 +26,23 @@
     position: relative;
     z-index: 10;
 }
+
+.container-graphics{
+    background-color: rgba(255, 0, 0, 0);
+    position: fixed;
+    top: 27vh;
+    z-index: 1000;
+    right: 8vw;
+}
+
+.btn-ocultar{
+    border: none;
+    right: 8.2vw;
+    position: fixed;
+    top: 20vh;
+    z-index: 1000;
+    padding: 10px;
+    border-radius: 5rem;
+    background-color: #ff9f49;
+    color: white;
+}
