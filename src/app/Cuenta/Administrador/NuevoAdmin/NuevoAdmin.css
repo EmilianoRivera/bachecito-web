@@ -1,0 +1,104 @@
+*{
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.body{
+    background-color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+    /*align-items: center;
+    justify-content: center;*/
+}
+
+.container{
+    background-color: #F1F1F1;
+    border-radius: 30px;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    overflow: hidden;
+    width: 80%;
+    height: 80%;
+    left: 5%;
+    margin-top: 5%;
+    max-width: 100%;
+    min-height: 480px;
+    position: relative;
+    display: flex;
+}
+
+.container .nuevo_admin,.imagen {
+    flex: 1; /* Permite que los campos de entrada de los apellidos se expandan para llenar el espacio disponible */
+    margin-right: -20%;/* Ajusta el margen entre los campos de entrada de los apellidos */
+  }
+
+  .container .nuevo_admin,.imagen {
+    margin-right: 0; /* Elimina el margen derecho del último campo de entrada de los apellidos */
+  }
+
+.nuevo_admin{
+    width: 40%;
+
+}
+
+.formulario{
+    height: 95%;
+    width: 80%;
+    margin-left: 10%;
+}
+
+.apellidos-container {
+    display: flex; /* Hace que los elementos hijos se muestren en línea */
+  }
+
+  .apellidos-container #apmat, #appat {
+    flex: 1; /* Permite que los campos de entrada de los apellidos se expandan para llenar el espacio disponible */
+    margin-right: 20px; /* Ajusta el margen entre los campos de entrada de los apellidos */
+  }
+
+  .apellidos-container #apmat, #appat:last-child {
+    margin-right: 0; /* Elimina el margen derecho del último campo de entrada de los apellidos */
+  }
+
+
+.container .datos{
+    background-color: #FFF;
+    border: none;
+    margin: 8px 0;
+    padding: 10px 15px;
+    font-size: 13px;
+    border-radius: 8px;
+    width: 100%;
+    outline: auto;
+    outline-color: #FFF;
+    color: #949494;
+    transition: outline 0.5s ease;
+}
+
+.container .datos:hover { /* Cambia el color del texto al pasar el mouse */
+    outline-color: #FF9F49;
+    border-color: #ff9f49; /* Agrega un borde naranja al pasar el mouse */
+}
+
+.container .datos::placeholder {
+    color: #949494; /* Color del placeholder predeterminado */
+    transition: color 0.5s ease; /* Transición suave */
+}
+
+.container .datos:hover::placeholder {
+    color: #ff9f49; /* Cambia el color del placeholder al pasar el mouse */
+}
+
+
+
+
+
+
+.imagen{
+    width: 60%;
+    height: 100%;
+    background-image: url("https://i.postimg.cc/wBXfgqDV/form-Admin.png");
+}
