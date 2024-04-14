@@ -106,8 +106,8 @@ export default function Reportes() {
             <div className="box1" id="box1">
                 <h2>Bienvenido al área de reportes 🐜</h2>
                 <p>
-                    Aquí podrás visualizar los reportes hechos por los usuarios de Bachecito 26;
-                    también puedes guardar los baches reportados por estos mismos con el icono de la
+                    Aquí podrás visualizar los reportes hechos por los usuarios de la aplicación Móvil de Bachecito 26;
+                    también puedes guardar los baches reportados por estos mismos con el ícono de la
                     estrellita ⭐ para después verlos en la lista de seguimiento del apartado “Baches
                     Guardados”.
                 </p>

@@ -13,6 +13,8 @@ import {
   where,
   getDocs,
 } from "firebase/firestore";
+import Alerta from "@/components/Alerta2"
+
 export default function Perfil() {
   useAuthUser();
   const router = useRouter();
@@ -149,6 +151,7 @@ export default function Perfil() {
 
   return (
       <div className="container-perfil">
+          <Alerta pageId="Pagina-Perfil"></Alerta>
         {isLogged && userData && (
           <div
             id="leftSide"

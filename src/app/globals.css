@@ -703,3 +703,9 @@ canvas {
   margin-bottom: 15vh;
 }
 
+@media (max-width: 800px) {
+  .bottom-right{
+    text-justify: justify;
+    align-self: ce;
+  }
+}
