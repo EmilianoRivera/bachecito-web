@@ -23,19 +23,22 @@ export default function MapAdmin() {
   //Filtros
   const alcaldiasCDMX = [
     "Todas",
-    "Azcapotzalco",
-    "Coyoacán",
-    "Cuajimalpa de Morelos",
-    "Gustavo A. Madero",
-    "Iztacalco",
-    "Iztapalapa",
-    "Magdalena Contreras",
-    "Miguel Hidalgo",
-    "Milpa Alta",
-    "Tláhuac",
-    "Tlalpan",
-    "Venustiano Carranza",
-    "Xochimilco"
+    "🐴 Álvaro Obregón ",
+    "🐜 Azcapotzalco ",
+    "🐷 Benito Juárez",
+    "🐺 Coyoacán",
+    "🌳 Cuajimalpa de Morelos",
+    "🦅 Cuauhtémoc",
+    "🌿 Gustavo A. Madero ",
+    "🏠 Iztacalco",
+    "🐭 Iztapalapa",
+    "🏔 La Magdalena Contreras",
+    "🦗 Miguel Hidalgo",
+    "🌾 Milpa Alta",
+    "🌋 Tláhuac",
+    "🦶 Tlalpan",
+    "🌻 Venustiano Carranza",
+    "🐠 Xochimilco"
   ];
 
   // Estados para manejar la visibilidad de los select
