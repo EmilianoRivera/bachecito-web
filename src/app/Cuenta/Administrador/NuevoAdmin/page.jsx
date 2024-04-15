@@ -80,7 +80,8 @@ export default function NuevoAdmin() {
 
         <div className='nuevo_admin'>
 
-            <h2>Hola, este es un formulario para el nuevo admin :D</h2>
+            <p id="textito-admin">¿Necesitas ayuda con el trabajo?</p>
+            <h2 id="titulo-admin">¡Vamos a agregar otro Administrador!</h2>
             <div className='formulario-registroAdmin'>
                 <form onSubmit={registroAdmin}>
                     
@@ -92,6 +93,7 @@ export default function NuevoAdmin() {
                         value={username}
                         onChange={handleUsername}
                         required
+                        placeholder='Nombre(s)'
                     />
                     <br/>
 
@@ -104,6 +106,7 @@ export default function NuevoAdmin() {
                         value={appat}
                         onChange={handleAppat}
                         required
+                        placeholder='Apellido Paterno'
                     />
                 
                     <input
@@ -114,10 +117,9 @@ export default function NuevoAdmin() {
                         value={apmat}
                         onChange={handleApmat}
                         required
+                        placeholder='Apellido Materno'
                     />
                     </div>
-                    
-                    <br/>
 
                     <input 
                         className='datos'
@@ -127,6 +129,7 @@ export default function NuevoAdmin() {
                         value={fechaNacimiento}
                         onChange={handleFechaNacimiento}
                         required
+                        placeholder='Fecha de Nacimiento'
                     />
                     <br/>
 
@@ -138,6 +141,7 @@ export default function NuevoAdmin() {
                         value={correo}
                         onChange={handleCorreo}
                         required
+                        placeholder='Correo electrónico'
                     />
                     <br/>
                     <input 
@@ -148,17 +152,19 @@ export default function NuevoAdmin() {
                         value={password}
                         onChange={handlePass}
                         required
+                        placeholder='Contraseña'
                     />
                     <br/>
 
-                    <button type="submit">Enviar</button>
+                    <button type="submit" id="btn-registrarUsuario">Registrarse</button>
                 </form>
             </div>
 
 
         </div>
 
-        <div className='imagen'>
+        <div className='imagen-nuevoAdmin'>
+            <img src="https://i.postimg.cc/sXkS5jM1/Imagen-registro-Admin.png" alt="" />
         </div>
         
         </div>
