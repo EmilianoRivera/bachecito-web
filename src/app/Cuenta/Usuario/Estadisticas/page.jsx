@@ -2,7 +2,7 @@
 import Map from "@/components/Map";
 import React, { useState } from "react";
 import CRep from "@/components/CRepU";
-import Circular from "@/components/Circular"; 
+import Circular from "@/components/BarrasU"; 
 import dynamic from "next/dynamic";
 import Alerta from "@/components/Alerta1"
 

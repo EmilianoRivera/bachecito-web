@@ -14,6 +14,9 @@ import {
   getDocs,
 } from "firebase/firestore";
 import Alerta from "@/components/Alerta2"
+import atendidoIcon from '../../../../imgs/fondoVerde.png';
+import enProcesoIcon from '../../../../imgs/BanderaAmarillaConFondo.png';
+import sinAtenderIcon from '../../../../imgs/fondoRojo.png';
 
 export default function Perfil() {
   useAuthUser();
@@ -223,7 +226,18 @@ export default function Perfil() {
 
               <div className="column-right">
                 <div className="column-right-superior">
-                  <div className="estado">{reporte.estado}</div>
+                <div className="estado">
+  {reporte.estado === "Sin atender" && (
+    <img src={sinAtenderIcon.src} alt="Sin atender"   style={{ width: "100%", height: "100%", borderRadius: "5vh" }} />
+  )}
+  {reporte.estado === "En atención" && (
+    <img src={enProcesoIcon.src} alt="En atención"   style={{ width: "100%", height: "100%", borderRadius: "5vh" }}/>
+  )}
+  {reporte.estado === "Atendido" && (
+    <img src={atendidoIcon.src} alt="Atendido"  style={{ width: "100%", height: "100%", borderRadius: "5vh" }}/>
+  )}
+</div>
+
 
                   <div className="guardar">
                     <img

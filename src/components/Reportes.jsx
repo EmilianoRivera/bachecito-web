@@ -2,7 +2,9 @@
 import { useEffect, useState } from "react";
 import "../app/Reportes/Reportes.css";
 import React from "react";
-
+import atendidoIcon from '../imgs/fondoVerde.png';
+import enProcesoIcon from '../imgs/BanderaAmarillaConFondo.png';
+import sinAtenderIcon from '../imgs/fondoRojo.png';
 function ReportesComponente() {
   const [rep, setRep] = useState([]);
 
@@ -52,7 +54,15 @@ function ReportesComponente() {
           </div>
           <div className="column-right">
               <div className="column-right-superior">
-                <div className="estado">{report.estado}</div>
+                <div className="estado">  {report.estado === "Sin atender" && (
+    <img src={sinAtenderIcon.src} alt="Sin atender"   style={{ width: "100%", height: "100%", borderRadius: "5vh" }} />
+  )}
+  {report.estado === "En atención" && (
+    <img src={enProcesoIcon.src} alt="En atención"   style={{ width: "100%", height: "100%", borderRadius: "5vh" }}/>
+  )}
+  {report.estado === "Atendido" && (
+    <img src={atendidoIcon.src} alt="Atendido"  style={{ width: "100%", height: "100%", borderRadius: "5vh" }} />
+  )}</div>
                 <div className="guardar">
                   <img
                     src="https://i.postimg.cc/52PmmT4T/estrella.png"
