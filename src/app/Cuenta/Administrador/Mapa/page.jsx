@@ -2,7 +2,7 @@
 import dynamic from "next/dynamic";
 import Circular from "@/components/Circular2";
 import "./Mapa.css";
-import React, { useState } from "react"; 
+import React, { useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -18,7 +18,6 @@ export default function MapAdmin() {
   const handleToggleGraphics = () => {
     setIsGraphicsVisible(!isGraphicsVisible);
   };
-
 
   //Filtros
   const alcaldiasCDMX = [
@@ -38,7 +37,7 @@ export default function MapAdmin() {
     "🌋 Tláhuac",
     "🦶 Tlalpan",
     "🌻 Venustiano Carranza",
-    "🐠 Xochimilco"
+    "🐠 Xochimilco",
   ];
 
   // Estados para manejar la visibilidad de los select
@@ -51,17 +50,16 @@ export default function MapAdmin() {
   const [filtroFecha, setFiltroFecha] = useState("");
 
   const handleAlcaldiaChange = (e) => {
-   // console.log("Alcaldía seleccionada:", e.target.value);
+    console.log("Alcaldía seleccionada:", e.target.value);
   };
 
   const handleEstadoChange = (e) => {
-    setEstado(e.target.value)
-    
+    setEstado(e.target.value);
   };
 
   const handleFechaChange = (e) => {
     const selectedValue = e.target.value;
-  //  console.log("Fecha seleccionada:", selectedValue);
+    console.log("Fecha seleccionada:", selectedValue);
     setFiltroFecha(selectedValue);
   };
 
@@ -70,7 +68,10 @@ export default function MapAdmin() {
       <div className="filtros2">
         <div className="filtro" id="fechas">
           <label onClick={() => setIsFechaSelectVisible(!isFechaSelectVisible)}>
-          <img src="https://i.postimg.cc/hPbM6PxS/calendario-reloj.png" alt="" />
+            <img
+              src="https://i.postimg.cc/hPbM6PxS/calendario-reloj.png"
+              alt=""
+            />
             Rango Fechas
           </label>
           {isFechaSelectVisible && (
@@ -86,15 +87,25 @@ export default function MapAdmin() {
           )}
           {filtroFecha === "Rango personalizado" && (
             <div className="custom-date">
-              <DatePicker className="datepicker" selected={startDate} onChange={setStartDate} />
-              <DatePicker className="datepicker" selected={endDate} onChange={setEndDate} />
+              <DatePicker
+                className="datepicker"
+                selected={startDate}
+                onChange={setStartDate}
+              />
+              <DatePicker
+                className="datepicker"
+                selected={endDate}
+                onChange={setEndDate}
+              />
             </div>
           )}
         </div>
 
         <div className="filtro" id="alcaldia">
-          <label onClick={() => setIsAlcaldiaSelectVisible(!isAlcaldiaSelectVisible)}>
-          <img src="https://i.postimg.cc/wjw2xf0Z/marcador_(1).png" alt="" />
+          <label
+            onClick={() => setIsAlcaldiaSelectVisible(!isAlcaldiaSelectVisible)}
+          >
+            <img src="https://i.postimg.cc/wjw2xf0Z/marcador_(1).png" alt="" />
             Alcaldía
           </label>
           {isAlcaldiaSelectVisible && (
@@ -109,7 +120,9 @@ export default function MapAdmin() {
         </div>
 
         <div className="filtro" id="estado">
-          <label onClick={() => setIsEstadoSelectVisible(!isEstadoSelectVisible)}>
+          <label
+            onClick={() => setIsEstadoSelectVisible(!isEstadoSelectVisible)}
+          >
             <img src="https://i.postimg.cc/bwyLhcH1/bandera-alt.png" />
             Estado
           </label>
@@ -124,9 +137,9 @@ export default function MapAdmin() {
           )}
         </div>
       </div>
-        <button className="btn-ocultar" onClick={handleToggleGraphics}>
-          {isGraphicsVisible ? "Ocultar gráficos" : "Mostrar gráficos"}
-        </button>
+      <button className="btn-ocultar" onClick={handleToggleGraphics}>
+        {isGraphicsVisible ? "Ocultar gráficos" : "Mostrar gráficos"}
+      </button>
       <DynamicMap />
       {/* Solo muestra el div si isGraphicsVisible es true */}
       {isGraphicsVisible && (

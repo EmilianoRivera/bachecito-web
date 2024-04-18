@@ -81,8 +81,8 @@ export default function ReportesAdmin() {
             reportesSnapshot.forEach(async (reporteDoc) => {
                 const reporte = reporteDoc.data();
                 if (reporte.folio === folio) {
-                    await deleteDoc(doc(refCollection, reporteDoc.id));
-                    console.log(`Se eliminó el reporte con folio ${folio}`);
+                 
+                    console.log(`Se quito el reporte con folio ${folio}`);
                     
                     // Eliminar la fila de la tabla HTML
                     const rows = document.querySelectorAll('.containerReportesAdmin .Reportes');
