@@ -217,7 +217,7 @@
     background-color: #F1F1F1;
 }
 
-.container.active .sign-up{
+.container-registroUs .sign-up{
     transform: translateX(100%);
     opacity: 1;
     z-index: 5;
