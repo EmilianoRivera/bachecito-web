@@ -54,8 +54,8 @@ function Navbar() {
                 <Link href="/Cuenta/Administrador/Dashboard" className="opc-admin"><img src="https://i.postimg.cc/3JkMwkG1/estadisticas-1.png" alt="estadisticas" /><span className='hover-text'>Dashboard</span></Link>
                 <Link href="/Cuenta/Administrador/Reportes" className="opc-admin"><img src="https://i.postimg.cc/6QLgPnsW/encuesta-h-1.png" alt="reportes" /><span className='hover-text'>Reportes</span></Link>
                 <Link href="/Cuenta/Administrador/Mapa" className="opc-admin"><img src="https://i.postimg.cc/QMrvSSyY/marcador-de-mapa-1.png" alt="mapa" /><span className='hover-text'>Mapa</span></Link>
-                <Link href="/Cuenta/Administrador/Perfil" className="opc-admin"><img src="https://i.postimg.cc/02FTK9ds/agregar-usuario-1.png" alt="administrador nuevo" /><span className='hover-text'>Administradores</span></Link>
-                <Link href="/Cuenta/Administrador/Soporte" className="opc-admin"><img src="https://i.postimg.cc/HkMfQFB7/constructor-1.png" alt="soporte" /><span className='hover-text'>Soporte</span></Link>
+                <Link href="/Cuenta/Administrador/NuevoAdmin" className="opc-admin"><img src="https://i.postimg.cc/02FTK9ds/agregar-usuario-1.png" alt="administrador nuevo" /><span className='hover-text'>Administradores</span></Link>
+                <Link href="/Cuenta/Administrador/Perfil" className="opc-admin"><img src="https://i.postimg.cc/HkMfQFB7/constructor-1.png" alt="soporte" /><span className='hover-text'>Soporte</span></Link>
                 <Link href="/" className="opc-admin"><img src="https://i.postimg.cc/qRJSHq08/salida-2.png" alt="salir" /><span className='hover-text'>Salir</span></Link>
               </>
             ) : (
