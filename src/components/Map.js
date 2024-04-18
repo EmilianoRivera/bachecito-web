@@ -777,7 +777,7 @@ const Map = () => {
   }
   async function reverse(ubi, descripcion) {
     try {
-      const apiKey = 'AIzaSyDUhkmX0nWDYHvkG9fxVG-K1jCK6k-bSaI';
+      const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
       const encodedAddress = encodeURIComponent(ubi);
       const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodedAddress}&key=${apiKey}`);
       const data = await response.json();

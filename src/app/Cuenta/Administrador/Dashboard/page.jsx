@@ -10,19 +10,23 @@ import "react-datepicker/dist/react-datepicker.css";
 
 function Dashboard() {
   const alcaldiasCDMX = [
-    "Azcapotzalco",
-    "Coyoacán",
-    "Cuajimalpa de Morelos",
-    "Gustavo A. Madero",
-    "Iztacalco",
-    "Iztapalapa",
-    "Magdalena Contreras",
-    "Miguel Hidalgo",
-    "Milpa Alta",
-    "Tláhuac",
-    "Tlalpan",
-    "Venustiano Carranza",
-    "Xochimilco"
+    "Todas",
+    "🐴 Álvaro Obregón ",
+    "🐜 Azcapotzalco ",
+    "🐷 Benito Juárez",
+    "🐺 Coyoacán",
+    "🌳 Cuajimalpa de Morelos",
+    "🦅 Cuauhtémoc",
+    "🌿 Gustavo A. Madero ",
+    "🏠 Iztacalco",
+    "🐭 Iztapalapa",
+    "🏔 La Magdalena Contreras",
+    "🦗 Miguel Hidalgo",
+    "🌾 Milpa Alta",
+    "🌋 Tláhuac",
+    "🦶 Tlalpan",
+    "🌻 Venustiano Carranza",
+    "🐠 Xochimilco"
   ];
 
   const [startDate, setStartDate] = useState(new Date());

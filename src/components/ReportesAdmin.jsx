@@ -1,11 +1,13 @@
-
-"use client"
+"use client";
 import { useEffect, useState } from "react";
+import { db, collection, getDocs, updateDoc, doc , query, where} from "../../firebase"; 
 import '../app/Cuenta/Administrador/Reportes/Reportes.css';
 import React from 'react';
 
 export default function ReportesAdmin() {
+
     const [rep, setRep] = useState([]);
+
     function showDeleteHeader() {
         const table = document.querySelector('.containerReportesAdmin table');
         table.classList.add('show-header');
@@ -15,6 +17,43 @@ export default function ReportesAdmin() {
         const table = document.querySelector('.containerReportesAdmin table');
         table.classList.remove('show-header');
     }
+    
+    const handleEstadoClick = async (folio, estado) => {
+        const newState = prompt(`Presione 1 para Sin atender, 2 para En atención, 3 para Atendido`);
+        if (newState === '1') {
+            await updateEstado(folio, 'Sin atender');
+        } else if (newState === '2') {
+            await updateEstado(folio, 'En atención');
+        } else if (newState === '3') {
+            await updateEstado(folio, 'Atendido');
+        } else {
+            alert('Opción inválida');
+        }
+    };
+
+    const updateEstado = async (folio, estado) => {
+        try {
+            const refCollection = collection(db, 'reportes');
+            const reporteQuery = query(refCollection, where("folio", "==", folio));
+            const reporteSnapshot = await getDocs(reporteQuery);
+    
+            reporteSnapshot.forEach(async (doc) => {
+                await updateDoc(doc.ref, { estado: estado });
+                console.log(`Se actualizó el estado del reporte con folio ${folio} a ${estado}`);
+                
+                // Actualizar el texto en la fila de la tabla HTML
+                const rows = document.querySelectorAll('.containerReportesAdmin .Reportes');
+                rows.forEach((row) => {
+                    if (row.querySelector('.folio').textContent === folio) {
+                        row.querySelector('.estado').textContent = estado;
+                    }
+                });
+            });
+    
+        } catch (error) {
+            console.error("Error al actualizar el estado del reporte", error);
+        }
+    };
     
 
     useEffect(() => {
@@ -33,6 +72,31 @@ export default function ReportesAdmin() {
 
         fetchData();
     }, []);
+
+    const handleClick = async (folio) =>  {
+        try {
+            const refCollection = collection(db, 'reportes');
+            const reportesSnapshot = await getDocs(refCollection);
+            
+            reportesSnapshot.forEach(async (reporteDoc) => {
+                const reporte = reporteDoc.data();
+                if (reporte.folio === folio) {
+                    await deleteDoc(doc(refCollection, reporteDoc.id));
+                    console.log(`Se eliminó el reporte con folio ${folio}`);
+                    
+                    // Eliminar la fila de la tabla HTML
+                    const rows = document.querySelectorAll('.containerReportesAdmin .Reportes');
+                    rows.forEach((row) => {
+                        if (row.querySelector('.folio').textContent === folio) {
+                            row.remove();
+                        }
+                    });
+                }
+            });
+        } catch (error) {
+            console.error("Error al obtener los reportes", error);
+        }
+    };
 
     return (
         <div className="containerReportesAdmin">
@@ -54,11 +118,11 @@ export default function ReportesAdmin() {
                             <td className='folio'>{report.folio}</td>
                             <td className='fecha'>{report.fechaReporte}</td>
                             <td className='fotografia' style={{ width: '120px', backgroundImage: `url(${report.imagenURL})`, backgroundSize: 'cover', backgroundPosition: 'center' }}></td>
-                            <td className='estado'>{report.estado}</td>
+                            <td className='estado' onClick={() => handleEstadoClick(report.folio, report.estado)}>{report.estado}</td>
                             <td className='ubicacion'>{report.ubicacion}</td>
                             <td className='no-reportes'>-</td>
                             <td className='eliminar'>
-                                <button className="btn-eliminarRP">
+                                <button className="btn-eliminarRP" onClick={() => {handleClick(report.folio)}}>
                                     <img src="https://i.postimg.cc/02gZVXL3/basura.png" alt="" />
                                 </button>
                             </td>
@@ -69,5 +133,3 @@ export default function ReportesAdmin() {
         </div>
     );
 }
-
-

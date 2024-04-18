@@ -1,14 +1,20 @@
-
-import Map from "@/components/Map";S
+"use client"
+import Map from "@/components/Map";
+import React, { useState } from "react";
 import CRep from "@/components/CRepU";
+import Circular from "@/components/Circular"; 
 import dynamic from "next/dynamic";
+import Alerta from "@/components/Alerta1"
+
 const DynamicMap = dynamic(() => import("@/components/Map"), {
   ssr: false,
 });
 export default function Estadisticas() {
+  const [estado, setEstado] = useState("sin estado");
   return (
-
     <div className="container">
+      <Alerta pageId="Pagina-Estadisticas"></Alerta>
+
       <div className="izquierda-mapa">
 
 
@@ -18,17 +24,16 @@ export default function Estadisticas() {
           <div className="estado"></div>
 
         </div>
-     <CRep></CRep>
-
+        <CRep></CRep>
         <div className="estadisticas">
-
+          <Circular width={500} height={250} estados={estado} />
         </div>
       </div>
 
       <div className="mapa">
         <DynamicMap />
       </div>
-    </div>
+    </div>
 
-  );
+  );
 }
