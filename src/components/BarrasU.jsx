@@ -106,7 +106,7 @@ export default function Circular({ width, height, estados }) {
         .style("text-anchor", "middle")
   
     } else {
-      console.log("NUEVA GRAFICA");
+      console.log("NUEVA GRAFICA 3");
     }
   }, [rep, height, width]);
   
