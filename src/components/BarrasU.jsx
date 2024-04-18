@@ -51,7 +51,7 @@ export default function Circular({ width, height, estados }) {
   }
   //HOOK QUE SE ENCARGA DE CREAR LA GRAFICA CON BASE AL PORCETAJE QUE HAY DE REPORTES POR ALCALDIA, ESTA APARECE PRIMERO, SI HAY UN CAMBIA DE ESTADO YA APARECE LA GRAFICA DE LA FUNCION nuevaGraficaCircular
   useEffect(() => {
-    if (estados === "sin estado") {
+    if (estados === "Sin Estado") {
       const svg = d3.select(svgRef.current);
       const margin = { top: 20, right: 20, bottom: 30, left: 30 };
       const innerWidth = width - margin.left - margin.right;

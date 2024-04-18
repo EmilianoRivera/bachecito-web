@@ -12,7 +12,6 @@ export default function Circular({
   filtroFechas,
 }) {
   //AQUI ESTAN LOS ESTADOS Y EL HOOK DE USEREF, QUE HACE REFERENCIA AL ELEMENTO SVG QUE ESTA EN EL HTML
-
   const svgRef = useRef();
   const tooltipRef = useRef();
   const [rep, setRep] = useState([]);
@@ -70,14 +69,39 @@ export default function Circular({
 
     fetchData();
   }, []);
-  //HOOK QUE SE ENCARGA DE CREAR LA GRAFICA CON BASE AL PORCETAJE QUE HAY DE REPORTES POR ALCALDIA, ESTA APARECE PRIMERO, SI HAY UN CAMBIA DE ESTADO YA APARECE LA GRAFICA DE LA FUNCION nuevaGraficaCircular
 
+
+
+  //ESTE USEEFFECT SE ENCARGA DE OCULTAR LOS ELEMENTOS, Y REVISAR QUE SI CAMBIA ALGO EN EL FILTRO DEL ESTADO, SE EJECUTE LA FUNCION QUE CAMBIA LA GRAFICA
   useEffect(() => {
-    if (
-      estados === "Sin Estado" &&
-      alcaldias === "Todas" &&
-      filtroFechas === "Hoy"
-    ) {
+    if (!selectedSegment) {
+      d3.select(tooltipRef.current).style("visibility", "hidden");
+    } else {
+      d3.select(tooltipRef.current).style("visibility", "visible");
+      d3.select(tooltipRef.current)
+        .select(".tooltip-label")
+        .style("font-family", "Helvetica, sans-serif")
+        .text(selectedSegment.data.label.toUpperCase());
+      const percentage = (
+        ((selectedSegment.endAngle - selectedSegment.startAngle) /
+          (2 * Math.PI)) *
+        100
+      ).toFixed(2);
+      d3.select(tooltipRef.current)
+        .select(".tooltip-value")
+        .text(`${percentage}%`);
+    }
+  }, [selectedSegment]);
+
+  if (estados === "Sin Estado" && alcaldias === "Todas" && filtroFechas === "Hoy") {
+    console.log("SE DIBUJA DE NUEVO LA GRAFICA")
+    graficaCircular()
+
+  } else {
+    graficaCircular(estados, alcaldias, filtroFechas, startDates, endDates)
+  }
+
+  function graficaCircular(estado = estados, alcaldia=alcaldias, filtroFecha=filtroFechas, startDate=startDates, endDate=endDates) {
       const svg = d3.select(svgRef.current);
       const radius = Math.min(width, height) / 2;
 
@@ -131,53 +155,9 @@ export default function Circular({
 
       const tooltip = d3.select(tooltipRef.current);
       tooltip.style("visibility", "hidden");
-    }
-  }, [rep, height, width]);
-function nuevaGraficaCircular(
-  estados,
-  alcaldias,
-  filtroFechas,
-  startDates,
-  endDates
-) {
-  
-  console.log(estados, " ", alcaldias, " ", filtroFechas)
-}
-  useEffect(() => {
-    if (
-      estados !== "Sin Estado" ||
-      alcaldias !== "Todas" ||
-      filtroFechas !== "Hoy"
-    ) {
-      nuevaGraficaCircular(
-        estados,
-        alcaldias,
-        filtroFechas,
-        startDates,
-        endDates
-      );
-    }
-  }, [estados, alcaldias, filtroFechas, startDates, endDates]);
-  //ESTE USEEFFECT SE ENCARGA DE OCULTAR LOS ELEMENTOS, Y REVISAR QUE SI CAMBIA ALGO EN EL FILTRO DEL ESTADO, SE EJECUTE LA FUNCION QUE CAMBIA LA GRAFICA
-  useEffect(() => {
-    if (!selectedSegment) {
-      d3.select(tooltipRef.current).style("visibility", "hidden");
-    } else {
-      d3.select(tooltipRef.current).style("visibility", "visible");
-      d3.select(tooltipRef.current)
-        .select(".tooltip-label")
-        .style("font-family", "Helvetica, sans-serif")
-        .text(selectedSegment.data.label.toUpperCase());
-      const percentage = (
-        ((selectedSegment.endAngle - selectedSegment.startAngle) /
-          (2 * Math.PI)) *
-        100
-      ).toFixed(2);
-      d3.select(tooltipRef.current)
-        .select(".tooltip-value")
-        .text(`${percentage}%`);
-    }
-  }, [selectedSegment]);
+  }
+
+
 
   return (
     <div style={{ position: "relative", width, height }}>
