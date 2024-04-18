@@ -15,7 +15,7 @@ import {
 } from "firebase/firestore";
 import Alerta from "@/components/Alerta2"
 import atendidoIcon from '../../../../imgs/fondoVerde.png';
-import enProcesoIcon from '../../../../imgs/BanderaAmarillaConFondo.png';
+import enProcesoIcon from '../imgs/fondoAmarillo.png';
 import sinAtenderIcon from '../../../../imgs/fondoRojo.png';
 
 export default function Perfil() {

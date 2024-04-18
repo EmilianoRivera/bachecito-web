@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import "../app/Reportes/Reportes.css";
 import React from "react";
 import atendidoIcon from '../imgs/fondoVerde.png';
-import enProcesoIcon from '../imgs/BanderaAmarillaConFondo.png';
+import enProcesoIcon from '../imgs/fondoAmarillo.png';
 import sinAtenderIcon from '../imgs/fondoRojo.png';
 function ReportesComponente() {
   const [rep, setRep] = useState([]);
