@@ -1,7 +1,7 @@
 "use client"
 import React, { useState } from "react";
 import "./dash.css";
-import Barras from "@/components/Barras";
+import Barras from "@/components/BarrasU";
 import Circular from "@/components/Circular";
 import BarrasHz from "@/components/BarrasHz";
 import CRep from "@/components/CRep";
@@ -100,7 +100,7 @@ function Dashboard() {
       <div className="grafica-barras">
         <h3>REPORTES POR ALCALDIA</h3>
         <div className="barras">
-          <Barras width={500} height={500} />
+          <Barras width={500} height={250} estados={estado} />
         </div>
       </div>
       <div className="grafica-barras-hz">
