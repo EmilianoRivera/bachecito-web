@@ -4,7 +4,8 @@ import Link from 'next/link';
 import './Navbar.css';
 import AuthContext from "../../context/AuthContext";
 import { useAuthUser } from "../../hooks/UseAuthUser";
-
+import { auth } from '../../firebase';
+import { signOut } from 'firebase/auth';
 function Navbar() {
   useAuthUser();
   const { isLogged, isAdmin } = useContext(AuthContext);
@@ -25,7 +26,16 @@ function Navbar() {
   const toggleMenu = () => {
     setMenuActive(!menuActive);
   };
-
+  const CerrarSesion = () => {
+    signOut(auth)
+      .then(() => {
+        console.log('Cierre de sesión exitoso');
+        router.push("/Cuenta"); 
+      })
+      .catch((error) => {
+        console.error('Error al cerrar sesión:', error);
+      });
+  };
   return (
     
     <div className={`navBar ${isAdmin ? 'admin' : ''} ${menuActive ? 'showMenu' : ''}`}>
@@ -56,7 +66,7 @@ function Navbar() {
                 <Link href="/Cuenta/Administrador/Mapa" className="opc-admin"><img src="https://i.postimg.cc/QMrvSSyY/marcador-de-mapa-1.png" alt="mapa" /><span className='hover-text'>Mapa</span></Link>
                 <Link href="/Cuenta/Administrador/NuevoAdmin" className="opc-admin"><img src="https://i.postimg.cc/02FTK9ds/agregar-usuario-1.png" alt="administrador nuevo" /><span className='hover-text'>Administradores</span></Link>
                 <Link href="/Cuenta/Administrador/Soporte" className="opc-admin"><img src="https://i.postimg.cc/HkMfQFB7/constructor-1.png" alt="soporte" /><span className='hover-text'>Soporte</span></Link>
-                <Link href="/Cuenta/Administrador/Perfil" className="opc-admin"><img src="https://i.postimg.cc/qRJSHq08/salida-2.png" alt="salir" /><span className='hover-text'>Salir</span></Link>
+                <Link href="#" className="opc-admin"><img src="https://i.postimg.cc/qRJSHq08/salida-2.png" alt="salir" onClick={CerrarSesion} /><span className='hover-text'>Salir</span></Link>
               </>
             ) : (
               <>
