@@ -1,19 +1,46 @@
-"use client"
+"use client";
 import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 
-export default function Circular({ width, height, estados }) {
+export default function Circular({
+  width,
+  height,
+  estados,
+  alcaldias,
+  startDates,
+  endDates,
+  filtroFechas,
+}) {
   //AQUI ESTAN LOS ESTADOS Y EL HOOK DE USEREF, QUE HACE REFERENCIA AL ELEMENTO SVG QUE ESTA EN EL HTML
+
   const svgRef = useRef();
   const tooltipRef = useRef();
   const [rep, setRep] = useState([]);
-  const [totalRep, setTotalRep] = useState(0);
+  //const [totalRep, setTotalRep] = useState(0);
   const [selectedSegment, setSelectedSegment] = useState(null);
   const [alcEstRep, setAlcEstRep] = useState();
 
-  const color = d3.scaleOrdinal()
-    .domain(rep.map(d => d.label))
-    .range(["#FF8A57", "#FFB54E", "#FFE75F", "#D3FF7A", "#90F49B", "#2EC4B6", "#49C3FB", "#65A6FA", "#5D9DD5", "#65A6FA", "#49C3FB", "#2EC4B6", "#90F49B", "#D3FF7A", "#FFE75F", "#FFB54E"]);
+  const color = d3
+    .scaleOrdinal()
+    .domain(rep.map((d) => d.label))
+    .range([
+      "#FF8A57",
+      "#FFB54E",
+      "#FFE75F",
+      "#D3FF7A",
+      "#90F49B",
+      "#2EC4B6",
+      "#49C3FB",
+      "#65A6FA",
+      "#5D9DD5",
+      "#65A6FA",
+      "#49C3FB",
+      "#2EC4B6",
+      "#90F49B",
+      "#D3FF7A",
+      "#FFE75F",
+      "#FFB54E",
+    ]);
   //SE ENCARGA DE HACER LAS PETICIONES A LOS ENDPOINTS PARA TRAER LA INFORMACIÓN QUE SE VA A GRAFICAR, EN EL SVG ES DONDE SE PINTAN LAS GRAFICAS
   useEffect(() => {
     async function fetchData() {
@@ -34,9 +61,8 @@ export default function Circular({ width, height, estados }) {
         }));
 
         setRep(dataArray);
-        setTotalRep(data2);
+        // setTotalRep(data2);
         setAlcEstRep(data3);
-      
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -44,15 +70,14 @@ export default function Circular({ width, height, estados }) {
 
     fetchData();
   }, []);
-  //FUNCION QUE SE ENCARGA DE ACTUALIZAR LA GRAFICA CON BASE AL ESTADO
-  function nuevaGraficaCircular(alcEstRep) {
-
-    console.log("LLEGO")
-  }
   //HOOK QUE SE ENCARGA DE CREAR LA GRAFICA CON BASE AL PORCETAJE QUE HAY DE REPORTES POR ALCALDIA, ESTA APARECE PRIMERO, SI HAY UN CAMBIA DE ESTADO YA APARECE LA GRAFICA DE LA FUNCION nuevaGraficaCircular
+
   useEffect(() => {
-  console.log(estados)
-     if (estados === "sin estado") {
+    if (
+      estados === "Sin Estado" &&
+      alcaldias === "Todas" &&
+      filtroFechas === "Hoy"
+    ) {
       const svg = d3.select(svgRef.current);
       const radius = Math.min(width, height) / 2;
 
@@ -106,18 +131,38 @@ export default function Circular({ width, height, estados }) {
 
       const tooltip = d3.select(tooltipRef.current);
       tooltip.style("visibility", "hidden");
-    
-     } else {
-      console.log("NUEVA GRAFICA")
-     }
-      
+    }
   }, [rep, height, width]);
-
+function nuevaGraficaCircular(
+  estados,
+  alcaldias,
+  filtroFechas,
+  startDates,
+  endDates
+) {
+  
+  console.log(estados, " ", alcaldias, " ", filtroFechas)
+}
+  useEffect(() => {
+    if (
+      estados !== "Sin Estado" ||
+      alcaldias !== "Todas" ||
+      filtroFechas !== "Hoy"
+    ) {
+      nuevaGraficaCircular(
+        estados,
+        alcaldias,
+        filtroFechas,
+        startDates,
+        endDates
+      );
+    }
+  }, [estados, alcaldias, filtroFechas, startDates, endDates]);
   //ESTE USEEFFECT SE ENCARGA DE OCULTAR LOS ELEMENTOS, Y REVISAR QUE SI CAMBIA ALGO EN EL FILTRO DEL ESTADO, SE EJECUTE LA FUNCION QUE CAMBIA LA GRAFICA
   useEffect(() => {
     if (!selectedSegment) {
       d3.select(tooltipRef.current).style("visibility", "hidden");
-    } else  {
+    } else {
       d3.select(tooltipRef.current).style("visibility", "visible");
       d3.select(tooltipRef.current)
         .select(".tooltip-label")
@@ -131,7 +176,7 @@ export default function Circular({ width, height, estados }) {
       d3.select(tooltipRef.current)
         .select(".tooltip-value")
         .text(`${percentage}%`);
-    } 
+    }
   }, [selectedSegment]);
 
   return (
