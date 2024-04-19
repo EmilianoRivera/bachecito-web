@@ -322,7 +322,7 @@ function Registro() {
 
   return (
     <div className="body">
-      <div className={`container-registroUs ${active ? "active" : ""}`} id="container">
+      <div className={`container-registroUs ${active ? "active" : ""}`} id="container-registroUs">
         <div className="form-container sign-up">
           <form id="form-registro" onSubmit={handleSignUp}>
             <h1 className="title" id="regis-title">
