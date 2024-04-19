@@ -117,3 +117,28 @@ body {
  .filtros2 img{
      width: 1.7rem;
  }
+
+.alerta-custom{
+  z-index: 100000;
+  position: fixed;
+  width: 90vw;
+  height: 80vh;
+  top: 10vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.alerta-contenido{
+  background-color: #ffffff;
+  background-color: #ffffffda;
+  backdrop-filter: blur(10px); 
+  padding: 30px;
+  border-radius: 1rem;
+  width: 30vw;
+  margin-left: 20vw;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  text-justify: justify;
+}
