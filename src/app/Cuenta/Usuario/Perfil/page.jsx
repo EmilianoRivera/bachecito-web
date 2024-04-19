@@ -12,10 +12,12 @@ import {
   query,
   where,
   getDocs,
+  getDoc,
+  doc
 } from "firebase/firestore";
 import Alerta from "@/components/Alerta2"
 import atendidoIcon from '../../../../imgs/fondoVerde.png';
-import enProcesoIcon from '../imgs/fondoAmarillo.png';
+import enProcesoIcon from '../../../../imgs/fondoAmarillo.png';
 import sinAtenderIcon from '../../../../imgs/fondoRojo.png';
 
 export default function Perfil() {
@@ -24,6 +26,7 @@ export default function Perfil() {
   const { isLogged } = useContext(AuthContext);
   const [userData, setUserData] = useState(null);
   const [reportes, setReportes] = useState([]);
+  const [foliosGuardados, setFoliosGuardados] = useState([]);
   //Obtener datos del usuario
   useEffect(() => {
     const fetchUserData = async () => {
@@ -89,6 +92,59 @@ export default function Perfil() {
   useEffect(() => {
     console.log("Estado actual de reportes:", reportes);
   }, [reportes]);
+///FOLIOS
+useEffect(() => {
+  console.log("Folios guardados:", foliosGuardados);
+  // Guardar el array de folios en la base de datos cada vez que cambie
+  guardarFoliosEnDB(foliosGuardados);
+}, [foliosGuardados]);
+
+// Función para guardar el array de folios en la base de datos
+// Función para guardar el array de folios en la base de datos
+const guardarFoliosEnDB = async (folios) => {
+  try {
+    // Realizar una consulta para encontrar el documento del usuario
+    const userQuery = query(
+      collection(db, "usuarios"),
+      where("uid", "==", userData.uid)
+    );
+
+    // Obtener el resultado de la consulta
+    const userQuerySnapshot = await getDocs(userQuery);
+
+    // Verificar si se encontró algún documento
+    if (!userQuerySnapshot.empty) {
+      // Obtener la referencia al primer documento encontrado
+      const userDocRef = userQuerySnapshot.docs[0].ref;
+
+      // Obtener el documento del usuario
+      const userDocSnap = await getDoc(userDocRef);
+
+      if (userDocSnap.exists()) {
+        // Obtener los datos actuales del documento del usuario
+        const userData = userDocSnap.data();
+        const foliosGuardadosAnteriores = userData.foliosGuardados || [];
+
+        // Combinar los folios guardados anteriores con los nuevos folios
+        const nuevosFoliosGuardados = [...foliosGuardadosAnteriores, ...folios];
+
+        // Actualizar el documento del usuario con el nuevo array de folios
+        await updateDoc(userDocRef, {
+          foliosGuardados: nuevosFoliosGuardados
+        });
+
+        console.log("Array de folios guardado en la base de datos del usuario.");
+      } else {
+        console.error("El documento del usuario no existe en la base de datos.");
+      }
+    } else {
+      console.error("No se encontró ningún documento de usuario que contenga el UID proporcionado.");
+    }
+  } catch (error) {
+    console.error("Error al guardar el array de folios:", error);
+  }
+};
+
 
   const [windowWidth, setWindowWidth] = useState(0);
   const [showLeftSide, setShowLeftSide] = useState(false);
@@ -240,10 +296,10 @@ export default function Perfil() {
 
 
                   <div className="guardar">
-                    <img
-                      src="https://i.postimg.cc/52PmmT4T/estrella.png"
-                      className="icon-star"
-                    />
+                  <button onClick={() => guardarFoliosEnDB(reporte.folio, userData)}>
+  Guardar Folio
+</button>
+
                   </div>
                 </div>
 
