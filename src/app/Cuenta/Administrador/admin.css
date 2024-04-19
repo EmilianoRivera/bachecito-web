@@ -3,10 +3,11 @@
 
 .page {
   font-family: 'Inter UI', sans-serif;
-  background: #ffffff00;
+  background: #e9232300;
   display: flex;
+  top: 13vh;
   flex-direction: column;
-  height: calc(100% - 40px);
+  height: calc(80% - 40px);
   position: absolute;
   place-content: center;
   width: calc(100% - 40px);
