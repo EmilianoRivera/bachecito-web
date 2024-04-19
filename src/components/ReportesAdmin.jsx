@@ -5,8 +5,9 @@ import '../app/Cuenta/Administrador/Reportes/Reportes.css';
 import React from 'react';
 
 export default function ReportesAdmin() {
-
     const [rep, setRep] = useState([]);
+    const [isEstadoAlertVisible, setIsEstadoAlertVisible] = useState(false);
+    const [alertaEstadoData, setAlertaEstadoData] = useState({ folio: null, estadoActual: null });
 
     function showDeleteHeader() {
         const table = document.querySelector('.containerReportesAdmin table');
@@ -31,27 +32,34 @@ export default function ReportesAdmin() {
         }
     };
 
-    const updateEstado = async (folio, estado) => {
+    //Aqui va algo
+
+
+    const showEstadoAlert = (folio, estado) => {
+        // Configura los datos de la alerta de cambio de estado
+        setAlertaEstadoData({ folio: folio, estadoActual: estado });
+        setIsEstadoAlertVisible(true);
+    };
+
+    const closeEstadoAlert = () => {
+        // Oculta la alerta de cambio de estado
+        setIsEstadoAlertVisible(false);
+    };
+
+    const updateEstado = async (folio, nuevoEstado) => {
         try {
-            const refCollection = collection(db, 'reportes');
-            const reporteQuery = query(refCollection, where("folio", "==", folio));
-            const reporteSnapshot = await getDocs(reporteQuery);
-    
-            reporteSnapshot.forEach(async (doc) => {
-                await updateDoc(doc.ref, { estado: estado });
-                console.log(`Se actualizó el estado del reporte con folio ${folio} a ${estado}`);
-                
-                // Actualizar el texto en la fila de la tabla HTML
-                const rows = document.querySelectorAll('.containerReportesAdmin .Reportes');
-                rows.forEach((row) => {
-                    if (row.querySelector('.folio').textContent === folio) {
-                        row.querySelector('.estado').textContent = estado;
-                    }
-                });
+            // Lógica para actualizar el estado del reporte en la base de datos
+            await updateEstado(folio, nuevoEstado);
+
+            // Actualizar el estado del reporte en la tabla HTML
+            const rows = document.querySelectorAll('.containerReportesAdmin .Reportes');
+            rows.forEach((row) => {
+                if (row.querySelector('.folio').textContent === folio) {
+                    row.querySelector('.estado').textContent = nuevoEstado;
+                }
             });
-    
         } catch (error) {
-            console.error("Error al actualizar el estado del reporte", error);
+            console.error("Error al cambiar el estado del reporte", error);
         }
     };
     
@@ -118,7 +126,7 @@ export default function ReportesAdmin() {
                             <td className='folio'>{report.folio}</td>
                             <td className='fecha'>{report.fechaReporte}</td>
                             <td className='fotografia' style={{ width: '120px', backgroundImage: `url(${report.imagenURL})`, backgroundSize: 'cover', backgroundPosition: 'center' }}></td>
-                            <td className='estado' onClick={() => handleEstadoClick(report.folio, report.estado)}>{report.estado}</td>
+                            <td className='estado' onClick={() => showEstadoAlert(report.folio, report.estado)}>{report.estado}</td>
                             <td className='ubicacion'>{report.ubicacion}</td>
                             <td className='no-reportes'>-</td>
                             <td className='eliminar'>
@@ -130,6 +138,22 @@ export default function ReportesAdmin() {
                     ))}
                 </tbody>
             </table>
+
+            {isEstadoAlertVisible && (
+                <div className="alerta-custom">
+                    <div className="alerta-contenido">
+                        <h2>Cambiar estado del reporte</h2>
+                        <p>Elige el nuevo estado para el reporte con folio {alertaEstadoData.folio}</p>
+                        <button onClick={() => updateEstado(alertaEstadoData.folio, 'Sin atender')}>Sin atender</button>
+                        <button onClick={() => updateEstado(alertaEstadoData.folio, 'En atención')}>En atención</button>
+                        <button onClick={() => updateEstado(alertaEstadoData.folio, 'Atendido')}>Atendido</button>
+                        <button className="boton-cerrar" onClick={closeEstadoAlert}>Cerrar</button>
+                    </div>
+                </div>
+            )}
+
         </div>
     );
 }
+
+
