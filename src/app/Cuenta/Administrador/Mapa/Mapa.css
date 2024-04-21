@@ -137,4 +137,12 @@
   .custom-date > * {
     margin-right: 5px;
   }
-  
+
+  .reportito-popup{
+    background-color: aqua;
+  }
+
+  .popup{
+    width: 200px;
+    background-color: rgb(238, 255, 0);
+  }

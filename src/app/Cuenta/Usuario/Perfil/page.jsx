@@ -15,10 +15,12 @@ import {
   getDoc,
   doc
 } from "firebase/firestore";
-import Alerta from "@/components/Alerta2"
-import atendidoIcon from '../../../../imgs/fondoVerde.png';
-import enProcesoIcon from '../../../../imgs/fondoAmarillo.png';
-import sinAtenderIcon from '../../../../imgs/fondoRojo.png';
+import Alerta from "@/components/Alerta2";
+import atendidoIcon from "../../../../imgs/fondoVerde.png";
+import enProcesoIcon from "../../../../imgs/fondoAmarillo.png";
+import sinAtenderIcon from "../../../../imgs/fondoRojo.png";
+import { userAgentFromString } from "next/server";
+
 
 export default function Perfil() {
   useAuthUser();

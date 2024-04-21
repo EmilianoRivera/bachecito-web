@@ -727,6 +727,11 @@ const polygonOptions = {
   fillColor: '#FFB471', // Relleno
 };
 
+const popupOptions = {
+  className: 'popup',
+  autoPan: false, // Deshabilitar autoPan
+};
+
 const MapAdmin = () => {
   const [markers, setMarkers] = useState([]);
 
@@ -829,16 +834,18 @@ const MapAdmin = () => {
               new L.Icon({
                 iconUrl: getIconUrl(marker.estados),
                 iconRetinaUrl: getIconUrl(marker.estados),
-                iconSize: [25, 25],
+                iconSize: [23, 23],
               })
             }
           >
-            <Popup>  <div>
-            <p>Fecha: {marker.fecha}</p>
+            <Popup {...popupOptions}>  
+              <div className="reportito-popup">
+                <p>Fecha: {marker.fecha}</p>
                 <h3>{marker.descripcion}</h3>
-                <img src={marker.imagenURL} alt="Foto del reporte" style={{ maxWidth: '100%' }} />
+                <img src={marker.imagenURL} alt="Foto del reporte" style={{ maxWidth: '100%', borderRadius:'1rem', }} />
                 <p>Estado: {marker.estados}</p>
-              </div></Popup>
+              </div>
+            </Popup>
           </Marker>
         ))}
       </MapContainer>

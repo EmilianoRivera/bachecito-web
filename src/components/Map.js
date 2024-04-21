@@ -828,7 +828,7 @@ const Map = () => {
               new L.Icon({
                 iconUrl: getIconUrl(marker.estados),
                 iconRetinaUrl: getIconUrl(marker.estados),
-                iconSize: [25, 25],
+                iconSize: [20, 20],
               })
             }
           >

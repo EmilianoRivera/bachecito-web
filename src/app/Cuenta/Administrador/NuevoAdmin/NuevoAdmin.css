@@ -52,7 +52,7 @@
   }
 
   .apellidos-container #apmat, #appat {
-  /* Permite que los campos de entrada de los apellidos se expandan para llenar el espacio disponible */
+    flex: 1;/* Permite que los campos de entrada de los apellidos se expandan para llenar el espacio disponible */
     margin-right: 8%; /* Ajusta el margen entre los campos de entrada de los apellidos */
   }
 
@@ -82,7 +82,7 @@
     margin-top: 7%;
 }
 
-.container-registroAdmin .datos{
+.container-registroAdmin .datosAdmin{
     background-color: #FFF;
     border: none;
     margin: 8px 0;
@@ -96,17 +96,17 @@
     transition: outline 0.5s ease;
 }
 
-.container-registroAdmin .datos:hover { /* Cambia el color del texto al pasar el mouse */
+.container-registroAdmin .datosAdmin:hover { /* Cambia el color del texto al pasar el mouse */
     outline-color: #FF9F49;
     border-color: #ff9f49; /* Agrega un borde naranja al pasar el mouse */
 }
 
-.container-registroAdmin .datos::placeholder {
+.container-registroAdmin .datosAdmin::placeholder {
     color: #949494; /* Color del placeholder predeterminado */
     transition: color 0.5s ease; /* Transición suave */
 }
 
-.container-registroAdmin .datos:hover::placeholder {
+.container-registroAdmin .datosAdmin:hover::placeholder {
     color: #ff9f49; /* Cambia el color del placeholder al pasar el mouse */
 }
 
