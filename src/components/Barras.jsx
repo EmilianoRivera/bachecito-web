@@ -3,7 +3,6 @@ import * as d3 from "d3";
 
 export default function Barras({ width, height }) {
   const svgRef = useRef();
-  const data = [1, 2, 3, 4];
   const [dataAlcaldia, setAlcaldiaReporte] = useState([]);
   const [totalReporte, setTotalReportes] = useState(0);
   const [semanas, setSemanas] = useState(0);
@@ -51,6 +50,8 @@ export default function Barras({ width, height }) {
   console.log("TOTAL DE REPORTES", totalReporte);
    */
   useEffect(() => {
+  const data = [1, 2, 3, 4];
+
     if (!data || !data.length) return;
 
     const svg = d3.select(svgRef.current);
