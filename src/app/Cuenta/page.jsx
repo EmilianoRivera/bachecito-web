@@ -269,7 +269,6 @@ function Registro() {
 
   const handleSignIn = async (event) => {
     event.preventDefault();
-    const router = useRouter(); // Obtener el objeto router
   
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
