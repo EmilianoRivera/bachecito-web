@@ -269,14 +269,12 @@ function Registro() {
 
   const handleSignIn = async (event) => {
     event.preventDefault();
-
+    const router = useRouter(); // Obtener el objeto router
+  
     try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
+  
       if (user && !user.emailVerified) {
         alert("Por favor, verifica tu correo electrónico para iniciar sesión.");
         signOut(auth);
@@ -284,15 +282,16 @@ function Registro() {
         const reportesRef = collection(db, "usuarios");
         const q = query(reportesRef, where("uid", "==", user.uid));
         const querySnapshot = await getDocs(q);
-
+  
         let estadoCuenta;
-
+  
         querySnapshot.forEach((doc) => {
           const data = doc.data();
           estadoCuenta = data.estadoCuenta;
         });
+  
         if (estadoCuenta === false) {
-          const confirm = window.confirm(
+          const confirm = confirm(
             "Tu cuenta ha sido desactivada. ¿Deseas restablecerla?"
           );
           if (confirm) {
@@ -302,7 +301,7 @@ function Registro() {
               });
             });
             alert("Cuenta restablecida correctamente");
-            push("/Cuenta/Usuario/Perfil");
+            router.push("/Cuenta/Usuario/Perfil"); // Utiliza router.push()
             console.log("Usuario inició sesión con éxito:", user);
           } else {
             signOut(auth);
@@ -310,7 +309,7 @@ function Registro() {
           }
         } else {
           alert("Inicio de sesión exitoso");
-          push("/Cuenta/Usuario/Perfil");
+          router.push("/Cuenta/Usuario/Perfil"); // Utiliza router.push()
           console.log("Usuario inició sesión con éxito:", user);
         }
       }
@@ -319,7 +318,6 @@ function Registro() {
       alert("Correo o contraseña incorrectos");
     }
   };
-
   return (
     <div className="body">
       <div className={`container-registroUs ${active ? "active" : ""}`} id="container-registroUs">
