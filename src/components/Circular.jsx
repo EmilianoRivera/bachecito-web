@@ -12,7 +12,6 @@ export default function Circular({
   filtroFechas,
 }) {
   //AQUI ESTAN LOS ESTADOS Y EL HOOK DE USEREF, QUE HACE REFERENCIA AL ELEMENTO SVG QUE ESTA EN EL HTML
-
   const svgRef = useRef();
   const tooltipRef = useRef();
   const [rep, setRep] = useState([]);
@@ -70,94 +69,9 @@ export default function Circular({
 
     fetchData();
   }, []);
-  //HOOK QUE SE ENCARGA DE CREAR LA GRAFICA CON BASE AL PORCETAJE QUE HAY DE REPORTES POR ALCALDIA, ESTA APARECE PRIMERO, SI HAY UN CAMBIA DE ESTADO YA APARECE LA GRAFICA DE LA FUNCION nuevaGraficaCircular
 
-  useEffect(() => {
-    if (
-      estados === "Sin Estado" &&
-      alcaldias === "Todas" &&
-      filtroFechas === "Hoy"
-    ) {
-      const svg = d3.select(svgRef.current);
-      const radius = Math.min(width, height) / 2;
 
-      const pie = d3.pie().value((d) => d.value);
 
-      const arc = d3.arc().innerRadius(50).outerRadius(radius);
-
-      const arcs = svg
-        .selectAll("arc")
-        .data(pie(rep))
-        .enter()
-        .append("g")
-        .attr("class", "arc")
-        .attr("transform", `translate(${width / 2}, ${height / 2})`);
-
-      arcs
-        .append("path")
-        .attr("fill", (d) => color(d.data.label))
-        .attr("d", arc)
-        .on("mouseover", (event, d) => {
-          setSelectedSegment(d);
-        })
-        .on("mouseout", () => {
-          setSelectedSegment(null);
-        });
-
-      arcs
-        .append("text")
-        .attr("transform", (d) => `translate(${arc.centroid(d)})`)
-        .attr("text-anchor", "middle")
-        .style("font-family", "Helvetica, sans-serif")
-        .text((d) => d.data.label.toUpperCase());
-
-      // Agregar el porcentaje fijo debajo de cada alcaldía
-      arcs
-        .append("text")
-        .attr("transform", (d) => {
-          const centroid = arc.centroid(d);
-          const x = centroid[0];
-          const y = centroid[1] + 20; // Ajusta la posición vertical del porcentaje fijo
-          return `translate(${x}, ${y})`;
-        })
-        .attr("text-anchor", "middle")
-        .attr("dy", "1em") // Ajusta la distancia vertical del texto
-        .text(
-          (d) =>
-            `${(((d.endAngle - d.startAngle) / (2 * Math.PI)) * 100).toFixed(
-              2
-            )}%`
-        );
-
-      const tooltip = d3.select(tooltipRef.current);
-      tooltip.style("visibility", "hidden");
-    }
-  }, [rep, height, width]);
-function nuevaGraficaCircular(
-  estados,
-  alcaldias,
-  filtroFechas,
-  startDates,
-  endDates
-) {
-  
-  console.log(estados, " ", alcaldias, " ", filtroFechas)
-}
-  useEffect(() => {
-    if (
-      estados !== "Sin Estado" ||
-      alcaldias !== "Todas" ||
-      filtroFechas !== "Hoy"
-    ) {
-      nuevaGraficaCircular(
-        estados,
-        alcaldias,
-        filtroFechas,
-        startDates,
-        endDates
-      );
-    }
-  }, [estados, alcaldias, filtroFechas, startDates, endDates]);
   //ESTE USEEFFECT SE ENCARGA DE OCULTAR LOS ELEMENTOS, Y REVISAR QUE SI CAMBIA ALGO EN EL FILTRO DEL ESTADO, SE EJECUTE LA FUNCION QUE CAMBIA LA GRAFICA
   useEffect(() => {
     if (!selectedSegment) {
@@ -178,6 +92,87 @@ function nuevaGraficaCircular(
         .text(`${percentage}%`);
     }
   }, [selectedSegment]);
+
+  graficaCircular()
+  
+  function graficaCircular(estado = estados, alcaldia=alcaldias, filtroFecha=filtroFechas, startDate=startDates, endDate=endDates) {
+      const svg = d3.select(svgRef.current);
+      const radius = Math.min(width, height) / 2;
+      if (estados === "Sin Estado" && alcaldias === "Todas" && filtroFechas === "Hoy") {
+        const pie = d3.pie().value((d) => d.value);
+    
+          const arc = d3.arc().innerRadius(50).outerRadius(radius);
+    
+          const arcs = svg
+            .selectAll("arc")
+            .data(pie(rep))
+            .enter()
+            .append("g")
+            .attr("class", "arc")
+            .attr("transform", `translate(${width / 2}, ${height / 2})`);
+    
+          arcs
+            .append("path")
+            .attr("fill", (d) => color(d.data.label))
+            .attr("d", arc)
+            .on("mouseover", (event, d) => {
+              setSelectedSegment(d);
+            })
+            .on("mouseout", () => {
+              setSelectedSegment(null);
+            });
+    
+          arcs
+            .append("text")
+            .attr("transform", (d) => `translate(${arc.centroid(d)})`)
+            .attr("text-anchor", "middle")
+            .style("font-family", "Helvetica, sans-serif")
+            .text((d) => d.data.label.toUpperCase());
+    
+          // Agregar el porcentaje fijo debajo de cada alcaldía
+          arcs
+            .append("text")
+            .attr("transform", (d) => {
+              const centroid = arc.centroid(d);
+              const x = centroid[0];
+              const y = centroid[1] + 20; // Ajusta la posición vertical del porcentaje fijo
+              return `translate(${x}, ${y})`;
+            })
+            .attr("text-anchor", "middle")
+            .attr("dy", "1em") // Ajusta la distancia vertical del texto
+            .text(
+              (d) =>
+                `${(((d.endAngle - d.startAngle) / (2 * Math.PI)) * 100).toFixed(
+                  2
+                )}%`
+            );
+    
+          const tooltip = d3.select(tooltipRef.current);
+          tooltip.style("visibility", "hidden");
+    
+      } else {
+        /* async function fetchFiltroEstado() {
+          try {
+            const response = await fetch(`/api/${estado}`); // Reemplaza "tuRuta" con la ruta adecuada de tu API
+            if (!response.ok) {
+              throw new Error("Failed to fetch data");
+            }
+            const reportes = await response.json();
+            // Haz lo que necesites con los datos
+            console.log(reportes);
+          } catch (error) {
+            console.error("Error fetching reportes: ", error);
+          }
+        }
+      
+        fetchFiltroEstado(); */
+          console.log(alcEstRep)
+        }
+    
+      
+  }
+
+
 
   return (
     <div style={{ position: "relative", width, height }}>
