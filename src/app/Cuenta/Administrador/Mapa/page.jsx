@@ -3,6 +3,7 @@ import dynamic from "next/dynamic";
 import Circular from "@/components/Circular2";
 import "./Mapa.css";
 import React, { useState } from "react";
+import Image from "next/image";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -68,7 +69,7 @@ export default function MapAdmin() {
       <div className="filtros2">
         <div className="filtro" id="fechas">
           <label onClick={() => setIsFechaSelectVisible(!isFechaSelectVisible)}>
-          <img src="https://i.postimg.cc/hPbM6PxS/calendario-reloj.png" alt={``} />
+          <Image src="https://i.postimg.cc/hPbM6PxS/calendario-reloj.png" alt={``} />
             Rango Fechas
           </label>
           {isFechaSelectVisible && (
@@ -102,7 +103,7 @@ export default function MapAdmin() {
           <label
             onClick={() => setIsAlcaldiaSelectVisible(!isAlcaldiaSelectVisible)}
           >
-            <img src="https://i.postimg.cc/wjw2xf0Z/marcador_(1).png" alt={``} />
+            <Image src="https://i.postimg.cc/wjw2xf0Z/marcador_(1).png" alt={``} />
             Alcaldía
           </label>
           {isAlcaldiaSelectVisible && (
@@ -120,7 +121,7 @@ export default function MapAdmin() {
           <label
             onClick={() => setIsEstadoSelectVisible(!isEstadoSelectVisible)}
           >
-            <img src="https://i.postimg.cc/bwyLhcH1/bandera-alt.png" alt={``} />
+            <Image src="https://i.postimg.cc/bwyLhcH1/bandera-alt.png" alt={``} />
             Estado
           </label>
           {isEstadoSelectVisible && (

@@ -6,6 +6,7 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import AOS from 'aos'; 
 import 'aos/dist/aos.css'; 
+import Image from "next/image";
 import "./Sobre_Nosotros.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -73,13 +74,13 @@ function SobreNosotros() {
             Acerca de Bachecito 26
           </h1>
           <p class="text">
-            Proyecto desarrollado por estudiantes del Centro de
-            Estudios Científicos y Tecnológicos 9 "Juan de Dios Bátiz".
-          </p>
+    Proyecto desarrollado por estudiantes del Centro de
+    Estudios Científicos y Tecnológicos 9 &quot;Juan de Dios Bátiz&quot;.
+  </p>
           <a href="../app/page.jsx" class="btn btn-primary">Inicio</a>
         </div>
         <div class="hero__img">
-          <img src="" alt=""/>
+          <Image src="" alt=""/>
         </div>
       </section>
    
@@ -156,7 +157,7 @@ function SobreNosotros() {
           <a href="#" class="btn btn-primary">Comenzar</a>
         </div>
         <div class="about__details-img">
-          <img src="" alt=""/>
+          <Image src="" alt=""/>
         </div>
       </div>
     </section>
@@ -315,7 +316,7 @@ function SobreNosotros() {
     <div className='Seccion6'>
           <div className="content-inicio-sec6">
             <div className="image-sec6-inicio">
-              <img src="https://i.postimg.cc/52xv3gjs/correo.png"/>
+              <Image src="https://i.postimg.cc/52xv3gjs/correo.png"/>
             </div>
             <div className="text-sec6-inicio">
               <p>¿Necesitas decirnos algo?<br /><a href="" id="contact-link" onClick={handleClick}>¡Mandanos un correo!</a></p>

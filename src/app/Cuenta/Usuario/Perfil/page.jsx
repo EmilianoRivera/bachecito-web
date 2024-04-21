@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { auth, db } from "../../../../../firebase";
 import AuthContext from "../../../../../context/AuthContext";
 import { useAuthUser } from "../../../../../hooks/UseAuthUser";
+import Image from "next/image";
 import {
   updateDoc,
   collection,
@@ -224,11 +225,11 @@ export default function Perfil() {
           <div class="profile-card">
             <div class="profile-image">
               {userData.imagen ? (
-                <img src={userData.imagen} alt="Imagen de perfil" />
+                <Image src={userData.imagen} alt={"Imagen de perfil"} />
               ) : (
-                <img
+                <Image
                   src="https://i.pinimg.com/564x/34/f9/c2/34f9c2822cecb80691863fdf76b29dc0.jpg"
-                  alt="Imagen de perfil predeterminada"
+                  alt={"Imagen de perfil predeterminada"}
                 />
               )}{" "}
             </div>
@@ -258,12 +259,12 @@ export default function Perfil() {
           <h2>Tu historial de reportes:</h2>
         </div>
         {reportes.map((reporte, index) => (
-          <div className="box2" id="box2">
+          <div className="box2" id="box2" key={index}>
             <div className="column-left">
               <div className="fotografía">
-                <img
+                <Image
                   src={reporte.imagenURL}
-                  alt=""
+                  alt={""}
                   style={{ maxWidth: "100%", maxHeight: "100%" }}
                 />
               </div>
@@ -272,7 +273,7 @@ export default function Perfil() {
 
                 <div className="contador">
                   <div className="icon">
-                    <img
+                    <Image
                       src="https://i.postimg.cc/s2ZYz740/exclamacion-de-diamante.png"
                       className="logo"
                     />
@@ -286,9 +287,9 @@ export default function Perfil() {
               <div className="column-right-superior">
                 <div className="estado">
                   {reporte.estado === "Sin atender" && (
-                    <img
+                    <Image
                       src={sinAtenderIcon.src}
-                      alt="Sin atender"
+                      alt={"Sin atender"}
                       style={{
                         width: "100%",
                         height: "100%",
@@ -297,9 +298,9 @@ export default function Perfil() {
                     />
                   )}
                   {reporte.estado === "En atención" && (
-                    <img
+                    <Image
                       src={enProcesoIcon.src}
-                      alt="En atención"
+                      alt={"En atención"}
                       style={{
                         width: "100%",
                         height: "100%",
@@ -308,9 +309,9 @@ export default function Perfil() {
                     />
                   )}
                   {reporte.estado === "Atendido" && (
-                    <img
+                    <Image
                       src={atendidoIcon.src}
-                      alt="Atendido"
+                      alt={"Atendido"}
                       style={{
                         width: "100%",
                         height: "100%",
@@ -346,14 +347,14 @@ export default function Perfil() {
         {showToggleButton && (
           <button id="toggleButton" onClick={toggleLeftSide}>
             {showLeftSide ? (
-              <img
+              <Image
                 src="https://i.postimg.cc/kMxkBZBm/angulo-izquierdo.png"
-                alt="Cerrar"
+                alt={"Cerrar"}
               />
             ) : (
-              <img
+              <Image
                 src="https://i.postimg.cc/NMkBsTBm/angulo-derecho.png"
-                alt="Abrir"
+                alt={"Abrir"}
               />
             )}
           </button>
