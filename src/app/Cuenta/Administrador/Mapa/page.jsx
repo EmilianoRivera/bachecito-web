@@ -68,10 +68,7 @@ export default function MapAdmin() {
       <div className="filtros2">
         <div className="filtro" id="fechas">
           <label onClick={() => setIsFechaSelectVisible(!isFechaSelectVisible)}>
-            <img
-              src="https://i.postimg.cc/hPbM6PxS/calendario-reloj.png"
-              alt=""
-            />
+          <img src="https://i.postimg.cc/hPbM6PxS/calendario-reloj.png" alt={``} />
             Rango Fechas
           </label>
           {isFechaSelectVisible && (
@@ -105,13 +102,13 @@ export default function MapAdmin() {
           <label
             onClick={() => setIsAlcaldiaSelectVisible(!isAlcaldiaSelectVisible)}
           >
-            <img src="https://i.postimg.cc/wjw2xf0Z/marcador_(1).png" alt="" />
+            <img src="https://i.postimg.cc/wjw2xf0Z/marcador_(1).png" alt={``} />
             Alcaldía
           </label>
           {isAlcaldiaSelectVisible && (
             <select onChange={handleAlcaldiaChange}>
-              {alcaldiasCDMX.map((alcaldia, index) => (
-                <option key={index} value={alcaldia}>
+              {alcaldiasCDMX.map((alcaldia) => (
+                <option key={alcaldia} value={alcaldia}>
                   {alcaldia}
                 </option>
               ))}
@@ -123,7 +120,7 @@ export default function MapAdmin() {
           <label
             onClick={() => setIsEstadoSelectVisible(!isEstadoSelectVisible)}
           >
-            <img src="https://i.postimg.cc/bwyLhcH1/bandera-alt.png" />
+            <img src="https://i.postimg.cc/bwyLhcH1/bandera-alt.png" alt={``} />
             Estado
           </label>
           {isEstadoSelectVisible && (
