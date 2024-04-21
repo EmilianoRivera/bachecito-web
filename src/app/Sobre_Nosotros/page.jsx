@@ -290,7 +290,7 @@ function SobreNosotros() {
             <h3 class="services__title">Enviar Reporte</h3>
             <p class="service__text">
               Todos los reportes de bache realizados por los usuarios de nuestra aplicación
-              son eviados a este sistema web en el apartado de "Reportes".
+              son eviados a este sistema web en el apartado de Reportes.
             </p>
             <div class="arrow-icon">
               <i class="fas fa-arrow-right"></i>
