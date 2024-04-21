@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import React from "react";
 import "./Reportes.css";
 import ReportesAdmin  from "@/components/ReportesAdmin";
-import RutaProtegida from "@/components/RutaProtegida";
 
 export default function Reportes() {
   const [reportes, setReportes] = useState([]);

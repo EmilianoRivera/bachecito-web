@@ -3,8 +3,9 @@ import React, { useState } from 'react';
 import {auth, db} from "../../../../../firebase";
 import {createUserWithEmailAndPassword, sendEmailVerification}from "firebase/auth";
 import { addDoc, collection } from 'firebase/firestore';
+import "./NuevoAdmin.css";
 
-function NuevoAdmin() {
+export default function NuevoAdmin() {
     const [username, setUsername] = useState('');
     const [appat, setAppat] = useState('');
     const [apmat, setApmat] = useState('');
@@ -72,81 +73,102 @@ function NuevoAdmin() {
     //apellido paterno, materno, fech nac, correo
 
     return (
-        <div>
-        <p>Ruta de mel</p>
-        <br /><br />
-        <h2>Hola, este es un formulario para el nuevo admin :D</h2>
 
-        <form onSubmit={registroAdmin}>
-            <label htmlFor="username">Nombre de Usuario: </label>
-            <input
-                type="text"
-                id="username"
-                name="username"
-                value={username}
-                onChange={handleUsername}
-                required
-            />
-            <br /><br />
+    <div className='body-registroAdmin'>
+            
+        <div className='container-registroAdmin'>
 
-            <label htmlFor="appat">Apellido Paterno: </label>
-            <input 
-                type="text"
-                id="appat"
-                name="appat"
-                value={appat}
-                onChange={handleAppat}
-                required
-            />
-            <br /><br />
+        <div className='nuevo_admin'>
 
-            <label htmlFor="apmat">Apellido Materno: </label>
-            <input 
-                type="text" 
-                id="apmat"
-                name="apmat"
-                value={apmat}
-                onChange={handleApmat}
-                required
-            />
-            <br /><br />
+            <p id="textito-admin">¿Necesitas ayuda con el trabajo?</p>
+            <h2 id="titulo-admin">¡Vamos a agregar otro Administrador!</h2>
+            <div className='formulario-registroAdmin'>
+                <form onSubmit={registroAdmin}>
+                    
+                    <input
+                        className='datos'
+                        type="text"
+                        id="username"
+                        name="username"
+                        value={username}
+                        onChange={handleUsername}
+                        required
+                        placeholder='Nombre(s)'
+                    />
+                    <br/>
 
-            <label htmlFor="fechaNacimiento">Fecha de nacimiento: </label>
-            <input 
-                type="date" 
-                id='fechaNacimiento'
-                name="fechaNacimiento"
-                value={fechaNacimiento}
-                onChange={handleFechaNacimiento}
-                required
-            />
-            <br /><br />
+                    <div className="apellidos-container">
+                        <input 
+                        className='datos'
+                        type="text"
+                        id="appat"
+                        name="appat"
+                        value={appat}
+                        onChange={handleAppat}
+                        required
+                        placeholder='Apellido Paterno'
+                    />
+                
+                    <input
+                        className='datos'
+                        type="text" 
+                        id="apmat"
+                        name="apmat"
+                        value={apmat}
+                        onChange={handleApmat}
+                        required
+                        placeholder='Apellido Materno'
+                    />
+                    </div>
 
-            <label htmlFor="correo">Correo: </label>
-            <input 
-                type="text" 
-                id='correo'
-                name="correo"
-                value={correo}
-                onChange={handleCorreo}
-                required
-            />
-            <br /><br />
-            <label htmlFor="password">Contraseña: </label>
-            <input 
-                type="text" 
-                id='password'
-                name="password"
-                value={password}
-                onChange={handlePass}
-                required
-            />
-            <br /><br />
-            <button type="submit" >Enviar</button>
-        </form>
+                    <input 
+                        className='datos'
+                        type="date" 
+                        id='fechaNacimiento'
+                        name="fechaNacimiento"
+                        value={fechaNacimiento}
+                        onChange={handleFechaNacimiento}
+                        required
+                        placeholder='Fecha de Nacimiento'
+                    />
+                    <br/>
+
+                    <input 
+                        className='datos'
+                        type="text" 
+                        id='correo'
+                        name="correo"
+                        value={correo}
+                        onChange={handleCorreo}
+                        required
+                        placeholder='Correo electrónico'
+                    />
+                    <br/>
+                    <input 
+                        className='datos'
+                        type="text" 
+                        id='password'
+                        name="password"
+                        value={password}
+                        onChange={handlePass}
+                        required
+                        placeholder='Contraseña'
+                    />
+                    <br/>
+
+                    <button type="submit" id="btn-registrarUsuario">Registrarse</button>
+                </form>
+            </div>
+
 
         </div>
+
+        <div className='imagen-nuevoAdmin'>
+            <img src="https://i.postimg.cc/sXkS5jM1/Imagen-registro-Admin.png" alt="" />
+        </div>
+        
+        </div>
+
+    </div>
   );
 }
-
-export default NuevoAdmin;

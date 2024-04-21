@@ -1,4 +1,13 @@
-"use client";
+import React from 'react'
+
+function page() {
+  return (
+    <div>page</div>
+  )
+}
+
+export default page
+/* "use client";
 import React, { useState, useEffect, useContext } from 'react';
 import './perfil.css';
 import { signOut } from "firebase/auth";
@@ -250,4 +259,4 @@ export default function Dashboard(){
     </div>
     
   );
-}
+} */

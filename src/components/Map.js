@@ -769,7 +769,7 @@ const Map = () => {
         return atendidoIcon.src;
       case "En atención":
         return enProcesoIcon.src;
-      case "Sin Atender":
+      case "Sin atender":
         return sinAtenderIcon.src;
       default:
         return MarkerIcon.src; // Icono por defecto si el estado no coincide con ninguno de los casos anteriores

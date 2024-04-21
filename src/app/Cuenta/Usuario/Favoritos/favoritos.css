@@ -17,17 +17,17 @@
 }
 
 #title-main{
-    color: #FFD557;
+    color: #FF9F49;
     font-family: "Baloo Thambi 2", system-ui;
     font-weight: 600;
-
+    font-size: 1.8rem;
 }
 
 #textito{
     color: #6F6F6F;
     font-family: "Baloo Thambi 2", system-ui;
     font-weight: 500;
-
+    font-size: 1.3rem;
 }
 
 .container-tipos {
@@ -250,6 +250,8 @@
     overflow-y: auto; /* Agrega scroll vertical si el contenido es más largo que el área visible */
     height: calc(100vh - 100px); /* Ajusta la altura para que ocupe el resto de la ventana después de los títulos */
     padding-top: 100px; /* Asegura que el contenido no se oculte debajo de los títulos fijos */
+    transition: opacity 2s ease;
+
 }
 
 .titles {
@@ -268,21 +270,19 @@
     margin-top: 4%; /* Ajusta según sea necesario */
   }
 
- ::-webkit-scrollbar {
-    width: 10px;
-    transition: 1s; /* Ancho de la barra de desplazamiento */
-  }
-  
-::-webkit-scrollbar-track {
-    background: #f1f1f1; /* Color de fondo de la barra de desplazamiento */
-  }
-  
-  ::-webkit-scrollbar-thumb {
-    background: linear-gradient(transparent, #FF9F49);
-    border-radius: 6px; /* Color del control deslizante */
-  }
-  
-  ::-webkit-scrollbar-thumb:hover {
-    background: linear-gradient(transparent, #FF7A3E);
+  ::-webkit-scrollbar {
+    width: 10px; /* Ancho de la barra de desplazamiento */
+}
 
-  }
+::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Color del fondo de la barra de desplazamiento */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #d1d1d1; /* Color de la barra de desplazamiento */
+    border-radius: 5px; /* Radio de la esquina de la barra de desplazamiento */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #c9c9c9; /* Color de la barra de desplazamiento al pasar el mouse sobre ella */
+}
