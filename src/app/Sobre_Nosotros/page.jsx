@@ -6,7 +6,6 @@ import 'slick-carousel/slick/slick.css';
 import 'slick-carousel/slick/slick-theme.css';
 import AOS from 'aos'; 
 import 'aos/dist/aos.css'; 
-import Image from "next/image";
 import "./Sobre_Nosotros.css";
 import { Swiper, SwiperSlide } from "swiper/react";
 
@@ -80,7 +79,7 @@ function SobreNosotros() {
           <a href="../app/page.jsx" class="btn btn-primary">Inicio</a>
         </div>
         <div class="hero__img">
-          <Image src="" alt=""/>
+          <img src="" alt=""/>
         </div>
       </section>
    
@@ -157,7 +156,7 @@ function SobreNosotros() {
           <a href="#" class="btn btn-primary">Comenzar</a>
         </div>
         <div class="about__details-img">
-          <Image src="" alt=""/>
+          <img src="" alt=""/>
         </div>
       </div>
     </section>
@@ -316,7 +315,7 @@ function SobreNosotros() {
     <div className='Seccion6'>
           <div className="content-inicio-sec6">
             <div className="image-sec6-inicio">
-              <Image src="https://i.postimg.cc/52xv3gjs/correo.png"/>
+              <img src="https://i.postimg.cc/52xv3gjs/correo.png"/>
             </div>
             <div className="text-sec6-inicio">
               <p>¿Necesitas decirnos algo?<br /><a href="" id="contact-link" onClick={handleClick}>¡Mandanos un correo!</a></p>

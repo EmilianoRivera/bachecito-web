@@ -13,7 +13,6 @@ import atendidoIcon from '../imgs/BanderaVerdeConFondo.png';
 import enProcesoIcon from '../imgs/BanderaAmarillaConFondo.png';
 import sinAtenderIcon from '../imgs/BanderaRojaConFondo.png';
 import { useEffect, useState } from "react";
-import Image from "next/image";
 const polygon = [
   [19.592749, -99.12369],
   [19.588528, -99.126953],
@@ -835,7 +834,7 @@ const Map = () => {
             <Popup>  <div>
             <p>Fecha: {marker.fecha}</p>
                 <h3>{marker.descripcion}</h3>
-                <Image src={marker.imagenURL} alt={"Foto del reporte"} style={{ maxWidth: '100%' }} />
+                <img src={marker.imagenURL} alt={"Foto del reporte"} style={{ maxWidth: '100%' }} />
                 <p>Estado: {marker.estados}</p>
               </div></Popup>
           </Marker>
