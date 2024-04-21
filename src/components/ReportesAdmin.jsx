@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { db, collection, getDocs, updateDoc, doc , query, where} from "../../firebase"; 
 import '../app/Cuenta/Administrador/Reportes/Reportes.css';
 import React from 'react';
+import Image from "next/image";
 
 export default function ReportesAdmin() {
     const [rep, setRep] = useState([]);
@@ -128,8 +129,9 @@ export default function ReportesAdmin() {
                             <td className='ubicacion'>{report.ubicacion}</td>
                             <td className='no-reportes'>-</td>
                             <td className='eliminar'>
-                                <button className="btn-eliminarRP" onClick={() => showDeleteAlert(report.folio)}>
+                              <button className="btn-eliminarRP" onClick={() => showDeleteAlert(report.folio)}>
                                     <img src="https://i.postimg.cc/02gZVXL3/basura.png" alt="" />
+
                                 </button>
                             </td>
                         </tr>
