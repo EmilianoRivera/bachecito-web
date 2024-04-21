@@ -831,12 +831,14 @@ const Map = () => {
               })
             }
           >
-            <Popup>  <div>
-            <p>Fecha: {marker.fecha}</p>
-                <h3>{marker.descripcion}</h3>
-                <img src={marker.imagenURL} alt="Foto del reporte" style={{ maxWidth: '100%' }} />
-                <p>Estado: {marker.estados}</p>
-              </div></Popup>
+            <Popup id="popup">  
+              <div className="reportito-popup">
+                <img src={marker.imagenURL} alt="Foto del reporte" style={{ maxWidth: '95px', borderRadius:'1rem', }} />
+                <p className="fecha-popup">Fecha: {marker.fecha}</p>
+                <p className="estado-popup">Estado: {marker.estados}</p>
+                <p className="descripcion-popup">Descripción: {marker.descripcion}</p>
+              </div>
+            </Popup>
           </Marker>
         ))}
       </MapContainer>

@@ -12,7 +12,6 @@ import enProcesoIcon from '../imgs/BanderaAmarillaConFondo.png';
 import sinAtenderIcon from '../imgs/BanderaRojaConFondo.png';
 import { useEffect, useState } from "react";
 
-
 const polygon = [
   [19.592749, -99.12369],
   [19.588528, -99.126953],
@@ -720,17 +719,11 @@ const polygon = [
   [19.591994, -99.119454],
 ];
 
-
-
 const polygonOptions = {
   color: '#ff9f49', // Borde
   fillColor: '#FFB471', // Relleno
 };
 
-const popupOptions = {
-  className: 'popup',
-  autoPan: false, // Deshabilitar autoPan
-};
 
 const MapAdmin = () => {
   const [markers, setMarkers] = useState([]);
@@ -838,12 +831,12 @@ const MapAdmin = () => {
               })
             }
           >
-            <Popup {...popupOptions}>  
+            <Popup id="popup">  
               <div className="reportito-popup">
-                <p>Fecha: {marker.fecha}</p>
-                <h3>{marker.descripcion}</h3>
-                <img src={marker.imagenURL} alt="Foto del reporte" style={{ maxWidth: '100%', borderRadius:'1rem', }} />
-                <p>Estado: {marker.estados}</p>
+                <img src={marker.imagenURL} alt="Foto del reporte" style={{ maxWidth: '95px', borderRadius:'1rem', }} />
+                <p className="fecha-popup">Fecha: {marker.fecha}</p>
+                <p className="estado-popup">Estado: {marker.estados}</p>
+                <p className="descripcion-popup">Descripción: {marker.descripcion}</p>
               </div>
             </Popup>
           </Marker>
