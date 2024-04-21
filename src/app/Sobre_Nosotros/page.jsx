@@ -74,7 +74,7 @@ function SobreNosotros() {
           </h1>
           <p class="text">
     Proyecto desarrollado por estudiantes del Centro de
-    Estudios Científicos y Tecnológicos 9 &quot;Juan de Dios Bátiz&quot;.
+    Estudios Científicos y Tecnológicos 9 Juan de Dios Bátiz;.
   </p>
           <a href="../app/page.jsx" class="btn btn-primary">Inicio</a>
         </div>
