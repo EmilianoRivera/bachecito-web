@@ -18,22 +18,6 @@ export default function ReportesAdmin() {
         const table = document.querySelector('.containerReportesAdmin table');
         table.classList.remove('show-header');
     }
-    
-    const handleEstadoClick = async (folio, estado) => {
-        const newState = prompt(`Presione 1 para Sin atender, 2 para En atención, 3 para Atendido`);
-        if (newState === '1') {
-            await updateEstado(folio, 'Sin atender');
-        } else if (newState === '2') {
-            await updateEstado(folio, 'En atención');
-        } else if (newState === '3') {
-            await updateEstado(folio, 'Atendido');
-        } else {
-            alert('Opción inválida');
-        }
-    };
-
-    //Aqui va algo
-
 
     const showEstadoAlert = (folio, estado) => {
         // Configura los datos de la alerta de cambio de estado
@@ -106,6 +90,20 @@ export default function ReportesAdmin() {
         }
     };
 
+    const [isDeleteAlertVisible, setIsDeleteAlertVisible] = useState(false);
+    const [deleteAlertData, setDeleteAlertData] = useState({ folio: null });
+
+    // Función para mostrar la alerta de eliminación
+    const showDeleteAlert = (folio) => {
+        setDeleteAlertData({ folio: folio });
+        setIsDeleteAlertVisible(true);
+    };
+
+    // Función para ocultar la alerta de eliminación
+    const closeDeleteAlert = () => {
+        setIsDeleteAlertVisible(false);
+    };
+
     return (
         <div className="containerReportesAdmin">
             <table>
@@ -130,7 +128,7 @@ export default function ReportesAdmin() {
                             <td className='ubicacion'>{report.ubicacion}</td>
                             <td className='no-reportes'>-</td>
                             <td className='eliminar'>
-                                <button className="btn-eliminarRP" onClick={() => {handleClick(report.folio)}}>
+                                <button className="btn-eliminarRP" onClick={() => showDeleteAlert(report.folio)}>
                                     <img src="https://i.postimg.cc/02gZVXL3/basura.png" alt="" />
                                 </button>
                             </td>
@@ -142,12 +140,26 @@ export default function ReportesAdmin() {
             {isEstadoAlertVisible && (
                 <div className="alerta-custom">
                     <div className="alerta-contenido">
-                        <h2>Cambiar estado del reporte</h2>
-                        <p>Elige el nuevo estado para el reporte con folio {alertaEstadoData.folio}</p>
-                        <button onClick={() => updateEstado(alertaEstadoData.folio, 'Sin atender')}>Sin atender</button>
-                        <button onClick={() => updateEstado(alertaEstadoData.folio, 'En atención')}>En atención</button>
-                        <button onClick={() => updateEstado(alertaEstadoData.folio, 'Atendido')}>Atendido</button>
-                        <button className="boton-cerrar" onClick={closeEstadoAlert}>Cerrar</button>
+                        <button className="boton-cerrar" onClick={closeEstadoAlert}><img src="https://i.postimg.cc/C5pcdxv9/cancelar.png"/></button>
+                        <h2 className="titulooo">Cambiar estado del reporte</h2>
+                        <p className="textooo">Elige el nuevo estado para el reporte con folio {alertaEstadoData.folio}</p>
+                        <button onClick={() => updateEstado(alertaEstadoData.folio, 'Sin atender')} className="opc-cambios1">Sin atender</button>
+                        <button onClick={() => updateEstado(alertaEstadoData.folio, 'En atención')} className="opc-cambios2">En atención</button>
+                        <button onClick={() => updateEstado(alertaEstadoData.folio, 'Atendido')} className="opc-cambios3">Atendido</button>
+                        <button className="boton-aceptar" onClick={closeEstadoAlert}>Aceptar</button>
+                    </div>
+                </div>
+            )}
+
+            {isDeleteAlertVisible && (
+                <div className="alerta-custom2">
+                    <div className="alerta-contenido2">
+                        <h2 className="titulooo">Confirmar Eliminación</h2>
+                        <p className="textooo">¿Estás seguro de que quieres eliminar el reporte con folio {deleteAlertData.folio}?</p>
+                        <div className="opciones">
+                            <button className="boton-eliminar" onClick={() => {handleClick(deleteAlertData.folio); closeDeleteAlert();}}>Eliminar</button>
+                            <button className="boton-cancelar" onClick={closeDeleteAlert}>Cancelar</button>
+                        </div>
                     </div>
                 </div>
             )}

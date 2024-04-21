@@ -15,6 +15,7 @@ import {
   getDoc,
   doc,
 } from "firebase/firestore";
+
 import Alerta from "@/components/Alerta2";
 import atendidoIcon from "../../../../imgs/fondoVerde.png";
 import enProcesoIcon from "../../../../imgs/fondoAmarillo.png";
