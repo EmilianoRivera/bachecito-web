@@ -1,0 +1,36 @@
+
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+
+        <title>Desplegar un mapa básico</title>  <!-- Título de la página -->
+        
+        <link rel="stylesheet" href="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.css" />  <!-- creo que este el el css del mapa -->
+        
+        <script src="http://cdn.leafletjs.com/leaflet-0.7.3/leaflet.js"></script>     <!-- creo que este es el js del mapa -->
+        
+        
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet.locatecontrol@0.79.0/dist/L.Control.Locate.min.css" /> <!-- css de la geolocalización -->
+        <script src="./L.Control.Locate.min.js" charset="utf-8"></script> <!-- script de la geolocalización -->
+        
+        <link rel="stylesheet" href="./style.css">
+
+    </head>
+        
+    <body>
+
+        <form id="coordForm"> <!-- este es el formulario de prueba para ingresar las coordenadas -->
+            <label for="lat">Latitud:</label>
+            <input type="text" id="lat" name="lat" placeholder="Ej. 19.453986">
+            <label for="lng">Longitud:</label>
+            <input type="text" id="lng" name="lng" placeholder="Ej. -99.175050"><br>
+            <button type="submit">Mostrar en el mapa</button><br><br>
+        </form>
+
+        <div id="map"></div>
+           
+    </body>
+    <script src="./script.js"></script>
+
+</html>
+

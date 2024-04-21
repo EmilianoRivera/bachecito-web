@@ -1,0 +1,179 @@
+.container-mapa-admin{
+ margin-left: 1rem;
+ width: 90vw;
+ margin-top: 10vh;
+ height: 87vh;
+ display: block;
+}
+
+.mapita{
+    position: relative;
+    z-index: 10;
+}
+
+.container-graphics{
+    background-color: rgba(255, 0, 0, 0);
+    position: fixed;
+    top: 27vh;
+    z-index: 1000;
+    right: 8vw;
+}
+
+.btn-ocultar{
+    border: none;
+    right: 8.2vw;
+    position: fixed;
+    top: 20vh;
+    z-index: 1000;
+    padding: 10px;
+    border-radius: 5rem;
+    background-color: #ff9f49;
+    color: white;
+}
+
+
+/*Filtros*/
+.filtros2{
+    width: 70%;
+    height: 8vh;
+    background-color: #F1F1F1;
+    margin-bottom: 2vh;
+    border-radius: 1.5rem;
+    align-items: center;
+    display: flex;
+    position: relative;
+    z-index: 1000;
+    justify-content: space-between;
+    font-family: 'Poppins', sans-serif;
+   }
+   
+   #fechas img{
+       width: 1.7rem;
+       margin-right: 1rem;
+   }
+
+   #alcaldia img{
+    width: 1.7rem;
+    margin-right: 1rem;
+    }
+    
+    #estado img{
+    width: 1.7rem;
+    margin-right: 1rem;
+    }
+
+  .filtro {
+    height: 8vh;
+    flex: 1;
+    margin-right: 10px;
+    align-items: center;
+    padding-left: 2rem;
+    display:flex;
+  }
+
+  .filtro label {
+    font-size: 17px;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    color: #ff9f49;
+    position:absolute;
+  }
+
+  #fechas label{
+    display: flex;
+    align-items: center;
+    font-size: 17px;
+    margin-bottom: 5px;
+    color: #ff9f49;
+  }
+  
+  .filtro select {
+    width: 70%;
+    display: block;
+    padding: 5px;
+    font-size: 14px;
+    border: none;
+    background-color: #F1F1F1;
+    border-radius: 1rem;
+    color: #6F6F6F;
+    transform: translateY(5vh) translateX(3vw);
+  }
+
+  .filtro select option{
+    border-radius: 1rem;
+    border: none;
+  }
+
+  .filtro select option:hover{
+    background-color: #ff9f49;
+
+  }
+
+  #fechas select {
+    width: 70%;
+    padding: 5px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: none;
+    background-color: #F1F1F1;
+    border-radius: 1rem;
+    color: #6F6F6F;
+  }
+  
+  .custom-date {
+    display: flex;
+    margin-top: 5px;
+    transform: translateY(5vh) translateX(3.2vw);
+  }
+
+  .custom-date .datepicker {
+    padding: 5px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+  .custom-date > * {
+    margin-right: 5px;
+  }
+
+  .reportito-popup{
+    display: flex;
+  }
+
+  .leaflet-popup-content-wrapper {
+    width: 250px !important;
+    max-width: 250px !important;
+    height: 200px !important;
+    background-color: #ffffffa6 !important;
+    max-height: 200px !important;
+    backdrop-filter: blur(2px) !important;
+}
+
+
+.leaflet-popup-tip-container .leaflet-popup-tip{
+    background-color: #ffffff9a !important;
+    backdrop-filter: blur(3px) !important;
+}
+
+.fecha-popup{
+    width: 120px;
+    left: 125px;
+    top: 0;
+    position: fixed;
+  }
+
+  .estado-popup{
+    width: 120px;
+    left: 125px;
+    top: 22px;
+    position: fixed;
+  }
+
+  .descripcion-popup{
+    width: 120px;
+    left: 125px;
+    top: 55px;
+    position: fixed;
+  }
