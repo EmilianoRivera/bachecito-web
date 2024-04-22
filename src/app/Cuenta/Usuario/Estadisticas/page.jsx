@@ -1,5 +1,4 @@
 "use client"
-import Map from "@/components/Map";
 import React, { useState } from "react";
 import CRep from "@/components/CRepU";
 import Circular from "@/components/BarrasU"; 
