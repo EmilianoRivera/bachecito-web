@@ -5,7 +5,7 @@ import React from "react";
 import atendidoIcon from '../imgs/fondoVerde.png';
 import enProcesoIcon from '../imgs/fondoAmarillo.png';
 import sinAtenderIcon from '../imgs/fondoRojo.png';
-import Image from "next/image"
+
 function ReportesComponente() {
   const [rep, setRep] = useState([]);
 
@@ -34,7 +34,7 @@ function ReportesComponente() {
         <div className="prueba">
           <div className="columnm-left">
             <div className="fotografía">
-              <Image src={report.imagenURL} alt={""} style={{ maxWidth: '100%', maxHeight: '100%' }}/>
+              <img src={report.imagenURL} alt={""} style={{ maxWidth: '100%', maxHeight: '100%' }}/>
             </div>
 
             <div className="column-left-inferior">
@@ -42,7 +42,7 @@ function ReportesComponente() {
 
               <div className="contador">
                 <div className="icon">
-                  <Image
+                  <img
                     src="https://i.postimg.cc/s2ZYz740/exclamacion-de-diamante.png"
                     className="logo"
                   />
@@ -56,16 +56,16 @@ function ReportesComponente() {
           <div className="column-right">
               <div className="column-right-superior">
                 <div className="estado">  {report.estado === "Sin atender" && (
-    <Image src={sinAtenderIcon.src} alt={"Sin atender"}   style={{ width: "100%", height: "100%", borderRadius: "5vh" }} />
+    <img src={sinAtenderIcon.src} alt={"Sin atender"}   style={{ width: "100%", height: "100%", borderRadius: "5vh" }} />
   )}
   {report.estado === "En atención" && (
-    <Image src={enProcesoIcon.src} alt={"En atención"}   style={{ width: "100%", height: "100%", borderRadius: "5vh" }}/>
+    <img src={enProcesoIcon.src} alt={"En atención"}   style={{ width: "100%", height: "100%", borderRadius: "5vh" }}/>
   )}
   {report.estado === "Atendido" && (
-    <Image src={atendidoIcon.src} alt={"Atendido"}  style={{ width: "100%", height: "100%", borderRadius: "5vh" }} />
+    <img src={atendidoIcon.src} alt={"Atendido"}  style={{ width: "100%", height: "100%", borderRadius: "5vh" }} />
   )}</div>
                 <div className="guardar">
-                  <Image
+                  <img
                     src="https://i.postimg.cc/52PmmT4T/estrella.png"
                     className="icon-star"
                   />
