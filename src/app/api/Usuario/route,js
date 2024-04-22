@@ -1,0 +1,22 @@
+import { auth, db, query, collection, where, getDocs } from '../../../../firebase';
+import { NextResponse } from "next/server";
+
+export default async function GET(req, res) {
+  try {
+    const userQuery = query(
+      collection(db, 'usuarios'),
+      where('uid', '==', auth.currentUser.uid) // Ajusta esto según cómo envíes el UID desde el cliente
+    );
+    const userDocs = await getDocs(userQuery);
+
+    if (!userDocs.empty) {
+      const userData = userDocs.docs[0].data();
+      return NextResponse.send(200, userData);
+    } else {
+      return NextResponse.send(404, { error: 'Usuario no encontrado' });
+    }
+  } catch (error) {
+    console.error('Error al obtener datos del usuario:', error);
+    return NextResponse.send(500, { error: 'Error interno del servidor' });
+  }
+}

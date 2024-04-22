@@ -13,14 +13,12 @@ import {
   where,
   getDocs,
   getDoc,
-  doc
 } from "firebase/firestore";
 import Alerta from "@/components/Alerta2";
 import atendidoIcon from "../../../../imgs/fondoVerde.png";
 import enProcesoIcon from "../../../../imgs/fondoAmarillo.png";
 import sinAtenderIcon from "../../../../imgs/fondoRojo.png";
 import { userAgentFromString } from "next/server";
-
 
 export default function Perfil() {
   useAuthUser();
@@ -29,71 +27,38 @@ export default function Perfil() {
   const [userData, setUserData] = useState(null);
   const [reportes, setReportes] = useState([]);
   const [foliosGuardados, setFoliosGuardados] = useState([]);
-  //Obtener datos del usuario
+  
   useEffect(() => {
-    const fetchUserData = async () => {
-      if (isLogged) {
-        try {
-          // Realizar la consulta para obtener los datos del usuario
-          const userQuery = query(
-            collection(db, "usuarios"),
-            where("uid", "==", auth.currentUser.uid)
-          );
-          const userDocs = await getDocs(userQuery);
-
-          // Si hay documentos en el resultado de la consulta
-          if (!userDocs.empty) {
-            // Obtener el primer documento (debería haber solo uno)
-            const userDoc = userDocs.docs[0];
-            // Obtener los datos del documento
-            const userData = userDoc.data();
-            // Establecer los datos del usuario en el estado
-            setUserData(userData);
-          } else {
-            console.log("No se encontró el documento del usuario");
-          }
-        } catch (error) {
-          console.error("Error al obtener los datos del usuario:", error);
+    async function fetchData() {
+      try {
+        const userResponse = await fetch("/api/Usuario");
+        if (!userResponse.ok) {
+          throw new Error("Failed to fetch user data");
         }
-      }
-    };
+        const userData = await userResponse.json();
+        setUserData(userData);
 
-    fetchUserData();
-  }, [isLogged]);
-
-  //REPORTES
-  useEffect(() => {
-    const obtenerReportes = async () => {
-      // Verificar si userData no es null y tiene la propiedad uid
-      if (userData && userData.uid) {
-        const reportesRef = collection(db, "reportes");
-        const q = query(reportesRef, where("uidUsuario", "==", userData.uid));
-
-        try {
-          const querySnapshot = await getDocs(q);
-          const fetchedReportes = [];
-          querySnapshot.forEach((doc) => {
-            fetchedReportes.push({
-              id: doc.id,
-              ...doc.data(),
-            });
-          });
-          console.log(
-            "Reportes obtenidos de la base de datos:",
-            fetchedReportes
-          );
-          setReportes(fetchedReportes);
-        } catch (error) {
-          console.error("Error al obtener reportes:", error);
+        const reportesResponse = await fetch("/api/ReportesPerfil", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ uid: userData.uid }),
+        });
+        if (!reportesResponse.ok) {
+          throw new Error("Failed to fetch reportes");
         }
+        const reportesData = await reportesResponse.json();
+        setReportes(reportesData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
       }
-    };
-    obtenerReportes();
+    }
+
+    if (userData) {
+      fetchData();
+    }
   }, [userData]);
-
-  useEffect(() => {
-    console.log("Estado actual de reportes:", reportes);
-  }, [reportes]);
 ///FOLIOS
 useEffect(() => {
   console.log("Folios guardados:", foliosGuardados);
