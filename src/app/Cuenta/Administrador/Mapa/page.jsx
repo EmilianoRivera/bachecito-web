@@ -69,7 +69,7 @@ export default function MapAdmin() {
       <div className="filtros2">
         <div className="filtro" id="fechas">
           <label onClick={() => setIsFechaSelectVisible(!isFechaSelectVisible)}>
-          <Image src="https://i.postimg.cc/hPbM6PxS/calendario-reloj.png" alt={``} />
+          <Image src="https://i.postimg.cc/hPbM6PxS/calendario-reloj.png" width={100} height={25}/>
             Rango Fechas
           </label>
           {isFechaSelectVisible && (
@@ -103,7 +103,7 @@ export default function MapAdmin() {
           <label
             onClick={() => setIsAlcaldiaSelectVisible(!isAlcaldiaSelectVisible)}
           >
-            <Image src="https://i.postimg.cc/wjw2xf0Z/marcador_(1).png" alt={``} />
+            <Image src="https://i.postimg.cc/wjw2xf0Z/marcador_(1).png" width={100} height={25}/>
             Alcaldía
           </label>
           {isAlcaldiaSelectVisible && (
@@ -121,7 +121,7 @@ export default function MapAdmin() {
           <label
             onClick={() => setIsEstadoSelectVisible(!isEstadoSelectVisible)}
           >
-            <Image src="https://i.postimg.cc/bwyLhcH1/bandera-alt.png" alt={``} />
+            <Image src="https://i.postimg.cc/bwyLhcH1/bandera-alt.png" width={90} height={25}/>
             Estado
           </label>
           {isEstadoSelectVisible && (
