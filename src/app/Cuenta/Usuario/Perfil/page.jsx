@@ -307,8 +307,8 @@ export default function Perfil() {
 
                 
                 <div className="guardar">
-                  {userData && userData.foliosGuardados && userData.foliosGuardados.includes(reporte.folio) ? (
-                    <img src={estrella2.src}
+                  {userData && userData.uid && userData.foliosGuardados && userData.foliosGuardados.includes(reporte.folio) ? (
+                    <img src="https://i.postimg.cc/W335wqws/estrella-2.png"
                       className="icon-star" alt="Folio guardado" onClick={() => guardarFoliosEnDB(reporte.folio, userData)}/>
                   ) : (
                     <img className="icon-star" src={estrella.src} alt="Guardar folio" onClick={() => guardarFoliosEnDB(reporte.folio, userData)} />

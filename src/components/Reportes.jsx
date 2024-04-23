@@ -186,9 +186,9 @@ function ReportesComponente() {
     <img src={atendidoIcon.src} alt={"Atendido"}  style={{ width: "100%", height: "100%", borderRadius: "5vh" }} />
   )}</div>
                 <div className="guardar">
-                {userData && userData.foliosGuardados && userData.foliosGuardados.includes(report.folio) ? (
+                {userData && userData.uid && userData.foliosGuardados && userData.foliosGuardados.includes(report.folio) ? (
     <img className="icon-star" src="https://i.postimg.cc/W335wqws/estrella-2.png"
-                     alt="Folio guardado" />
+                     alt="Folio guardado" onClick={() => guardarFoliosEnDB(report.folio, userData)} />
   ) : (
     <img className="icon-star" src={estrella.src} alt="Guardar folio" onClick={() => guardarFoliosEnDB(report.folio, userData)} />
   )}
