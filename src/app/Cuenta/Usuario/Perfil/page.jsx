@@ -18,7 +18,8 @@ import Alerta from "@/components/Alerta2";
 import atendidoIcon from "../../../../imgs/fondoVerde.png";
 import enProcesoIcon from "../../../../imgs/fondoAmarillo.png";
 import sinAtenderIcon from "../../../../imgs/fondoRojo.png";
-
+import estrella from "../../../../imgs/estrella.png";
+import estrella2 from "../../../../imgs/estrella2.png";
 export default function Perfil() {
   useAuthUser();
   const router = useRouter();
@@ -198,7 +199,7 @@ export default function Perfil() {
 
   return (
     <div className="container-perfil">
-      {/* <Alerta pageId="Pagina-Perfil"></Alerta> */} 
+      {/* <Alerta pageId="Pagina-Perfil"></Alerta> */}
       {isLogged && userData && (
         <div id="leftSide" style={{ display: showLeftSide ? "block" : "none" }}>
           <div className="profile-card">
@@ -304,15 +305,24 @@ export default function Perfil() {
                   )}
                 </div>
 
-                
                 <div className="guardar">
-                  {userData && userData.foliosGuardados && userData.foliosGuardados.includes(reporte.folio) ? (
-                    <img src="https://i.postimg.cc/W335wqws/estrella-2.png"
-                      className="icon-star" alt="Folio guardado" />
+                  {userData &&
+                  userData.foliosGuardados &&
+                  userData.foliosGuardados.includes(reporte.folio) ? (
+                    <img
+                      src={estrella2.src}
+                      className="icon-star"
+                      alt="Folio guardado"
+                      onClick={() => guardarFoliosEnDB(reporte.folio, userData)}
+                    />
                   ) : (
-                    <img className="icon-star" src={estrella.src} alt="Guardar folio" onClick={() => guardarFoliosEnDB(reporte.folio, userData)} />
+                    <img
+                      className="icon-star"
+                      src={estrella.src}
+                      alt="Guardar folio"
+                      onClick={() => guardarFoliosEnDB(reporte.folio, userData)}
+                    />
                   )}
-
                 </div>
               </div>
 
