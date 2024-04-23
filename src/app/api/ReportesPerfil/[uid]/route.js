@@ -16,8 +16,7 @@ export async function GET(request, {params}) {
         id: doc.id,
         ...doc.data(),
       });
-    });
-    console.log("ESTO VIENE DE LA API: ", fetchedReportes)
+    }); 
     return NextResponse.json(fetchedReportes);
   } catch (error) {
     
