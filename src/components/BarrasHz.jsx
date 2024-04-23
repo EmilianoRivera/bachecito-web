@@ -58,7 +58,10 @@ export default function BarrasHz ({  width, height }) {
       .attr("transform", `translate(0, ${height})`)
       .call(d3.axisBottom(xScale));
 
-  }, [height, width]);
+ 
+  }, [ height, width]);
+ 
+ 
 
   return <svg ref={svgRef} width={width} height={height}></svg>;
 }

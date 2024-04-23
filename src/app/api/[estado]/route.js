@@ -13,13 +13,7 @@ export async function GET(request, {params}) {
 
     reportes.forEach((doc) => {
       const reporte = doc.data();
-      if (reporte.estado === "Sin atender") {
-        sinAtender += 1
-      } else if (reporte.estado === "En atención") {
-        enAtencion += 1
-      } else {
-        atendido += 1
-      }
+       
     });
     return NextResponse.json({ estado });
   } catch (error) {

@@ -6,6 +6,7 @@ import AuthContext from "../../context/AuthContext";
 import { useAuthUser } from "../../hooks/UseAuthUser";
 import { auth } from '../../firebase';
 import { signOut } from 'firebase/auth';
+import { useRouter } from 'next/navigation';
 import ConfirmationAlert from '@/components/ConfirmationAlert'; // Importa el componente de alerta de confirmación
 
 function Navbar() {
@@ -14,7 +15,7 @@ function Navbar() {
   const [menuActive, setMenuActive] = useState(false);
   const [showMenuIcon, setShowMenuIcon] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false); // Estado para mostrar la alerta de confirmación
-
+  const router = useRouter()
   useEffect(() => {
     const handleResize = () => {
       setShowMenuIcon(window.innerWidth <= 800);
