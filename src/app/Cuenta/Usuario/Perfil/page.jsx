@@ -18,7 +18,10 @@ import Alerta from "@/components/Alerta2";
 import atendidoIcon from "../../../../imgs/fondoVerde.png";
 import enProcesoIcon from "../../../../imgs/fondoAmarillo.png";
 import sinAtenderIcon from "../../../../imgs/fondoRojo.png";
+import estrella from "../../../../imgs/estrella.png";
+import estrella2 from "../../../../imgs/estrella2.png";
 import { userAgentFromString } from "next/server";
+
 
 export default function Perfil() {
   useAuthUser();
@@ -27,39 +30,74 @@ export default function Perfil() {
   const [userData, setUserData] = useState(null);
   const [reportes, setReportes] = useState([]);
   const [foliosGuardados, setFoliosGuardados] = useState([]);
-  
+  //Obtener datos del usuario
   useEffect(() => {
-    async function fetchData() {
-      try {
-        const userResponse = await fetch("/api/Usuario");
-        if (!userResponse.ok) {
-          throw new Error("Failed to fetch user data");
-        }
-        const userData = await userResponse.json();
-        setUserData(userData);
+    const fetchUserData = async () => {
+      if (isLogged) {
+        try {
+          // Realizar la consulta para obtener los datos del usuario
+          const userQuery = query(
+            collection(db, "usuarios"),
+            where("uid", "==", auth.currentUser.uid)
+          );
+          const userDocs = await getDocs(userQuery);
 
-        const reportesResponse = await fetch("/api/ReportesPerfil", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ uid: userData.uid }),
-        });
-        if (!reportesResponse.ok) {
-          throw new Error("Failed to fetch reportes");
+          // Si hay documentos en el resultado de la consulta
+          if (!userDocs.empty) {
+            // Obtener el primer documento (debería haber solo uno)
+            const userDoc = userDocs.docs[0];
+            // Obtener los datos del documento
+            const userData = userDoc.data();
+            // Establecer los datos del usuario en el estado
+            setUserData(userData);
+          } else {
+            console.log("No se encontró el documento del usuario");
+          }
+        } catch (error) {
+          console.error("Error al obtener los datos del usuario:", error);
         }
-        const reportesData = await reportesResponse.json();
-        setReportes(reportesData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
       }
-    }
+    };
 
-    if (userData) {
-      fetchData();
-    }
+    fetchUserData();
+  }, [isLogged]);
+
+  //REPORTES
+  useEffect(() => {
+    const obtenerReportes = async () => {
+      // Verificar si userData no es null y tiene la propiedad uid
+      if (userData && userData.uid) {
+        const reportesRef = collection(db, "reportes");
+        const q = query(reportesRef, where("uidUsuario", "==", userData.uid));
+
+        try {
+          const querySnapshot = await getDocs(q);
+          const fetchedReportes = [];
+          querySnapshot.forEach((doc) => {
+            fetchedReportes.push({
+              id: doc.id,
+              ...doc.data(),
+            });
+          });
+          console.log(
+            "Reportes obtenidos de la base de datos:",
+            fetchedReportes
+          );
+          setReportes(fetchedReportes);
+        } catch (error) {
+          console.error("Error al obtener reportes:", error);
+        }
+      }
+    };
+    obtenerReportes();
   }, [userData]);
+
+  useEffect(() => {
+    console.log("Estado actual de reportes:", reportes);
+  }, [reportes]);
+
 ///FOLIOS
+
 useEffect(() => {
   console.log("Folios guardados:", foliosGuardados);
   // Guardar el array de folios en la base de datos cada vez que cambie
@@ -68,47 +106,70 @@ useEffect(() => {
 
 // Función para guardar el array de folios en la base de datos
 // Función para guardar el array de folios en la base de datos
-const guardarFoliosEnDB = async (folios) => {
-  try {
-    // Realizar una consulta para encontrar el documento del usuario
-    const userQuery = query(
-      collection(db, "usuarios"),
-      where("uid", "==", userData.uid)
-    );
+const guardarFoliosEnDB = async (folio, userData) => {
+  try {    // Verificar si userData no es null y tiene la propiedad uid
+    if (userData && userData.uid) {
+      // Realizar una consulta para encontrar el documento del usuario
+      const userQuery = query(
+        collection(db, "usuarios"),
+        where("uid", "==", userData.uid)
+      );
 
-    // Obtener el resultado de la consulta
-    const userQuerySnapshot = await getDocs(userQuery);
+      // Obtener el resultado de la consulta
+      const userQuerySnapshot = await getDocs(userQuery);
 
-    // Verificar si se encontró algún documento
-    if (!userQuerySnapshot.empty) {
-      // Obtener la referencia al primer documento encontrado
-      const userDocRef = userQuerySnapshot.docs[0].ref;
+      // Verificar si se encontró algún documento
+      if (!userQuerySnapshot.empty) {
+        // Obtener la referencia al primer documento encontrado
+        const userDocRef = userQuerySnapshot.docs[0].ref;
 
-      // Obtener el documento del usuario
-      const userDocSnap = await getDoc(userDocRef);
+        // Obtener el documento del usuario
+        const userDocSnap = await getDoc(userDocRef);
 
-      if (userDocSnap.exists()) {
-        // Obtener los datos actuales del documento del usuario
-        const userData = userDocSnap.data();
-        const foliosGuardadosAnteriores = userData.foliosGuardados || [];
+        if (userDocSnap.exists()) {
+          // Obtener los datos actuales del documento del usuario
+          const userData = userDocSnap.data();
+          const foliosGuardadosAnteriores = userData.foliosGuardados || [];
 
-        // Combinar los folios guardados anteriores con los nuevos folios
-        const nuevosFoliosGuardados = [...foliosGuardadosAnteriores, ...folios];
+          // Verificar si el folio ya ha sido guardado previamente
+          if (foliosGuardadosAnteriores.includes(folio)) {
+            // Eliminar el folio del array de folios guardados
+            const nuevosFoliosGuardados = foliosGuardadosAnteriores.filter(
+              (f) => f !== folio
+            );
 
-        // Actualizar el documento del usuario con el nuevo array de folios
-        await updateDoc(userDocRef, {
-          foliosGuardados: nuevosFoliosGuardados
-        });
+            // Actualizar el documento del usuario con el nuevo array de folios
+            await updateDoc(userDocRef, {
+              foliosGuardados: nuevosFoliosGuardados,
+            });
 
-        console.log("Array de folios guardado en la base de datos del usuario.");
+            console.log("Folio eliminado de la base de datos del usuario.");
+          } else {
+            // Agregar el nuevo folio al array de folios guardados
+            const nuevosFoliosGuardados = [...foliosGuardadosAnteriores, folio];
+
+            // Actualizar el documento del usuario con el nuevo array de folios
+            await updateDoc(userDocRef, {
+              foliosGuardados: nuevosFoliosGuardados,
+            });
+
+            console.log("Folio guardado en la base de datos del usuario.");
+          }
+        } else {
+          console.error(
+            "El documento del usuario no existe en la base de datos."
+          );
+        }
       } else {
-        console.error("El documento del usuario no existe en la base de datos.");
+        console.error(
+          "No se encontró ningún documento de usuario que contenga el UID proporcionado."
+        );
       }
     } else {
-      console.error("No se encontró ningún documento de usuario que contenga el UID proporcionado.");
+      console.error("No se proporcionaron datos de usuario válidos.");
     }
   } catch (error) {
-    console.error("Error al guardar el array de folios:", error);
+    console.error("Error al guardar el folio en la base de datos:", error);
   }
 };
 
@@ -177,7 +238,7 @@ const guardarFoliosEnDB = async (folios) => {
 
   return (
       <div className="container-perfil">
-          <Alerta pageId="Pagina-Perfil"></Alerta>
+          {/* <Alerta pageId="Pagina-Perfil"></Alerta> */}
         {isLogged && userData && (
           <div
             id="leftSide"
@@ -223,7 +284,7 @@ const guardarFoliosEnDB = async (folios) => {
             <h2>Tu historial de reportes:</h2>
           </div>
           {reportes.map((reporte, index) => (
-            <div className="box2" id="box2">
+            <div className="box2" id="box2" key={index}>
               <div className="column-left">
                 <div className="fotografía">
                   <img
@@ -263,9 +324,12 @@ const guardarFoliosEnDB = async (folios) => {
 
 
                   <div className="guardar">
-                  <button onClick={() => guardarFoliosEnDB(reporte.folio, userData)}>
-  Guardar Folio
-</button>
+                  {userData && userData.foliosGuardados && userData.foliosGuardados.includes(reporte.folio) ? (
+    <img  src="https://i.postimg.cc/W335wqws/estrella-2.png"
+    className="icon-star"  alt="Folio guardado" />
+  ) : (
+    <img className="icon-star" src={estrella.src} alt="Guardar folio" onClick={() => guardarFoliosEnDB(reporte.folio, userData)} />
+  )}
 
                   </div>
                 </div>
