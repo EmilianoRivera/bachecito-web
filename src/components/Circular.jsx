@@ -14,10 +14,10 @@ export default function Circular({
   //AQUI ESTAN LOS ESTADOS Y EL HOOK DE USEREF, QUE HACE REFERENCIA AL ELEMENTO SVG QUE ESTA EN EL HTML
   const svgRef = useRef();
   const tooltipRef = useRef();
-  const [rep, setRep] = useState([]);
+  const [rep, setRep] = useState([]); //guarda los reportes totales por alcaldia
   //const [totalRep, setTotalRep] = useState(0);
   const [selectedSegment, setSelectedSegment] = useState(null);
-  const [alcEstRep, setAlcEstRep] = useState();
+  const [alcEstRep, setAlcEstRep] = useState(); //este guardar por alcaldia, la cantidad de reportes que tienen x estado
 
   const color = d3
     .scaleOrdinal()
@@ -102,7 +102,7 @@ export default function Circular({
         const pie = d3.pie().value((d) => d.value);
     
           const arc = d3.arc().innerRadius(50).outerRadius(radius);
-    
+
           const arcs = svg
             .selectAll("arc")
             .data(pie(rep))
@@ -151,22 +151,22 @@ export default function Circular({
           tooltip.style("visibility", "hidden");
     
       } else {
-        /* async function fetchFiltroEstado() {
+        async function fetchFiltroEstado() {
           try {
-            const response = await fetch(`/api/${estado}`); // Reemplaza "tuRuta" con la ruta adecuada de tu API
-            if (!response.ok) {
-              throw new Error("Failed to fetch data");
+            const datosNuevos = await fetch(`/api/filtros/estado=${estado}/alcaldia=${alcaldia}/fecha=${filtroFechas}/startDate=${startDate}/endDate=${endDate}`);  
+            if (!datosNuevos.ok) {
+              throw new Error("Fallo a la petición de /api/filtros/estado/${estado}");
             }
-            const reportes = await response.json();
-            // Haz lo que necesites con los datos
-            console.log(reportes);
+            const estadosReportes = await datosNuevos.json();
+            console.log(estadosReportes);
+           
           } catch (error) {
-            console.error("Error fetching reportes: ", error);
+            console.error("Error a la hora de hacer la petición a /api/filtros/estado/${estado}: ", error);
           }
         }
       
-        fetchFiltroEstado(); */
-          console.log(alcEstRep)
+        fetchFiltroEstado();
+
         }
     
       
