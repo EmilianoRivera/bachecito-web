@@ -10,7 +10,7 @@ export default function Estadisticas() {
   const [estado, setEstado] = useState("Sin Estado");
   return (
     <div className="container">
-      <Alerta pageId="Pagina-Estadisticas2"></Alerta>
+      {/* <Alerta pageId="Pagina-Estadisticas2"></Alerta> */}
 
       <div className="izquierda-mapa">
 
