@@ -3,15 +3,15 @@
 import React, { useState } from "react";
 import CRep from "@/components/CRepU";
 import Circular from "@/components/BarrasU"; 
- 
+ /* 
 import Alerta from "@/components/Alerta1"
-
+ */
  
 export default function Estadisticas() {
   const [estado, setEstado] = useState("Sin Estado");
   return (
     <div className="container">
-      <Alerta pageId="Pagina-Estadisticas2"></Alerta>
+      {/* <Alerta pageId="Pagina-Estadisticas2"></Alerta> */}
 
       <div className="izquierda-mapa">
 
