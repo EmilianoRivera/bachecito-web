@@ -130,7 +130,7 @@ export default function ReportesAdmin() {
                             <td className='fotografia' style={{ width: '120px', backgroundImage: `url(${report.imagenURL})`, backgroundSize: 'cover', backgroundPosition: 'center' }}></td>
                             <td className='estado' onClick={() => showEstadoAlert(report.folio, report.estado)}>{report.estado}</td>
                             <td className='ubicacion'>{report.ubicacion}</td>
-                            <td className='no-reportes'>-</td>
+                            <td className='no-reportes'>{report.contador}</td>
                             <td className='eliminar'>
                               <button className="btn-eliminarRP" onClick={() => showDeleteAlert(report.folio)}>
                                     <img src="https://i.postimg.cc/02gZVXL3/basura.png" alt="" />
