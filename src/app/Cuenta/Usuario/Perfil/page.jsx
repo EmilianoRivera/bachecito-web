@@ -262,7 +262,7 @@ export default function Perfil() {
                       className="logo"
                     />
                   </div>
-                  <div className="number"></div>
+                  <div className="number">{reporte.contador}</div>
                 </div>
               </div>
             </div>

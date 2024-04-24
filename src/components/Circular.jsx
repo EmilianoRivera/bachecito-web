@@ -153,7 +153,7 @@ export default function Circular({
       } else {
         /* async function fetchFiltroEstado() {
           try {
-            const datosNuevos = await fetch(`/api/filtros/estado=${estado}/alcaldia=${alcaldia}/fecha=${filtroFechas}/startDate=${startDate}/endDate=${endDate}`);  
+            const datosNuevos = await fetch(`/api/filtros/estado=${estado}/alcaldia=${alcaldia}/fecha=${filtroFecha}/startDate=${startDate}/endDate=${endDate}`);  
             if (!datosNuevos.ok) {
               throw new Error("Fallo a la petición de /api/filtros/estado/${estado}");
             }

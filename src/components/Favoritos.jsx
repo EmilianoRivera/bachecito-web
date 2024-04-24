@@ -197,7 +197,7 @@ function Favoritos() {
                         />
                       </div>
                       <div className="number">
-                        0
+                        {report.contador}
                       </div>
                     </div>
                   </div>
