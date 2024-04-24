@@ -779,6 +779,7 @@ const MapAdmin = () => {
     try {
       console.log("ESTA ES LA: ", ubi)
       const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
+      console.log(apiKey)
       const encodedAddress = encodeURIComponent(ubi);
       const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodedAddress}&key=${apiKey}`);
       const data = await response.json();
