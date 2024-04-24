@@ -59,6 +59,7 @@ export default function BarrasHz ({  width, height }) {
       .call(d3.axisBottom(xScale));
 
  
+ 
   }, [ height, width]);
  
  
