@@ -6,12 +6,16 @@ import AuthContext from "../../context/AuthContext";
 import { useAuthUser } from "../../hooks/UseAuthUser";
 import { auth } from '../../firebase';
 import { signOut } from 'firebase/auth';
+import { useRouter } from 'next/navigation';
+import ConfirmationAlert from '@/components/ConfirmationAlert'; // Importa el componente de alerta de confirmación
+
 function Navbar() {
   useAuthUser();
   const { isLogged, isAdmin } = useContext(AuthContext);
   const [menuActive, setMenuActive] = useState(false);
   const [showMenuIcon, setShowMenuIcon] = useState(false);
-
+  const [showConfirmation, setShowConfirmation] = useState(false); // Estado para mostrar la alerta de confirmación
+  const router = useRouter()
   useEffect(() => {
     const handleResize = () => {
       setShowMenuIcon(window.innerWidth <= 800);
@@ -26,7 +30,9 @@ function Navbar() {
   const toggleMenu = () => {
     setMenuActive(!menuActive);
   };
-  const CerrarSesion = () => {
+
+  const handleLogout = () => {
+    // Función para manejar el cierre de sesión después de la confirmación
     signOut(auth)
       .then(() => {
         console.log('Cierre de sesión exitoso');
@@ -36,8 +42,19 @@ function Navbar() {
         console.error('Error al cerrar sesión:', error);
       });
   };
+
+  const handleLogoutConfirmation = () => {
+    // Función para manejar la confirmación de cierre de sesión
+    handleLogout();
+    setShowConfirmation(false);
+  };
+
+  const CerrarSesion = () => {
+    // Función para mostrar la alerta de confirmación antes de cerrar sesión
+    setShowConfirmation(true);
+  };
+
   return (
-    
     <div className={`navBar ${isAdmin ? 'admin' : ''} ${menuActive ? 'showMenu' : ''}`}>
       <Link href="/" className="bachecito26">
         <img
@@ -60,7 +77,6 @@ function Navbar() {
           <>
             {isAdmin ? (
               <>
-              
                 <Link href="/Cuenta/Administrador/Dashboard" className="opc-admin"><img src="https://i.postimg.cc/3JkMwkG1/estadisticas-1.png" alt="estadisticas" /><span className='hover-text'>Dashboard</span></Link>
                 <Link href="/Cuenta/Administrador/Reportes" className="opc-admin"><img src="https://i.postimg.cc/6QLgPnsW/encuesta-h-1.png" alt="reportes" /><span className='hover-text'>Reportes</span></Link>
                 <Link href="/Cuenta/Administrador/Mapa" className="opc-admin"><img src="https://i.postimg.cc/QMrvSSyY/marcador-de-mapa-1.png" alt="mapa" /><span className='hover-text'>Mapa</span></Link>
@@ -103,6 +119,14 @@ function Navbar() {
          </>
         )}
       </div>
+
+      {showConfirmation && (
+          <ConfirmationAlert className='alerta-custom-navbar'
+            message="¿Está seguro de que desea cerrar sesión?"
+            onConfirm={handleLogoutConfirmation}
+            onCancel={() => setShowConfirmation(false)}
+          />
+      )}
     </div>
   );
 }
