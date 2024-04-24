@@ -6,7 +6,7 @@ export async function GET(request, {params}) {
     const uid = params.uid
     console.log(uid)
     const userQuery = query(
-      collection(db, "reportes"), where("uidUsuario", "==", uid)
+      collection(db, "reportes"), where("uidUsuario", "==", uid), where("eliminado", "==", false)
     );
     
     const userDocs = await getDocs(userQuery);
