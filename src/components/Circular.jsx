@@ -151,7 +151,7 @@ export default function Circular({
           tooltip.style("visibility", "hidden");
     
       } else {
-        async function fetchFiltroEstado() {
+        /* async function fetchFiltroEstado() {
           try {
             const datosNuevos = await fetch(`/api/filtros/estado=${estado}/alcaldia=${alcaldia}/fecha=${filtroFechas}/startDate=${startDate}/endDate=${endDate}`);  
             if (!datosNuevos.ok) {
@@ -165,7 +165,7 @@ export default function Circular({
           }
         }
       
-        fetchFiltroEstado();
+        fetchFiltroEstado(); */
 
         }
     
