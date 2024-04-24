@@ -12,15 +12,15 @@ export default function Barras({ width, height }) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch("/api/g2");
+       //const response = await fetch("/api/g2");
         const totalReportesResponse = await fetch("/api/reportesTotales");
 
-        if (!response.ok || !totalReportesResponse.ok) {
+        if (/* !response.ok || */ !totalReportesResponse.ok) {
           throw new Error("Failed to fetch data");
         }
 
-        const { contAlcaldias, fechaMenor, fechaMayor, semanas } =
-          await response.json();
+        /* const { contAlcaldias, fechaMenor, fechaMayor, semanas } =
+          await response.json(); */
         const totalReportes = await totalReportesResponse.json();
 
         const dataArray = Object.entries(contAlcaldias).map(

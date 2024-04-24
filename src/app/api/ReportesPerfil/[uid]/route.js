@@ -23,3 +23,4 @@ export async function GET(request, {params}) {
     return NextResponse.error("Error al obtener reportes", { status: 500 });
   }
 }
+ 
