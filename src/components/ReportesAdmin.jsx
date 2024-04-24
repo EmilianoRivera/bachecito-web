@@ -66,17 +66,19 @@ export default function ReportesAdmin() {
         fetchData();
     }, []);
 
-    const handleClick = async (folio) =>  {
+    const handleClick = async (folio) => {
         try {
             const refCollection = collection(db, 'reportes');
-            const reportesSnapshot = await getDocs(refCollection);
-            
-            reportesSnapshot.forEach(async (reporteDoc) => {
-                const reporte = reporteDoc.data();
+            const querySnapshot = await getDocs(refCollection);
+    
+            querySnapshot.forEach(async (doc) => {
+                const reporte = doc.data();
                 if (reporte.folio === folio) {
-                 
-                    console.log(`Se quito el reporte con folio ${folio}`);
+                    // Actualizar el documento para establecer eliminado: true
+                    await updateDoc(doc.ref, { eliminado: true });
                     
+                    console.log(`Se marcó como eliminado el reporte con folio ${folio}`);
+    
                     // Eliminar la fila de la tabla HTML
                     const rows = document.querySelectorAll('.containerReportesAdmin .Reportes');
                     rows.forEach((row) => {
@@ -90,6 +92,7 @@ export default function ReportesAdmin() {
             console.error("Error al obtener los reportes", error);
         }
     };
+    
 
     const [isDeleteAlertVisible, setIsDeleteAlertVisible] = useState(false);
     const [deleteAlertData, setDeleteAlertData] = useState({ folio: null });

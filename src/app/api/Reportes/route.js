@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
-import { db, collection, getDocs } from "../../../../firebase";
+import { db, collection, getDocs, query, where } from "../../../../firebase";
 
 export async function GET(request) {
   try {
     const reportesRef = collection(db, 'reportes')
-
-    const reportesSnapshot = await getDocs(reportesRef);
+    const q = query(reportesRef, where("eliminado", "==", false));
+    const reportesSnapshot = await getDocs(q);
 
     const reportes = [];
 
