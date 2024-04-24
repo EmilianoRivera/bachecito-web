@@ -34,7 +34,7 @@ export default function Estadisticas() {
       </div>
 
       <div className="mapa">
-        <DynamicMap />
+       {/*  <DynamicMap /> */}
       </div>
     </div>
 
