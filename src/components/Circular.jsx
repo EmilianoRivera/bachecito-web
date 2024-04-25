@@ -193,11 +193,11 @@ export default function Circular({
   }
 
   return (
-    <div style={{ position: "relative", width, height }}>
-      <svg ref={svgRef} width={width} height={height}></svg>
+    <div style={{ position: "relative", width, height, color:"white", }}>
+      <svg ref={svgRef} width={width} height={height} style={{color:"white"}}></svg>
       <div
         ref={tooltipRef}
-        className="tooltip"
+        className="tooltip-grcir"
         style={{ position: "absolute", top: 10, right: 10 }}
       >
         <div className="tooltip-label"></div>
