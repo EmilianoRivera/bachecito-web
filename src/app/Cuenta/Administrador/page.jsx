@@ -99,7 +99,6 @@ function Administrador() {
             });
             alert("Cuenta restablecida correctamente");
             push("/Cuenta/Administrador/Dashboard");
-            console.log("Usuario inició sesión con éxito:", user);
           } else {
             signOut(auth);
             alert("Inicio de sesión cancelado");
@@ -116,7 +115,6 @@ function Administrador() {
           if (isAdmin) {
             alert("Inicio de sesión exitoso");
             push("/Cuenta/Administrador/Dashboard");
-            console.log("Usuario inició sesión como administrador:", user);
           } else {
             signOut(auth);
             alert("No tienes permiso para iniciar sesión como administrador");
@@ -124,7 +122,7 @@ function Administrador() {
         }
       }
     } catch (error) {
-      console.log(error.message);
+      console.error(error.message);
     }
   };
 

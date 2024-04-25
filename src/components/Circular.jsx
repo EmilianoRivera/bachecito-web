@@ -94,63 +94,65 @@ export default function Circular({
   }, [selectedSegment]);
 
   graficaCircular()
-  
-  function graficaCircular(estado = estados, alcaldia=alcaldias, filtroFecha=filtroFechas, startDate=startDates, endDate=endDates) {
-      const svg = d3.select(svgRef.current);
-      const radius = Math.min(width, height) / 2;
-      if (estados === "Sin Estado" && alcaldia === "Todas" && filtroFechas === "Hoy") {
-        const pie = d3.pie().value((d) => d.value);
-    
-          const arc = d3.arc().innerRadius(50).outerRadius(radius);
 
-          const arcs = svg
-            .selectAll("arc")
-            .data(pie(rep))
-            .enter()
-            .append("g")
-            .attr("class", "arc")
-            .attr("transform", `translate(${width / 2}, ${height / 2})`);
-    
-          arcs
-            .append("path")
-            .attr("fill", (d) => color(d.data.label))
-            .attr("d", arc)
-            .on("mouseover", (event, d) => {
-              setSelectedSegment(d);
-            })
-            .on("mouseout", () => {
-              setSelectedSegment(null);
-            });
-    
-          arcs
-            .append("text")
-            .attr("transform", (d) => `translate(${arc.centroid(d)})`)
-            .attr("text-anchor", "middle")
-            .style("font-family", "Helvetica, sans-serif")
-            .text((d) => d.data.label.toUpperCase());
-    
-          // Agregar el porcentaje fijo debajo de cada alcaldía
-          arcs
-            .append("text")
-            .attr("transform", (d) => {
-              const centroid = arc.centroid(d);
-              const x = centroid[0];
-              const y = centroid[1] + 20; // Ajusta la posición vertical del porcentaje fijo
-              return `translate(${x}, ${y})`;
-            })
-            .attr("text-anchor", "middle")
-            .attr("dy", "1em") // Ajusta la distancia vertical del texto
-            .text(
-              (d) =>
-                `${(((d.endAngle - d.startAngle) / (2 * Math.PI)) * 100).toFixed(
-                  2
-                )}%`
-            );
-    
-          const tooltip = d3.select(tooltipRef.current);
-          tooltip.style("visibility", "hidden");
-    
-      } else {
+  function graficaCircular(estado = estados, alcaldia = alcaldias, filtroFecha = filtroFechas, startDate = startDates, endDate = endDates) {
+    const svg = d3.select(svgRef.current);
+    const radius = Math.min(width, height) / 2;
+    if (estados === "Sin Estado" && alcaldia === "Todas" && filtroFechas === "Hoy") {
+      const pie = d3.pie().value((d) => d.value);
+
+      const arc = d3.arc().innerRadius(50).outerRadius(radius);
+
+      const arcs = svg
+        .selectAll("arc")
+        .data(pie(rep))
+        .enter()
+        .append("g")
+        .attr("class", "arc")
+        .attr("transform", `translate(${width / 2}, ${height / 2})`);
+
+      arcs
+        .append("path")
+        .attr("fill", (d) => color(d.data.label))
+        .attr("d", arc)
+        .on("mouseover", (event, d) => {
+          setSelectedSegment(d);
+        })
+        .on("mouseout", () => {
+          setSelectedSegment(null);
+        });
+
+      arcs
+        .append("text")
+        .attr("transform", (d) => `translate(${arc.centroid(d)})`)
+        .attr("text-anchor", "middle")
+        .style("font-family", "Helvetica, sans-serif")
+        .text((d) => d.data.label.toUpperCase());
+
+      // Agregar el porcentaje fijo debajo de cada alcaldía
+      arcs
+        .append("text")
+        .attr("transform", (d) => {
+          const centroid = arc.centroid(d);
+          const x = centroid[0];
+          const y = centroid[1] + 20; // Ajusta la posición vertical del porcentaje fijo
+          return `translate(${x}, ${y})`;
+        })
+        .attr("text-anchor", "middle")
+        .attr("dy", "1em") // Ajusta la distancia vertical del texto
+        .text(
+          (d) =>
+            `${(((d.endAngle - d.startAngle) / (2 * Math.PI)) * 100).toFixed(
+              2
+            )}%`
+        );
+
+      const tooltip = d3.select(tooltipRef.current);
+      tooltip.style("visibility", "hidden");
+
+    } else {
+      async function fetchFiltroEstado() {
+
         const nombreAlcaldia = alcaldia.replace(/^[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+|[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+$/g, "");
         async function fetchFiltroEstado() {
           try {
@@ -161,7 +163,7 @@ export default function Circular({
               startDate: startDate,
               endDate: endDate
             };
-        
+
             // Realizar la solicitud POST con el objeto de parámetros en el cuerpo
             const datosNuevos = await fetch(`/api/filtros/${estado}/${nombreAlcaldia}/${filtroFecha}/${startDate}/${endDate}`, {
               method: 'POST',
@@ -175,20 +177,20 @@ export default function Circular({
             }
             const estadosReportes = await datosNuevos.json();
             console.log(estadosReportes);
-           
+
           } catch (error) {
             console.error("Error a la hora de hacer la petición a /api/filtros/estado/${estado}: ", error);
           }
         }
-      
+
         fetchFiltroEstado();
 
-        }
-    
-      
+      }
+
+
+    }
+
   }
-
-
 
   return (
     <div style={{ position: "relative", width, height }}>

@@ -179,7 +179,7 @@ function Favoritos() {
           <div className="column">
             <div className="reportes-boxes">
             {repSinAtender.map((report, index) => (
-              <div className="box2" id="box2">
+              <div className="box2" id="box2" key={index}>
                 <div className="column-left">
                   <div className="fotografía">
                     <img src= {report.imagenURL} style={{ maxWidth: '100%', maxHeight: '100%' }} alt="" />
@@ -238,7 +238,7 @@ function Favoritos() {
           <div className="column">
             <div className="reportes-boxes">
             {repEnAtencion.map((report, index) => (
-              <div key={index} className="box2" id="box2">
+              <div key={index} className="box2" id="box2" >
                 <div className="column-left">
                   <div className="fotografía">
                     <img src= {report.imagenURL} style={{ maxWidth: '100%', maxHeight: '100%' }}alt="" />
