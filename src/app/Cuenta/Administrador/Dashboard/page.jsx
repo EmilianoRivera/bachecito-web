@@ -32,7 +32,7 @@ function Dashboard() {
   const [endDate, setEndDate] = useState(new Date());
   /*ESTO ES DEL FILTRO DE FECHA EN GENERAL */
   const [filtroFecha, setFiltroFecha] = useState("Hoy");
-  const [estado, setEstado] = useState("Sin Estado");
+  const [estado, setEstado] = useState("Todos");
   const [alcaldias, setAlcaldia] = useState("Todas");
 
   const handleAlcaldiaChange = (e) => {
@@ -90,7 +90,7 @@ function Dashboard() {
         <div id="estados">
           <h4>Estado</h4>
           <select onChange={handleEstadoChange}>
-            <option value="Sin Estado">Sin Estado</option>
+            <option value="Todos">Todos</option>
             <option value="Sin atender">Sin atender</option>
             <option value="En Atención">En Atención</option>
             <option value="Atendido">Atendido</option>
