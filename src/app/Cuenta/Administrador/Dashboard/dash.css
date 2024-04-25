@@ -1,27 +1,31 @@
 .container-general {
-    margin-top: 12vh; /* Bajar 100px para dejar espacio para el navbar */
-    background-color: #ebc1c1;
+    margin-top: 9vh; /* Bajar 100px para dejar espacio para el navbar */
     border-radius: 1.5rem;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    position: relative;
+    position: fixed;
     z-index: 100;
     margin-left: 1rem;
     width: 90vw;
     height: 87vh;
+    overflow-x: hidden;
+    overflow-y: scroll;
   }
   
   .filtros-dashboard{
-    width: 70%;
+    width: 62vw;
+    min-width: 62vw;
     height: 8vh;
     background-color: #F1F1F1;
     margin-bottom: 2vh;
     border-radius: 1.5rem;
     align-items: center;
     display: flex;
-    position: relative;
     z-index: 1000;
     justify-content: space-between;
     font-family: 'Poppins', sans-serif;
+    top: 0;
+    position: sticky;
+    border-bottom: 5px solid #fff;
+    border-right: 5px solid #fff;
    }
    
    #fechas img{
@@ -115,32 +119,248 @@
     margin-right: 5px;
   }
   
-  .reportes {
-    margin-top: 20px;
+  .flex-dashboard{
     display: flex;
-    flex-direction: column;
   }
-  
-  .reportes > div {
-    background-color: #fff;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
-  }
-  
+
   .grafica-circular,
-  .grafica-barras,
   .grafica-barras-hz {
-    margin-top: 20px;
+    margin-top: 15px;
   }
   
   .grafica-circular,
   .grafica-barras,
   .grafica-barras-hz > div {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    background-color: #f1f1f1;
+    padding: 15px;
+    border-radius: 1rem;
   }
   
+  ::-webkit-scrollbar {
+    width: 10px; /* Ancho de la barra de desplazamiento */
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1; /* Color del fondo de la barra de desplazamiento */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #d1d1d1; /* Color de la barra de desplazamiento */
+    border-radius: 5px; /* Radio de la esquina de la barra de desplazamiento */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #c9c9c9; /* Color de la barra de desplazamiento al pasar el mouse sobre ella */
+}
+
+/*Contador reportes*/
+
+.totalReportes{
+  margin-bottom: 1rem;
+  width: 35vw;
+  height: 25vh;
+}
+
+.encabezado{
+  width: 100%;
+  height: 40%;
+  background-color: #F1F1F1;
+  border-radius: 1rem;
+  margin-bottom: 2.5%;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.encabezado h1{
+  color: #6F6F6F;
+  font-family: 'Poppins', sans-serif;
+  margin-right: 10px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.contador{
+  color: #FF4D35;
+  font-family: 'Poppins', sans-serif;
+  font-size: 18px;
+  font-weight:800;
+}
+
+.estados{
+  width: 100%;
+  display: flex;
+  height: 52%;
+  background-color: #ffffff;
+}
+
+.in-red{
+  width: 32%;
+  height: 100%;
+  background-color:#F1F1F1;
+  border-radius: 1rem;
+  align-items: center;
+  display:block;
+  justify-content: center;
+}
+
+.red{
+  width: 70%;
+  height: 23%;
+  margin-left: 15%;
+  border-radius: 1rem;
+  background-color: #FF5136;
+  margin-top: 7%;
+  margin-bottom: 2%;
+  cursor: pointer;
+}
+
+.tooltip {
+  visibility: hidden;
+  width: 120px;
+  background-color: #dcdcdc96;
+  font-family: 'Poppins', sans-serif;
+  color: #606060;
+  text-align: center;
+  border-radius: 1rem;
+  padding: 5px 0;
+
+  /* Posición absoluta */
+  position: absolute;
+  z-index: 10;
+}
+
+/* Hacer que aparezca cuando el cursor está sobre el elemento */
+.red:hover .tooltip {
+  visibility: visible;
+}
+
+.yellow:hover .tooltip {
+  visibility: visible;
+}
+
+.green:hover .tooltip {
+  visibility: visible;
+}
+/* Posición del span de la leyenda */
+.tooltip {
+  transform: translateY(-120%);
+}
+
+.cont-reportes{
+  color: #6F6F6F;
+  font-family: 'Poppins', sans-serif;
+  font-size: 22px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  width: 80%;
+  margin-left: 10%;
+  font-weight: 900;
+}
+
+.in-yellow{
+  width: 32%;
+  height: 100%;
+  margin-left: 2%;
+  background-color:#F1F1F1;
+  border-radius: 1rem;
+  align-items: center;
+  display:block;
+  justify-content: center;
+}
+
+.yellow{
+  width: 70%;
+  height: 23%;
+  margin-left: 15%;
+  border-radius: 1rem;
+  background-color: #FFC63D;
+  margin-top: 7%;
+  margin-bottom: 2%;
+  cursor: pointer;
+}
+
+.in-green{
+  width: 32%;
+  height: 100%;
+  margin-left: 2%;
+  background-color:#F1F1F1;
+  border-radius: 1rem;
+  align-items: center;
+  display:block;
+  justify-content: center;
+}
+
+.green{
+  width: 70%;
+  height: 23%;
+  margin-left: 15%;
+  cursor: pointer;
+  border-radius: 1rem;
+  background-color: #A4DF77;
+  margin-top: 7%;
+  margin-bottom: 2%;
+}
+
+.ladoIZ-dashboard{
+  margin-right: 15px;
+  width: 35vw;
+  height: auto;
+}
+
+/*Grafica circular*/
+.grafica-circular{
+  width: 33vw;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  display: flex;
+}
+
+.grafica-circular h3{
+  color: #6F6F6F;
+  font-family: 'Poppins', sans-serif;
+  margin-right: 35px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/*Grafica barras*/
+.grafica-barras{
+  width: 50vw;
+  height: 69vh;
+}
+
+.grafica-barras h3{
+  color: #6F6F6F;
+  font-family: 'Poppins', sans-serif;
+  margin-right: 35px;
+  font-size: 16px;
+  font-weight: 600;
+  margin-left: 20px;
+}
+
+.tooltip-grcir {
+  visibility: hidden;
+  width: auto;
+  background-color: #ffffffef;
+  font-family: 'Poppins', sans-serif;
+  color: #606060;
+  text-align: center;
+  border-radius: 1rem;
+  padding: 10px;
+  font-weight: 400;
+
+  /* Posición absoluta */
+  position: absolute;
+  z-index: 10;
+}
+
+.grafica-barras-hz{
+  width: 85vw;
+  border-radius: 1rem;
+  padding: 20px;
+  height: auto;
+  background-color: #f1f1f1;
+}

@@ -95,11 +95,13 @@ export default function Circular({
 
   graficaCircular()
  
+ 
   function graficaCircular(estado = estados, alcaldia=alcaldias, filtroFecha=filtroFechas, startDate=startDates, endDate=endDates) {
       const svg = d3.select(svgRef.current);
       const radius = Math.min(width, height) / 2;
       if (estados === "Todos" && alcaldia === "Todas" && filtroFechas === "Todos los tiempos") {
    
+ 
       const pie = d3.pie().value((d) => d.value);
 
       const arc = d3.arc().innerRadius(50).outerRadius(radius);
@@ -152,7 +154,7 @@ export default function Circular({
       tooltip.style("visibility", "hidden");
 
     } else {
-      
+ 
         const nombreAlcaldia = alcaldia.replace(/^[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+|[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+$/g, "");
         async function fetchFiltroEstado() {
           try {
@@ -185,7 +187,9 @@ export default function Circular({
 
         fetchFiltroEstado();
 
+ 
       }
+ 
     }
 
     
@@ -193,11 +197,11 @@ export default function Circular({
  
 
   return (
-    <div style={{ position: "relative", width, height }}>
-      <svg ref={svgRef} width={width} height={height}></svg>
+    <div style={{ position: "relative", width, height, color:"white", }}>
+      <svg ref={svgRef} width={width} height={height} style={{color:"white"}}></svg>
       <div
         ref={tooltipRef}
-        className="tooltip"
+        className="tooltip-grcir"
         style={{ position: "absolute", top: 10, right: 10 }}
       >
         <div className="tooltip-label"></div>
