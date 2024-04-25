@@ -118,7 +118,7 @@ console.log(estado)
           </label>
           {isEstadoSelectVisible && (
             <select onChange={handleEstadoChange}>
-              <option value="Sin Estado">Todos</option>
+              <option value="Todos">Todos</option>
               <option value="Sin atender">Sin atender</option>
               <option value="En Atención">En Atención</option>
               <option value="Atendido">Atendido</option>
