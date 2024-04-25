@@ -32,9 +32,9 @@ function Dashboard() {
   const [endDate, setEndDate] = useState(new Date());
   /*ESTO ES DEL FILTRO DE FECHA EN GENERAL */
   const [filtroFecha, setFiltroFecha] = useState("Hoy");
-  const [estado, setEstado] = useState("Sin Estado");
+  const [estado, setEstado] = useState("Todos");
   const [alcaldias, setAlcaldia] = useState("Todas");
-
+console.log(estado)
  // Estados para manejar la visibilidad de los select
  const [isFechaSelectVisible, setIsFechaSelectVisible] = useState(false);
  const [isAlcaldiaSelectVisible, setIsAlcaldiaSelectVisible] = useState(false);
@@ -119,7 +119,6 @@ function Dashboard() {
           {isEstadoSelectVisible && (
             <select onChange={handleEstadoChange}>
               <option value="Sin Estado">Todos</option>
-              <option value="Sin Estado">Sin Estado</option>
               <option value="Sin atender">Sin atender</option>
               <option value="En Atención">En Atención</option>
               <option value="Atendido">Atendido</option>
