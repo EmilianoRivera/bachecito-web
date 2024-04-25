@@ -135,7 +135,7 @@ export default function Circular({ width, height, estados }) {
   }, [selectedSegment]);
 
   return (
-    <div style={{ position: "relative", width, height }}>
+    <div style={{ position: "relative", width, height, color:"#606060" }}>
       <svg ref={svgRef} width={width} height={height}></svg>
       <div
         ref={tooltipRef}

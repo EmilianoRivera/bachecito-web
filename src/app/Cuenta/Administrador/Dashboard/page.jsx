@@ -4,7 +4,7 @@ import "./dash.css";
 import Barras from "@/components/BarrasU";
 import Circular from "@/components/Circular";
 import BarrasHz from "@/components/BarrasHz";
-import CRep from "@/components/CRep";
+import CRep from "@/components/CRepU";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 function Dashboard() {
@@ -32,9 +32,9 @@ function Dashboard() {
   const [endDate, setEndDate] = useState(new Date());
   /*ESTO ES DEL FILTRO DE FECHA EN GENERAL */
   const [filtroFecha, setFiltroFecha] = useState("Hoy");
-  const [estado, setEstado] = useState("Sin Estado");
+  const [estado, setEstado] = useState("Todos");
   const [alcaldias, setAlcaldia] = useState("Todas");
-
+console.log(estado)
  // Estados para manejar la visibilidad de los select
  const [isFechaSelectVisible, setIsFechaSelectVisible] = useState(false);
  const [isAlcaldiaSelectVisible, setIsAlcaldiaSelectVisible] = useState(false);
@@ -118,8 +118,7 @@ function Dashboard() {
           </label>
           {isEstadoSelectVisible && (
             <select onChange={handleEstadoChange}>
-              <option value="Sin Estado">Todos</option>
-              <option value="Sin Estado">Sin Estado</option>
+              <option value="Todos">Todos</option>
               <option value="Sin atender">Sin atender</option>
               <option value="En Atención">En Atención</option>
               <option value="Atendido">Atendido</option>
@@ -128,28 +127,38 @@ function Dashboard() {
         </div>
       </div>
       {/*Componente para los reportes totales y sus estados */}
-      <CRep />
+      
+      <div className="flex-dashboard">
+        <div className="ladoIZ-dashboard">
+          <CRep />
 
-      <div className="grafica-circular">
-        <h3>ALCALDIAS CON MAS REPORTES</h3>
-        <div className="circular">
-          <Circular
-            width={500}
-            height={300}
-            estados={estado}
-            alcaldias={alcaldias}
-            startDates={startDate}
-            endDates={endDate}
-            filtroFechas = {filtroFecha}
-          />
+          <div className="grafica-circular">
+            <h3>ALCALDIAS CON <br /> MAS REPORTES</h3>
+            <div className="circular">
+              <Circular
+                width={250}
+                height={250}
+                estados={estado}
+                alcaldias={alcaldias}
+                startDates={startDate}
+                endDates={endDate}
+                filtroFechas = {filtroFecha}
+              />
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="grafica-barras">
-        <h3>REPORTES POR ALCALDIA</h3>
-        <div className="barras">
-          <Barras width={500} height={250} estados={estado} />
+        
+        <div className="ladoDER-dashboard">
+          <div className="grafica-barras">
+            <h3>REPORTES POR ALCALDIA</h3>
+            <div className="barras">
+              <Barras width={680} height={350} estados={estado} />
+            </div>
+          </div>
         </div>
+        
       </div>
+
       <div className="grafica-barras-hz">
         <h3>REPORTES SEGÚN SU ESTADO DE ATENCIÓN POR ALCALDIA</h3>
         <BarrasHz width={500} height={300} />
