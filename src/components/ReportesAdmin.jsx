@@ -133,7 +133,7 @@ export default function ReportesAdmin() {
                             <td className='no-reportes'>{report.contador}</td>
                             <td className='eliminar'>
                               <button className="btn-eliminarRP" onClick={() => showDeleteAlert(report.folio)}>
-                                    <img src="https://i.postimg.cc/02gZVXL3/basura.png" alt="" />
+                                    <img src="https://i.postimg.cc/MKhNs3ZQ/circulo-negativo.png" alt="" />
 
                                 </button>
                             </td>
