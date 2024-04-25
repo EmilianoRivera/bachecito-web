@@ -98,7 +98,7 @@ export default function Circular({
   function graficaCircular(estado = estados, alcaldia=alcaldias, filtroFecha=filtroFechas, startDate=startDates, endDate=endDates) {
       const svg = d3.select(svgRef.current);
       const radius = Math.min(width, height) / 2;
-      if (estados === "Sin Estado" && alcaldia === "Todas" && filtroFechas === "Hoy") {
+      if (estados === "Todos" && alcaldia === "Todas" && filtroFechas === "Todos los tiempos") {
         const pie = d3.pie().value((d) => d.value);
     
           const arc = d3.arc().innerRadius(50).outerRadius(radius);

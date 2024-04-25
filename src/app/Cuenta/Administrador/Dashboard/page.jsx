@@ -31,7 +31,7 @@ function Dashboard() {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   /*ESTO ES DEL FILTRO DE FECHA EN GENERAL */
-  const [filtroFecha, setFiltroFecha] = useState("Hoy");
+  const [filtroFecha, setFiltroFecha] = useState("Todos los tiempos");
   const [estado, setEstado] = useState("Todos");
   const [alcaldias, setAlcaldia] = useState("Todas");
 
@@ -56,12 +56,12 @@ function Dashboard() {
         <div id="fechas">
           <h4>Rango Fechas</h4>
           <select onChange={handleFechaChange}>
+            <option value="Todos los tiempos">Todos los tiempos</option>
             <option value="Hoy">Hoy</option>
             <option value="Esta semana">Esta semana</option>
             <option value="Último mes">Último mes</option>
             <option value="Últimos 6 meses">Últimos 6 meses</option>
             <option value="Este año">Este año</option>
-            <option value="Todos los tiempos">Todos los tiempos</option>
             <option value="Rango personalizado">Rango personalizado</option>
           </select>
           {filtroFecha === "Rango personalizado" && (

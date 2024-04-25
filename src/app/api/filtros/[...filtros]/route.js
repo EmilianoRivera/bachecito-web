@@ -41,18 +41,20 @@ function formatearFecha(fecha) {
   return `${dia}/${parseInt(mes)}/${año}`;
 }
 async function filtrarReportesPorFecha(
-  fechaFiltro,
+  fechaFiltro="Todos los tiempos",
   fechaActual,
-  reportes,
-  estado = "Sin Estado",
+  estado = "Todos",
   alcaldia = "Todas"
 ) {
   let elementosFiltrados = [];
   let reportesPorAlcaldia = {}; // Definir reportesPorAlcaldia fuera del switch
   const fechaFormateada = formatearFecha(fechaActual)
-  console.log(fechaFormateada)
+  if (alcaldia === "Todas" || estado === "Todos") console.log("OKE")
+
+
+  console.log(fechaFiltro)
   switch (fechaFiltro) {
-    case "Hoy" :
+    case "Todos los tiempos" :
       const queryFechaHoy = query(
         collection(db, "reportes"),
         where('fechaReporte', '==', fechaFormateada)
@@ -78,7 +80,9 @@ async function filtrarReportesPorFecha(
     case "Este año":
       break;
 
+
     default:
+      //aqui el caso de hoy
       break;
   }
 
@@ -86,7 +90,7 @@ async function filtrarReportesPorFecha(
 }
 export async function POST(request, { params }) {
   try {
-    const [estado, alcaldia, fechaFiltro, startDate, endDate] = params.filtros; // Desestructura el array filtros en tres variables
+    const [estado, alcaldia, fechaFiltro, startDate, endDate] = params.filtros; // Desestructura el array filtros en 5 variables
 
     //llamada a funciones
     const fechaActual = obtenerFechaActual();
