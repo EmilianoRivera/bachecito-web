@@ -187,11 +187,11 @@ function ReportesComponente() {
   )}</div>
                 <div className="guardar">
                 {userData && userData.uid && userData.foliosGuardados && userData.foliosGuardados.includes(report.folio) ? (
-    <img className="icon-star" src="https://i.postimg.cc/W335wqws/estrella-2.png"
-                     alt="Folio guardado" onClick={() => guardarFoliosEnDB(report.folio, userData)} />
-  ) : (
-    <img className="icon-star" src={estrella.src} alt="Guardar folio" onClick={() => guardarFoliosEnDB(report.folio, userData)} />
-  )}
+                <img className="icon-star" src="https://i.postimg.cc/W335wqws/estrella-2.png"
+                                  alt="Folio guardado" onClick={() => guardarFoliosEnDB(report.folio, userData)} />
+                ) : (
+                  <img className="icon-star" src={estrella.src} alt="Guardar folio" onClick={() => guardarFoliosEnDB(report.folio, userData)} />
+                )}
                 </div>
               </div>
 
