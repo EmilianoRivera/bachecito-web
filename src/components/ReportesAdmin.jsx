@@ -34,8 +34,18 @@ export default function ReportesAdmin() {
     const updateEstado = async (folio, nuevoEstado) => {
         try {
             // Lógica para actualizar el estado del reporte en la base de datos
-            await updateEstado(folio, nuevoEstado);
-
+            const refCollection = collection(db, 'reportes');
+            const querySnapshot = await getDocs(refCollection);
+    
+            querySnapshot.forEach(async (doc) => {
+                const reporte = doc.data();
+                if (reporte.folio === folio) {
+                    // Actualizar el documento para establecer eliminado: true
+                    await updateDoc(doc.ref, { estado: nuevoEstado });
+                    
+                    console.log(`Se marcó como eliminado el reporte con folio ${folio}`);
+                }
+            })
             // Actualizar el estado del reporte en la tabla HTML
             const rows = document.querySelectorAll('.containerReportesAdmin .Reportes');
             rows.forEach((row) => {
