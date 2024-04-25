@@ -134,12 +134,12 @@ export default function ReportesAdmin() {
                             <td className='ubicacion'>{report.ubicacion}</td>
                             <td className='no-reportes'>{report.contador}</td>
                             <td><button className="btn-eliminarRP" onClick={() => showDeleteAlert2(report.folio)}>
-                                    <img src="https://w7.pngwing.com/pngs/634/855/png-transparent-backup-and-restore-computer-icons-system-restore-icon-base-text-monochrome-black-thumbnail.png" alt="" />
+                                    <img src="https://i.postimg.cc/9Mb6D7kb/tiempo-pasado.png" alt="" />
 
                                 </button></td>
                             <td>
                               <button className="btn-eliminarRP" onClick={() => showDeleteAlert(report.folio)}>
-                                    <img src="https://i.postimg.cc/02gZVXL3/basura.png" alt="" />
+                                    <img src="https://i.postimg.cc/ht0FfbgQ/circulo-cruzado-1.png" alt="" />
 
                                 </button>
                             </td>
@@ -152,7 +152,7 @@ export default function ReportesAdmin() {
                 <div className="alerta-custom2">
                     <div className="alerta-contenido2">
                         <h2 className="titulooo">Confirmar Eliminación</h2>
-                        <p className="textooo">¿Estás seguro de que quieres eliminar el reporte con folio {deleteAlertData.folio}?</p>
+                        <p className="textooo">¿Estás seguro de que quieres eliminar el reporte con folio {deleteAlertData.folio} de manera permanente?</p>
                         <div className="opciones">
                             <button className="boton-eliminar" onClick={() => {handleClick2(deleteAlertData.folio); closeDeleteAlert();}}>Eliminar</button>
                             <button className="boton-cancelar" onClick={closeDeleteAlert}>Cancelar</button>
