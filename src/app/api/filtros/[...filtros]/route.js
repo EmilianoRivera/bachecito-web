@@ -48,8 +48,11 @@ async function filtrarReportesPorFecha(
 ) {
   let elementosFiltrados = [];
   let reportesPorAlcaldia = {}; // Definir reportesPorAlcaldia fuera del switch
+  let estados ;
+  let alcaldias ;
   const fechaFormateada = formatearFecha(fechaActual)
-  if (alcaldia === "Todas" || estado === "Todos") console.log("OKE")
+
+  if (alcaldia === "Todas" || estado === "Todos") estados = ""
 
 
   console.log(fechaFiltro)
