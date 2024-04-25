@@ -98,7 +98,7 @@ export default function Circular({
   function graficaCircular(estado = estados, alcaldia=alcaldias, filtroFecha=filtroFechas, startDate=startDates, endDate=endDates) {
       const svg = d3.select(svgRef.current);
       const radius = Math.min(width, height) / 2;
-      if (estados === "Sin Estado" && alcaldias === "Todas" && filtroFechas === "Hoy") {
+      if (estados === "Sin Estado" && alcaldia === "Todas" && filtroFechas === "Hoy") {
         const pie = d3.pie().value((d) => d.value);
     
           const arc = d3.arc().innerRadius(50).outerRadius(radius);
@@ -151,9 +151,25 @@ export default function Circular({
           tooltip.style("visibility", "hidden");
     
       } else {
+        const nombreAlcaldia = alcaldia.replace(/^[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+|[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+$/g, "");
         async function fetchFiltroEstado() {
           try {
-            const datosNuevos = await fetch(`/api/filtros/estado=${estado}/alcaldia=${alcaldia}/fecha=${filtroFecha}/startDate=${startDate}/endDate=${endDate}`);  
+            const parametros = {
+              estado: estado,
+              alcaldia: alcaldia,
+              filtroFecha: filtroFecha,
+              startDate: startDate,
+              endDate: endDate
+            };
+        
+            // Realizar la solicitud POST con el objeto de parámetros en el cuerpo
+            const datosNuevos = await fetch(`/api/filtros/${estado}/${nombreAlcaldia}/${filtroFecha}/${startDate}/${endDate}`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json' // Indicar que el cuerpo es JSON
+              },
+              body: JSON.stringify(parametros) // Convertir el objeto a JSON
+            });
             if (!datosNuevos.ok) {
               throw new Error("Fallo a la petición de /api/filtros/estado/${estado}");
             }

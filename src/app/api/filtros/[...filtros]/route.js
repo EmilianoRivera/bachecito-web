@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { db, collection, getDocs } from "../../../../../firebase";
+import { db, collection, getDocs,query, where } from "../../../../../firebase";
 import { getDoc } from "firebase/firestore";
 function buscarAlcaldias(ubicacion) {
   const regexAlcaldiasCDMX =
@@ -92,7 +92,7 @@ function filtrarReportesPorFecha(
 
   return reportesPorAlcaldia;
 }
-export async function GET(request, { params }) {
+export async function POST(request, { params }) {
   try {
     const [estado, alcaldia, fechaFiltro, startDate, endDate] = params.filtros; // Desestructura el array filtros en tres variables
     const refCol = collection(db, "reportes");
@@ -107,7 +107,6 @@ export async function GET(request, { params }) {
       alcaldia
     );
 
-    console.log("ES ESTE ?", filtradoPorFecha);
     return NextResponse.json( filtradoPorFecha);
   } catch (error) {
     console.error("Error al obtener reportes:", error);
