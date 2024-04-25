@@ -10,17 +10,109 @@
     height: 87vh;
   }
   
-  .filtros {
-    display: flex;
-    flex-direction: column;
-    background-color: #fff;
+  .filtros-dashboard{
+    width: 70%;
+    height: 8vh;
+    background-color: #F1F1F1;
+    margin-bottom: 2vh;
     border-radius: 1.5rem;
-    padding: 20px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    align-items: center;
+    display: flex;
+    position: relative;
+    z-index: 1000;
+    justify-content: space-between;
+    font-family: 'Poppins', sans-serif;
+   }
+   
+   #fechas img{
+       width: 1.7rem;
+       margin-right: 1rem;
+   }
+
+   #alcaldia img{
+    width: 1.7rem;
+    margin-right: 1rem;
+    }
+    
+    #estado img{
+    width: 1.7rem;
+    margin-right: 1rem;
+    }
+
+  .filtro-dashboard {
+    height: 8vh;
+    flex: 1;
+    margin-right: 10px;
+    align-items: center;
+    padding-left: 2rem;
+    display:flex;
+  }
+
+  .filtro-dashboard label {
+    font-size: 17px;
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    color: #ff9f49;
+    position:absolute;
+  }
+
+  #fechas label{
+    display: flex;
+    align-items: center;
+    font-size: 17px;
+    margin-bottom: 5px;
+    color: #ff9f49;
   }
   
-  .filtros > div {
-    margin-bottom: 10px;
+  .filtro-dashboard select {
+    width: 70%;
+    display: block;
+    padding: 5px;
+    font-size: 14px;
+    border: none;
+    background-color: #F1F1F1;
+    border-radius: 1rem;
+    color: #6F6F6F;
+    transform: translateY(5vh) translateX(3vw);
+  }
+
+  .filtro-dashboard select option{
+    border-radius: 1rem;
+    border: none;
+  }
+
+  .filtro-dashboard select option:hover{
+    background-color: #ff9f49;
+
+  }
+
+  #fechas select {
+    width: 70%;
+    padding: 5px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: none;
+    background-color: #F1F1F1;
+    border-radius: 1rem;
+    color: #6F6F6F;
+  }
+  
+  .custom-date {
+    display: flex;
+    margin-top: 5px;
+    transform: translateY(5vh) translateX(3.2vw);
+  }
+
+  .custom-date .datepicker {
+    padding: 5px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+  .custom-date > * {
+    margin-right: 5px;
   }
   
   .reportes {
