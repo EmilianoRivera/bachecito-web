@@ -31,10 +31,13 @@ function Dashboard() {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   /*ESTO ES DEL FILTRO DE FECHA EN GENERAL */
-  const [filtroFecha, setFiltroFecha] = useState("Hoy");
+ 
+  const [filtroFecha, setFiltroFecha] = useState("Todos los tiempos");
+ 
+ 
   const [estado, setEstado] = useState("Todos");
   const [alcaldias, setAlcaldia] = useState("Todas");
-console.log(estado)
+ 
  // Estados para manejar la visibilidad de los select
  const [isFechaSelectVisible, setIsFechaSelectVisible] = useState(false);
  const [isAlcaldiaSelectVisible, setIsAlcaldiaSelectVisible] = useState(false);
@@ -55,6 +58,7 @@ console.log(estado)
  };
   return (
     <div className="container-general">
+ 
       <div className="filtros-dashboard">
         <div className="filtro-dashboard" id="fechas">
           <label onClick={() => setIsFechaSelectVisible(!isFechaSelectVisible)}>
@@ -73,6 +77,7 @@ console.log(estado)
               <option value="Rango personalizado">Rango personalizado</option>
             </select>
           )}
+ 
           {filtroFecha === "Rango personalizado" && (
             <div className="custom-date">
               <DatePicker
@@ -107,6 +112,7 @@ console.log(estado)
             </select>
           )}
         </div>
+ 
 
         <div className="filtro-dashboard" id="estado">
           <label
@@ -124,6 +130,7 @@ console.log(estado)
               <option value="Atendido">Atendido</option>
             </select>
           )}
+ 
         </div>
       </div>
       {/*Componente para los reportes totales y sus estados */}

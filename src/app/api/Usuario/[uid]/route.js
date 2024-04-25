@@ -7,7 +7,7 @@ export async function GET(request, {params}) {
     console.log(uid)
     const userQuery = query(
       collection(db, 'usuarios'),
-      where('uid', '==', uid) // Ajusta esto según cómo envíes el UID desde el cliente
+      where('uid', '==', uid)  
     );
     const userDocs = await getDocs(userQuery);
 

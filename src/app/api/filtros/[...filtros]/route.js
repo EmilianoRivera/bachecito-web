@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { db, collection, getDocs,query, where } from "../../../../../firebase";
+import { db, collection, getDocs, query, where } from "../../../../../firebase";
 import { getDoc } from "firebase/firestore";
 function buscarAlcaldias(ubicacion) {
   const regexAlcaldiasCDMX =
@@ -31,83 +31,89 @@ function obtenerFechaActual() {
 
   return fechaFormateada;
 }
-
 function formatearFecha(fecha) {
   const partesFecha = fecha.split("/"); // Dividir la fecha en partes por el separador '/'
   const dia = partesFecha[0];
   const mes = partesFecha[1];
   const año = partesFecha[2];
 
-  // Asegurarse de que cada parte tenga dos dígitos
-  const diaFormateado = dia.padStart(2, "0");
-  const mesFormateado = mes.padStart(2, "0");
-
   // Formatear la fecha en el formato deseado (por ejemplo, dd/mm/yyyy)
-  return `${diaFormateado}/${mesFormateado}/${año}`;
+  return `${dia}/${parseInt(mes)}/${año}`;
 }
-function filtrarReportesPorFecha(
-  fechaFiltro,
+async function filtrarReportesPorFecha(
+  fechaFiltro="Todos los tiempos",
   fechaActual,
-  reportes,
-  estado = "Sin Estado",
+  estado = "Todos",
   alcaldia = "Todas"
 ) {
   let elementosFiltrados = [];
   let reportesPorAlcaldia = {}; // Definir reportesPorAlcaldia fuera del switch
+  let estados ;
+  let alcaldias ;
+  const fechaFormateada = formatearFecha(fechaActual)
 
-  reportes.forEach((doc) => {
-    const reporte = doc.data();
-    const fechaReporteFormateada = formatearFecha(reporte.fechaReporte);
+  if (alcaldia === "Todas" || estado === "Todos") estados = ""
 
-    switch (fechaFiltro) {
-      case "Hoy":
-        if (fechaReporteFormateada == fechaActual) {
-          console.log("Estos reportes si cumplen: ", fechaReporteFormateada);
 
-          const alcaldiasEnReporte = buscarAlcaldias(reporte.ubicacion);
-          Object.keys(alcaldiasEnReporte).forEach((alcaldia) => {
-            reportesPorAlcaldia[alcaldia] = (reportesPorAlcaldia[alcaldia] || 0) + alcaldiasEnReporte[alcaldia];
-          });
-        } else {
-          console.log("Estos reportes no cumplen: ", fechaReporteFormateada);
-        }
-        break;
+  console.log(fechaFiltro)
+  switch (fechaFiltro) {
+    case "Todos los tiempos" :
+      const queryFechaHoy = query(
+        collection(db, "reportes"),
+        where('fechaReporte', '==', fechaFormateada)
+      )
+      const reportes = await getDocs(queryFechaHoy)
+      if (!reportes.empty) {
+        const userData = reportes.docs[0].data();
+         console.log(userData)
+ 
+      }  
+      console.log("first")
+      break;
 
-      case "Esta semana":
-        break;
+    case "Esta semana":
+      break;
 
-      case "Este mes":
-        break;
+    case "Este mes":
+      break;
 
-      case "Últimos 6 meses":
-        break;
+    case "Últimos 6 meses":
+      break;
 
-      case "Este año":
-        break;
+    case "Este año":
+      break;
 
-      default:
-        break;
-    }
-  });
+
+    default:
+      //aqui el caso de hoy
+      break;
+  }
 
   return reportesPorAlcaldia;
 }
 export async function POST(request, { params }) {
   try {
-    const [estado, alcaldia, fechaFiltro, startDate, endDate] = params.filtros; // Desestructura el array filtros en tres variables
-    const refCol = collection(db, "reportes");
-    const reportes = await getDocs(refCol);
+    const [estado, alcaldia, fechaFiltro, startDate, endDate] = params.filtros; // Desestructura el array filtros en 5 variables
+
     //llamada a funciones
     const fechaActual = obtenerFechaActual();
     const filtradoPorFecha = filtrarReportesPorFecha(
       fechaFiltro,
       fechaActual,
-      reportes,
       estado,
       alcaldia
     );
+    const reportesRef = collection(db, 'reportes')
+    const reportesSnapshot = await getDocs(reportesRef);
+    
+    let cont = 0
+    reportesSnapshot.forEach((doc) => {
+      //const reporte = doc.data();
+      cont += 1;
+      //reportes.push(reporte);
+    });
 
-    return NextResponse.json( filtradoPorFecha);
+    return NextResponse.json(cont);
   } catch (error) {
     console.error("Error al obtener reportes:", error);
     return NextResponse.error("Error al obtener reportes", { status: 500 });
