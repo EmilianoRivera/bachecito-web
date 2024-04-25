@@ -4,7 +4,7 @@ import { db, collection, getDocs, query, where } from "../../../../firebase";
 export async function GET(request) {
   try {
     const reportesRef = collection(db, 'reportes')
-    const q = query(reportesRef, where("eliminado", "==", false));
+    const q = query(reportesRef, where("eliminado", "==", true));
     const reportesSnapshot = await getDocs(q);
 
     const reportes = [];

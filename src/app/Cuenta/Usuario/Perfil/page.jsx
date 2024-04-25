@@ -199,7 +199,7 @@ export default function Perfil() {
 
   return (
     <div className="container-perfil">
-      {/* <Alerta pageId="Pagina-Perfil"></Alerta> */} 
+      {/* <Alerta pageId="Pagina-Perfil"></Alerta> */}
       {isLogged && userData && (
         <div id="leftSide" style={{ display: showLeftSide ? "block" : "none" }}>
           <div className="profile-card">
@@ -262,7 +262,7 @@ export default function Perfil() {
                       className="logo"
                     />
                   </div>
-                  <div className="number"></div>
+                  <div className="number">{reporte.contador}</div>
                 </div>
               </div>
             </div>
@@ -305,15 +305,20 @@ export default function Perfil() {
                   )}
                 </div>
 
-                
                 <div className="guardar">
+ 
                   {userData && userData.uid && userData.foliosGuardados && userData.foliosGuardados.includes(reporte.folio) ? (
                     <img src="https://i.postimg.cc/W335wqws/estrella-2.png"
                       className="icon-star" alt="Folio guardado" onClick={() => guardarFoliosEnDB(reporte.folio, userData)}/>
+ 
                   ) : (
-                    <img className="icon-star" src={estrella.src} alt="Guardar folio" onClick={() => guardarFoliosEnDB(reporte.folio, userData)} />
+                    <img
+                      className="icon-star"
+                      src={estrella.src}
+                      alt="Guardar folio"
+                      onClick={() => guardarFoliosEnDB(reporte.folio, userData)}
+                    />
                   )}
-
                 </div>
               </div>
 

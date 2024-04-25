@@ -102,7 +102,7 @@ export default function Circular({
         const pie = d3.pie().value((d) => d.value);
     
           const arc = d3.arc().innerRadius(50).outerRadius(radius);
-    
+
           const arcs = svg
             .selectAll("arc")
             .data(pie(rep))
@@ -151,22 +151,21 @@ export default function Circular({
           tooltip.style("visibility", "hidden");
     
       } else {
-        async function fetchFiltroEstado() {
+        /* async function fetchFiltroEstado() {
           try {
-            const alcaldiaEstadoPorReporte = await fetch(`/api/${estado}`); // Reemplaza "tuRuta" con la ruta adecuada de tu API
-            if (!alcaldiaEstadoPorReporte.ok) {
-              throw new Error("Failed to fetch data");
+            const datosNuevos = await fetch(`/api/filtros/estado=${estado}/alcaldia=${alcaldia}/fecha=${filtroFecha}/startDate=${startDate}/endDate=${endDate}`);  
+            if (!datosNuevos.ok) {
+              throw new Error("Fallo a la petición de /api/filtros/estado/${estado}");
             }
-            const estadosReportes = await alcaldiaEstadoPorReporte.json();
-            // Haz lo que necesites con los datos
+            const estadosReportes = await datosNuevos.json();
             console.log(estadosReportes);
            
           } catch (error) {
-            console.error("Error fetching reportes: ", error);
+            console.error("Error a la hora de hacer la petición a /api/filtros/estado/${estado}: ", error);
           }
         }
       
-        fetchFiltroEstado();
+        fetchFiltroEstado(); */
 
         }
     

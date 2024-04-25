@@ -168,7 +168,7 @@ function ReportesComponente() {
                     className="logo"
                   />
                 </div>
-                <div className="number"></div>
+                <div className="number">{report.contador}</div>
               </div>
             </div>
 

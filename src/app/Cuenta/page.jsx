@@ -262,7 +262,6 @@ function Registro() {
       };
 
       addDoc(usuariosCollection, nuevoUsuario);
-      alert("SE GUARDO SI OLA");
       push("/Cuenta/Usuario/Perfil");
     } catch (error) {
       console.error("Error al crear la cuenta: ", error);
@@ -306,7 +305,7 @@ function Registro() {
             });
             alert("Cuenta restablecida correctamente");
             push("/Cuenta/Usuario/Perfil");
-            console.log("Usuario inició sesión con éxito:", user);
+
           } else {
             signOut(auth);
             alert("Inicio de sesión cancelado");
@@ -314,7 +313,7 @@ function Registro() {
         } else {
           alert("Inicio de sesión exitoso");
           push("/Cuenta/Usuario/Perfil");
-          console.log("Usuario inició sesión con éxito:", user);
+   
         }
       }
     } catch (error) {
