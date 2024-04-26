@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { db, collection, getDocs, query, where } from "../../../../../firebase";
 import { getDoc } from "firebase/firestore";
+
 function buscarAlcaldias(ubicacion) {
   const regexAlcaldiasCDMX =
     /(Azcapotzalco|Coyoacán|Cuajimalpa de Morelos|Gustavo A. Madero|Iztacalco|Iztapalapa|Magdalena Contreras|Miguel Hidalgo|Milpa Alta|Tláhuac|Tlalpan|Venustiano Carranza|Xochimilco)/gi;
@@ -31,6 +32,7 @@ function obtenerFechaActual() {
 
   return fechaFormateada;
 }
+
 function formatearFecha(fecha) {
   const partesFecha = fecha.split("/"); // Dividir la fecha en partes por el separador '/'
   const dia = partesFecha[0];
@@ -39,7 +41,7 @@ function formatearFecha(fecha) {
 
   // Formatear la fecha en el formato deseado (por ejemplo, dd/mm/yyyy)
   return `${dia}/${parseInt(mes)}/${año}`;
-} 
+}
 
 async function fechaFiltroFormateada(fechaFiltro, fechaFormateada) {
   let fechaReporteFiltrado;
@@ -78,7 +80,79 @@ async function fechaFiltroFormateada(fechaFiltro, fechaFormateada) {
   return fechaReporteFiltrado;
 }
 
+// Función para obtener el primer día de la semana
+function getInicioSemana(fechaHoy) {
+  const diaSemana = fechaHoy.getDay();
+  console.log(fechaHoy)
+  const inicioSemana = new Date(fechaHoy);
+  inicioSemana.setDate(fechaHoy.getDate() - diaSemana);
+  inicioSemana.setHours(0, 0, 0, 0); // Establecer la hora a las 00:00:00
+  return inicioSemana; 
+}
 
+// Función para obtener el último día de la semana
+function getFinSemana(fechaHoy) {
+  const diaSemana = fechaHoy.getDay();
+  const finSemana = new Date(fechaHoy);
+  finSemana.setDate(fechaHoy.getDate() + (6 - diaSemana));
+  finSemana.setHours(23, 59, 59, 999); // Establecer la hora a las 23:59:59
+  return finSemana;
+}
+
+async function fechaFiltroFormateada(fechaFiltro) {
+  switch (fechaFiltro) {
+    case "Hoy":
+      const fechaActual = obtenerFechaActual();
+      const filtroFechaHoy = query(
+        collection(db, "reportes"),
+        where("fechaReporte", "==", fechaActual)
+      );
+      const reportesFechaHoy = await getDocs(filtroFechaHoy);
+      reportesFechaHoy.forEach((doc) => {
+        console.log(doc.data());
+      });
+      break;
+
+    case "Esta semana":
+      const fechaActualSemana = obtenerFechaActual();
+      const fechaFormateadaActualSemana = formatearFecha(fechaActualSemana)
+      const inicioSemana = getInicioSemana(new Date(fechaActualSemana));
+
+      const finSemana = getFinSemana(new Date(fechaActualSemana));
+
+console.log(fechaFormateadaActualSemana, " ", finSemana, " ", inicioSemana)
+      const filtroSemana = query(
+        collection(db, "reportes"),
+        where("fechaReporte", ">=", inicioSemana),
+        where("fechaReporte", "<=", finSemana)
+      );
+
+      const reportesSemana = await getDocs(filtroSemana);
+      reportesSemana.forEach((doc) => {
+        console.log(doc.data());
+      });
+      break;
+
+    case "Último mes":
+      // Agregar lógica para el último mes
+      break;
+
+    case "Últimos 6 meses":
+      // Agregar lógica para los últimos 6 meses
+      break;
+
+    case "Este año":
+      // Agregar lógica para este año
+      break;
+
+    case "Rango personalizado":
+      // Agregar lógica para el rango personalizado
+      break;
+
+    default:
+      console.log("Opción no válida");
+  }
+}
 
 async function filtroGeneral(
   fechaFiltro = "Todos los tiempos",
@@ -90,7 +164,7 @@ async function filtroGeneral(
   let reportesPorAlcaldia = {}; // Definir reportesPorAlcaldia fuera del switch
   let estados;
   let alcaldias;
-  const fechaFormateada = formatearFecha(fechaActual);
+ 
   if (alcaldia === "Todas" && fechaFiltro === "Todos los tiempos") {
     const filtroGeneralAlcaldiaFechaQuery = query(
       collection(db, "reportes"),
@@ -104,16 +178,17 @@ async function filtroGeneral(
       console.log(doc.data());
     });
   } else if (alcaldia === "Todas" && estado === "Todos") {
+ 
     /*AQUI ES CUANDO LOS FILTROS DE ALCALDIA Y ESTADO SON TODOS, POR LO QUE LA GRAFICA TENDRA QUE MOSTRAR 
     EL NUMERO DE REPORTES POR ALCALDIA QUE ENTRAN EN ESE RANGO DE FECHA
     POR LO QUE PRIMERO, TENGO QUE DIVIDIR TODOS LOS REPORTES POR ALCALDIA Y LUEGO VER FILTRAR POR FECHA
     O DE TODOS VER CUALES ENTRAN EN FECHA Y LUEGO DIVIDIRLO POR ALCALDIA
     POR LO QUE VOY A DESARROLLAR LA SEGUNDA OPCIÓN
     */
-
-    const formateoFechaFiltro = fechaFiltroFormateada(fechaFiltro, fechaFormateada)
-  
-
+    
+    const formateoFechaFiltro = fechaFiltroFormateada(fechaFiltro   )
+     
+ 
   } else if (fechaFiltro==="Todos los tiempos" && estado === "Todos") {
     //obtener ubicacion
      
@@ -138,6 +213,20 @@ async function filtroEspecifico(fechaFiltro, fechaActual, estado, alcaldia) {
       break;
 
     case "Esta semana":
+      const fechaActualSemana = new Date(obtenerFechaActual()); // Convertir la cadena de fecha en un objeto Date
+      const inicioSemana = getInicioSemana(fechaActualSemana);
+      const finSemana = getFinSemana(fechaActualSemana);
+
+      const filtroSemana = query(
+        collection(db, "reportes"),
+        where("fechaReporte", ">=", inicioSemana),
+        where("fechaReporte", "<=", finSemana)
+      );
+
+      const reportesSemana = await getDocs(filtroSemana);
+      reportesSemana.forEach((doc) => {
+        console.log(doc.data());
+      });
       break;
 
     case "Este mes":
