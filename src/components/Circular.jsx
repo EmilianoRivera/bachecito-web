@@ -165,7 +165,7 @@ export default function Circular({
               startDate: startDate,
               endDate: endDate
             };
-
+            
             // Realizar la solicitud POST con el objeto de parámetros en el cuerpo
             const datosNuevos = await fetch(`/api/filtros/${estado}/${nombreAlcaldia}/${filtroFecha}/${startDate}/${endDate}`, {
               method: 'POST',

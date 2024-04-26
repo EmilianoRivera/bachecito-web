@@ -43,19 +43,18 @@ function formatearFecha(fecha) {
 
 async function fechaFiltroFormateada(fechaFiltro, fechaFormateada) {
   let fechaReporteFiltrado;
-  console.log(fechaFormateada)
   switch(fechaFiltro) {
     case "Hoy":
       const filtroFechaHoy = query(
         collection(db, "reportes"),
         where("fechaReporte", "==", fechaFormateada)
       );
-  
+      
       const reportesFechaHoy = await getDocs(
         filtroFechaHoy
       );
       reportesFechaHoy.forEach((doc) => {
-        fechaReporteFiltrado = doc.data().fechaReporte
+        console.log(doc.data().fechaReporte) 
       });
 
       break;
@@ -105,17 +104,15 @@ async function filtroGeneral(
       console.log(doc.data());
     });
   } else if (alcaldia === "Todas" && estado === "Todos") {
+    /*AQUI ES CUANDO LOS FILTROS DE ALCALDIA Y ESTADO SON TODOS, POR LO QUE LA GRAFICA TENDRA QUE MOSTRAR 
+    EL NUMERO DE REPORTES POR ALCALDIA QUE ENTRAN EN ESE RANGO DE FECHA
+    POR LO QUE PRIMERO, TENGO QUE DIVIDIR TODOS LOS REPORTES POR ALCALDIA Y LUEGO VER FILTRAR POR FECHA
+    O DE TODOS VER CUALES ENTRAN EN FECHA Y LUEGO DIVIDIRLO POR ALCALDIA
+    POR LO QUE VOY A DESARROLLAR LA SEGUNDA OPCIÓN
+    */
+
     const formateoFechaFiltro = fechaFiltroFormateada(fechaFiltro, fechaFormateada)
-    const filtroGeneralAlcaldiaEstado = query(
-      collection(db, "reportes"),
-      where("fechaReporte", "==", formateoFechaFiltro)
-    );
-
-    const reportesAlcaldiaEstado = await getDocs(filtroGeneralAlcaldiaEstado);
-    reportesAlcaldiaEstado.forEach((doc) => {
-      console.log(doc.data());
-    })
-
+  
 
   } else if (fechaFiltro==="Todos los tiempos" && estado === "Todos") {
     //obtener ubicacion
@@ -161,10 +158,9 @@ async function filtroEspecifico(fechaFiltro, fechaActual, estado, alcaldia) {
 export async function POST(request, { params }) {
   try {
     const [estado, alcaldia, fechaFiltro, startDate, endDate] = params.filtros; // Desestructura el array filtros en 5 variables
-
+    console.log(estado, " ", alcaldia, " ", fechaFiltro)
     //llamada a funciones
     const fechaActual = obtenerFechaActual();
-
     if (
       estado === "Todos" ||
       alcaldia === "Todas" ||
