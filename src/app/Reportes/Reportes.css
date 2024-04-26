@@ -23,7 +23,7 @@ body {
             padding-right: 5vw;
             height: auto;
             border-radius: 6vh;
-            margin-bottom: 5%;
+            margin-bottom: 3%;
         }
 
         #box1{
@@ -102,12 +102,12 @@ body {
         .box2{
             break-inside: avoid; /* Evita que los divs se rompan en medio de las columnas */
             width: 100%;
-            padding: 6%;
             border-radius: 6vh;
-            margin-bottom: 10%;
+            margin-bottom: 7%;
             background-color: #F1F1F1;
             display: flex;
             box-sizing: border-box;
+            padding: 6%;
         }
         
         .containerReportes p{
@@ -140,10 +140,14 @@ body {
         }   /* O cualquier transformación que desees */
 
 /*-----------------------Reportes------------------------*/
-        .column-left{
-            width: 45%;
+        .prueba{
+            width: 100%;
+            height: auto;
+        }
+
+        .columnm-left{
+            width: 50%;
             height: 100%;
-            background: #F1F1F1;
         }
 
         .fotografía{
@@ -235,7 +239,6 @@ body {
             width: 75%;
             border-radius: 5vh;
             height: 40px;
-            background-color: #ffffff;
             color: #000;
             display: flex;
             align-items: center;
@@ -262,12 +265,12 @@ body {
         }
 
         .box-ubi{
-            height: 80%;
+            height: 60%;
             background-color: #ffffff;
             border-radius: 3vh;
             margin-top: -25px;
             color: #000;
-            padding: 3px;
+            padding: 15px;
         }
 
         .descripcion{
@@ -276,7 +279,7 @@ body {
         }
 
         .box-des{
-            height: 80%;
+            height: 60%;
             margin-top: -25px;
             background-color: #ffffff;
             border-radius: 3vh;
@@ -296,5 +299,31 @@ body {
             }
             .box2 h3{
                 font-size: 1.2rem;
+            }
+          }
+
+          @media (max-width: 1000px) {
+            .box2 h3{
+                font-size: 1.2rem;
+            }
+            .box-ubi{
+                font-size: .8rem;
+            }
+
+            .box-des{
+                font-size: .8rem;
+            }
+          }
+
+          @media (max-width: 1080px) {
+            .box2 h3{
+                font-size: 1.4rem;
+            }
+            .box-ubi{
+                font-size: .9rem;
+            }
+
+            .box-des{
+                font-size: .9rem;
             }
           }

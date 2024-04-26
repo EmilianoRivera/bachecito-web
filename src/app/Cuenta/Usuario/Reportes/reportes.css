@@ -233,7 +233,6 @@ body {
             width: 75%;
             border-radius: 5vh;
             height: 40px;
-            background-color: #ffffff;
             color: #000;
             display: flex;
             align-items: center;
@@ -293,6 +292,39 @@ body {
                 font-size: larger;
             }
             .box2 h3{
+                font-size: 1.3rem;
+            }
+            .box-ubi{
+                font-size: .9rem;
+            }
+
+            .box-des{
+                font-size: .9rem;
+            }
+          }
+
+          @media (max-width: 1000px) {
+            .box2 h3{
                 font-size: 1.2rem;
+            }
+            .box-ubi{
+                font-size: .8rem;
+            }
+
+            .box-des{
+                font-size: .8rem;
+            }
+          }
+
+          @media (max-width: 1080px) {
+            .box2 h3{
+                font-size: 1.4rem;
+            }
+            .box-ubi{
+                font-size: .9rem;
+            }
+
+            .box-des{
+                font-size: .9rem;
             }
           }
