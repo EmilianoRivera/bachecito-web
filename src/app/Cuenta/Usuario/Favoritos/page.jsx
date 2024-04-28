@@ -29,7 +29,7 @@ function Favoritos() {
   }, []);
 
   return (
-    <div className='body'>
+    <div className='body-favoritos'>
 
       {showTitles && (
         <div className={`titles ${showTitles ? 'show' : 'hide'}`}>
@@ -37,8 +37,6 @@ function Favoritos() {
           <h2 id='textito'>Aquí podrás visualizar el seguimiento de los baches que has guardado de otros usuarios.</h2>
         </div>
       )}
-      
-     
       <ReportesComponente></ReportesComponente>
         
     </div>
