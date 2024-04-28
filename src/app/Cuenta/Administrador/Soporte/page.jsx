@@ -1,6 +1,6 @@
 "use client";
 import React, { useState } from 'react';
-
+import "./Reportes.css";
 function Soporte() {
 
 
@@ -69,24 +69,22 @@ function Soporte() {
 
   // Funciones para manejar los cambios en el select de errores y sistemas operativos
 
-  const handleSubmit = (e) => {
-    e.preventDefault(); 
-    console.log("Formulario enviado")
-  };
-
   const handleError = (e) => {
-    setErrorSeleccionado(e.target.value)
-    console.log(errorSeleccionado)
+    const selectedErr = e.target.value;
+    setErrorSeleccionado(selectedErr)
+    console.log(selectedErr)
   };
 
   const handleSO = (e) => {
-    setSistemaOperativo(e.target.value)
-    console.log(sistemaOperativo)
+    const selectedSO = e.target.value;
+  setSistemaOperativo(selectedSO);
+  console.log(selectedSO);
   };
 
   const handleNavegador = (e) => {
-    setNavegador(e.target.value)
-    console.log(navegador)
+    const selectedNavegador = e.target.value;
+  setNavegador(selectedNavegador);
+  console.log(selectedNavegador);
   };
 
   const handleRutaError = (e) => {
@@ -104,16 +102,47 @@ function Soporte() {
   };
 
   // Acá va toda la lógica
-
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+  
+    try {
+      const response = await fetch('/api/Soporte', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          errorSeleccionado,
+          sistemaOperativo,
+          navegador,
+          rutaError,
+          descripcionProblema
+        })
+      });
+  
+      if (response.ok) {
+        // La solicitud fue exitosa
+        console.log('Formulario enviado con éxito');
+        // Puedes hacer algo como redirigir al usuario a otra página o mostrar un mensaje de éxito
+      } else {
+        // La solicitud falló
+        console.error('Error al enviar el formulario:', response.status);
+        // Puedes mostrar un mensaje de error al usuario
+      }
+    } catch (error) {
+      console.error('Error al enviar el formulario:', error);
+      // Puedes mostrar un mensaje de error al usuario
+    }
+  };
+  
   // Catálogo de errores, SO, versión de navegador, descripción del problema, ruta donde se encontró el error, evidencia fotográfica del problema, 
   // Internamente se obtiene fecha, prioridad con base al error seleccionado, número del ticket, su correo
 
   //<input type="text" value={fecha} readOnly />
   return (
-    <div>
-      <div>Soporte</div>
+    <div className='main-containerReportes'>
 
-      <br /><br /><br />
+      <br /><br /><br /><br/>
       <h2>Hola este es un formulario para el soporte :D</h2>
 
       <form onSubmit={handleSubmit}>
