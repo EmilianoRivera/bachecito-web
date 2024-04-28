@@ -86,7 +86,7 @@ export default function NuevoAdmin() {
                 <form onSubmit={registroAdmin}>
                     
                     <input
-                        className='datos'
+                        className='datosAdmin'
                         type="text"
                         id="username"
                         name="username"
@@ -99,7 +99,7 @@ export default function NuevoAdmin() {
 
                     <div className="apellidos-container">
                         <input 
-                        className='datos'
+                        className='datosAdmin'
                         type="text"
                         id="appat"
                         name="appat"
@@ -110,7 +110,7 @@ export default function NuevoAdmin() {
                     />
                 
                     <input
-                        className='datos'
+                        className='datosAdmin'
                         type="text" 
                         id="apmat"
                         name="apmat"
@@ -122,7 +122,7 @@ export default function NuevoAdmin() {
                     </div>
 
                     <input 
-                        className='datos'
+                        className='datosAdmin'
                         type="date" 
                         id='fechaNacimiento'
                         name="fechaNacimiento"
@@ -134,7 +134,7 @@ export default function NuevoAdmin() {
                     <br/>
 
                     <input 
-                        className='datos'
+                        className='datosAdmin'
                         type="text" 
                         id='correo'
                         name="correo"
@@ -145,7 +145,7 @@ export default function NuevoAdmin() {
                     />
                     <br/>
                     <input 
-                        className='datos'
+                        className='datosAdmin'
                         type="text" 
                         id='password'
                         name="password"

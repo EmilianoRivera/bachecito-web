@@ -69,7 +69,7 @@
     color: #333;
     font-size: 13px;
     text-decoration: none;
-    margin: 15px 0 10px;
+    margin: 5%;
 }
 
 .container-registroUs #olvi-contra{
@@ -79,13 +79,19 @@
     margin: 15px 0 10px;
     position: absolute; 
     left: 10%;
-    top: 58.5%;
+    top: 55.5%;
 }
 
 .container-registroUs #olvi-contra:hover{
     color: #FF4D35;
     transition: color 0.5s ease; /* Transición suave */
 
+}
+
+.container-registroUs #admin-ini{
+    margin-top: 60%;
+    margin-left: 0;
+    margin-top: 10px;
 }
 
 .container-registroUs button{
@@ -270,7 +276,6 @@
 }
 
 .toggle{
-
     background-image: url("https://i.postimg.cc/HxqFJnvy/imagen-cuenta.jpg");
     background-image: url("https://i.postimg.cc/RFskT4SN/imagen-cuenta.jpg");
     background-size:cover; /* Ajusta la imagen para cubrir todo el contenedor */
@@ -298,7 +303,7 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    padding: 0 30px;
+   
     text-align: center;
     top: 0;
     transform: translateX(0);
@@ -307,6 +312,7 @@
 
 .toggle-left{
     transform: translateX(-200%);
+    align-items: center;
 }
 
 .container-registroUs.active .toggle-left{
@@ -316,6 +322,7 @@
 .toggle-right{
     right: 0;
     transform: translateX(0);
+    align-items: center;
 }
 
 .container-registroUs.active .toggle-right{
@@ -328,13 +335,16 @@
 
   .apellidos-container #apmat, #appat {
     flex: 1; /* Permite que los campos de entrada de los apellidos se expandan para llenar el espacio disponible */
-    margin-right: 20px; /* Ajusta el margen entre los campos de entrada de los apellidos */
+    margin-right: 8%; /* Ajusta el margen entre los campos de entrada de los apellidos */
   }
 
   .apellidos-container #apmat, #appat:last-child {
-    margin-right: 0; /* Elimina el margen derecho del último campo de entrada de los apellidos */
+    margin-right: -5%; /* Elimina el margen derecho del último campo de entrada de los apellidos */
   }
 
+  #appat{
+    margin-left: -5%;
+  }
 
 
 /* Estilos personalizados para el checkbox */
@@ -354,8 +364,8 @@ input[type="checkbox"] {
     border: 2px solid #949494; /* Borde predeterminado */
     border-radius: 5px;
     position: absolute; 
-    left: 10.5%;
-    top: 78.35%;
+    left: 6.5%;
+    top: 77.35%;
 }
 
 /* Estilo para el checkbox cuando está marcado */
@@ -379,6 +389,7 @@ input[type="checkbox"]:checked::before {
 .checkbox-container {
     display: flex;
     margin-top: 10px; /* Ajusta el margen entre los campos de entrada y el checkbox */
+    width: 95%;
 }
 
 .checkbox-container input[type="checkbox"] {
@@ -394,7 +405,8 @@ input[type="checkbox"]:checked::before {
     position: absolute;
     color: #525252;
     top: 73.7%;
-    left: 16.5%;
+    left: 13.5%;
+    width: 100%;
 }
 
 .privacy-policy {

@@ -28,7 +28,7 @@ function Favoritos() {
   }, []);
 
   return (
-    <div className='body'>
+    <div className='bodyFavoritos'>
 
       {showTitles && (
         <div className={`titles ${showTitles ? 'show' : 'hide'}`}>
