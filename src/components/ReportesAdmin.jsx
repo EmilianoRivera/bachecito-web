@@ -34,8 +34,18 @@ export default function ReportesAdmin() {
     const updateEstado = async (folio, nuevoEstado) => {
         try {
             // Lógica para actualizar el estado del reporte en la base de datos
-            await updateEstado(folio, nuevoEstado);
-
+            const refCollection = collection(db, 'reportes');
+            const querySnapshot = await getDocs(refCollection);
+    
+            querySnapshot.forEach(async (doc) => {
+                const reporte = doc.data();
+                if (reporte.folio === folio) {
+                    // Actualizar el documento para establecer eliminado: true
+                    await updateDoc(doc.ref, { estado: nuevoEstado });
+                    
+                    console.log(`Se marcó como eliminado el reporte con folio ${folio}`);
+                }
+            })
             // Actualizar el estado del reporte en la tabla HTML
             const rows = document.querySelectorAll('.containerReportesAdmin .Reportes');
             rows.forEach((row) => {
@@ -133,7 +143,7 @@ export default function ReportesAdmin() {
                             <td className='no-reportes'>{report.contador}</td>
                             <td className='eliminar'>
                               <button className="btn-eliminarRP" onClick={() => showDeleteAlert(report.folio)}>
-                                    <img src="https://i.postimg.cc/02gZVXL3/basura.png" alt="" />
+                                    <img src="https://i.postimg.cc/MKhNs3ZQ/circulo-negativo.png" alt="" />
 
                                 </button>
                             </td>

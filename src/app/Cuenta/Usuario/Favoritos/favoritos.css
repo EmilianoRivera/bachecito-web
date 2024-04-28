@@ -1,25 +1,22 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Baloo+Thambi+2:wght@400..800&family=Nunito:ital,wght@0,200..1000;1,200..1000&display =intercambiar');
 
-
-*{
-    margin: 0;
-    padding: 0;
-}
-
-.body{
-    padding-top: 8%;
-    margin-left: 5%;
-    margin-right: 5%;
+.body-favoritos{
+    padding-top: 8vh;
+    margin-left: 1.5vw;
     background-color: #FFFFFF;
     height: 100vh;
+    width: 95vw;
+    overflow-x: hidden;
     overflow-y: hidden;
+    font-family: 'Inter UI', sans-serif;
 }
 
 #title-main{
     color: #FF9F49;
     font-family: "Baloo Thambi 2", system-ui;
     font-weight: 600;
+    margin-left: 2.5vw;
     font-size: 1.8rem;
 }
 
@@ -27,17 +24,23 @@
     color: #6F6F6F;
     font-family: "Baloo Thambi 2", system-ui;
     font-weight: 500;
+    margin-left: 2.5vw;
     font-size: 1.3rem;
 }
 
-.container-tipos {
+.container-tipos-favs {
     display: flex; /* Establece el contenedor como un flex container */
-    
+    margin-bottom: 0;
+    padding: 0;
+    top: 0;
+    margin-top: -3rem;
+    overflow-x: hidden;
 }
   
-.column {
+.column-favs {
     flex: 1; /* Las columnas ocuparán el mismo espacio */
     margin: 0 10px; /* Margen entre las columnas */
+    overflow-x: hidden;
     padding: 10px; /* Espacio interno dentro de las columnas */
 }
 
@@ -60,21 +63,23 @@
     color: #A4DF77;
 }
 
-.container-reportes {
+.container-reportes-favs {
     display: flex; /* Establece el contenedor como un flex container */
     margin-bottom: 15%;
     margin-top: -8%;
     overflow-y: auto;
+    overflow-x: hidden;
 }
 
-.reportes-boxes{
+.reportes-boxes-favs{
     flex: 1;
     overflow-y: auto; /* Agrega scroll vertical si el contenido es más largo que el área visible */
     width: 100%;
+    overflow-x: hidden;
     
 }
 
-.box2{
+.box2-favs{
     break-inside: avoid; /* Evita que los divs se rompan en medio de las columnas */
     width: 100%;
     padding: 6%;
@@ -85,11 +90,13 @@
     box-sizing: border-box;
 }
 
-.container-reportes h3{
+.container-reportes-favs h3{
     font-size: 1.3rem;
     color: #FF7A3E;
     font-family: "Baloo Thambi 2", system-ui;
+    overflow-x: hidden;
     top: 0;
+    margin-top: 35px;
 }
 
 .copy {
@@ -103,13 +110,13 @@
 }   /* O cualquier transformación que desees */
 
 /*-----------------------Reportes------------------------*/
-.column-left{
+.column-favs-left{
     width: 45%;
     height: 100%;
     background: #F1F1F1;
 }
 
-.fotografía{
+.fotografía-favs{
     width: 100%;
     height: 45vh;
     background-color: #ffffff;
@@ -117,7 +124,7 @@
     margin-bottom: 15px;
 }
 
-.column-left-inferior{
+.column-favs-left-inferior{
     height: 30px;
     width: 100%;
     background-color: #F1F1F1;
@@ -126,7 +133,7 @@
     align-items: center;
 }
 
-.fecha {
+.fecha-favs {
     width: 90%;
     border-radius: 5vh;
     height: 2.5vh;
@@ -140,7 +147,7 @@
     padding-top: 9px;
 }
 
-.contador{
+.contador-favs{
     margin-left: 10%;
     margin-top: -1%;
     width: 20%;
@@ -152,7 +159,7 @@
     font-weight:900;
 }
 
-.icon{
+.icon-favs{
     justify-content: center;
     align-items: center;
     align-content: center;
@@ -161,12 +168,12 @@
     width: 100%;
 }
 
-.logo{
+.logo-favs{
     width: 30px;
     margin-bottom: 7px;
 }
 
-.number{
+.number-favs{
     justify-content: center;
     align-items: center;
     align-content: center;
@@ -174,21 +181,22 @@
     margin-top: -7px;
 }
 
-.column-right{
+.column-favs-right{
     width: 50%;
     margin-left: 5%;
     padding: 0;
     height: auto;
+    position: relative;
 }
 
-.column-right-superior{
-    background-color: #F1F1F1;
+.column-favs-right-superior{
     width: 100%;
     display: flex;
     height: 40px;
+    position: absolute;
 }
 
-.estado{
+.estado-favs{
     width: 75%;
     border-radius: 5vh;
     height: 4vh;
@@ -207,50 +215,54 @@
     background-color: #A4DF77;
 }
 
-.guardar{
+.guardar-favs{
     height: 4.3vh;
     margin-left: 10%;
     justify-content: center;
     align-items: center;
 }
 
-.icon-star{
+.icon-favs-star{
     height: 90%;
     align-self: center;
     justify-self: end;
 }
 
-.ubicacion{
+.ubicacion-favs{
     width: 100%;
     height: 40%;
     display: block;
-    margin-bottom: 5px;
 }
 
-.box-ubi{
-    height: 80%;
+.box-ubi-favs{
+    height: 75%;
     background-color: #ffffff;
     border-radius: 3vh;
-    
+    margin-top: -15px;
+    padding: 15px;
 }
 
-.descripcion{
+.descripcion-favs{
     margin-top: 10%;
     width: 100%;
     height: 40%;
 }
 
-.box-des{
-    height: 80%;
+.box-des-favs{
+    height: 45%;
     background-color: #ffffff;
+    margin-top: -15px;
     border-radius: 3vh;
+    padding: 15px;
 }
 
-.scrollable-section {
+.scrollable-section-favs {
     overflow-y: auto; /* Agrega scroll vertical si el contenido es más largo que el área visible */
     height: calc(100vh - 100px); /* Ajusta la altura para que ocupe el resto de la ventana después de los títulos */
     padding-top: 100px; /* Asegura que el contenido no se oculte debajo de los títulos fijos */
     transition: opacity 2s ease;
+    margin-top: 0;
+    overflow-x: hidden;
 
 }
 
@@ -264,10 +276,6 @@
   
   .titles.show {
     opacity: 1;
-  }
-
-  .margin-top {
-    margin-top: 4%; /* Ajusta según sea necesario */
   }
 
   ::-webkit-scrollbar {

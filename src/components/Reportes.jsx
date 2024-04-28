@@ -155,7 +155,7 @@ function ReportesComponente() {
         <div className="prueba">
           <div className="columnm-left">
             <div className="fotografía">
-              <img src={report.imagenURL} alt={""} style={{ maxWidth: '100%', maxHeight: '100%' }}/>
+              <img src={report.imagenURL} alt={""} style={{ width: '100%', maxHeight: '100%' }}/>
             </div>
 
             <div className="column-left-inferior">
@@ -177,21 +177,21 @@ function ReportesComponente() {
           <div className="column-right">
               <div className="column-right-superior">
                 <div className="estado">  {report.estado === "Sin atender" && (
-    <img src={sinAtenderIcon.src} alt={"Sin atender"}   style={{ width: "100%", height: "100%", borderRadius: "5vh" }} />
-  )}
-  {report.estado === "En atención" && (
-    <img src={enProcesoIcon.src} alt={"En atención"}   style={{ width: "100%", height: "100%", borderRadius: "5vh" }}/>
-  )}
-  {report.estado === "Atendido" && (
-    <img src={atendidoIcon.src} alt={"Atendido"}  style={{ width: "100%", height: "100%", borderRadius: "5vh" }} />
-  )}</div>
+                  <img src={sinAtenderIcon.src} alt={"Sin atender"}   style={{ width: "100%", height: "90%", borderRadius: "5vh" }} />
+                )}
+                {report.estado === "En atención" && (
+                  <img src={enProcesoIcon.src} alt={"En atención"}   style={{ width: "100%", height: "90%", borderRadius: "5vh" }}/>
+                )}
+                {report.estado === "Atendido" && (
+                  <img src={atendidoIcon.src} alt={"Atendido"}  style={{ width: "100%", height: "90%", borderRadius: "5vh" }} />
+                )}</div>
                 <div className="guardar">
                 {userData && userData.uid && userData.foliosGuardados && userData.foliosGuardados.includes(report.folio) ? (
-    <img className="icon-star" src="https://i.postimg.cc/W335wqws/estrella-2.png"
-                     alt="Folio guardado" onClick={() => guardarFoliosEnDB(report.folio, userData)} />
-  ) : (
-    <img className="icon-star" src={estrella.src} alt="Guardar folio" onClick={() => guardarFoliosEnDB(report.folio, userData)} />
-  )}
+                <img className="icon-star" src="https://i.postimg.cc/W335wqws/estrella-2.png"
+                                  alt="Folio guardado" onClick={() => guardarFoliosEnDB(report.folio, userData)} />
+                ) : (
+                  <img className="icon-star" src={estrella.src} alt="Guardar folio" onClick={() => guardarFoliosEnDB(report.folio, userData)} />
+                )}
                 </div>
               </div>
 
