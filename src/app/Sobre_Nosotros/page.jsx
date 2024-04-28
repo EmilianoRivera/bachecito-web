@@ -73,9 +73,9 @@ function SobreNosotros() {
             Acerca de Bachecito 26
           </h1>
           <p class="text">
-            Proyecto desarrollado por estudiantes del Centro de
-            Estudios Científicos y Tecnológicos 9 "Juan de Dios Bátiz".
-          </p>
+    Proyecto desarrollado por estudiantes del Centro de
+    Estudios Científicos y Tecnológicos 9 Juan de Dios Bátiz;.
+  </p>
           <a href="../app/page.jsx" class="btn btn-primary">Inicio</a>
         </div>
         <div class="hero__img">
@@ -290,7 +290,7 @@ function SobreNosotros() {
             <h3 class="services__title">Enviar Reporte</h3>
             <p class="service__text">
               Todos los reportes de bache realizados por los usuarios de nuestra aplicación
-              son eviados a este sistema web en el apartado de "Reportes".
+              son eviados a este sistema web en el apartado de Reportes.
             </p>
             <div class="arrow-icon">
               <i class="fas fa-arrow-right"></i>

@@ -1,19 +1,45 @@
-"use client"
+"use client";
 import React, { useEffect, useRef, useState } from "react";
 import * as d3 from "d3";
 
-export default function Circular({ width, height, estados }) {
+export default function Circular({
+  width,
+  height,
+  estados,
+  alcaldias,
+  startDates,
+  endDates,
+  filtroFechas,
+}) {
   //AQUI ESTAN LOS ESTADOS Y EL HOOK DE USEREF, QUE HACE REFERENCIA AL ELEMENTO SVG QUE ESTA EN EL HTML
   const svgRef = useRef();
   const tooltipRef = useRef();
-  const [rep, setRep] = useState([]);
-  const [totalRep, setTotalRep] = useState(0);
+  const [rep, setRep] = useState([]); //guarda los reportes totales por alcaldia
+  //const [totalRep, setTotalRep] = useState(0);
   const [selectedSegment, setSelectedSegment] = useState(null);
-  const [alcEstRep, setAlcEstRep] = useState();
+  const [alcEstRep, setAlcEstRep] = useState(); //este guardar por alcaldia, la cantidad de reportes que tienen x estado
 
-  const color = d3.scaleOrdinal()
-    .domain(rep.map(d => d.label))
-    .range(["#FF8A57", "#FFB54E", "#FFE75F", "#D3FF7A", "#90F49B", "#2EC4B6", "#49C3FB", "#65A6FA", "#5D9DD5", "#65A6FA", "#49C3FB", "#2EC4B6", "#90F49B", "#D3FF7A", "#FFE75F", "#FFB54E"]);
+  const color = d3
+    .scaleOrdinal()
+    .domain(rep.map((d) => d.label))
+    .range([
+      "#FF8A57",
+      "#FFB54E",
+      "#FFE75F",
+      "#D3FF7A",
+      "#90F49B",
+      "#2EC4B6",
+      "#49C3FB",
+      "#65A6FA",
+      "#5D9DD5",
+      "#65A6FA",
+      "#49C3FB",
+      "#2EC4B6",
+      "#90F49B",
+      "#D3FF7A",
+      "#FFE75F",
+      "#FFB54E",
+    ]);
   //SE ENCARGA DE HACER LAS PETICIONES A LOS ENDPOINTS PARA TRAER LA INFORMACIÓN QUE SE VA A GRAFICAR, EN EL SVG ES DONDE SE PINTAN LAS GRAFICAS
   useEffect(() => {
     async function fetchData() {
@@ -34,9 +60,8 @@ export default function Circular({ width, height, estados }) {
         }));
 
         setRep(dataArray);
-        setTotalRep(data2);
+        // setTotalRep(data2);
         setAlcEstRep(data3);
-      
       } catch (error) {
         console.error("Error fetching data: ", error);
       }
@@ -44,18 +69,39 @@ export default function Circular({ width, height, estados }) {
 
     fetchData();
   }, []);
-  //FUNCION QUE SE ENCARGA DE ACTUALIZAR LA GRAFICA CON BASE AL ESTADO
-  function nuevaGraficaCircular(alcEstRep) {
 
-    console.log("LLEGO")
-  }
-  //HOOK QUE SE ENCARGA DE CREAR LA GRAFICA CON BASE AL PORCETAJE QUE HAY DE REPORTES POR ALCALDIA, ESTA APARECE PRIMERO, SI HAY UN CAMBIA DE ESTADO YA APARECE LA GRAFICA DE LA FUNCION nuevaGraficaCircular
+
+
+  //ESTE USEEFFECT SE ENCARGA DE OCULTAR LOS ELEMENTOS, Y REVISAR QUE SI CAMBIA ALGO EN EL FILTRO DEL ESTADO, SE EJECUTE LA FUNCION QUE CAMBIA LA GRAFICA
   useEffect(() => {
-  console.log(estados)
-     if (estados === "sin estado") {
+    if (!selectedSegment) {
+      d3.select(tooltipRef.current).style("visibility", "hidden");
+    } else {
+      d3.select(tooltipRef.current).style("visibility", "visible");
+      d3.select(tooltipRef.current)
+        .select(".tooltip-label")
+        .style("font-family", "Helvetica, sans-serif")
+        .text(selectedSegment.data.label.toUpperCase());
+      const percentage = (
+        ((selectedSegment.endAngle - selectedSegment.startAngle) /
+          (2 * Math.PI)) *
+        100
+      ).toFixed(2);
+      d3.select(tooltipRef.current)
+        .select(".tooltip-value")
+        .text(`${percentage}%`);
+    }
+  }, [selectedSegment]);
+
+  graficaCircular()
+ 
+ 
+  function graficaCircular(estado = estados, alcaldia=alcaldias, filtroFecha=filtroFechas, startDate=startDates, endDate=endDates) {
       const svg = d3.select(svgRef.current);
       const radius = Math.min(width, height) / 2;
-
+      if (estados === "Todos" && alcaldia === "Todas" && filtroFechas === "Todos los tiempos") {
+   
+ 
       const pie = d3.pie().value((d) => d.value);
 
       const arc = d3.arc().innerRadius(50).outerRadius(radius);
@@ -106,40 +152,56 @@ export default function Circular({ width, height, estados }) {
 
       const tooltip = d3.select(tooltipRef.current);
       tooltip.style("visibility", "hidden");
-    
-     } else {
-      console.log("NUEVA GRAFICA")
-     }
-      
-  }, [rep, height, width]);
 
-  //ESTE USEEFFECT SE ENCARGA DE OCULTAR LOS ELEMENTOS, Y REVISAR QUE SI CAMBIA ALGO EN EL FILTRO DEL ESTADO, SE EJECUTE LA FUNCION QUE CAMBIA LA GRAFICA
-  useEffect(() => {
-    if (!selectedSegment) {
-      d3.select(tooltipRef.current).style("visibility", "hidden");
-    } else  {
-      d3.select(tooltipRef.current).style("visibility", "visible");
-      d3.select(tooltipRef.current)
-        .select(".tooltip-label")
-        .style("font-family", "Helvetica, sans-serif")
-        .text(selectedSegment.data.label.toUpperCase());
-      const percentage = (
-        ((selectedSegment.endAngle - selectedSegment.startAngle) /
-          (2 * Math.PI)) *
-        100
-      ).toFixed(2);
-      d3.select(tooltipRef.current)
-        .select(".tooltip-value")
-        .text(`${percentage}%`);
-    } 
-  }, [selectedSegment]);
+    } else {
+ 
+        const nombreAlcaldia = alcaldia.replace(/^[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+|[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+$/g, "");
+        async function fetchFiltroEstado() {
+          try {
+            const parametros = {
+              estado: estado,
+              alcaldia: alcaldia,
+              filtroFecha: filtroFecha,
+              startDate: startDate,
+              endDate: endDate
+            };
+
+            // Realizar la solicitud POST con el objeto de parámetros en el cuerpo
+            const datosNuevos = await fetch(`/api/filtros/${estado}/${nombreAlcaldia}/${filtroFecha}/${startDate}/${endDate}`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json' // Indicar que el cuerpo es JSON
+              },
+              body: JSON.stringify(parametros) // Convertir el objeto a JSON
+            });
+            if (!datosNuevos.ok) {
+              throw new Error("Fallo a la petición de /api/filtros/estado/${estado}");
+            }
+            const estadosReportes = await datosNuevos.json();
+            console.log(estadosReportes);
+
+          } catch (error) {
+            console.error("Error a la hora de hacer la petición a /api/filtros/estado/${estado}: ", error);
+          }
+        }
+
+        fetchFiltroEstado();
+
+ 
+      }
+ 
+    }
+
+    
+
+ 
 
   return (
-    <div style={{ position: "relative", width, height }}>
-      <svg ref={svgRef} width={width} height={height}></svg>
+    <div style={{ position: "relative", width, height, color:"white", }}>
+      <svg ref={svgRef} width={width} height={height} style={{color:"white"}}></svg>
       <div
         ref={tooltipRef}
-        className="tooltip"
+        className="tooltip-grcir"
         style={{ position: "absolute", top: 10, right: 10 }}
       >
         <div className="tooltip-label"></div>

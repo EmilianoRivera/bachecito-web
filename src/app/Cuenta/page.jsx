@@ -1,7 +1,8 @@
 "use client";
-import React, { useState} from "react";
+import React, { useState, useContext} from "react";
 import { auth, db } from "../../../firebase";
 import { useRouter } from "next/navigation";
+
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
@@ -17,22 +18,24 @@ import {
   addDoc,
 } from "firebase/firestore";
 import "./registro.css";
+import AuthContext from "../../../context/AuthContext";
 
 
 function Registro() {
   //elementos del router
   const { push } = useRouter();
   const router = useRouter();
+  const { isLogged } = useContext(AuthContext);
   //elementos de validaciones
   const [active, setActive] = useState(false);
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
   const [canSubmit, setCanSubmit] = useState(false);
 
   const handleAdminLinkClick = (event) => {
-    event.preventDefault();
+    event.preventDefault  ();
     router.push("/Cuenta/Administrador");
   };
-
+  
   const handleButtonClick = () => {
     setActive(!active);
   };
@@ -259,7 +262,6 @@ function Registro() {
       };
 
       addDoc(usuariosCollection, nuevoUsuario);
-      alert("SE GUARDO SI OLA");
       push("/Cuenta/Usuario/Perfil");
     } catch (error) {
       console.error("Error al crear la cuenta: ", error);
@@ -303,7 +305,7 @@ function Registro() {
             });
             alert("Cuenta restablecida correctamente");
             push("/Cuenta/Usuario/Perfil");
-            console.log("Usuario inició sesión con éxito:", user);
+
           } else {
             signOut(auth);
             alert("Inicio de sesión cancelado");
@@ -311,7 +313,7 @@ function Registro() {
         } else {
           alert("Inicio de sesión exitoso");
           push("/Cuenta/Usuario/Perfil");
-          console.log("Usuario inició sesión con éxito:", user);
+   
         }
       }
     } catch (error) {
@@ -319,7 +321,18 @@ function Registro() {
       alert("Correo o contraseña incorrectos");
     }
   };
-
+  if (isLogged) {
+    return (
+      <div className="body">
+      <div className="container-registroUs">
+        <div className="form-container sign-up">
+        <h1 style={{with: 30}}>¡Ya estás logueado!</h1>
+        <button onClick={() => push("/Cuenta/Usuario/Perfil")}>Ir a tu perfil</button>
+      </div>
+      </div>
+      </div>
+    );
+  }
   return (
     <div className="body">
       <div className={`container-registroUs ${active ? "active" : ""}`} id="container-registroUs">
@@ -486,7 +499,7 @@ function Registro() {
                 Crear Cuenta
               </button>
             </div>
-          </div>
+          </div> 
         </div>
 
         {/* Pantalla de política de privacidad */}

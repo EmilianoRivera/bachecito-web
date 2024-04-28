@@ -7,10 +7,14 @@ const Alerta = ({ pageId }) => {
 
   // Estado para verificar si la alerta se ha mostrado o no en esta página específica
   const [alertaMostrada, setAlertaMostrada] = useState(() => {
-    // Verifica en localStorage si la alerta ya fue mostrada para esta página específica
-    return localStorage.getItem(storageKey) === 'true';
+    if (typeof window !== 'undefined') {
+      // Verifica en localStorage si la alerta ya fue mostrada para esta página específica
+      return localStorage.getItem(storageKey) === 'true';
+    }
+    
+    // En caso de no estar en el navegador, devuelve un valor predeterminado
+    return false;
   });
-
   // Función para manejar el botón "No volver a mostrar"
   const manejarNoMostrar = () => {
     // Guardar en localStorage que la alerta ya fue mostrada para esta página específica
@@ -98,8 +102,9 @@ const botonHoverStyle = `
 }
 `;
 
-const styleSheet = document.createElement('style');
-styleSheet.innerHTML = botonHoverStyle;
-document.head.appendChild(styleSheet);
-
+if (typeof window !== 'undefined') {
+  const styleSheet = document.createElement('style');
+  styleSheet.innerHTML = botonHoverStyle;
+  document.head.appendChild(styleSheet);
+}
 export default Alerta;

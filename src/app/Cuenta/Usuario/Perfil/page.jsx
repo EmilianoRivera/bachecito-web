@@ -12,84 +12,132 @@ import {
   query,
   where,
   getDocs,
+  getDoc,
 } from "firebase/firestore";
-import Alerta from "@/components/Alerta2"
-
+import Alerta from "@/components/Alerta2";
+import atendidoIcon from "../../../../imgs/fondoVerde.png";
+import enProcesoIcon from "../../../../imgs/fondoAmarillo.png";
+import sinAtenderIcon from "../../../../imgs/fondoRojo.png";
+import estrella from "../../../../imgs/estrella.png";
+import estrella2 from "../../../../imgs/estrella2.png";
 export default function Perfil() {
   useAuthUser();
   const router = useRouter();
   const { isLogged } = useContext(AuthContext);
-  const [userData, setUserData] = useState(null);
+  const [userData, setUserData] = useState({});
   const [reportes, setReportes] = useState([]);
-  //Obtener datos del usuario
-  useEffect(() => {
-    const fetchUserData = async () => {
-      if (isLogged) {
-        try {
-          // Realizar la consulta para obtener los datos del usuario
-          const userQuery = query(
-            collection(db, "usuarios"),
-            where("uid", "==", auth.currentUser.uid)
-          );
-          const userDocs = await getDocs(userQuery);
-
-          // Si hay documentos en el resultado de la consulta
-          if (!userDocs.empty) {
-            // Obtener el primer documento (debería haber solo uno)
-            const userDoc = userDocs.docs[0];
-            // Obtener los datos del documento
-            const userData = userDoc.data();
-            // Establecer los datos del usuario en el estado
-            setUserData(userData);
-          } else {
-            console.log("No se encontró el documento del usuario");
-          }
-        } catch (error) {
-          console.error("Error al obtener los datos del usuario:", error);
-        }
-      }
-    };
-
-    fetchUserData();
-  }, [isLogged]);
-
-  //REPORTES
-  useEffect(() => {
-    const obtenerReportes = async () => {
-      // Verificar si userData no es null y tiene la propiedad uid
-      if (userData && userData.uid) {
-        const reportesRef = collection(db, "reportes");
-        const q = query(reportesRef, where("uidUsuario", "==", userData.uid));
-
-        try {
-          const querySnapshot = await getDocs(q);
-          const fetchedReportes = [];
-          querySnapshot.forEach((doc) => {
-            fetchedReportes.push({
-              id: doc.id,
-              ...doc.data(),
-            });
-          });
-          console.log(
-            "Reportes obtenidos de la base de datos:",
-            fetchedReportes
-          );
-          setReportes(fetchedReportes);
-        } catch (error) {
-          console.error("Error al obtener reportes:", error);
-        }
-      }
-    };
-    obtenerReportes();
-  }, [userData]);
-
-  useEffect(() => {
-    console.log("Estado actual de reportes:", reportes);
-  }, [reportes]);
-
+  const [foliosGuardados, setFoliosGuardados] = useState([]);
   const [windowWidth, setWindowWidth] = useState(0);
   const [showLeftSide, setShowLeftSide] = useState(false);
   const [showToggleButton, setShowToggleButton] = useState(false);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const unsubscribe = auth.onAuthStateChanged((user) => {
+        if (user) {
+          const uid = user.uid;
+          fetchData(uid);
+        } else {
+          router.push("/login");
+        }
+      });
+      return () => unsubscribe();
+    }
+
+    async function fetchData(uid) {
+      try {
+        const userResponse = await fetch(`/api/Usuario/${uid}`);
+        const reportesResponse = await fetch(`/api/ReportesPerfil/${uid}`);
+        if (!userResponse.ok || !reportesResponse.ok) {
+          throw new Error("Failed to fetch user data");
+        }
+        const userData = await userResponse.json();
+        const reportesData = await reportesResponse.json();
+
+        setUserData(userData);
+        setReportes(reportesData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+  }, []);
+
+  ///FOLIOS
+  useEffect(() => {
+    // Guardar el array de folios en la base de datos cada vez que cambie
+    guardarFoliosEnDB(foliosGuardados);
+  }, [foliosGuardados]);
+  // Función para guardar el array de folios en la base de datos
+  const guardarFoliosEnDB = async (folio, userData) => {
+    try {
+      // Verificar si userData no es null y tiene la propiedad uid
+      if (userData && userData.uid) {
+        // Realizar una consulta para encontrar el documento del usuario
+        const userQuery = query(
+          collection(db, "usuarios"),
+          where("uid", "==", userData.uid)
+        );
+
+        // Obtener el resultado de la consulta
+        const userQuerySnapshot = await getDocs(userQuery);
+
+        // Verificar si se encontró algún documento
+        if (!userQuerySnapshot.empty) {
+          // Obtener la referencia al primer documento encontrado
+          const userDocRef = userQuerySnapshot.docs[0].ref;
+
+          // Obtener el documento del usuario
+          const userDocSnap = await getDoc(userDocRef);
+
+          if (userDocSnap.exists()) {
+            // Obtener los datos actuales del documento del usuario
+            const userData = userDocSnap.data();
+            const foliosGuardadosAnteriores = userData.foliosGuardados || [];
+
+            // Verificar si el folio ya ha sido guardado previamente
+            if (foliosGuardadosAnteriores.includes(folio)) {
+              // Eliminar el folio del array de folios guardados
+              const nuevosFoliosGuardados = foliosGuardadosAnteriores.filter(
+                (f) => f !== folio
+              );
+
+              // Actualizar el documento del usuario con el nuevo array de folios
+              await updateDoc(userDocRef, {
+                foliosGuardados: nuevosFoliosGuardados,
+              });
+
+              console.log("Folio eliminado de la base de datos del usuario.");
+            } else {
+              // Agregar el nuevo folio al array de folios guardados
+              const nuevosFoliosGuardados = [
+                ...foliosGuardadosAnteriores,
+                folio,
+              ];
+
+              // Actualizar el documento del usuario con el nuevo array de folios
+              await updateDoc(userDocRef, {
+                foliosGuardados: nuevosFoliosGuardados,
+              });
+
+              console.log("Folio guardado en la base de datos del usuario.");
+            }
+          } else {
+            console.error(
+              "El documento del usuario no existe en la base de datos."
+            );
+          }
+        } else {
+          console.error(
+            "No se encontró ningún documento de usuario que contenga el UID proporcionado."
+          );
+        }
+      } else {
+        console.error("No se proporcionaron datos de usuario válidos.");
+      }
+    } catch (error) {
+      console.error("Error al guardar el folio en la base de datos:", error);
+    }
+  };
 
   useEffect(() => {
     // Handler para el cambio de tamaño de la ventana
@@ -140,7 +188,7 @@ export default function Perfil() {
 
       querySnapshot.forEach(async (doc) => {
         await updateDoc(doc.ref, { estadoCuenta: false });
-        console.log("cuenta desactivada");
+
         alert("Cuenta desactivada, esperamos verte de nuevo(:");
         CerrarSesion();
       });
@@ -150,119 +198,160 @@ export default function Perfil() {
   };
 
   return (
-      <div className="container-perfil">
-          <Alerta pageId="Pagina-Perfil"></Alerta>
-        {isLogged && userData && (
-          <div
-            id="leftSide"
-            style={{ display: showLeftSide ? "block" : "none" }}
-          >
-            <div class="profile-card">
-              <div class="profile-image">
-                {userData.imagen ? (
-                  <img src={userData.imagen} alt="Imagen de perfil" />
-                ) : (
-                  <img
-                    src="https://i.pinimg.com/564x/34/f9/c2/34f9c2822cecb80691863fdf76b29dc0.jpg"
-                    alt="Imagen de perfil predeterminada"
-                  />
-                )}{" "}
-              </div>
-              <div class="profile-details">
-                <div class="nombre">{userData.nombre} </div>
-                <div class="name-fields">
-                  <div class="field appat">{userData.apellidoPaterno}</div>
-                  <div class="field apmat">{userData.apellidoMaterno}</div>
-                </div>
-                <div class="fecha-nac">{userData.fechaNacimiento} </div>
-                <div class="email">{userData.correo}</div>
-                <div class="buttons">
-                  <button class="cerrar-sesion-btn" onClick={CerrarSesion}>
-                    Cerrar Sesión
-                  </button>
-                  <button
-                    class="desactivar-cuenta-btn"
-                    onClick={eliminarCuenta}
-                  >
-                    Desactivar Cuenta
-                  </button>
-                </div>
-              </div>
-            </div>
-          </div>
-        )}
-        <div className="line-vertical"></div>
-        <div className="right-side">
-          <div className="encabezado-historial">
-            <h2>Tu historial de reportes:</h2>
-          </div>
-          {reportes.map((reporte, index) => (
-            <div className="box2" id="box2">
-              <div className="column-left">
-                <div className="fotografía">
-                  <img
-                    src={reporte.imagenURL}
-                    alt=""
-                    style={{ maxWidth: "100%", maxHeight: "100%" }}
-                  />
-                </div>
-                <div className="column-left-inferior">
-                  <div className="fecha">{reporte.fechaReporte}</div>
-
-                  <div className="contador">
-                    <div className="icon">
-                      <img
-                        src="https://i.postimg.cc/s2ZYz740/exclamacion-de-diamante.png"
-                        className="logo"
-                      />
-                    </div>
-                    <div className="number"></div>
-                  </div>
-                </div>
-              </div>
-
-              <div className="column-right">
-                <div className="column-right-superior">
-                  <div className="estado">{reporte.estado}</div>
-
-                  <div className="guardar">
-                    <img
-                      src="https://i.postimg.cc/52PmmT4T/estrella.png"
-                      className="icon-star"
-                    />
-                  </div>
-                </div>
-
-                <div className="ubicacion">
-                  <h3>Ubicación:</h3>
-                  <div className="box-ubi">{reporte.ubicacion}</div>
-                </div>
-
-                <div className="descripcion">
-                  <h3>Descripción</h3>
-                  <div className="box-des">{reporte.descripcion}</div>
-                </div>
-              </div>
-            </div>
-          ))}
-
-          {showToggleButton && (
-            <button id="toggleButton" onClick={toggleLeftSide}>
-              {showLeftSide ? (
-                <img
-                  src="https://i.postimg.cc/kMxkBZBm/angulo-izquierdo.png"
-                  alt="Cerrar"
-                />
+    <div className="container-perfil">
+      {/* <Alerta pageId="Pagina-Perfil"></Alerta> */}
+      {isLogged && userData && (
+        <div id="leftSide" style={{ display: showLeftSide ? "block" : "none" }}>
+          <div className="profile-card">
+            <div className="profile-image">
+              {userData.imagen ? (
+                <img src={userData.imagen} alt="Imagen de perfil" />
               ) : (
                 <img
-                  src="https://i.postimg.cc/NMkBsTBm/angulo-derecho.png"
-                  alt="Abrir"
+                  src="https://i.pinimg.com/564x/34/f9/c2/34f9c2822cecb80691863fdf76b29dc0.jpg"
+                  alt="Imagen de perfil predeterminada"
                 />
-              )}
-            </button>
-          )}
+              )}{" "}
+            </div>
+            <div className="profile-details">
+              <div className="nombre">{userData.nombre} </div>
+              <div className="name-fields">
+                <div className="field appat">{userData.apellidoPaterno}</div>
+                <div className="field apmat">{userData.apellidoMaterno}</div>
+              </div>
+              <div className="fecha-nac">{userData.fechaNacimiento} </div>
+              <div className="email">{userData.correo}</div>
+              <div className="buttons">
+                <button className="cerrar-sesion-btn" onClick={CerrarSesion}>
+                  Cerrar Sesión
+                </button>
+                <button
+                  className="desactivar-cuenta-btn"
+                  onClick={eliminarCuenta}
+                >
+                  Desactivar Cuenta
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
-        {isLogged && !userData && <p>Cargando datos del usuario...</p>}
+      )}
+      <div className="line-vertical"></div>
+      <div className="right-side">
+        <div className="encabezado-historial">
+          <h2>Tu historial de reportes:</h2>
+        </div>
+
+        {reportes.map((reporte, index) => (
+          <div className="box2" id="box2" key={index}>
+            <div className="column-left">
+              <div className="fotografía">
+                <img
+                  src={reporte.imagenURL}
+                  alt=""
+                  style={{ maxWidth: "100%", maxHeight: "100%" }}
+                />
+              </div>
+              <div className="column-left-inferior">
+                <div className="fecha">{reporte.fechaReporte}</div>
+
+                <div className="contador">
+                  <div className="icon">
+                    <img
+                      src="https://i.postimg.cc/s2ZYz740/exclamacion-de-diamante.png"
+                      className="logo"
+                    />
+                  </div>
+                  <div className="number">{reporte.contador}</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="column-right">
+              <div className="column-right-superior">
+                <div className="estado">
+                  {reporte.estado === "Sin atender" && (
+                    <img
+                      src={sinAtenderIcon.src}
+                      alt="Sin atender"
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        borderRadius: "5vh",
+                      }}
+                    />
+                  )}
+                  {reporte.estado === "En atención" && (
+                    <img
+                      src={enProcesoIcon.src}
+                      alt="En atención"
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        borderRadius: "5vh",
+                      }}
+                    />
+                  )}
+                  {reporte.estado === "Atendido" && (
+                    <img
+                      src={atendidoIcon.src}
+                      alt="Atendido"
+                      style={{
+                        width: "100%",
+                        height: "100%",
+                        borderRadius: "5vh",
+                      }}
+                    />
+                  )}
+                </div>
+
+                <div className="guardar">
+ 
+                  {userData && userData.uid && userData.foliosGuardados && userData.foliosGuardados.includes(reporte.folio) ? (
+                    <img src="https://i.postimg.cc/W335wqws/estrella-2.png"
+                      className="icon-star" alt="Folio guardado" onClick={() => guardarFoliosEnDB(reporte.folio, userData)}/>
+ 
+                  ) : (
+                    <img
+                      className="icon-star"
+                      src={estrella.src}
+                      alt="Guardar folio"
+                      onClick={() => guardarFoliosEnDB(reporte.folio, userData)}
+                    />
+                  )}
+                </div>
+              </div>
+
+              <div className="ubicacion">
+                <h3>Ubicación:</h3>
+                <div className="box-ubi">{reporte.ubicacion}</div>
+              </div>
+
+              <div className="descripcion">
+                <h3>Descripción</h3>
+                <div className="box-des">{reporte.descripcion}</div>
+              </div>
+            </div>
+          </div>
+        ))}
+
+        {showToggleButton && (
+          <button id="toggleButton" onClick={toggleLeftSide}>
+            {showLeftSide ? (
+              <img
+                src="https://i.postimg.cc/kMxkBZBm/angulo-izquierdo.png"
+                alt="Cerrar"
+              />
+            ) : (
+              <img
+                src="https://i.postimg.cc/NMkBsTBm/angulo-derecho.png"
+                alt="Abrir"
+              />
+            )}
+          </button>
+        )}
       </div>
+      {isLogged && !userData && <p>Cargando datos del usuario...</p>}
+    </div>
   );
 }

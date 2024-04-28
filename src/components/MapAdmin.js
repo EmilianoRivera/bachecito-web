@@ -7,8 +7,10 @@ import "leaflet/dist/images/layers.png";
 import "leaflet/dist/images/layers-2x.png";
 import "leaflet/dist/images/marker-icon-2x.png";
 import "leaflet/dist/images/marker-shadow.png";
+import atendidoIcon from '../imgs/BanderaVerdeConFondo.png';
+import enProcesoIcon from '../imgs/BanderaAmarillaConFondo.png';
+import sinAtenderIcon from '../imgs/BanderaRojaConFondo.png';
 import { useEffect, useState } from "react";
-
 
 const polygon = [
   [19.592749, -99.12369],
@@ -717,15 +719,15 @@ const polygon = [
   [19.591994, -99.119454],
 ];
 
-
-
 const polygonOptions = {
   color: '#ff9f49', // Borde
   fillColor: '#FFB471', // Relleno
 };
 
+
 const MapAdmin = () => {
-  const [rep, setRep] = useState([]);
+  const [markers, setMarkers] = useState([]);
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -734,7 +736,25 @@ const MapAdmin = () => {
           throw new Error("Failed to fetch data");
         }
         const data = await res.json();
-        setRep(data);
+        
+        // Convertir las ubicaciones de los reportes en coordenadas
+        const markersData = await Promise.all(data.map(async (reporte) => {
+          const coordenadas = await reverse(reporte.ubicacion, reporte.descripcion);
+          if (coordenadas) {
+            return {
+              coordenadas,
+              descripcion: reporte.descripcion,
+              fecha: reporte.fechaReporte,
+              imagenURL: reporte.imagenURL,
+              ubicacion: reporte.ubicacion,
+              estados: reporte.estado
+            };
+          }
+          return null;
+        }));
+        
+        // Filtrar los marcadores válidos y establecer el estado
+        setMarkers(markersData.filter(marker => marker !== null));
       } catch (error) {
         console.log("Error fetching data: ", error);
       }
@@ -742,17 +762,43 @@ const MapAdmin = () => {
 
     fetchData();
   }, []);
-  function reverse(ubi, descripcion) {
-    //aplicar logica para pasar de ubicacion a coordenadas y eso mandarlo al marcador
+
+  function getIconUrl(estado) {
+    switch (estado) {
+      case "Atendido":
+        return atendidoIcon.src;
+      case "En atención":
+        return enProcesoIcon.src;
+      case "Sin atender":
+        return sinAtenderIcon.src;
+      default:
+        return MarkerIcon.src; // Icono por defecto si el estado no coincide con ninguno de los casos anteriores
+    }
+  }
+  async function reverse(ubi, descripcion) {
+    try {
+      const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
+      const encodedAddress = encodeURIComponent(ubi);
+      const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodedAddress}&key=${apiKey}`);
+      const data = await response.json();
+  
+      if (data.status !== 'OK' || data.results.length === 0) {
+        console.error(`No se encontraron resultados para la ubicación: ${ubi}`);
+        return null;
+      }
+  
+      const { lat, lng } = data.results[0].geometry.location;
+  
+      return { lat: parseFloat(lat), lng: parseFloat(lng) };
+    } catch (error) {
+      console.error(`Error al convertir ubicación a coordenadas para ${descripcion}:`, error);
+      return null;
+    }
   }
 
-  rep.map((rep) => {
-    reverse(rep.ubicacion, rep.descripcion)
-    console.log(rep)
-  });
   return (
     <div>
-      <MapContainer
+       <MapContainer
         style={{
           height: "77vh",
           width: "90vw",
@@ -767,15 +813,34 @@ const MapAdmin = () => {
         id="map"
       >
         <TileLayer
-  url="https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=cB1pkcJ37buZmTAzdPhV"
-  attribution="Map data &copy; <a href='https://www.openstreetmap.org/'>OpenStreetMap</a> contributors, 
-    <a href='https://creativecommons.org/licenses/by-sa/2.0/'>CC-BY-SA</a>, 
-    Imagery © <a href='https://www.maptiler.com/'>MapTiler</a>"
-/>
-
-
-        <Polygon pathOptions={polygonOptions} positions={polygon} />
-        
+          url="https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=cB1pkcJ37buZmTAzdPhV"
+          attribution="Map data &copy; <a href='https://www.openstreetmap.org/'>OpenStreetMap</a> contributors, 
+          <a href='https://creativecommons.org/licenses/by-sa/2.0/'>CC-BY-SA</a>, 
+          Imagery © <a href='https://www.maptiler.com/'>MapTiler</a>"
+        />
+         <Polygon pathOptions={polygonOptions} positions={polygon} />
+        {markers.map((marker, index) => (
+          <Marker
+            key={index}
+            position={[marker.coordenadas.lat, marker.coordenadas.lng]}
+            icon={
+              new L.Icon({
+                iconUrl: getIconUrl(marker.estados),
+                iconRetinaUrl: getIconUrl(marker.estados),
+                iconSize: [23, 23],
+              })
+            }
+          >
+            <Popup id="popup">  
+              <div className="reportito-popup">
+                <img src={marker.imagenURL} alt="Foto del reporte" style={{ maxWidth: '95px', borderRadius:'1rem', }} />
+                <p className="fecha-popup">Fecha: {marker.fecha}</p>
+                <p className="estado-popup">Estado: {marker.estados}</p>
+                <p className="descripcion-popup">Descripción: {marker.descripcion}</p>
+              </div>
+            </Popup>
+          </Marker>
+        ))}
       </MapContainer>
     </div>
   );
