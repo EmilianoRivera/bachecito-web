@@ -29,7 +29,11 @@ function Favoritos() {
   }, []);
 
   return (
+<<<<<<< HEAD
+    <div className='bodyFavoritos'>
+=======
     <div className='body-favoritos'>
+>>>>>>> 991ce9a3856ebfe04b1f71ec55d67da5efe05873
 
       {showTitles && (
         <div className={`titles ${showTitles ? 'show' : 'hide'}`}>
