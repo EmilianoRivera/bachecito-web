@@ -11,6 +11,7 @@ export default function ReportesAdmin() {
     const [rep, setRep] = useState([]);
     const [isEstadoAlertVisible, setIsEstadoAlertVisible] = useState(false);
     const [alertaEstadoData, setAlertaEstadoData] = useState({ folio: null, estadoActual: null });
+    const [alcaldiaSeleccionada, setAlcaldiaSeleccionada] = useState("Todas");
 
     function showDeleteHeader() {
         const table = document.querySelector('.containerReportesAdmin table');
@@ -40,6 +41,7 @@ export default function ReportesAdmin() {
     const closeEstadoAlert = () => {
         // Oculta la alerta de cambio de estado
         setIsEstadoAlertVisible(false);
+        window.location.reload();
     };
 
     const cancelEstadoAlert = () => {
@@ -204,9 +206,8 @@ export default function ReportesAdmin() {
     const [isEstadoSelectVisible, setIsEstadoSelectVisible] = useState(false);
 
     const handleAlcaldiaChange = (e) => {
-        console.log("Alcaldía seleccionada:", e.target.value);
-        setAlcaldia(e.target.value)
-        console.log("Acaldías")
+        const alcaldiaSeleccionada = e.target.value;
+        setAlcaldiaSeleccionada(alcaldiaSeleccionada);
     };
 
 
@@ -272,6 +273,65 @@ export default function ReportesAdmin() {
     /**setEstado(e.target.value);
         console.log("Estado") */
 
+    const obtenerAlcaldiaPorFolio = (folio) => {
+    // Obtener los primeros tres dígitos del folio
+    const primerosTresDigitos = folio.substring(0, 3);
+    
+    // Mapear los primeros tres dígitos a la alcaldía correspondiente
+    switch (primerosTresDigitos) {
+        case '001':
+            return '🐴 Álvaro Obregón';
+        case '002':
+            return '🐜 Azcapotzalco ';
+        case '003':
+            return '🐷 Benito Juárez';
+        case '004':
+            return '🐺 Coyoacán';
+        case '005':
+            return '🌳 Cuajimalpa de Morelos';
+        case '006':
+            return '🦅 Cuauhtémoc';
+        case '007':
+            return '🌿 Gustavo A. Madero ';
+        case '008':
+            return '🏠 Iztacalco';
+        case '009':
+            return '🐭 Iztapalapa';
+        case '010':
+            return '🏔 La Magdalena Contreras';
+        case '011':
+            return '🦗 Miguel Hidalgo';
+        case '012':
+            return '🌾 Milpa Alta';
+        case '013':
+            return '🌋 Tláhuac';
+        case '014':
+            return '🦶 Tlalpan';
+        case '015':
+            return '🌻 Venustiano Carranza';
+        case '016':
+            return '🐠 Xochimilco';
+        default:
+            return 'No se encontró la alcaldía';
+
+    }
+    
+};
+
+useEffect(() => {
+    filtrarReportesPorAlcaldia(alcaldiaSeleccionada);
+}, [alcaldiaSeleccionada, rep]); 
+
+const filtrarReportesPorAlcaldia = (alcaldiaSeleccionada) => {
+    if (alcaldiaSeleccionada === "Todas") {
+        setReportesFiltrados(rep);
+    } else {
+        const reportesFiltrados = rep.filter(reporte => obtenerAlcaldiaPorFolio(reporte.folio) === alcaldiaSeleccionada);
+        setReportesFiltrados(reportesFiltrados);
+    }
+};
+
+
     return (
         <div className="containerReportesAdmin">
             <div className="flex-papelera">
@@ -314,13 +374,12 @@ export default function ReportesAdmin() {
                             onClick={() => setIsAlcaldiaSelectVisible(!isAlcaldiaSelectVisible)}
                         >
                             <img src="https://i.postimg.cc/wjw2xf0Z/marcador_(1).png" alt={``} />
-
                             Alcaldía
                         </label>
                         {isAlcaldiaSelectVisible && (
                             <select onChange={handleAlcaldiaChange}>
-                                {alcaldiasCDMX.map((alcaldia) => (
-                                    <option key={alcaldia} value={alcaldia}>
+                                {alcaldiasCDMX.map((alcaldia, index) => (
+                                    <option key={index} value={alcaldia}>
                                         {alcaldia}
                                     </option>
                                 ))}
