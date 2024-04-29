@@ -152,80 +152,82 @@ function Favoritos() {
         window.removeEventListener('scroll', handleScroll);
       };
     }, []);
+
+    
   
   return (
-    <div className='body'>
+    <div className='body-favoritos'>
       
      
-        <div className={`container-tipos ${showTitles ? '' : 'margin-top'}`}>
+        <div className={`container-tipos-favs ${showTitles ? '' : 'margin-top'}`}>
 
-        <div className="column">
+        <div className="column-favs">
           <h3 className='tipo' id='sin-at'>Sin Atender</h3>
         </div>
 
-        <div className="column">
+        <div className="column-favs">
           <h3 className='tipo' id='en-at'>En atención</h3>
         </div>
 
-        <div className="column">
+        <div className="column-favs">
           <h3 className='tipo' id='at'>Atendidos</h3>
         </div>
 
         </div>
 
 
-      <div className="scrollable-section">
-        <div className="container-reportes">
-          <div className="column">
-            <div className="reportes-boxes">
+      <div className="scrollable-section-favs">
+        <div className="container-reportes-favs">
+          <div className="column-favs">
+            <div className="reportes-boxes-favs">
             {repSinAtender.map((report, index) => (
-              <div className="box2" id="box2" key={index}>
-                <div className="column-left">
-                  <div className="fotografía">
-                    <img src= {report.imagenURL} style={{ maxWidth: '100%', maxHeight: '100%' }} alt="" />
+              <div className="box2-favs" key={index}>
+                <div className="column-favs-left">
+                  <div className="fotografía-favs">
+                    <img src= {report.imagenURL} style={{ maxWidth: '100%', maxHeight: '100%', borderRadius:"4vh" }} alt="" />
                   </div>
-                  <div className="column-left-inferior">
-                    <div className="fecha">
+                  <div className="column-favs-left-inferior">
+                    <div className="fecha-favs">
                         {report.fechaReporte}
                     </div>
 
-                    <div className="contador">
-                      <div className="icon">
+                    <div className="contador-favs">
+                      <div className="icon-favs">
                         <img
                           src="https://i.postimg.cc/s2ZYz740/exclamacion-de-diamante.png"
-                          className="logo" 
+                          className="logo-favs" 
                         />
                       </div>
-                      <div className="number">
+                      <div className="number-favs">
                         {report.contador}
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="column-right">
-                  <div className="column-right-superior">
-                    <div className="estado" id='estado-sin-at'>
+                <div className="column-favs-right">
+                  <div className="column-favs-right-superior">
+                    <div className="estado-favs" id='estado-sin-at'>
                     </div>
 
-                    <div className="guardar">
+                    <div className="guardar-favs">
                       <img
                         src="https://i.postimg.cc/W335wqws/estrella-2.png"
-                        className="icon-star"  onClick={() => eliminarFolio(report.folio, userData)}
+                        className="icon-favs-star"  onClick={() => eliminarFolio(report.folio, userData)}
                       />
                     </div>
                   </div>
 
-                  <div className="ubicacion">
+                  <div className="ubicacion-favs">
                     <h3>Ubicación</h3>
-                    <div className="box-ubi">
+                    <div className="box-ubi-favs">
                         {report.ubicacion}
                     </div>
                   </div>
 
-                  <div className="descripcion">
+                  <div className="descripcion-favs">
                     <h3>Descripción</h3>
-                    <div className="box-des">
+                    <div className="box-des-favs">
                     {report.descripcion}
                     </div>
                   </div>
@@ -235,56 +237,56 @@ function Favoritos() {
             </div>
           </div>
 
-          <div className="column">
-            <div className="reportes-boxes">
+          <div className="column-favs">
+            <div className="reportes-boxes-favs">
             {repEnAtencion.map((report, index) => (
-              <div key={index} className="box2" id="box2" >
-                <div className="column-left">
-                  <div className="fotografía">
+              <div key={index} className="box2-favs" >
+                <div className="column-favs-left">
+                  <div className="fotografía-favs">
                     <img src= {report.imagenURL} style={{ maxWidth: '100%', maxHeight: '100%' }}alt="" />
                   </div>
-                  <div className="column-left-inferior">
-                    <div className="fecha">
+                  <div className="column-favs-left-inferior">
+                    <div className="fecha-favs">
                     {report.fechaReporte}
                     </div>
 
-                    <div className="contador">
-                      <div className="icon">
+                    <div className="contador-favs">
+                      <div className="icon-favs">
                         <img
                           src="https://i.postimg.cc/s2ZYz740/exclamacion-de-diamante.png"
-                          className="logo" 
+                          className="logo-favs" 
                         />
                       </div>
-                      <div className="number">
+                      <div className="number-favs">
                         0
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="column-right">
-                  <div className="column-right-superior">
-                    <div className="estado" id='estado-en-at'>
+                <div className="column-favs-right">
+                  <div className="column-favs-right-superior">
+                    <div className="estado-favs" id='estado-en-at'>
                     </div>
 
-                    <div className="guardar">
+                    <div className="guardar-favs">
                       <img
                         src="https://i.postimg.cc/W335wqws/estrella-2.png"
-                        className="icon-star" onClick={() => eliminarFolio(report.folio, userData)}
+                        className="icon-favs-star" onClick={() => eliminarFolio(report.folio, userData)}
                       />
                     </div>
                   </div>
 
-                  <div className="ubicacion">
+                  <div className="ubicacion-favs">
                     <h3>Ubicación</h3>
-                    <div className="box-ubi">
+                    <div className="box-ubi-favs">
                       {report.ubicacion}
                     </div>
                   </div>
 
-                  <div className="descripcion">
+                  <div className="descripcion-favs">
                     <h3>Descripción</h3>
-                    <div className="box-des">
+                    <div className="box-des-favs">
                       {report.descripcion}
                     </div>
                   </div>
@@ -294,56 +296,56 @@ function Favoritos() {
             </div>
           </div>
 
-          <div className="column">
-            <div className="reportes-boxes">
+          <div className="column-favs">
+            <div className="reportes-boxes-favs">
             {repAtendidos.map((report, index) => (
-              <div key={index} className="box2" id="box2">
-                <div className="column-left">
-                  <div className="fotografía">
-                    <img src= {report.imagenURL} style={{ maxWidth: '100%', maxHeight: '100%' }} alt="Imagen bache ATENDIDO" />
+              <div key={index} className="box2-favs" >
+                <div className="column-favs-left">
+                  <div className="fotografía-favs">
+                    <img src= {report.imagenURL} style={{ width: '100%', height: '100%', borderRadius:"1rem" }} alt="Imagen bache ATENDIDO" />
                   </div>
-                  <div className="column-left-inferior">
-                    <div className="fecha">
+                  <div className="column-favs-left-inferior">
+                    <div className="fecha-favs">
                     {report.fechaReporte}
                     </div>
 
-                    <div className="contador">
-                      <div className="icon">
+                    <div className="contador-favs">
+                      <div className="icon-favs">
                         <img
                           src="https://i.postimg.cc/s2ZYz740/exclamacion-de-diamante.png"
-                          className="logo" 
+                          className="logo-favs" 
                         />
                       </div>
-                      <div className="number">
+                      <div className="number-favs">
                         0
                       </div>
                     </div>
                   </div>
                 </div>
 
-                <div className="column-right">
-                  <div className="column-right-superior">
-                    <div className="estado" id='estado-at'>
+                <div className="column-favs-right">
+                  <div className="column-favs-right-superior">
+                    <div className="estado-favs" id='estado-at'>
                     </div>
 
-                    <div className="guardar">
+                    <div className="guardar-favs">
                       <img
                         src="https://i.postimg.cc/W335wqws/estrella-2.png"
-                        className="icon-star" onClick={() => eliminarFolio(report.folio, userData)}
+                        className="icon-favs-star" onClick={() => eliminarFolio(report.folio, userData)}
                       />
                     </div>
                   </div>
 
-                  <div className="ubicacion">
+                  <div className="ubicacion-favs">
                     <h3>Ubicación</h3>
-                    <div className="box-ubi">
+                    <div className="box-ubi-favs">
                       {report.ubicacion}
                     </div>
                   </div>
 
-                  <div className="descripcion">
+                  <div className="descripcion-favs">
                     <h3>Descripción</h3>
-                    <div className="box-des">
+                    <div className="box-des-favs">
                       {report.descripcion}
                     </div>
                   </div>
