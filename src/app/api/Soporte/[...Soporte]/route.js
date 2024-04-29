@@ -1,14 +1,14 @@
 import { NextResponse } from "next/server";
 import { db, collection, addDoc } from "../../../../../firebase";
-
-export default async function handler(req, res) {
-  if (req.method === 'POST') {
+export  async function POST(req, { params }) {
+  
     try {
+      console.log(params.Soporte)
       // Extraer los datos del cuerpo de la solicitud
-      const { errorSeleccionado, sistemaOperativo, navegador, rutaError, descripcionProblema } = req.body;
+      const [ errorSeleccionado, sistemaOperativo, navegador, rutaError, descripcionProblema ] = params.Soporte;
 
       // Validar los datos si es necesario
-
+      console.log(errorSeleccionado, " ", sistemaOperativo, " ", navegador, " ", rutaError, " ", descripcionProblema)
       // Guardar los datos en la base de datos
       const docRef = await addDoc(collection(db, 'Tickets'), {
         errorSeleccionado,
@@ -20,13 +20,11 @@ export default async function handler(req, res) {
       });
 
       // Enviar una respuesta de éxito
-      res.status(200).json({ message: 'Formulario enviado con éxito', docRefId: docRef.id });
+      return NextResponse.json(docRef)
     } catch (error) {
       console.error('Error al enviar el formulario:', error);
       res.status(500).json({ message: 'Error al enviar el formulario' });
     }
-  } else {
-    // Método de solicitud no permitido
-    res.status(405).end();
-  }
+  
+ 
 }
