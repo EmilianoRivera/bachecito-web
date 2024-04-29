@@ -1,13 +1,7 @@
-<<<<<<< HEAD
-import React from 'react'
-import RutaProtegida from "@/components/RutaProtegida";
-import "./Soporte.css";
-
-=======
+ 
 "use client";
 import React, { useState } from 'react';
-import "./Reportes.css";
->>>>>>> 433b8091725fcefcddc83084abdd6c57d1dc598d
+import "./Reportes.css"; 
 function Soporte() {
 
 
@@ -146,20 +140,14 @@ function Soporte() {
   // Internamente se obtiene fecha, prioridad con base al error seleccionado, número del ticket, su correo
 
   //<input type="text" value={fecha} readOnly />
-  return (
-<<<<<<< HEAD
-    <RutaProtegida>
+  return ( 
+ 
       <div className="bodySoporte">
         <div className="containerSoporte">
           <div className='containerPF'>
             <h1>PREGUNTAS FRECUENTES ❓❓❓</h1>
           </div>
-        </div>
-      </div>
-    </RutaProtegida>
-  )
-=======
-    <div className='main-containerReportes'>
+          <div className='main-containerReportes'>
 
       <br /><br /><br /><br/>
       <h2>Hola este es un formulario para el soporte :D</h2>
@@ -246,8 +234,11 @@ function Soporte() {
 
       </form>
     </div>
-  );
->>>>>>> 433b8091725fcefcddc83084abdd6c57d1dc598d
+  
+        </div>
+      </div> 
+  ) 
+    
 }
 
 export default Soporte;
