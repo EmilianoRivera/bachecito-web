@@ -22,15 +22,41 @@ export default function ReportesAdmin() {
         table.classList.remove('show-header');
     }
 
+    const [estadoOriginal, setEstadoOriginal] = useState(null);
     const showEstadoAlert = (folio, estado) => {
         // Configura los datos de la alerta de cambio de estado
-        setAlertaEstadoData({ folio: folio, estadoActual: estado });
-        setIsEstadoAlertVisible(true);
+    setAlertaEstadoData({ folio: folio, estadoActual: estado });
+    setIsEstadoAlertVisible(true);
+
+    // Guarda el estado original del reporte antes de abrir la alerta
+    const rows = document.querySelectorAll('.containerReportesAdmin .Reportes');
+    const reporteOriginal = [...rows].find(row => row.querySelector('.folio').textContent === folio);
+    if (reporteOriginal) {
+        const estadoOriginal = reporteOriginal.querySelector('.estado').textContent;
+        setEstadoOriginal(estadoOriginal);
+    }
     };
 
     const closeEstadoAlert = () => {
         // Oculta la alerta de cambio de estado
         setIsEstadoAlertVisible(false);
+    };
+
+    const cancelEstadoAlert = () => {
+        // Oculta la alerta de cambio de estado
+        setIsEstadoAlertVisible(false);
+    
+        // Revertir los cambios realizados desde que se abrió la alerta
+        const { folio, estadoActual } = alertaEstadoData;
+        const rows = document.querySelectorAll('.containerReportesAdmin .Reportes');
+        rows.forEach((row) => {
+            if (row.querySelector('.folio').textContent === folio) {
+                // Revertir solo si el estado actual es diferente al estado original
+                if (row.querySelector('.estado').textContent !== estadoOriginal) {
+                    row.querySelector('.estado').textContent = estadoOriginal;
+                }
+            }
+        });
     };
 
     const updateEstado = async (folio, nuevoEstado) => {
@@ -359,7 +385,7 @@ export default function ReportesAdmin() {
             {isEstadoAlertVisible && (
                 <div className="alerta-custom">
                     <div className="alerta-contenido">
-                        <button className="boton-cerrar" onClick={closeEstadoAlert}><img src="https://i.postimg.cc/C5pcdxv9/cancelar.png" /></button>
+                        <button className="boton-cerrar" onClick={cancelEstadoAlert}><img src="https://i.postimg.cc/C5pcdxv9/cancelar.png" /></button>
                         <h2 className="titulooo">Cambiar estado del reporte</h2>
                         <p className="textooo">Elige el nuevo estado para el reporte con folio {alertaEstadoData.folio}</p>
                         <button onClick={() => updateEstado(alertaEstadoData.folio, 'Sin atender')} className="opc-cambios1">Sin atender</button>
