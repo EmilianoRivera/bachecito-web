@@ -1,6 +1,8 @@
  
 "use client";
 import React, { useState } from 'react';
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'firebase/storage';
+import {app} from '../../../../../firebase';
 import "./Reportes.css"; 
  
 function Soporte() {
@@ -51,7 +53,7 @@ function Soporte() {
   const [navegador, setNavegador] = useState(
     "No se ha seleccionado un navegador"
   );
-  const [rutaError, setRutaError] = useState("Sin ruta");
+  const [rutaError, setRutaError] = useState("/NoRuta");
   const [foto, setFoto] = useState("");
   const [descripcionProblema, setDescripcionProblema] = useState("Sin descripcion");
 
@@ -104,21 +106,38 @@ function Soporte() {
     setDescripcionProblema(e.target.value);
     console.log(descripcionProblema);
   };
-
+  const handleFileUpload = async () => {
+    const archivo = document.querySelector('input[type="file"]');
+    const archivito = archivo.files[0];
+    
+    if (!archivito) {
+      console.error("No se ha seleccionado ningún archivo");
+      return;
+    }
+  
+    const storage = getStorage(app);
+    const randomId = Math.random().toString(36).substring(7);
+    const imageName = `Ticket_${randomId}`;
+    const storageRef = ref(storage, `ImagenesTickets/${imageName}`);
+    await uploadBytes(storageRef, archivito);
+    return getDownloadURL(storageRef);
+  };
   // Acá va toda la lógica
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const url = await handleFileUpload(); 
     const parametros = {
       errorSeleccionado: errorSeleccionado,
       sistemaOperativo: sistemaOperativo,
       navegador: navegador,
-      rutaError: rutaError,
+      rutaError: encodeURIComponent(rutaError),
       descripcionProblema: descripcionProblema,
+      url: encodeURIComponent(url),
     };
     try {
-      console.log(errorSeleccionado, " ", sistemaOperativo, " ", navegador, " ", rutaError, " ", descripcionProblema)
+      console.log(errorSeleccionado, " ", sistemaOperativo, " ", navegador, " ", rutaError, " ", descripcionProblema, url)
       const response = await fetch(
-        `/api/Soporte/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${rutaError}/${descripcionProblema}`,
+        `/api/Soporte/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${encodeURIComponent(rutaError)}/${descripcionProblema}/${encodeURIComponent(url)}`,
         {
           method: "POST",
           headers: {
