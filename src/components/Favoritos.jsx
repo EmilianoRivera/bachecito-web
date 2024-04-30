@@ -105,6 +105,7 @@ function Favoritos() {
     } catch (error) {
         console.error("Error al eliminar el folio de la base de datos:", error);
     }
+    
 };
 
   useEffect(() => {
@@ -258,7 +259,7 @@ function Favoritos() {
                         />
                       </div>
                       <div className="number-favs">
-                        0
+                        {report.contador}
                       </div>
                     </div>
                   </div>
@@ -317,7 +318,7 @@ function Favoritos() {
                         />
                       </div>
                       <div className="number-favs">
-                        0
+                        {report.contador}
                       </div>
                     </div>
                   </div>
