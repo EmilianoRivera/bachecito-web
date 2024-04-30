@@ -45,6 +45,7 @@ function Dashboard() {
 
  const handleAlcaldiaChange = (e) => {
    console.log("Alcaldía seleccionada:", e.target.value);
+   setAlcaldia(e.target.value)
  };
 
  const handleEstadoChange = (e) => {

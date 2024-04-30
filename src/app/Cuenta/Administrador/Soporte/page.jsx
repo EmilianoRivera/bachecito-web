@@ -49,12 +49,19 @@ function Soporte() {
 
   // Catálogo de errores
   const catalogoErrores = [
-    { numero: 100, nombre: '100-199. Respuestas informativas' },
-    { numero: 200, nombre: '200-299. Respuestas satisfactorias' },
-    { numero: 300, nombre: '300-399. Redirecciones' },
-    { numero: 400, nombre: '400-499. Error de cliente' },
-    { numero: 500, nombre: '500-599. Error de servidor' },
-    { numero: 600, nombre: '600. Otros' }
+    { clave: "S001", nombre: "Error de Inicio de Sesión" },
+    { clave: "S002", nombre: "Error de Registro" },
+    { clave: "D001", nombre: "Error al Cargar Estadísticas" },
+    { clave: "D002", nombre: "Error de Filtros" },
+    { clave: "M001", nombre: "Error al Cargar el Mapa" },
+    { clave: "M002", nombre: "Error de Ubicación" },
+    { clave: "R001", nombre: "Error al Cargar los Reportes" },
+    { clave: "R002", nombre: "Error al Cambiar estado de los Reportes" },
+    { clave: "R003", nombre: "Error al Mover reportes a la papelera" },
+    { clave: "P001", nombre: "Error al Visualizar reportes en la papelera" },
+    { clave: "P002", nombre: "Error al Eliminar reportes de la papelera" },
+    { clave: "S001", nombre: "Error al Enviar Ticket" },
+    { clave: "0000", nombre: "Otro: (Especificar en Descripcion)" },
   ];
 
   // Catálogo de sistemas operativos
@@ -69,7 +76,7 @@ function Soporte() {
     "Unix",
     "Ubuntu",
     "iOS/iPadOS",
-    "Otro"
+    "Otro",
   ];
 
   // Catálogo de navegadores
@@ -114,12 +121,14 @@ function Soporte() {
 
   const handleError = (e) => {
     const selectedErr = e.target.value;
-    setErrorSeleccionado(selectedErr)
-    console.log(selectedErr)
+    setErrorSeleccionado(selectedErr);
+    console.log(selectedErr);
   };
 
   const handleSO = (e) => {
     const selectedSO = e.target.value;
+    setSistemaOperativo(selectedSO);
+    console.log(selectedSO);
     setSistemaOperativo(selectedSO);
     console.log(selectedSO);
   };
@@ -128,22 +137,44 @@ function Soporte() {
     const selectedNavegador = e.target.value;
     setNavegador(selectedNavegador);
     console.log(selectedNavegador);
+    setNavegador(selectedNavegador);
+    console.log(selectedNavegador);
   };
 
   const handleRutaError = (e) => {
-    setRutaError(e.target.value)
-    console.log(rutaError)
+    const ruta = e.target.value;
+    console.log(e.target.value)
+    setSelectedRutaError(ruta);
   };
 
   const handleFoto = (e) => {
-    setFoto(e.target.value)
+    setFoto(e.target.value);
   };
 
   const handleDescripcionProblema = (e) => {
-    setDescripcionProblema(e.target.value)
-    console.log(descripcionProblema)
+    setDescripcionProblema(e.target.value);
+    console.log(descripcionProblema);
   };
 
+  const handleFileUpload = async () => {
+    const archivo = document.querySelector('input[type="file"]');
+    const archivito = archivo.files[0];
+
+    if (!archivito) {
+      console.error("No se ha seleccionado ningún archivo");
+      return;
+    }
+
+    const storage = getStorage(app);
+    const randomId = Math.random().toString(36).substring(7);
+    const imageName = `Ticket_${randomId}`;
+    const storageRef = ref(
+      storage,
+      `ImagenesTickets/${userData.uid}/${imageName}`
+    );
+    await uploadBytes(storageRef, archivito);
+    return getDownloadURL(storageRef);
+  };
   // Acá va toda la lógica
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -164,17 +195,12 @@ function Soporte() {
       });
 
       if (response.ok) {
-        // La solicitud fue exitosa
-        console.log('Formulario enviado con éxito');
-        // Puedes hacer algo como redirigir al usuario a otra página o mostrar un mensaje de éxito
+        console.log("Formulario enviado con éxito");
       } else {
-        // La solicitud falló
-        console.error('Error al enviar el formulario:', response.status);
-        // Puedes mostrar un mensaje de error al usuario
+        console.error("Error al enviar el formulario:", response.status);
       }
     } catch (error) {
-      console.error('Error al enviar el formulario:', error);
-      // Puedes mostrar un mensaje de error al usuario
+      console.error("Error al enviar el formulario:", error);
     }
   };
 
