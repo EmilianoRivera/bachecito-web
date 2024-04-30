@@ -5,10 +5,10 @@ export  async function POST(req, { params }) {
     try {
       console.log(params.Soporte)
       // Extraer los datos del cuerpo de la solicitud
-      const [ errorSeleccionado, sistemaOperativo, navegador, rutaError, descripcionProblema ] = params.Soporte;
+      const [ errorSeleccionado, sistemaOperativo, navegador, rutaError, descripcionProblema,fechaTicket ] = params.Soporte;
 
       // Validar los datos si es necesario
-      console.log(errorSeleccionado, " ", sistemaOperativo, " ", navegador, " ", rutaError, " ", descripcionProblema)
+      console.log(errorSeleccionado, " ", sistemaOperativo, " ", navegador, " ", rutaError, " ", descripcionProblema, fechaTicket)
       // Guardar los datos en la base de datos
       const docRef = await addDoc(collection(db, 'Tickets'), {
         errorSeleccionado,

@@ -2,14 +2,32 @@
 import React, { useState } from "react";
 import "./Reportes.css";
 function Soporte() {
+  const catalogoRutaErrores = [
+    { ruta: "/Cuenta/Administrador", modulo: "Inicio de Sesión" },
+    { ruta: "/Administrador/Dashboard", modulo: "Dashboard" },
+    { ruta: "/Administrador/Mapa", modulo: "Mapa" },
+    { ruta: "/Administrador/NuevoAdmin", modulo: "Nuevo Administrador" },
+    { ruta: "/Administrador/Reportes", modulo: "Reportes" },
+    { ruta: "/Administrador/Papelera", modulo: "Papelera" },
+    { ruta: "/components/Navbar", modulo: "Otros" },
+    { ruta: "Otros", modulo: "Otra opción" },
+  ];
+
   // Catálogo de errores
   const catalogoErrores = [
-    { numero: 100, nombre: "100-199. Respuestas informativas" },
-    { numero: 200, nombre: "200-299. Respuestas satisfactorias" },
-    { numero: 300, nombre: "300-399. Redirecciones" },
-    { numero: 400, nombre: "400-499. Error de cliente" },
-    { numero: 500, nombre: "500-599. Error de servidor" },
-    { numero: 600, nombre: "600. Otros" },
+    { clave: "S001", nombre: "Error de Inicio de Sesión" },
+    { clave: "S002", nombre: "Error de Registro" },
+    { clave: "D001", nombre: "Error al Cargar Estadísticas" },
+    { clave: "D002", nombre: "Error de Filtros" },
+    { clave: "M001", nombre: "Error al Cargar el Mapa" },
+    { clave: "M002", nombre: "Error de Ubicación" },
+    { clave: "R001", nombre: "Error al Cargar los Reportes" },
+    { clave: "R002", nombre: "Error al Cambiar estado de los Reportes" },
+    { clave: "R003", nombre: "Error al Mover reportes a la papelera" },
+    { clave: "P001", nombre: "Error al Visualizar reportes en la papelera" },
+    { clave: "P002", nombre: "Error al Eliminar reportes de la papelera" },
+    { clave: "S001", nombre: "Error al Enviar Ticket" },
+    { clave: "0000", nombre: "Otro: (Especificar en Descripcion)" },
   ];
 
   // Catálogo de sistemas operativos
@@ -38,10 +56,17 @@ function Soporte() {
     "Samsung Internet",
     "Otro",
   ];
+  /*
+ 
+  PRIORIDAD
+  FOLIO
+  EMAIL DEL ADMIN
+  NOMBRE
 
-  const [fecha, setFecha] = useState("");
+
+*/
   const [errorSeleccionado, setErrorSeleccionado] = useState(
-    "No se ha seleccionado un error"
+    "S001"
   );
   const [sistemaOperativo, setSistemaOperativo] = useState(
     "No se ha seleccionado un sistema operativo"
@@ -49,27 +74,10 @@ function Soporte() {
   const [navegador, setNavegador] = useState(
     "No se ha seleccionado un navegador"
   );
-  const [rutaError, setRutaError] = useState("Sin ruta");
+  const [selectedRutaError, setSelectedRutaError] = useState("Sin ruta");
   const [foto, setFoto] = useState("");
-  const [descripcionProblema, setDescripcionProblema] = useState("Sin descripcion");
-
-  // Obtener fecha actual al cargar el componente
-  /*
-  useEffect(() => {
-    const obtenerFechaActual = () => {
-      const fechaActual = new Date();
-      const dia = fechaActual.getDate();
-      const mes = fechaActual.getMonth() + 1;
-      const año = fechaActual.getFullYear();
-      const fechaFormateada = `${dia < 10 ? '0' + dia : dia}/${mes < 10 ? '0' + mes : mes}/${año}`;
-      setFecha(fechaFormateada);
-    };
-
-    obtenerFechaActual();
-  }, []);
-  */
-
-  // Funciones para manejar los cambios en el select de errores y sistemas operativos
+  const [descripcionProblema, setDescripcionProblema] =
+    useState("Sin descripcion");
 
   const handleError = (e) => {
     const selectedErr = e.target.value;
@@ -90,8 +98,9 @@ function Soporte() {
   };
 
   const handleRutaError = (e) => {
-    setRutaError(e.target.value);
-    console.log(rutaError);
+    const ruta = e.target.value
+    setSelectedRutaError(ruta);
+    console.log(selectedRutaError);
   };
 
   const handleFoto = (e) => {
@@ -103,20 +112,48 @@ function Soporte() {
     console.log(descripcionProblema);
   };
 
+  function prioridad(errorSeleccionado) {
+    if (errorSeleccionado === 100) {
+      console.log("priridad muy baja");
+    } else if (errorSeleccionado === 200) {
+      console.log("prioridad baja");
+    } else if (errorSeleccionado === 300) {
+      console.log("prioridad medio-baja");
+    } else if (errorSeleccionado === 400) {
+      console.log("prioridad medio-alta");
+    } else if (errorSeleccionado === 500) {
+      console.log("prioridad alta");
+    } else if (errorSeleccionado === 600) {
+      console.log("prioridad muy alta");
+    }
+  }
   // Acá va toda la lógica
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const fechaTicket = new Date();
+    const prioridad = prioridad(errorSeleccionado);
     const parametros = {
       errorSeleccionado: errorSeleccionado,
       sistemaOperativo: sistemaOperativo,
       navegador: navegador,
       rutaError: rutaError,
       descripcionProblema: descripcionProblema,
+      fechaTicket: fechaTicket,
     };
     try {
-      console.log(errorSeleccionado, " ", sistemaOperativo, " ", navegador, " ", rutaError, " ", descripcionProblema)
+      console.log(
+        errorSeleccionado,
+        " ",
+        sistemaOperativo,
+        " ",
+        navegador,
+        " ",
+        selectedRutaError,
+        " ",
+        descripcionProblema
+      );
       const response = await fetch(
-        `/api/Soporte/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${rutaError}/${descripcionProblema}`,
+        `/api/Soporte/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${selectedRutaError}/${descripcionProblema}/${fechaTicket}`,
         {
           method: "POST",
           headers: {
@@ -127,24 +164,15 @@ function Soporte() {
       );
 
       if (response.ok) {
-        // La solicitud fue exitosa
         console.log("Formulario enviado con éxito");
-        // Puedes hacer algo como redirigir al usuario a otra página o mostrar un mensaje de éxito
       } else {
-        // La solicitud falló
         console.error("Error al enviar el formulario:", response.status);
-        // Puedes mostrar un mensaje de error al usuario
       }
     } catch (error) {
       console.error("Error al enviar el formulario:", error);
-      // Puedes mostrar un mensaje de error al usuario
     }
   };
 
-  // Catálogo de errores, SO, versión de navegador, descripción del problema, ruta donde se encontró el error, evidencia fotográfica del problema,
-  // Internamente se obtiene fecha, prioridad con base al error seleccionado, número del ticket, su correo
-
-  //<input type="text" value={fecha} readOnly />
   return (
     <div className="bodySoporte">
       <div className="containerSoporte">
@@ -160,27 +188,12 @@ function Soporte() {
         <h2>Hola este es un formulario para el soporte :D</h2>
 
         <form onSubmit={handleSubmit}>
-          {/* 
-  <label>Fecha:</label>
-  <input type="text" defaultValue={fecha} readOnly/>
-  <br /><br />
-
-  <h5>Obtener nombre del usuario acá</h5>
-  <br />
-
-  <h5>Obtener correo del usuario acá</h5>
-  <br />
-
-  
-
-*/}
-
           <label>Seleccione el error:</label>
           <select value={errorSeleccionado} onChange={handleError}>
-            <option value="">Seleccionar</option>
-            {catalogoErrores.map((error, index) => (
-              <option key={index} value={error.nombre}>
-                {`${error.nombre}`}
+            <option>Tipo de Error</option>
+            {catalogoErrores.map((errorSeleccionado, index) => (
+              <option key={index} value={errorSeleccionado.clave}>
+                {`${errorSeleccionado.nombre}`}
               </option>
             ))}
           </select>
@@ -214,8 +227,16 @@ function Soporte() {
           <br />
           <br />
 
-          <label>Ruta donde se encontró el error: </label>
-          <input type="text" value={rutaError} onChange={handleRutaError} />
+          <label>Módulo donde se encontró el error: </label>
+          <select value={selectedRutaError} onChange={handleRutaError}>
+            <option>Módulo del Error</option>
+            {catalogoRutaErrores.map((rutaError, index) => (
+              
+              <option key={index} value={rutaError.ruta}>
+                {` ${rutaError.modulo}`}
+              </option>
+            ))}
+          </select>
           <br />
           <br />
           <br />
