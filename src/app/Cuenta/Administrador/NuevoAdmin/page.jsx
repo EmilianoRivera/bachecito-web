@@ -21,7 +21,7 @@ export default function NuevoAdmin() {
             alert("Se envió correo")
             const uid = admin.uid
             
-            const usuariosCollection = collection(db, "usuarios")
+            const usuariosCollection = collection(db, "usuarios")   //collection(db, "tickets")
             const nuevoUsuario = {
                 uid: uid, 
                 nombre: username,
@@ -69,8 +69,6 @@ export default function NuevoAdmin() {
         e.preventDefault();
         alert("Has hecho clic");
     };
-
-    //apellido paterno, materno, fech nac, correo
 
     return (
 

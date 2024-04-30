@@ -126,7 +126,7 @@ function Dashboard() {
             <select onChange={handleEstadoChange}>
               <option value="Todos">Todos</option>
               <option value="Sin atender">Sin atender</option>
-              <option value="En Atención">En Atención</option>
+              <option value="En atención">En Atención</option>
               <option value="Atendido">Atendido</option>
             </select>
           )}
