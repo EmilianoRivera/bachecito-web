@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { db, collection, addDoc, getDocs } from "../../../../../firebase";
-
+const nodemailer = require("nodemailer");
 async function folioTicket(errorSeleccionado, rutaError) {
   const refTickets = collection(db, "tickets");
   const ticketsSnapShot = await getDocs(refTickets);
@@ -31,6 +31,34 @@ function prioridad(errorSeleccionado) {
       "T001":
       priori = "PRIORIDAD MEDIA";
       break;
+  }
+}
+
+const transporter = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
+
+  auth: {
+    user: 'somos.gemma.01@gmail.com',
+    pass: 'rje3vw$x4hGVhcw$h8eeukGSh5$C6@o6W5NH'
+  }
+});
+async function enviarCorreo(destinatario, folio) {
+  try {
+    // Configura el contenido del correo electrónico
+    const mailOptions = {
+      from: 'somos.gemma.01@gmail.com',
+      to: destinatario,
+      subject: 'Confirmación de recepción de ticket',
+      text: `Se ha recibido su ticket con el folio: 1.`
+    };
+
+    // Envía el correo electrónico
+    const info = await transporter.sendMail(mailOptions);
+    console.log("Correo enviado:", info.messageId);
+  } catch (error) {
+    console.error("Error al enviar el correo electrónico:", error);
   }
 }
 
@@ -69,7 +97,7 @@ export async function POST(req, { params }) {
     const folio = folioTicket(errorSeleccionado, rutaError);
     const priori = prioridad(errorSeleccionado);
 
-    /* const docRef = await addDoc(collection(db, 'tickets'), {
+    const docRef = await addDoc(collection(db, 'tickets'), {
         folio,
         priori,
         errorSeleccionado,
@@ -79,8 +107,8 @@ export async function POST(req, { params }) {
         descripcionProblema,
         timestamp: new Date(),
         urlsitaD,
-      }); */
-
+      }); 
+      await enviarCorreo('melyssagabrielag@gmail.com', folio);
     // Enviar una respuesta de éxito
     return NextResponse.json(/* docRef */ "s");
   } catch (error) {
