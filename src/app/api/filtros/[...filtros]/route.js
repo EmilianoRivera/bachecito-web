@@ -45,6 +45,7 @@ function formatearFecha(fecha) {
   return `${dia}/${parseInt(mes)}/${año}`;
 }
 
+
 function parsearDeStringADate(dateString) {
   const parts = dateString.split("/");
   // La cadena "12/3/2024" se dividirá en ["12", "3", "2024"]
@@ -90,7 +91,6 @@ function extraerAnioDesdeString(fechaString) {
   // Si se encuentra un año, devolverlo; de lo contrario, devolver null
   return resultado ? parseInt(resultado[0]) : null;
 }
-
 
 // Función para obtener el primer día de la semana
 function getInicioSemana(fechaHoy) {

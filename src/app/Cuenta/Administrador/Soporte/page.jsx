@@ -1,7 +1,51 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect, useContext } from "react";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { useAuthUser } from "../../../../../hooks/UseAuthUser";
+import { app, auth, db } from "../../../../../firebase";
+import { useRouter } from "next/navigation";
+import AuthContext from "../../../../../context/AuthContext";
 import "./Reportes.css";
+
 function Soporte() {
+  useAuthUser();
+  const router = useRouter();
+  const { isLogged } = useContext(AuthContext);
+  const [userData, setUserData] = useState({});
+  const [errorSeleccionado, setErrorSeleccionado] = useState("S001");
+  const [sistemaOperativo, setSistemaOperativo] = useState("No se ha seleccionado un sistema operativo");
+  const [navegador, setNavegador] = useState("No se ha seleccionado un navegador");
+  const [selectedRutaError, setSelectedRutaError] = useState("Sin ruta");
+  const [foto, setFoto] = useState("");
+  const [descripcionProblema, setDescripcionProblema] =useState("Sin descripcion");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const unsubscribe = auth.onAuthStateChanged((user) => {
+        if (user) {
+          const uid = user.uid;
+          fetchData(uid);
+        } else {
+          router.push("/reportes");
+        }
+      });
+      return () => unsubscribe();
+    }
+
+    async function fetchData(uid) {
+      try {
+        const userResponse = await fetch(`/api/Usuario/${uid}`);
+        if (!userResponse.ok) {
+          throw new Error("Failed to fetch user data");
+        }
+        const userDatas = await userResponse.json();
+
+        setUserData(userDatas);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+  }, []);
   const catalogoRutaErrores = [
     { ruta: "/Cuenta/Administrador", modulo: "Inicio de Sesión" },
     { ruta: "/Administrador/Dashboard", modulo: "Dashboard" },
@@ -56,29 +100,7 @@ function Soporte() {
     "Samsung Internet",
     "Otro",
   ];
-  /*
  
-  PRIORIDAD
-  FOLIO
-  EMAIL DEL ADMIN
-  NOMBRE
-
-
-*/
-  const [errorSeleccionado, setErrorSeleccionado] = useState(
-    "S001"
-  );
-  const [sistemaOperativo, setSistemaOperativo] = useState(
-    "No se ha seleccionado un sistema operativo"
-  );
-  const [navegador, setNavegador] = useState(
-    "No se ha seleccionado un navegador"
-  );
-  const [selectedRutaError, setSelectedRutaError] = useState("Sin ruta");
-  const [foto, setFoto] = useState("");
-  const [descripcionProblema, setDescripcionProblema] =
-    useState("Sin descripcion");
-
   const handleError = (e) => {
     const selectedErr = e.target.value;
     setErrorSeleccionado(selectedErr);
@@ -98,7 +120,7 @@ function Soporte() {
   };
 
   const handleRutaError = (e) => {
-    const ruta = e.target.value
+    const ruta = e.target.value;
     setSelectedRutaError(ruta);
     console.log(selectedRutaError);
   };
@@ -127,34 +149,48 @@ function Soporte() {
       console.log("prioridad muy alta");
     }
   }
+  const handleFileUpload = async () => {
+    const archivo = document.querySelector('input[type="file"]');
+    const archivito = archivo.files[0];
+
+    if (!archivito) {
+      console.error("No se ha seleccionado ningún archivo");
+      return;
+    }
+
+    const storage = getStorage(app);
+    const randomId = Math.random().toString(36).substring(7);
+    const imageName = `Ticket_${randomId}`;
+    const storageRef = ref(
+      storage,
+      `ImagenesTickets/${userData.uid}/${imageName}`
+    );
+    await uploadBytes(storageRef, archivito);
+    return getDownloadURL(storageRef);
+  };
   // Acá va toda la lógica
   const handleSubmit = async (e) => {
     e.preventDefault();
+
     const fechaTicket = new Date();
-    const prioridad = prioridad(errorSeleccionado);
+    // const prioridad = prioridad(errorSeleccionado);
+    const correo = userData.correo;
+    const nombre = userData.nombre;
+    const url = await handleFileUpload();
+    console.log(errorSeleccionado," ",sistemaOperativo," ",navegador," ",selectedRutaError," ",descripcionProblema," " ,url, " ",correo, " ", nombre, " ");
     const parametros = {
       errorSeleccionado: errorSeleccionado,
       sistemaOperativo: sistemaOperativo,
       navegador: navegador,
-      rutaError: rutaError,
+      selectedRutaError: encodeURIComponent(selectedRutaError),
       descripcionProblema: descripcionProblema,
       fechaTicket: fechaTicket,
+      correo: correo,
+      nombre: nombre,
     };
     try {
-      console.log(
-        errorSeleccionado,
-        " ",
-        sistemaOperativo,
-        " ",
-        navegador,
-        " ",
-        selectedRutaError,
-        " ",
-        descripcionProblema
-      );
-      const response = await fetch(
-        `/api/Soporte/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${selectedRutaError}/${descripcionProblema}/${fechaTicket}`,
-        {
+      
+      const response = await fetch(`/api/Soporte/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${encodeURIComponent(selectedRutaError)}/${descripcionProblema}/${fechaTicket}/${correo}/${nombre}`,{
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -231,7 +267,6 @@ function Soporte() {
           <select value={selectedRutaError} onChange={handleRutaError}>
             <option>Módulo del Error</option>
             {catalogoRutaErrores.map((rutaError, index) => (
-              
               <option key={index} value={rutaError.ruta}>
                 {` ${rutaError.modulo}`}
               </option>
