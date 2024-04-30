@@ -13,11 +13,16 @@ function Soporte() {
   const { isLogged } = useContext(AuthContext);
   const [userData, setUserData] = useState({});
   const [errorSeleccionado, setErrorSeleccionado] = useState("S001");
-  const [sistemaOperativo, setSistemaOperativo] = useState("No se ha seleccionado un sistema operativo");
-  const [navegador, setNavegador] = useState("No se ha seleccionado un navegador");
-  const [selectedRutaError, setSelectedRutaError] = useState("Sin ruta");
+  const [sistemaOperativo, setSistemaOperativo] = useState(
+    "No se ha seleccionado un sistema operativo"
+  );
+  const [navegador, setNavegador] = useState(
+    "No se ha seleccionado un navegador"
+  );
+  const [selectedRutaError, setSelectedRutaError] = useState("/NoEspecificado");
   const [foto, setFoto] = useState("");
-  const [descripcionProblema, setDescripcionProblema] =useState("Sin descripcion");
+  const [descripcionProblema, setDescripcionProblema] =
+    useState("Sin descripcion");
 
   useEffect(() => {
     if (typeof window !== "undefined") {
@@ -52,11 +57,16 @@ function Soporte() {
     { ruta: "/Administrador/Mapa", modulo: "Mapa" },
     { ruta: "/Administrador/NuevoAdmin", modulo: "Nuevo Administrador" },
     { ruta: "/Administrador/Reportes", modulo: "Reportes" },
-    { ruta: "/Administrador/Papelera", modulo: "Papelera" },
-    { ruta: "/components/Navbar", modulo: "Otros" },
+    { ruta: "/Administrador/Papelera", modulo: "Reportes" },
     { ruta: "Otros", modulo: "Otra opción" },
   ];
+/*
+Inicio de sesion , Nuevo Administrador, OTROS -> ALTA
+DASH, MAPA, REPORTES, PAPELERA
 
+
+
+*/
   // Catálogo de errores
   const catalogoErrores = [
     { clave: "S001", nombre: "Error de Inicio de Sesión" },
@@ -100,7 +110,7 @@ function Soporte() {
     "Samsung Internet",
     "Otro",
   ];
- 
+
   const handleError = (e) => {
     const selectedErr = e.target.value;
     setErrorSeleccionado(selectedErr);
@@ -121,8 +131,8 @@ function Soporte() {
 
   const handleRutaError = (e) => {
     const ruta = e.target.value;
+    console.log(e.target.value)
     setSelectedRutaError(ruta);
-    console.log(selectedRutaError);
   };
 
   const handleFoto = (e) => {
@@ -134,21 +144,6 @@ function Soporte() {
     console.log(descripcionProblema);
   };
 
-  function prioridad(errorSeleccionado) {
-    if (errorSeleccionado === 100) {
-      console.log("priridad muy baja");
-    } else if (errorSeleccionado === 200) {
-      console.log("prioridad baja");
-    } else if (errorSeleccionado === 300) {
-      console.log("prioridad medio-baja");
-    } else if (errorSeleccionado === 400) {
-      console.log("prioridad medio-alta");
-    } else if (errorSeleccionado === 500) {
-      console.log("prioridad alta");
-    } else if (errorSeleccionado === 600) {
-      console.log("prioridad muy alta");
-    }
-  }
   const handleFileUpload = async () => {
     const archivo = document.querySelector('input[type="file"]');
     const archivito = archivo.files[0];
@@ -173,11 +168,27 @@ function Soporte() {
     e.preventDefault();
 
     const fechaTicket = new Date();
-    // const prioridad = prioridad(errorSeleccionado);
     const correo = userData.correo;
     const nombre = userData.nombre;
     const url = await handleFileUpload();
-    console.log(errorSeleccionado," ",sistemaOperativo," ",navegador," ",selectedRutaError," ",descripcionProblema," " ,url, " ",correo, " ", nombre, " ");
+    console.log(
+      errorSeleccionado,
+      " ",
+      sistemaOperativo,
+      " ",
+      navegador,
+      " ",
+      selectedRutaError,
+      " ",
+      descripcionProblema,
+      " ",
+      url,
+      " ",
+      correo,
+      " ",
+      nombre,
+      " "
+    );
     const parametros = {
       errorSeleccionado: errorSeleccionado,
       sistemaOperativo: sistemaOperativo,
@@ -189,8 +200,11 @@ function Soporte() {
       nombre: nombre,
     };
     try {
-      
-      const response = await fetch(`/api/Soporte/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${encodeURIComponent(selectedRutaError)}/${descripcionProblema}/${fechaTicket}/${correo}/${nombre}`,{
+      const response = await fetch(
+        `/api/Soporte/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${encodeURIComponent(
+          selectedRutaError
+        )}/${descripcionProblema}/${fechaTicket}/${correo}/${nombre}`,
+        {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -236,7 +250,18 @@ function Soporte() {
           <br />
           <br />
           <br />
-
+          <label>Módulo donde se encontró el error: </label>
+          <select value={selectedRutaError} onChange={handleRutaError}>
+            <option>Módulo del Error</option>
+            {catalogoRutaErrores.map((errorOption, index) => (
+              <option key={index} value={errorOption.ruta}>
+                {`${errorOption.modulo}`}
+              </option>
+            ))}
+          </select>
+          <br />
+          <br />
+          <br />
           <label>Seleccione su sistema operativo: </label>
           <select value={sistemaOperativo} onChange={handleSO}>
             <option value="">Seleccionar</option>
@@ -256,19 +281,6 @@ function Soporte() {
             {catalogoNavegadores.map((navegador, index) => (
               <option key={index} value={navegador}>
                 {`${navegador}`}
-              </option>
-            ))}
-          </select>
-          <br />
-          <br />
-          <br />
-
-          <label>Módulo donde se encontró el error: </label>
-          <select value={selectedRutaError} onChange={handleRutaError}>
-            <option>Módulo del Error</option>
-            {catalogoRutaErrores.map((rutaError, index) => (
-              <option key={index} value={rutaError.ruta}>
-                {` ${rutaError.modulo}`}
               </option>
             ))}
           </select>
