@@ -1,7 +1,13 @@
 import { NextResponse } from "next/server";
+<<<<<<< HEAD
 import { db, collection, addDoc, getDocs, } from "../../../../../firebase";
  
 async function folioTicket(errorSeleccionado) {
+=======
+import { db, collection, addDoc, getDocs } from "../../../../../firebase";
+const nodemailer = require("nodemailer");
+async function folioTicket(errorSeleccionado, rutaError) {
+>>>>>>> fc50d49f20847aa44f903b4c9426f90076844ce9
   const refTickets = collection(db, "tickets");
   const querySnapshot = await getDocs(refTickets);
   let maxNumeroFolio = 0;
@@ -55,6 +61,34 @@ function prioridad(errorSeleccionado) {
   return priori; // Devuelve el string con la prioridad
 }
 
+const transporter = nodemailer.createTransport({
+  host: 'smtp.gmail.com',
+  port: 465,
+  secure: true,
+
+  auth: {
+    user: 'somos.gemma.01@gmail.com',
+    pass: 'rje3vw$x4hGVhcw$h8eeukGSh5$C6@o6W5NH'
+  }
+});
+async function enviarCorreo(destinatario, folio) {
+  try {
+    // Configura el contenido del correo electrónico
+    const mailOptions = {
+      from: 'somos.gemma.01@gmail.com',
+      to: destinatario,
+      subject: 'Confirmación de recepción de ticket',
+      text: `Se ha recibido su ticket con el folio: 1.`
+    };
+
+    // Envía el correo electrónico
+    const info = await transporter.sendMail(mailOptions);
+    console.log("Correo enviado:", info.messageId);
+  } catch (error) {
+    console.error("Error al enviar el correo electrónico:", error);
+  }
+}
+
 export async function POST(req, { params }) {
   try {
     console.log(params.Soporte);
@@ -100,8 +134,13 @@ export async function POST(req, { params }) {
         descripcionProblema,
         timestamp: new Date(),
         urlsitaD,
+<<<<<<< HEAD
       });
 
+=======
+      }); 
+      await enviarCorreo('melyssagabrielag@gmail.com', folio);
+>>>>>>> fc50d49f20847aa44f903b4c9426f90076844ce9
     // Enviar una respuesta de éxito
     return NextResponse.json(docRef );
   } catch (error) {

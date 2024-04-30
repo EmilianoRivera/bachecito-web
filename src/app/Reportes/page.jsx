@@ -2,7 +2,7 @@
 "use client"
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
-import ReportesComponente  from "@/components/Reportes";
+import ReportesComponente  from "@/components/Reportes2";
 import React from 'react';
 import './Reportes.css';
 {/*OTRA COSA, AQUI LA LOGICA DE DESPLEGAR LOS REPORTES, ESTA EN OTRO ARCHIVO, LO HICE COMPONENTE PARA REUZARLO EN VARIAS PARTES, EL COMPONENTE SE LLAMA ReportesComponente */}
@@ -112,6 +112,7 @@ export default function Reportes() {
             <div>
 
             <ReportesComponente />
+            
             </div>
             
         </div>
