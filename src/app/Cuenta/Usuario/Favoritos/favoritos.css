@@ -1,29 +1,48 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Baloo+Thambi+2:wght@400..800&family=Nunito:ital,wght@0,200..1000;1,200..1000&display =intercambiar');
 
+
 .body-favoritos{
+    margin-left: 5vw;
+    margin-right: 5vw;
     padding-top: 8vh;
     margin-left: 1.5vw;
-    background-color: #FFFFFF;
     height: 100vh;
     width: 95vw;
+    background-color: #ffffff;
     overflow-x: hidden;
     overflow-y: hidden;
     font-family: 'Inter UI', sans-serif;
+    scroll-behavior: smooth;
 }
 
+.titles {
+    width: 88%;
+    padding-top: 2vw;
+    padding-bottom: 2vw;
+    padding-left: 4vw;
+    padding-right: 4vw;
+    height: auto;
+    border-radius: 6vh;
+    margin-left: 3vw;
+    margin-top: 5vh;
+    background-color: #F1F1F1;
+}
+
+
 #title-main{
-    color: #FF9F49;
+    color: #FFC63D;
     font-family: "Baloo Thambi 2", system-ui;
     font-weight: 600;
     margin-left: 2.5vw;
-    font-size: 1.8rem;
+    font-size: 1.5rem;
 }
 
 #textito{
     color: #6F6F6F;
     font-family: "Baloo Thambi 2", system-ui;
     font-weight: 500;
+    margin-top: -10px;
     margin-left: 2.5vw;
     font-size: 1.3rem;
 }
@@ -66,7 +85,7 @@
 .container-reportes-favs {
     display: flex; /* Establece el contenedor como un flex container */
     margin-bottom: 15%;
-    margin-top: -8%;
+    margin-top: -10%;
     overflow-y: auto;
     overflow-x: hidden;
 }

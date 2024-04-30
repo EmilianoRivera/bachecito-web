@@ -34,7 +34,8 @@ function Favoritos() {
       {showTitles && (
         <div className={`titles ${showTitles ? 'show' : 'hide'}`}>
           <h1 id='title-main'>Seguimiento de tus baches guardados 🐜</h1>
-          <h2 id='textito'>Aquí podrás visualizar el seguimiento de los baches que has guardado de otros usuarios.</h2>
+          <h2 id='textito'>¡Bienvenido al apartado de tus reportes favoritos!, aquí podrás ver los reportes que has guardado de otros usuarios realizados por medio 
+          de la aplicación móvil de Bachecito 26, según su estado de gestión. ¡Esperamos que sea más fácil para ti darle seguimiento a los que sean de tu interes!</h2>
         </div>
       )}
       <ReportesComponente></ReportesComponente>

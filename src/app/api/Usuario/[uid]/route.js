@@ -10,7 +10,6 @@ export async function GET(request, {params}) {
       where('uid', '==', uid)  
     );
     const userDocs = await getDocs(userQuery);
-
     if (!userDocs.empty) {
       const userData = userDocs.docs[0].data();
       return NextResponse.json(userData);

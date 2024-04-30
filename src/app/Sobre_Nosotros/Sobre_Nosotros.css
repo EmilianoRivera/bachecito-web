@@ -10,7 +10,7 @@
 }
 
 /* RESET DEFAULT STYLES */
-* {
+.bodySobreNosotros {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
@@ -47,7 +47,7 @@ h6 {
 }
 
 /* UTILITY CLASSES */
-.container {
+.containerSobreNosotros {
     width: 100%;
     max-width: 1200px;
     margin: 0 auto;
@@ -144,12 +144,7 @@ h6 {
 
 /* GLOBAL STYLES */
 
-html {
-    scroll-behavior: smooth;
-    overflow-x: hidden;
-}
-
-body {
+.bodySobreNosotros {
     font-family: var(--primary-font);
     font-size: 16px;
     line-height: 1.5;
@@ -499,13 +494,13 @@ h2{
 }
 
 
-body::-webkit-scrollbar{
+.body::-webkit-scrollbar{
         width: 10px;
         height: 100%;
         background:#fffcfc;
     }
     
-body::-webkit-scrollbar-thumb{
+.body::-webkit-scrollbar-thumb{
     background: #D1D1D1;
     border-radius: 5px;
 }
