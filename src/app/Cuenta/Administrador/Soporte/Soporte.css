@@ -64,3 +64,11 @@
     margin-right: 5%;
 }
 
+.container_FormularioSoporte{
+    position: relative;
+    z-index: 100;
+}
+
+.container_FormularioSoporte .containerFR form{
+    z-index: 999;
+}
