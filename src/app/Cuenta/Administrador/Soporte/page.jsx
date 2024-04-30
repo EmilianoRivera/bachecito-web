@@ -1,24 +1,87 @@
-<<<<<<< HEAD
-import React from 'react'
-import RutaProtegida from "@/components/RutaProtegida";
-import "./Soporte.css";
-
-=======
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect, useContext } from "react";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { useAuthUser } from "../../../../../hooks/UseAuthUser";
+import { app, auth, db } from "../../../../../firebase";
+import { useRouter } from "next/navigation";
+import AuthContext from "../../../../../context/AuthContext";
 import "./Reportes.css";
->>>>>>> 433b8091725fcefcddc83084abdd6c57d1dc598d
+
 function Soporte() {
+  useAuthUser();
+  const router = useRouter();
+  const { isLogged } = useContext(AuthContext);
+  const [userData, setUserData] = useState({});
+  const [errorSeleccionado, setErrorSeleccionado] = useState("S001");
+  const [sistemaOperativo, setSistemaOperativo] = useState(
+    "No se ha seleccionado un sistema operativo"
+  );
+  const [navegador, setNavegador] = useState(
+    "No se ha seleccionado un navegador"
+  );
+  const [selectedRutaError, setSelectedRutaError] = useState("/NoEspecificado");
+  const [foto, setFoto] = useState("");
+  const [descripcionProblema, setDescripcionProblema] =
+    useState("Sin descripcion");
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const unsubscribe = auth.onAuthStateChanged((user) => {
+        if (user) {
+          const uid = user.uid;
+          fetchData(uid);
+        } else {
+          router.push("/reportes");
+        }
+      });
+      return () => unsubscribe();
+    }
+
+    async function fetchData(uid) {
+      try {
+        const userResponse = await fetch(`/api/Usuario/${uid}`);
+        if (!userResponse.ok) {
+          throw new Error("Failed to fetch user data");
+        }
+        const userDatas = await userResponse.json();
+
+        setUserData(userDatas);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+  }, []);
+  const catalogoRutaErrores = [
+    { ruta: "/Cuenta/Administrador", modulo: "Inicio de Sesión" },
+    { ruta: "/Administrador/Dashboard", modulo: "Dashboard" },
+    { ruta: "/Administrador/Mapa", modulo: "Mapa" },
+    { ruta: "/Administrador/NuevoAdmin", modulo: "Nuevo Administrador" },
+    { ruta: "/Administrador/Reportes", modulo: "Reportes" },
+    { ruta: "/Administrador/Papelera", modulo: "Reportes" },
+    { ruta: "Otros", modulo: "Otra opción" },
+  ];
+/*
+Inicio de sesion , Nuevo Administrador, OTROS -> ALTA
+DASH, MAPA, REPORTES, PAPELERA
 
 
+
+*/
   // Catálogo de errores
   const catalogoErrores = [
-    { numero: 100, nombre: '100-199. Respuestas informativas' },
-    { numero: 200, nombre: '200-299. Respuestas satisfactorias' },
-    { numero: 300, nombre: '300-399. Redirecciones' },
-    { numero: 400, nombre: '400-499. Error de cliente' },
-    { numero: 500, nombre: '500-599. Error de servidor' },
-    { numero: 600, nombre: '600. Otros' }
+    { clave: "S001", nombre: "Error de Inicio de Sesión" },
+    { clave: "S002", nombre: "Error de Registro" },
+    { clave: "D001", nombre: "Error al Cargar Estadísticas" },
+    { clave: "D002", nombre: "Error de Filtros" },
+    { clave: "M001", nombre: "Error al Cargar el Mapa" },
+    { clave: "M002", nombre: "Error de Ubicación" },
+    { clave: "R001", nombre: "Error al Cargar los Reportes" },
+    { clave: "R002", nombre: "Error al Cambiar estado de los Reportes" },
+    { clave: "R003", nombre: "Error al Mover reportes a la papelera" },
+    { clave: "P001", nombre: "Error al Visualizar reportes en la papelera" },
+    { clave: "P002", nombre: "Error al Eliminar reportes de la papelera" },
+    { clave: "S001", nombre: "Error al Enviar Ticket" },
+    { clave: "0000", nombre: "Otro: (Especificar en Descripcion)" },
   ];
 
   // Catálogo de sistemas operativos
@@ -33,221 +96,222 @@ function Soporte() {
     "Unix",
     "Ubuntu",
     "iOS/iPadOS",
-    "Otro"
+    "Otro",
   ];
 
-    // Catálogo de navegadores
-    const catalogoNavegadores = [
-      "Google Chrome",
-      "Mozilla Firefox",
-      "Microsoft Edge",
-      "Safari",
-      "Opera",
-      "Internet Explorer",
-      "Samsung Internet",
-      "Otro"
-    ];
-    
-
-
-  const [fecha, setFecha] = useState('');
-  const [errorSeleccionado, setErrorSeleccionado] = useState('No se ha seleccionado un error');
-  const [sistemaOperativo, setSistemaOperativo] = useState('No se ha seleccionado un sistema operativo');
-  const [navegador, setNavegador] = useState('No se ha seleccionado un navegador');
-  const [rutaError, setRutaError] = useState('');
-  const [foto, setFoto] = useState('');
-  const [descripcionProblema, setDescripcionProblema] = useState('');
-
-  // Obtener fecha actual al cargar el componente
-  /*
-  useEffect(() => {
-    const obtenerFechaActual = () => {
-      const fechaActual = new Date();
-      const dia = fechaActual.getDate();
-      const mes = fechaActual.getMonth() + 1;
-      const año = fechaActual.getFullYear();
-      const fechaFormateada = `${dia < 10 ? '0' + dia : dia}/${mes < 10 ? '0' + mes : mes}/${año}`;
-      setFecha(fechaFormateada);
-    };
-
-    obtenerFechaActual();
-  }, []);
-  */
-
-  // Funciones para manejar los cambios en el select de errores y sistemas operativos
+  // Catálogo de navegadores
+  const catalogoNavegadores = [
+    "Google Chrome",
+    "Mozilla Firefox",
+    "Microsoft Edge",
+    "Safari",
+    "Opera",
+    "Internet Explorer",
+    "Samsung Internet",
+    "Otro",
+  ];
 
   const handleError = (e) => {
     const selectedErr = e.target.value;
-    setErrorSeleccionado(selectedErr)
-    console.log(selectedErr)
+    setErrorSeleccionado(selectedErr);
+    console.log(selectedErr);
   };
 
   const handleSO = (e) => {
     const selectedSO = e.target.value;
-  setSistemaOperativo(selectedSO);
-  console.log(selectedSO);
+    setSistemaOperativo(selectedSO);
+    console.log(selectedSO);
   };
 
   const handleNavegador = (e) => {
     const selectedNavegador = e.target.value;
-  setNavegador(selectedNavegador);
-  console.log(selectedNavegador);
+    setNavegador(selectedNavegador);
+    console.log(selectedNavegador);
   };
 
   const handleRutaError = (e) => {
-    setRutaError(e.target.value)
-    console.log(rutaError)
+    const ruta = e.target.value;
+    console.log(e.target.value)
+    setSelectedRutaError(ruta);
   };
 
   const handleFoto = (e) => {
-    setFoto(e.target.value)
+    setFoto(e.target.value);
   };
 
   const handleDescripcionProblema = (e) => {
-    setDescripcionProblema(e.target.value)
-    console.log(descripcionProblema)
+    setDescripcionProblema(e.target.value);
+    console.log(descripcionProblema);
   };
 
+  const handleFileUpload = async () => {
+    const archivo = document.querySelector('input[type="file"]');
+    const archivito = archivo.files[0];
+
+    if (!archivito) {
+      console.error("No se ha seleccionado ningún archivo");
+      return;
+    }
+
+    const storage = getStorage(app);
+    const randomId = Math.random().toString(36).substring(7);
+    const imageName = `Ticket_${randomId}`;
+    const storageRef = ref(
+      storage,
+      `ImagenesTickets/${userData.uid}/${imageName}`
+    );
+    await uploadBytes(storageRef, archivito);
+    return getDownloadURL(storageRef);
+  };
   // Acá va toda la lógica
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
+    const fechaTicket = new Date();
+    const correo = userData.correo;
+    const nombre = userData.nombre;
+    const url = await handleFileUpload();
+    console.log(
+      errorSeleccionado,
+      " ",
+      sistemaOperativo,
+      " ",
+      navegador,
+      " ",
+      selectedRutaError,
+      " ",
+      descripcionProblema,
+      " ",
+      url,
+      " ",
+      correo,
+      " ",
+      nombre,
+      " "
+    );
+    const parametros = {
+      errorSeleccionado: errorSeleccionado,
+      sistemaOperativo: sistemaOperativo,
+      navegador: navegador,
+      selectedRutaError: encodeURIComponent(selectedRutaError),
+      descripcionProblema: descripcionProblema,
+      fechaTicket: fechaTicket,
+      correo: correo,
+      nombre: nombre,
+    };
     try {
-      const response = await fetch('/api/Soporte', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({
-          errorSeleccionado,
-          sistemaOperativo,
-          navegador,
-          rutaError,
-          descripcionProblema
-        })
-      });
-  
+      const response = await fetch(
+        `/api/Soporte/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${encodeURIComponent(
+          selectedRutaError
+        )}/${descripcionProblema}/${fechaTicket}/${correo}/${nombre}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(parametros),
+        }
+      );
+
       if (response.ok) {
-        // La solicitud fue exitosa
-        console.log('Formulario enviado con éxito');
-        // Puedes hacer algo como redirigir al usuario a otra página o mostrar un mensaje de éxito
+        console.log("Formulario enviado con éxito");
       } else {
-        // La solicitud falló
-        console.error('Error al enviar el formulario:', response.status);
-        // Puedes mostrar un mensaje de error al usuario
+        console.error("Error al enviar el formulario:", response.status);
       }
     } catch (error) {
-      console.error('Error al enviar el formulario:', error);
-      // Puedes mostrar un mensaje de error al usuario
+      console.error("Error al enviar el formulario:", error);
     }
   };
-  
-  // Catálogo de errores, SO, versión de navegador, descripción del problema, ruta donde se encontró el error, evidencia fotográfica del problema, 
-  // Internamente se obtiene fecha, prioridad con base al error seleccionado, número del ticket, su correo
 
-  //<input type="text" value={fecha} readOnly />
   return (
-<<<<<<< HEAD
-    <RutaProtegida>
-      <div className="bodySoporte">
-        <div className="containerSoporte">
-          <div className='containerPF'>
-            <h1>PREGUNTAS FRECUENTES ❓❓❓</h1>
-          </div>
+    <div className="bodySoporte">
+      <div className="containerSoporte">
+        <div className="containerPF">
+          <h1>PREGUNTAS FRECUENTES ❓❓❓</h1>
         </div>
       </div>
-    </RutaProtegida>
-  )
-=======
-    <div className='main-containerReportes'>
-
-      <br /><br /><br /><br/>
-      <h2>Hola este es un formulario para el soporte :D</h2>
-
-      <form onSubmit={handleSubmit}>
-
-        {/* 
-        <label>Fecha:</label>
-        <input type="text" defaultValue={fecha} readOnly/>
-        <br /><br />
-
-        <h5>Obtener nombre del usuario acá</h5>
+      <div className="main-containerReportes">
         <br />
-
-        <h5>Obtener correo del usuario acá</h5>
         <br />
+        <br />
+        <br />
+        <h2>Hola este es un formulario para el soporte :D</h2>
 
-        
+        <form onSubmit={handleSubmit}>
+          <label>Seleccione el error:</label>
+          <select value={errorSeleccionado} onChange={handleError}>
+            <option>Tipo de Error</option>
+            {catalogoErrores.map((errorSeleccionado, index) => (
+              <option key={index} value={errorSeleccionado.clave}>
+                {`${errorSeleccionado.nombre}`}
+              </option>
+            ))}
+          </select>
+          <br />
+          <br />
+          <br />
+          <label>Módulo donde se encontró el error: </label>
+          <select value={selectedRutaError} onChange={handleRutaError}>
+            <option>Módulo del Error</option>
+            {catalogoRutaErrores.map((errorOption, index) => (
+              <option key={index} value={errorOption.ruta}>
+                {`${errorOption.modulo}`}
+              </option>
+            ))}
+          </select>
+          <br />
+          <br />
+          <br />
+          <label>Seleccione su sistema operativo: </label>
+          <select value={sistemaOperativo} onChange={handleSO}>
+            <option value="">Seleccionar</option>
+            {catalogoSistemaOperativo.map((sistema, index) => (
+              <option key={index} value={sistema}>
+                {`${sistema}`}
+              </option>
+            ))}
+          </select>
+          <br />
+          <br />
+          <br />
 
-      */}
+          <label>Seleccione su navegador: </label>
+          <select value={navegador} onChange={handleNavegador}>
+            <option value="">Seleccionar</option>
+            {catalogoNavegadores.map((navegador, index) => (
+              <option key={index} value={navegador}>
+                {`${navegador}`}
+              </option>
+            ))}
+          </select>
+          <br />
+          <br />
+          <br />
 
-        <label>Seleccione el error:</label>
-        <select value={errorSeleccionado} onChange={handleError}>
-          <option value="">Seleccionar</option>
-          {catalogoErrores.map((error, index) => (
-            <option key={index} value={error.nombre}>
-              {`${error.nombre}`}
-            </option>
-          ))}
-        </select>
-        <br /><br /><br />
-        
-        <label>Seleccione su sistema operativo: </label>
-        <select value={sistemaOperativo} onChange={handleSO}>
-          <option value="">Seleccionar</option>
-          {catalogoSistemaOperativo.map((sistema, index) => (
-            <option key={index} value={sistema}>
-              {`${sistema}`}
-            </option>
-          ))}
-        </select>
-        <br /><br /><br />
+          <label>Adjuntar fotografía del problema: </label>
+          <input type="file" accept="image/*" onChange={handleFoto} />
+          <br />
+          <br />
+          <br />
 
-        <label>Seleccione su navegador: </label>
-        <select 
-          value={navegador} 
-          onChange={handleNavegador}
-        >
-          <option value="">Seleccionar</option>
-          {catalogoNavegadores.map((navegador, index) => (
-            <option key={index} value={navegador}>
-              {`${navegador}`}
-            </option>
-          ))}
-        </select>
-        <br /><br /><br />
+          <label>Descripción del problema: </label>
+          <textarea
+            value={descripcionProblema}
+            onChange={handleDescripcionProblema}
+            rows="4"
+            cols="50"
+          />
+          <br />
+          <br />
+          <br />
 
-        <label>Ruta donde se encontró el error: </label>
-        <input 
-          type="text" 
-          value={rutaError} 
-          onChange={handleRutaError} 
-        />
-        <br /><br /><br />
-
-        <label>Adjuntar fotografía del problema: </label>
-        <input 
-          type="file" 
-          accept="image/*" 
-          onChange={handleFoto} 
-        />
-        <br /><br /><br />
-
-        <label>Descripción del problema: </label>
-        <textarea 
-          value={descripcionProblema} 
-          onChange={handleDescripcionProblema} 
-          rows="4" 
-          cols="50" 
-        />
-        <br /><br /><br />
-        
-        <button type="submit" id="submit">Enviar</button>
-
-      </form>
+          <button type="submit" id="submit">
+            Enviar
+          </button>
+        </form>
+      </div>
     </div>
   );
->>>>>>> 433b8091725fcefcddc83084abdd6c57d1dc598d
 }
 
 export default Soporte;

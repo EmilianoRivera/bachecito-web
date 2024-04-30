@@ -1,5 +1,5 @@
 "use client";
-import { MapContainer, Marker, TileLayer, Popup, Polygon } from "react-leaflet";
+import { MapContainer, Marker, TileLayer, Popup, Polygon,Circle } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "./map.css"
@@ -727,6 +727,7 @@ const polygonOptions = {
 
 const Map = () => {
   const [markers, setMarkers] = useState([]);
+  const [userLocation, setUserLocation] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -763,6 +764,23 @@ const Map = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setUserLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          });
+        },
+        (error) => {
+          console.error("Error getting user location:", error);
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  }, []);
   function getIconUrl(estado) {
     switch (estado) {
       case "Atendido":
@@ -796,6 +814,7 @@ const Map = () => {
     }
   }
 
+ const radius=800;
   return (
     <div>
       <MapContainer
@@ -819,6 +838,20 @@ const Map = () => {
           Imagery © <a href='https://www.maptiler.com/'>MapTiler</a>"
         />
          <Polygon pathOptions={polygonOptions} positions={polygon} />
+         {userLocation && userLocation.lat && userLocation.lng && (
+   <Circle
+   radius={radius}
+   fillColor="orange"
+   fillOpacity={0.5}
+   center={[userLocation.lat, userLocation.lng]}
+   pathOptions={{
+     color: "blue", // Color del borde
+     weight: 0.1  ,     // Grosor del borde
+   }}
+ />
+)}
+
+
         {markers.map((marker, index) => (
           <Marker
             key={index}
