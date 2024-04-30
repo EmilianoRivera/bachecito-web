@@ -85,7 +85,7 @@
 .container-reportes-favs {
     display: flex; /* Establece el contenedor como un flex container */
     margin-bottom: 15%;
-    margin-top: -8%;
+    margin-top: -10%;
     overflow-y: auto;
     overflow-x: hidden;
 }
