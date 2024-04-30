@@ -1,6 +1,5 @@
 "use client";
 import React, { useState } from 'react';
-import React from 'react'
 import RutaProtegida from "@/components/RutaProtegida";
 import "./Soporte.css";
 
@@ -294,17 +293,16 @@ function Soporte() {
                 </div>
               )}
             </div>
-
           </div>
 
-          <div className='main-containerReportes'>
+          <div className='container_FormularioSoporte'>
+            <div className='containerFR'>
+              <br /><br /><br /><br />
+              <h2>Hola este es un formulario para el soporte :D</h2>
 
-            <br /><br /><br /><br />
-            <h2>Hola este es un formulario para el soporte :D</h2>
+              <form onSubmit={handleSubmit}>
 
-            <form onSubmit={handleSubmit}>
-
-              {/* 
+                {/* 
                 <label>Fecha:</label>
                 <input type="text" defaultValue={fecha} readOnly/>
                 <br /><br />
@@ -316,71 +314,71 @@ function Soporte() {
                 <br />
               */}
 
-              <label>Seleccione el error:</label>
-              <select value={errorSeleccionado} onChange={handleError}>
-                <option value="">Seleccionar</option>
-                {catalogoErrores.map((error, index) => (
-                  <option key={index} value={error.nombre}>
-                    {`${error.nombre}`}
-                  </option>
-                ))}
-              </select>
-              <br /><br /><br />
+                <label>Seleccione el error:</label>
+                <select value={errorSeleccionado} onChange={handleError}>
+                  <option value="">Seleccionar</option>
+                  {catalogoErrores.map((error, index) => (
+                    <option key={index} value={error.nombre}>
+                      {`${error.nombre}`}
+                    </option>
+                  ))}
+                </select>
+                <br /><br /><br />
 
-              <label>Seleccione su sistema operativo: </label>
-              <select value={sistemaOperativo} onChange={handleSO}>
-                <option value="">Seleccionar</option>
-                {catalogoSistemaOperativo.map((sistema, index) => (
-                  <option key={index} value={sistema}>
-                    {`${sistema}`}
-                  </option>
-                ))}
-              </select>
-              <br /><br /><br />
+                <label>Seleccione su sistema operativo: </label>
+                <select value={sistemaOperativo} onChange={handleSO}>
+                  <option value="">Seleccionar</option>
+                  {catalogoSistemaOperativo.map((sistema, index) => (
+                    <option key={index} value={sistema}>
+                      {`${sistema}`}
+                    </option>
+                  ))}
+                </select>
+                <br /><br /><br />
 
-              <label>Seleccione su navegador: </label>
-              <select
-                value={navegador}
-                onChange={handleNavegador}
-              >
-                <option value="">Seleccionar</option>
-                {catalogoNavegadores.map((navegador, index) => (
-                  <option key={index} value={navegador}>
-                    {`${navegador}`}
-                  </option>
-                ))}
-              </select>
-              <br /><br /><br />
+                <label>Seleccione su navegador: </label>
+                <select
+                  value={navegador}
+                  onChange={handleNavegador}
+                >
+                  <option value="">Seleccionar</option>
+                  {catalogoNavegadores.map((navegador, index) => (
+                    <option key={index} value={navegador}>
+                      {`${navegador}`}
+                    </option>
+                  ))}
+                </select>
+                <br /><br /><br />
 
-              <label>Ruta donde se encontró el error: </label>
-              <input
-                type="text"
-                value={rutaError}
-                onChange={handleRutaError}
-              />
-              <br /><br /><br />
+                <label>Ruta donde se encontró el error: </label>
+                <input
+                  type="text"
+                  value={rutaError}
+                  onChange={handleRutaError}
+                />
+                <br /><br /><br />
 
-              <label>Adjuntar fotografía del problema: </label>
-              <input
-                type="file"
-                accept="image/*"
-                onChange={handleFoto}
-              />
-              <br /><br /><br />
+                <label>Adjuntar fotografía del problema: </label>
+                <input
+                  type="file"
+                  accept="image/*"
+                  onChange={handleFoto}
+                />
+                <br /><br /><br />
 
-              <label>Descripción del problema: </label>
-              <textarea
-                value={descripcionProblema}
-                onChange={handleDescripcionProblema}
-                rows="4"
-                cols="50"
-              />
-              <br /><br /><br />
+                <label>Descripción del problema: </label>
+                <textarea
+                  value={descripcionProblema}
+                  onChange={handleDescripcionProblema}
+                  rows="4"
+                  cols="50"
+                />
+                <br /><br /><br />
 
-              <button type="submit" id="submit">Enviar</button>
-              
-            </form>
+                <button type="submit" id="submit">Enviar</button>
 
+              </form>
+            </div>
           </div>
         </div>
       </div>
