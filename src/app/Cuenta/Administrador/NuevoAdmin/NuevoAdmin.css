@@ -2,10 +2,12 @@
 @import url('https://fonts.googleapis.com/css2?family=Baloo+Thambi+2:wght@400..800&family=Nunito:ital,wght@0,200..1000;1,200..1000&display =intercambiar');
 
 .body-registroAdmin{
-    background-color: #FFFFFF;
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 90vh;
+    width: 93vw;
+    align-items: center;
+
 }
 
 .container-registroAdmin{
@@ -15,9 +17,8 @@
     justify-content: center;
     position: relative;
     overflow: hidden;
-    width: 75%;
+    width: 85%;
     height: 80%;
-    left: 5%;
     margin-top: 5%;
     max-width: 100%;
     min-height: 480px;
