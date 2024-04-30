@@ -66,7 +66,7 @@ const transporter = nodemailer.createTransport({
 
   auth: {
     user: 'somos.gemma.01@gmail.com',
-    pass: 'rje3vw$x4hGVhcw$h8eeukGSh5$C6@o6W5NH'
+    pass: ' rje3vw$x4hGVhcw$h8eeukGSh5$C6@o6W5NH'
   }
 });
 
