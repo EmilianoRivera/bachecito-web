@@ -1,13 +1,10 @@
-import { NextResponse } from "next/server";
-<<<<<<< HEAD
-import { db, collection, addDoc, getDocs, } from "../../../../../firebase";
- 
-async function folioTicket(errorSeleccionado) {
-=======
+import { NextResponse } from "next/server";  
 import { db, collection, addDoc, getDocs } from "../../../../../firebase";
-const nodemailer = require("nodemailer");
+import nodemailer from "nodemailer";
+
+
 async function folioTicket(errorSeleccionado, rutaError) {
->>>>>>> fc50d49f20847aa44f903b4c9426f90076844ce9
+ 
   const refTickets = collection(db, "tickets");
   const querySnapshot = await getDocs(refTickets);
   let maxNumeroFolio = 0;
@@ -62,6 +59,7 @@ function prioridad(errorSeleccionado) {
 }
 
 const transporter = nodemailer.createTransport({
+  service: "gmail",
   host: 'smtp.gmail.com',
   port: 465,
   secure: true,
@@ -71,6 +69,7 @@ const transporter = nodemailer.createTransport({
     pass: 'rje3vw$x4hGVhcw$h8eeukGSh5$C6@o6W5NH'
   }
 });
+
 async function enviarCorreo(destinatario, folio) {
   try {
     // Configura el contenido del correo electrónico
@@ -78,9 +77,9 @@ async function enviarCorreo(destinatario, folio) {
       from: 'somos.gemma.01@gmail.com',
       to: destinatario,
       subject: 'Confirmación de recepción de ticket',
-      text: `Se ha recibido su ticket con el folio: 1.`
+      text: `Se ha recibido su ticket con el folio: ${folio}.`
     };
-
+    console.log("first")
     // Envía el correo electrónico
     const info = await transporter.sendMail(mailOptions);
     console.log("Correo enviado:", info.messageId);
@@ -101,7 +100,10 @@ export async function POST(req, { params }) {
       navegador,
       rutaError,
       descripcionProblema,
+      correo,
+      nombre,
       url,
+
     ] = params.Soporte;
     const rutitaD = decodeURIComponent(rutaError);
     const urlsitaD = decodeURIComponent(url);
@@ -120,9 +122,7 @@ export async function POST(req, { params }) {
       descripcionProblema,
       " ",
       urlsitaD, " ", priori, " ", folio
-    );
-    // Guardar los datos en la base de datos
-
+    ); 
 
     const docRef = await addDoc(collection(db, 'tickets'), {
         folio,
@@ -134,13 +134,13 @@ export async function POST(req, { params }) {
         descripcionProblema,
         timestamp: new Date(),
         urlsitaD,
-<<<<<<< HEAD
+        nombre,
+        correo,
       });
 
-=======
-      }); 
-      await enviarCorreo('melyssagabrielag@gmail.com', folio);
->>>>>>> fc50d49f20847aa44f903b4c9426f90076844ce9
+ 
+      const response = await enviarCorreo(correo, folio);
+      console.log(response)
     // Enviar una respuesta de éxito
     return NextResponse.json(docRef );
   } catch (error) {

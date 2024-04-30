@@ -166,44 +166,25 @@ DASH, MAPA, REPORTES, PAPELERA -> Media
   // Acá va toda la lógica
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const fechaTicket = new Date();
+ 
     const correo = userData.correo;
     const nombre = userData.nombre;
     const url = await handleFileUpload();
-    console.log(
-      errorSeleccionado,
-      " ",
-      sistemaOperativo,
-      " ",
-      navegador,
-      " ",
-      selectedRutaError,
-      " ",
-      descripcionProblema,
-      " ",
-      url,
-      " ",
-      correo,
-      " ",
-      nombre,
-      " "
-    );
     const parametros = {
       errorSeleccionado: errorSeleccionado,
       sistemaOperativo: sistemaOperativo,
       navegador: navegador,
       selectedRutaError: encodeURIComponent(selectedRutaError),
       descripcionProblema: descripcionProblema,
-      fechaTicket: fechaTicket,
       correo: correo,
       nombre: nombre,
+      url: encodeURIComponent(url)
     };
     try {
       const response = await fetch(
         `/api/Soporte/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${encodeURIComponent(
           selectedRutaError
-        )}/${descripcionProblema}/${fechaTicket}/${correo}/${nombre}`,
+        )}/${descripcionProblema}/${correo}/${nombre}/${encodeURIComponent(url)}`,
         {
           method: "POST",
           headers: {
