@@ -10,6 +10,18 @@
     justify-content: center;
 }
 
+.body2{
+    background-color: #FFFFFF;
+    display: flex;
+    flex-direction: column;
+    height: 90vh;
+    top: 10vh;
+    align-items: center;
+    justify-content: center;
+    overflow-y: none;
+    overflow-x: hidden;
+}
+
 @media screen and (min-width: 1025px) {
 
 .container-registroUs{
@@ -94,7 +106,7 @@
     margin-top: 10px;
 }
 
-.container-registroUs button{
+.container-registroUs button, .alerta-logueado button{
     background-color: #ff9f49;
     color: #fff;
     font-size: 12px;
@@ -1282,4 +1294,22 @@ input[type="checkbox"]:checked::before {
         cursor: pointer;
         margin-top: 10px;
       }
+  }
+
+
+  .alerta-logueado{
+    background-color: #F1F1F1;
+    width: 35vw;
+    height: 35vh;
+    border-radius: 1.5rem;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: "Nunito", sans-serif;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .alerta-logueado h2{
+    color: #949494;
   }
