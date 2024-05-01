@@ -1,7 +1,7 @@
 
 @import url('https://rsms.me/inter/inter-ui.css');
 
-.page {
+.page-adminLogin {
   font-family: 'Inter UI', sans-serif;
   background: #e9232300;
   display: flex;
@@ -15,20 +15,20 @@
 }
 
 @media (max-width: 800px) {
-  .page {
+  .page-adminLogin {
     height: auto;
     margin-bottom: 20px;
     padding-bottom: 20px;
   }
 }
-.container {
+.container-adminLogin {
   display: flex;
   height: 50vh;
   margin: 0 auto;
   width: 45vw;
 }
 @media (max-width: 800px) {
-  .container {
+  .container-adminLogin {
     flex-direction: column;
     height: 60vh;
     width: 60vw;
@@ -90,11 +90,11 @@
     border-top-right-radius: 2rem;
   }
 }
-svg {
+.container-adminLogin svg {
   position: absolute;
   width: 320px;
 }
-path {
+.container-adminLogin path {
   fill: none;
   stroke: url(#linearGradient);;
   stroke-width: 4;
@@ -104,7 +104,7 @@ path {
   margin: 40px;
   position: absolute;
 }
-label {
+.container-adminLogin label {
   color:  #949494;
   display: block;
   font-size: 14px;
@@ -112,7 +112,7 @@ label {
   margin-top: 20px;
   margin-bottom: 5px;
 }
-input {
+.container-adminLogin input {
   background: transparent;
   border: 0;
   color: #6F6F6F;
@@ -123,15 +123,15 @@ input {
   outline: none !important;
   width: 100%;
 }
-input::-moz-focus-inner { 
+.container-adminLogin input::-moz-focus-inner { 
   border: 0; 
 }
 
-#iniciarSesion-btn button{
+#iniciarSesion-btn-admin button{
   line-height: 30px;
   outline: none !important;
 }
-#iniciarSesion-btn {
+#iniciarSesion-btn-admin {
   color: #949494;
   background-color: #94949400;
   font-size: 20px;
@@ -142,9 +142,9 @@ input::-moz-focus-inner {
   margin-left: 7px;
   border: none;
 }
-#iniciarSesion-btn:focus {
+#iniciarSesion-btn-admin:focus {
   color: #FFC537;
 }
-#iniciarSesion-btn:active {
+#iniciarSesion-btn-admin:active {
   color: #FF4D35;
 }

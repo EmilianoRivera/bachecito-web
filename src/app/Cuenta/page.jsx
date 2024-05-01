@@ -1,7 +1,8 @@
 "use client";
-import React, { useState, useContext} from "react";
+import React, { useState, useContext } from "react";
 import { auth, db } from "../../../firebase";
 import { useRouter } from "next/navigation";
+import Preloader from "@/components/preloader1";
 
 import {
   createUserWithEmailAndPassword,
@@ -26,16 +27,17 @@ function Registro() {
   const { push } = useRouter();
   const router = useRouter();
   const { isLogged } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
   //elementos de validaciones
   const [active, setActive] = useState(false);
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
   const [canSubmit, setCanSubmit] = useState(false);
 
   const handleAdminLinkClick = (event) => {
-    event.preventDefault  ();
+    event.preventDefault();
     router.push("/Cuenta/Administrador");
   };
-  
+
   const handleButtonClick = () => {
     setActive(!active);
   };
@@ -76,7 +78,7 @@ function Registro() {
 
     // Verificar si la longitud del valor es menor que el mínimo requerido
     if (value.length < minLength) {
-     
+
       setCanSubmit(false); // No se puede enviar el formulario
     } else {
       setCanSubmit(true); // Se puede enviar el formulario
@@ -107,7 +109,7 @@ function Registro() {
     const minLength = 4;
     // Verificar si la longitud del valor es menor que el mínimo requerido
     if (value.length < minLength) {
-      
+
       setCanSubmit(false); // No se puede enviar el formulario
     } else {
       setCanSubmit(true); // Se puede enviar el formulario
@@ -157,7 +159,7 @@ function Registro() {
     //  event.preventDefault(); // Evitar el envío automático del formulario
 
     if (!edadValida) {
-      
+
       return; // No se envía el formulario si la edad no es válida
     }
     if (!checkBoxChecked) {
@@ -195,7 +197,7 @@ function Registro() {
 
     // Verificar si la longitud del valor es menor que el mínimo requerido
     if (value.length < minLength) {
-    
+
       setCanSubmit(false); // No se puede enviar el formulario
     } else {
       setCanSubmit(true); // Se puede enviar el formulario
@@ -227,7 +229,7 @@ function Registro() {
 
     // Verificar si la longitud del valor es menor que el mínimo requerido
     if (value.length < minLength) {
-      
+
       setCanSubmit(false); // No se puede enviar el formulario
     } else {
       setCanSubmit(true); // Se puede enviar el formulario
@@ -273,6 +275,7 @@ function Registro() {
     event.preventDefault();
 
     try {
+      setLoading(true); // Muestra el preloader
       const userCredential = await signInWithEmailAndPassword(
         auth,
         email,
@@ -313,28 +316,31 @@ function Registro() {
         } else {
           alert("Inicio de sesión exitoso");
           push("/Cuenta/Usuario/Perfil");
-   
+
         }
       }
     } catch (error) {
       setError(error.message);
       alert("Correo o contraseña incorrectos");
+    } finally {
+      setLoading(false); // Oculta el preloader una vez completada la operación
     }
   };
   if (isLogged) {
     return (
-      <div className="body">
-      <div className="container-registroUs">
-        <div className="form-container sign-up">
-        <h1 style={{with: 30}}>¡Ya estás logueado!</h1>
+      <div className="body2">
+        <div className="alerta-logueado">
+            <h1>🥳🎉</h1>
+            <h2>¡Tranquilo, ya estás logueado!</h2>
         <button onClick={() => push("/Cuenta/Usuario/Perfil")}>Ir a tu perfil</button>
-      </div>
-      </div>
+
+        </div>
       </div>
     );
   }
   return (
     <div className="body">
+      {loading && <Preloader />}
       <div className={`container-registroUs ${active ? "active" : ""}`} id="container-registroUs">
         <div className="form-container sign-up">
           <form id="form-registro" onSubmit={handleSignUp}>
@@ -499,7 +505,7 @@ function Registro() {
                 Crear Cuenta
               </button>
             </div>
-          </div> 
+          </div>
         </div>
 
         {/* Pantalla de política de privacidad */}
