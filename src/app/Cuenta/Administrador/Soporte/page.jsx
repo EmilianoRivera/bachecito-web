@@ -2,7 +2,8 @@
 import React, { useState, useEffect, useContext } from "react";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useAuthUser } from "../../../../../hooks/UseAuthUser";
-import { app, auth, db } from "../../../../../firebase";
+ 
+import {  auth, db } from "../../../../../firebase";
 import { useRouter } from "next/navigation";
 import AuthContext from "../../../../../context/AuthContext";
 import "./Reportes.css";
@@ -61,13 +62,7 @@ function Soporte() {
     { ruta: "/Administrador/Papelera", modulo: "Reportes" },
     { ruta: "Otros", modulo: "Otra opción" },
   ];
-/*
-Inicio de sesion , Nuevo Administrador, Otros -> ALTA
-DASH, MAPA, REPORTES, PAPELERA -> Media
-
-
-
-*/
+ 
   // Catálogo de errores
   const catalogoErrores = [
     { clave: "S001", nombre: "Error de Inicio de Sesión" },
@@ -142,8 +137,9 @@ DASH, MAPA, REPORTES, PAPELERA -> Media
   };
 
   const handleFoto = (e) => {
-    setFoto(e.target.value);
+    setFoto(e.target.files[0]);
   };
+
 
   const handleDescripcionProblema = (e) => {
     setDescripcionProblema(e.target.value);
@@ -151,15 +147,10 @@ DASH, MAPA, REPORTES, PAPELERA -> Media
   };
 
   const handleFileUpload = async () => {
-    const archivo = document.querySelector('input[type="file"]');
-    const archivito = archivo.files[0];
-
-    if (!archivito) {
-      console.error("No se ha seleccionado ningún archivo");
-      return;
-    }
-
-    const storage = getStorage(app);
+   
+    console.log("first")
+   /* 
+    const storage = getStorage(appSoporte);
     const randomId = Math.random().toString(36).substring(7);
     const imageName = `Ticket_${randomId}`;
     const storageRef = ref(
@@ -167,57 +158,70 @@ DASH, MAPA, REPORTES, PAPELERA -> Media
       `ImagenesTickets/${userData.uid}/${imageName}`
     );
     await uploadBytes(storageRef, archivito);
-    return getDownloadURL(storageRef);
+    return getDownloadURL(storageRef); */
   };
   // Acá va toda la lógica
+ 
   const handleSubmit = async (e) => {
     e.preventDefault();
- 
+    const uid = userData.uid;
     const correoA = userData.correo;
-    const nombre = userData.nombre;
-    const area = asignarTarea
-    const url = await handleFileUpload();
-    const parametros = {
-      errorSeleccionado: errorSeleccionado,
-      sistemaOperativo: sistemaOperativo,
-      navegador: navegador,
-      selectedRutaError: encodeURIComponent(selectedRutaError),
-      descripcionProblema: descripcionProblema,
-      correoA: correoA,
-      nombre: nombre,
-      url: encodeURIComponent(url),
-      area: area
-    };
-    let res = prompt("A la hora de levantar el ticket, vamos a recuperar su información para darle seguimiento a su ticket, desea aceptar?")
-    if (res ==="SI") {
-      try {
-        const response = await fetch(
-          `http://localhost:3001/api/Ticket/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${encodeURIComponent(
+    const nombre = userData.nombre
+    const area = asignarTarea;
+
+    if (!foto) {
+      console.error("No se ha seleccionado ninguna foto");
+      return;
+    }
+
+    const formData = new FormData();
+    formData.append("file", foto);
+    formData.append("uid", uid);
+    formData.append("errorSeleccionado", errorSeleccionado);
+    formData.append("sistemaOperativo", sistemaOperativo);
+    formData.append("navegador", navegador);
+    formData.append("selectedRutaError", encodeURIComponent(selectedRutaError));
+    formData.append("descripcionProblema", descripcionProblema);
+    formData.append("correoA", correoA);
+    formData.append("nombre", nombre);
+    formData.append("area", area);
+
+  let res = prompt("¿Desea levantar el ticket? (SI/NO)");
+  if (res.toUpperCase() === "SI") {
+  try { 
+
+        const ticketResponse = await fetch(
+          `http://localhost:3001/api/Ticket/${userData.nombre}/${uid}/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${encodeURIComponent(
             selectedRutaError
-          )}/${descripcionProblema}/${correoA}/${nombre}/${encodeURIComponent(url)}/${area}`,
+          )}/${descripcionProblema}/${correoA}/${nombre}/${area}`,
           {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(parametros),
+            body: formData,
           }
         );
-  
-        if (response.ok) {
+
+        if (ticketResponse.ok) {
           console.log("Formulario enviado con éxito");
         } else {
-          console.error("Error al enviar el formulario:", response.status);
+          console.error(
+            "Error al enviar el formulario:",
+            ticketResponse.status
+          );
         }
-      } catch (error) {
-        console.error("Error al enviar el formulario:", error);
-      }
-    } else {
-      alert("NO SE LEVANTARA SU TICKET")
-    }
+     
     
-  };
+  } catch (error) {
+    console.error("Error:", error);
+  }
+ }
 
+
+   
+  };
+  
   return (
     <div className="bodySoporte">
       <div className="containerSoporte">
