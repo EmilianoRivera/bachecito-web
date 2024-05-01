@@ -1,6 +1,9 @@
 import { NextResponse } from "next/server";  
 import { db, collection, addDoc, getDocs } from "../../../../../firebase";
-import nodemailer from "nodemailer";
+//import nodemailer from "nodemailer";
+import { Resend } from 'resend';
+
+const resend = new Resend(process.env.NEXT_PUBLIC_RESEND_API_KEY);
 
 
 async function folioTicket(errorSeleccionado, rutaError) {
@@ -58,36 +61,6 @@ function prioridad(errorSeleccionado) {
   return priori; // Devuelve el string con la prioridad
 }
 
-const transporter = nodemailer.createTransport({
-  service: "gmail",
-  host: 'smtp.gmail.com',
-  port: 465,
-  secure: true,
-
-  auth: {
-    user: 'somos.gemma.01@gmail.com',
-    pass: ' rje3vw$x4hGVhcw$h8eeukGSh5$C6@o6W5NH'
-  }
-});
-
-async function enviarCorreo(destinatario, folio) {
-  try {
-    // Configura el contenido del correo electrónico
-    const mailOptions = {
-      from: 'somos.gemma.01@gmail.com',
-      to: destinatario,
-      subject: 'Confirmación de recepción de ticket',
-      text: `Se ha recibido su ticket con el folio: ${folio}.`
-    };
-    console.log("first")
-    // Envía el correo electrónico
-    const info = await transporter.sendMail(mailOptions);
-    console.log("Correo enviado:", info.messageId);
-  } catch (error) {
-    console.error("Error al enviar el correo electrónico:", error);
-  }
-}
-
 export async function POST(req, { params }) {
   try {
     console.log(params.Soporte);
@@ -123,6 +96,15 @@ export async function POST(req, { params }) {
       " ",
       urlsitaD, " ", priori, " ", folio
     ); 
+    console.log(resend)
+    resend.emails.send({
+      from: 'onboarding@resend.dev',
+      to: correo,
+      subject: 'Confirmación de recepción de ticket',
+      html: `Se ha recibido su ticket con el folio: ${folio}.`
+    });
+    
+
 
     const docRef = await addDoc(collection(db, 'tickets'), {
         folio,
@@ -138,9 +120,7 @@ export async function POST(req, { params }) {
         correo,
       });
 
- 
-      const response = await enviarCorreo(correo, folio);
-      console.log(response)
+  console.log(docRef)
     // Enviar una respuesta de éxito
     return NextResponse.json(docRef );
   } catch (error) {

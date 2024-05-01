@@ -180,28 +180,34 @@ DASH, MAPA, REPORTES, PAPELERA -> Media
       nombre: nombre,
       url: encodeURIComponent(url)
     };
-    try {
-      const response = await fetch(
-        `/api/Soporte/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${encodeURIComponent(
-          selectedRutaError
-        )}/${descripcionProblema}/${correo}/${nombre}/${encodeURIComponent(url)}`,
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify(parametros),
+    let res = prompt("A la hora de levantar el ticket, vamos a recuperar su información para darle seguimiento a su ticket, desea aceptar?")
+    if (res ==="SI") {
+      try {
+        const response = await fetch(
+          `/api/Soporte/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${encodeURIComponent(
+            selectedRutaError
+          )}/${descripcionProblema}/${correo}/${nombre}/${encodeURIComponent(url)}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(parametros),
+          }
+        );
+  
+        if (response.ok) {
+          console.log("Formulario enviado con éxito");
+        } else {
+          console.error("Error al enviar el formulario:", response.status);
         }
-      );
-
-      if (response.ok) {
-        console.log("Formulario enviado con éxito");
-      } else {
-        console.error("Error al enviar el formulario:", response.status);
+      } catch (error) {
+        console.error("Error al enviar el formulario:", error);
       }
-    } catch (error) {
-      console.error("Error al enviar el formulario:", error);
+    } else {
+      alert("NO SE LEVANTARA SU TICKET")
     }
+    
   };
 
   return (
