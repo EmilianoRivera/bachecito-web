@@ -76,6 +76,7 @@ export async function POST(req, { params }) {
       correo,
       nombre,
       url,
+      area
 
     ] = params.Soporte;
     const rutitaD = decodeURIComponent(rutaError);
@@ -118,6 +119,7 @@ export async function POST(req, { params }) {
         urlsitaD,
         nombre,
         correo,
+        area
       });
 
   console.log(docRef)

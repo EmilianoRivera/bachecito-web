@@ -16,6 +16,7 @@ function Soporte() {
   const [sistemaOperativo, setSistemaOperativo] = useState(
     "No se ha seleccionado un sistema operativo"
   );
+  const [asignarTarea, setAsignarTarea] = useState("-")
   const [navegador, setNavegador] = useState(
     "No se ha seleccionado un navegador"
   );
@@ -123,6 +124,11 @@ DASH, MAPA, REPORTES, PAPELERA -> Media
     console.log(selectedSO);
   };
 
+  const handleAsignarTarea = (e) => {
+    const asignar = e.target.value
+    setAsignarTarea(asignar)
+    console.log(asignar)
+  }
   const handleNavegador = (e) => {
     const selectedNavegador = e.target.value;
     setNavegador(selectedNavegador);
@@ -169,6 +175,7 @@ DASH, MAPA, REPORTES, PAPELERA -> Media
  
     const correo = userData.correo;
     const nombre = userData.nombre;
+    const area = asignarTarea
     const url = await handleFileUpload();
     const parametros = {
       errorSeleccionado: errorSeleccionado,
@@ -178,7 +185,8 @@ DASH, MAPA, REPORTES, PAPELERA -> Media
       descripcionProblema: descripcionProblema,
       correo: correo,
       nombre: nombre,
-      url: encodeURIComponent(url)
+      url: encodeURIComponent(url),
+      area: area
     };
     let res = prompt("A la hora de levantar el ticket, vamos a recuperar su información para darle seguimiento a su ticket, desea aceptar?")
     if (res ==="SI") {
@@ -186,7 +194,7 @@ DASH, MAPA, REPORTES, PAPELERA -> Media
         const response = await fetch(
           `/api/Soporte/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${encodeURIComponent(
             selectedRutaError
-          )}/${descripcionProblema}/${correo}/${nombre}/${encodeURIComponent(url)}`,
+          )}/${descripcionProblema}/${correo}/${nombre}/${encodeURIComponent(url)}/${area}`,
           {
             method: "POST",
             headers: {
@@ -249,6 +257,12 @@ DASH, MAPA, REPORTES, PAPELERA -> Media
           <br />
           <br />
           <br />
+          <label>Carácter de error</label>
+          <select value={asignarTarea} onChange={handleAsignarTarea}>
+           <option >Escoger carácter de error</option>
+           <option value="backend">Funcionalidad</option>
+           <option value="frontend">Diseño</option>
+          </select>
           <label>Seleccione su sistema operativo: </label>
           <select value={sistemaOperativo} onChange={handleSO}>
             <option value="">Seleccionar</option>
