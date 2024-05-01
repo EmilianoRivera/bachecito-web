@@ -73,7 +73,7 @@ export async function POST(req, { params }) {
       navegador,
       rutaError,
       descripcionProblema,
-      correo,
+      correoA,
       nombre,
       url,
       area
@@ -100,7 +100,7 @@ export async function POST(req, { params }) {
     console.log(resend)
     resend.emails.send({
       from: 'onboarding@resend.dev',
-      to: correo,
+      to: correoA,
       subject: 'Confirmación de recepción de ticket',
       html: `Se ha recibido su ticket con el folio: ${folio}.`
     });
@@ -115,10 +115,10 @@ export async function POST(req, { params }) {
         navegador,
         rutitaD,
         descripcionProblema,
-        timestamp: new Date(),
+        fechaDeEnvio: new Date(),
         urlsitaD,
         nombre,
-        correo,
+        correoA,
         area
       });
 

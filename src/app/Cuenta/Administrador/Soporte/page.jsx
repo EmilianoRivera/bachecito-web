@@ -173,7 +173,7 @@ DASH, MAPA, REPORTES, PAPELERA -> Media
   const handleSubmit = async (e) => {
     e.preventDefault();
  
-    const correo = userData.correo;
+    const correoA = userData.correo;
     const nombre = userData.nombre;
     const area = asignarTarea
     const url = await handleFileUpload();
@@ -183,7 +183,7 @@ DASH, MAPA, REPORTES, PAPELERA -> Media
       navegador: navegador,
       selectedRutaError: encodeURIComponent(selectedRutaError),
       descripcionProblema: descripcionProblema,
-      correo: correo,
+      correoA: correoA,
       nombre: nombre,
       url: encodeURIComponent(url),
       area: area
@@ -194,7 +194,7 @@ DASH, MAPA, REPORTES, PAPELERA -> Media
         const response = await fetch(
           `/api/Soporte/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${encodeURIComponent(
             selectedRutaError
-          )}/${descripcionProblema}/${correo}/${nombre}/${encodeURIComponent(url)}/${area}`,
+          )}/${descripcionProblema}/${correoA}/${nombre}/${encodeURIComponent(url)}/${area}`,
           {
             method: "POST",
             headers: {
