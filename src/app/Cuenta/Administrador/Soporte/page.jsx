@@ -192,7 +192,7 @@ DASH, MAPA, REPORTES, PAPELERA -> Media
     if (res ==="SI") {
       try {
         const response = await fetch(
-          `/api/Soporte/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${encodeURIComponent(
+          `http://localhost:3001/api/Ticket/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${encodeURIComponent(
             selectedRutaError
           )}/${descripcionProblema}/${correoA}/${nombre}/${encodeURIComponent(url)}/${area}`,
           {
