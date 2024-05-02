@@ -2,12 +2,10 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useAuthUser } from "../../../../../hooks/UseAuthUser";
- 
 import {  auth, db } from "../../../../../firebase";
 import { useRouter } from "next/navigation";
 import AuthContext from "../../../../../context/AuthContext";
 import RutaProtegida from "@/components/RutaProtegida";
-import "./Reportes.css";
 import "./Soporte.css";
 
 
