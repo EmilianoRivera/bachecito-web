@@ -2,7 +2,8 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useAuthUser } from "../../../../../hooks/UseAuthUser";
-import { app, auth, db } from "../../../../../firebase";
+ 
+import {  auth, db } from "../../../../../firebase";
 import { useRouter } from "next/navigation";
 import AuthContext from "../../../../../context/AuthContext";
 import RutaProtegida from "@/components/RutaProtegida";
@@ -104,10 +105,6 @@ function Soporte() {
     { ruta: "/Administrador/Papelera", modulo: "⚠️ Reportes" },
     { ruta: "Otros", modulo: "🔄️ Otra opción" },
   ];
-  /*
-  Inicio de sesion , Nuevo Administrador, Otros -> ALTA
-  DASH, MAPA, REPORTES, PAPELERA -> Media
-  */
 
   // Catálogo de errores
   const catalogoErrores = [
@@ -204,8 +201,9 @@ function Soporte() {
   };
 
   const handleFoto = (e) => {
-    setFoto(e.target.value);
+    setFoto(e.target.files[0]);
   };
+
 
   const handleDescripcionProblema = (e) => {
     setDescripcionProblema(e.target.value);
@@ -218,15 +216,10 @@ function Soporte() {
   };
 
   const handleFileUpload = async () => {
-    const archivo = document.querySelector('input[type="file"]');
-    const archivito = archivo.files[0];
-
-    if (!archivito) {
-      console.error("No se ha seleccionado ningún archivo");
-      return;
-    }
-
-    const storage = getStorage(app);
+   
+    console.log("first")
+   /* 
+    const storage = getStorage(appSoporte);
     const randomId = Math.random().toString(36).substring(7);
     const imageName = `Ticket_${randomId}`;
     const storageRef = ref(
@@ -234,12 +227,12 @@ function Soporte() {
       `ImagenesTickets/${userData.uid}/${imageName}`
     );
     await uploadBytes(storageRef, archivito);
-    return getDownloadURL(storageRef);
+    return getDownloadURL(storageRef); */
   };
   // Acá va toda la lógica
+ 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const correoA = userData.correo;
     const nombre = userData.nombre;
     const area = asignarTarea
@@ -261,20 +254,23 @@ function Soporte() {
         const response = await fetch(
           `http://localhost:3001/api/Ticket/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${encodeURIComponent(
             selectedRutaError
-          )}/${descripcionProblema}/${correoA}/${nombre}/${encodeURIComponent(url)}/${area}`,
+          )}/${descripcionProblema}/${correoA}/${nombre}/${area}`,
           {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(parametros),
+            body: formData,
           }
         );
 
         if (response.ok) {
           console.log("Formulario enviado con éxito");
         } else {
-          console.error("Error al enviar el formulario:", response.status);
+          console.error(
+            "Error al enviar el formulario:",
+            ticketResponse.status
+          );
         }
       } catch (error) {
         console.error("Error al enviar el formulario:", error);
@@ -284,7 +280,7 @@ function Soporte() {
     }
 
   };
-
+  
   return (
     <RutaProtegida>
       <div className="bodySoporte">
