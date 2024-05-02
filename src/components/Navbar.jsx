@@ -15,6 +15,7 @@ function Navbar() {
   const [menuActive, setMenuActive] = useState(false);
   const [showMenuIcon, setShowMenuIcon] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false); // Estado para mostrar la alerta de confirmación
+  const [darkMode, setDarkMode] = useState(false);
   const router = useRouter();
   useEffect(() => {
     const handleResize = () => {
@@ -58,7 +59,7 @@ function Navbar() {
     <div
       className={`navBar ${isAdmin ? "admin" : ""} ${
         menuActive ? "showMenu" : ""
-      }`}
+      }${darkMode ? "darkMode" : ""}`}
     >
       <Link href="/" className="bachecito26">
         <img
@@ -220,6 +221,9 @@ function Navbar() {
           onCancel={() => setShowConfirmation(false)}
         />
       )}
+      <button onClick={() => setDarkMode(!darkMode)}>
+        {darkMode ? "Desactivar Modo Oscuro" : "Activar Modo Oscuro"}
+      </button>
     </div>
   );
 }
