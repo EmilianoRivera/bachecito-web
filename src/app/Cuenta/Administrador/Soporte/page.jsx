@@ -2,7 +2,8 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useAuthUser } from "../../../../../hooks/UseAuthUser";
-import { app, auth, db } from "../../../../../firebase";
+ 
+import {  auth, db } from "../../../../../firebase";
 import { useRouter } from "next/navigation";
 import AuthContext from "../../../../../context/AuthContext";
 import RutaProtegida from "@/components/RutaProtegida";
@@ -28,7 +29,7 @@ function Soporte() {
   );
   const [selectedRutaError, setSelectedRutaError] = useState("/NoEspecificado");
   const [foto, setFoto] = useState("");
-  const [descripcionProblema, setDescripcionProblema] = useState("Sin descripcion");
+  const [descripcionProblema, setDescripcionProblema] = useState("");
 
   const [mostrarDetalle1, setMostrarDetalle1] = useState(false);
   const [mostrarDetalle2, setMostrarDetalle2] = useState(false);
@@ -96,34 +97,30 @@ function Soporte() {
     }
   }, []);
   const catalogoRutaErrores = [
-    { ruta: "/Cuenta/Administrador", modulo: "Inicio de Sesión" },
-    { ruta: "/Administrador/Dashboard", modulo: "Dashboard" },
-    { ruta: "/Administrador/Mapa", modulo: "Mapa" },
-    { ruta: "/Administrador/NuevoAdmin", modulo: "Nuevo Administrador" },
-    { ruta: "/Administrador/Reportes", modulo: "Reportes" },
-    { ruta: "/Administrador/Papelera", modulo: "Reportes" },
-    { ruta: "Otros", modulo: "Otra opción" },
+    { ruta: "/Cuenta/Administrador", modulo: "✅Inicio de Sesión" },
+    { ruta: "/Administrador/Dashboard", modulo: "📊 Dashboard" },
+    { ruta: "/Administrador/Mapa", modulo: "🗺️ Mapa" },
+    { ruta: "/Administrador/NuevoAdmin", modulo: "👤 Nuevo Administrador" },
+    { ruta: "/Administrador/Reportes", modulo: "⚠️ Reportes" },
+    { ruta: "/Administrador/Papelera", modulo: "⚠️ Reportes" },
+    { ruta: "Otros", modulo: "🔄️ Otra opción" },
   ];
-  /*
-  Inicio de sesion , Nuevo Administrador, Otros -> ALTA
-  DASH, MAPA, REPORTES, PAPELERA -> Media
-  */
 
   // Catálogo de errores
   const catalogoErrores = [
-    { clave: "S001", nombre: "Error de Inicio de Sesión" },
-    { clave: "S002", nombre: "Error de Registro" },
-    { clave: "D001", nombre: "Error al Cargar Estadísticas" },
-    { clave: "D002", nombre: "Error de Filtros" },
-    { clave: "M001", nombre: "Error al Cargar el Mapa" },
-    { clave: "M002", nombre: "Error de Ubicación" },
-    { clave: "R001", nombre: "Error al Cargar los Reportes" },
-    { clave: "R002", nombre: "Error al Cambiar estado de los Reportes" },
-    { clave: "R003", nombre: "Error al Mover reportes a la papelera" },
-    { clave: "P001", nombre: "Error al Visualizar reportes en la papelera" },
-    { clave: "P002", nombre: "Error al Eliminar reportes de la papelera" },
-    { clave: "T001", nombre: "Error al Enviar Ticket" },
-    { clave: "0000", nombre: "Otro: (Especificar en Descripcion)" },
+    { clave: "S001", nombre: "❌ Error de Inicio de Sesión" },
+    { clave: "S002", nombre: "📝 Error de Registro" },
+    { clave: "D001", nombre: "📊 Error al Cargar Estadísticas" },
+    { clave: "D002", nombre: "➰ Error de Filtros" },
+    { clave: "M001", nombre: "⏳ Error al Cargar el Mapa" },
+    { clave: "M002", nombre: "📌 Error de Ubicación" },
+    { clave: "R001", nombre: "⚠️ Error al Cargar los Reportes" },
+    { clave: "R002", nombre: "🚩 Error al Cambiar estado de los Reportes" },
+    { clave: "R003", nombre: "🗑️ Error al Mover reportes a la papelera" },
+    { clave: "P001", nombre: "👀 Error al Visualizar reportes en la papelera" },
+    { clave: "P002", nombre: "⛔ Error al Eliminar reportes de la papelera" },
+    { clave: "T001", nombre: "📨 Error al Enviar Ticket" },
+    { clave: "0000", nombre: "🔄️ Otro: (Especificar en Descripcion)" },
   ];
 
   // Catálogo de sistemas operativos
@@ -204,8 +201,9 @@ function Soporte() {
   };
 
   const handleFoto = (e) => {
-    setFoto(e.target.value);
+    setFoto(e.target.files[0]);
   };
+
 
   const handleDescripcionProblema = (e) => {
     setDescripcionProblema(e.target.value);
@@ -218,15 +216,10 @@ function Soporte() {
   };
 
   const handleFileUpload = async () => {
-    const archivo = document.querySelector('input[type="file"]');
-    const archivito = archivo.files[0];
-
-    if (!archivito) {
-      console.error("No se ha seleccionado ningún archivo");
-      return;
-    }
-
-    const storage = getStorage(app);
+   
+    console.log("first")
+   /* 
+    const storage = getStorage(appSoporte);
     const randomId = Math.random().toString(36).substring(7);
     const imageName = `Ticket_${randomId}`;
     const storageRef = ref(
@@ -234,12 +227,12 @@ function Soporte() {
       `ImagenesTickets/${userData.uid}/${imageName}`
     );
     await uploadBytes(storageRef, archivito);
-    return getDownloadURL(storageRef);
+    return getDownloadURL(storageRef); */
   };
   // Acá va toda la lógica
+ 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const correoA = userData.correo;
     const nombre = userData.nombre;
     const area = asignarTarea
@@ -261,20 +254,23 @@ function Soporte() {
         const response = await fetch(
           `http://localhost:3001/api/Ticket/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${encodeURIComponent(
             selectedRutaError
-          )}/${descripcionProblema}/${correoA}/${nombre}/${encodeURIComponent(url)}/${area}`,
+          )}/${descripcionProblema}/${correoA}/${nombre}/${area}`,
           {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify(parametros),
+            body: formData,
           }
         );
 
         if (response.ok) {
           console.log("Formulario enviado con éxito");
         } else {
-          console.error("Error al enviar el formulario:", response.status);
+          console.error(
+            "Error al enviar el formulario:",
+            ticketResponse.status
+          );
         }
       } catch (error) {
         console.error("Error al enviar el formulario:", error);
@@ -284,7 +280,7 @@ function Soporte() {
     }
 
   };
-
+  
   return (
     <RutaProtegida>
       <div className="bodySoporte">
@@ -376,87 +372,130 @@ function Soporte() {
           <div className='container_FormularioSoporte'>
             <div className='containerFR'>
               <br />
-
-              <h2 id='titulo_sp'>Formulario de Soporte Técnico 👷</h2>
-
               <form onSubmit={handleSubmit}>
-                <label>Seleccione el error:</label>
-                <select value={errorSeleccionado} onChange={handleError}>
-                  <option>Tipo de Error</option>
-                  {catalogoErrores.map((errorSeleccionado, index) => (
-                    <option key={index} value={errorSeleccionado.clave}>
-                      {`${errorSeleccionado.nombre}`}
-                    </option>
-                  ))}
-                </select>
-                <br />
-                <br />
-                <br />
-                <label>Módulo donde se encontró el error: </label>
-                <select value={selectedRutaError} onChange={handleRutaError}>
-                  <option>Módulo del Error</option>
-                  {catalogoRutaErrores.map((errorOption, index) => (
-                    <option key={index} value={errorOption.ruta}>
-                      {`${errorOption.modulo}`}
-                    </option>
-                  ))}
-                </select>
-                <br />
-                <br />
-                <br />
-                <label>Carácter de error</label>
-                <select value={asignarTarea} onChange={handleAsignarTarea}>
-                  <option >Escoger carácter de error</option>
-                  <option value="backend">Funcionalidad</option>
-                  <option value="frontend">Diseño</option>
-                </select>
-                <label>Seleccione su sistema operativo: </label>
-                <select value={sistemaOperativo} onChange={handleSO}>
-                  <option value="">Seleccionar</option>
-                  {catalogoSistemaOperativo.map((sistema, index) => (
-                    <option key={index} value={sistema}>
-                      {`${sistema}`}
-                    </option>
-                  ))}
-                </select>
-                <br />
-                <br />
-                <br />
 
-                <label>Seleccione su navegador: </label>
-                <select value={navegador} onChange={handleNavegador}>
-                  <option value="">Seleccionar</option>
-                  {catalogoNavegadores.map((navegador, index) => (
-                    <option key={index} value={navegador}>
-                      {`${navegador}`}
-                    </option>
-                  ))}
-                </select>
-                <br />
-                <br />
-                <br />
+                <table className='table_form_sp'>
+                  <thead>
+                    <tr>
+                      <td className="filita" colSpan="2"><h2 id='titulo_sp'>Formulario de Soporte Técnico 👷</h2></td>
+                    </tr>
+                  </thead>
 
-                <label>Adjuntar fotografía del problema: </label>
-                <input type="file" accept="image/*" onChange={handleFoto} />
-                <br />
-                <br />
-                <br />
+                  <tbody>
+                    <tr>
+                      <td className="columna_soporte_1"><label>Seleccione el error ❌:</label></td>
+                      <td className="columna_soporte_2">
+                        <div className="select">
+                          <select value={errorSeleccionado} onChange={handleError}>
+                            <option>Tipo de Error</option>
+                            {catalogoErrores.map((errorSeleccionado, index) => (
+                              <option key={index} value={errorSeleccionado.clave}>
+                                {`${errorSeleccionado.nombre}`}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </td>
+                    </tr>
 
-                <label>Descripción del problema: </label>
-                <textarea
-                  value={descripcionProblema}
-                  onChange={handleDescripcionProblema}
-                  rows="4"
-                  cols="50"
-                />
-                <br />
-                <br />
-                <br />
+                    <tr>
+                      <td className="columna_soporte_1"><label>Módulo donde se encontró el error 🔍: </label></td>
+                      <td className="columna_soporte_2">
+                        <div className="select">
+                          <select value={selectedRutaError} onChange={handleRutaError}>
+                            <option>Módulo del Error</option>
+                            {catalogoRutaErrores.map((errorOption, index) => (
+                              <option key={index} value={errorOption.ruta}>
+                                {`${errorOption.modulo}`}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </td>
+                    </tr>
 
-                <button type="submit" id="submit">
-                  Enviar
-                </button>
+                    <tr>
+                      <td className="columna_soporte_1"><label>Carácter de error 👀:</label></td>
+                      <td className="columna_soporte_2">
+                        <div className="select">
+                          <select value={asignarTarea} onChange={handleAsignarTarea}>
+                            <option >Escoger carácter de error</option>
+                            <option value="backend">🖥️ Funcionalidad</option>
+                            <option value="frontend">🎨 Diseño</option>
+                          </select>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td className="columna_soporte_1"><label>Seleccione su sistema operativo 🖥️: </label></td>
+                      <td className="columna_soporte_2">
+                        <div className="select">
+                          <select value={sistemaOperativo} onChange={handleSO}>
+                            <option value="">Sistema Operativo</option>
+                            {catalogoSistemaOperativo.map((sistema, index) => (
+                              <option key={index} value={sistema}>
+                                {`${sistema}`}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td className="columna_soporte_1"><label>Seleccione su navegador 🌎: </label></td>
+                      <td className="columna_soporte_2">
+                        <div className="select">
+                          <select value={navegador} onChange={handleNavegador}>
+                            <option value="">Navegador</option>
+                            {catalogoNavegadores.map((navegador, index) => (
+                              <option key={index} value={navegador}>
+                                {`${navegador}`}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td className="columna_soporte_1"><label>Adjuntar fotografía del problema 📸: </label></td>
+                      <td className="columna_soporte_2">
+                        <input type="file" accept="image/*" onChange={handleFoto} />
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td className="columna_soporte_1"><label>Descripción del problema 📝: </label></td>
+                      <td className="columna_soporte_2">
+                        <div className="wrapper">
+                          <textarea
+                            ref={textareaRef}
+                            value={descripcionProblema}
+                            onChange={handleDescripcionProblema}
+                            rows="1" // Esto evita que el textarea se ajuste automáticamente en altura
+                            cols="50"
+                            placeholder="El error se encontró en..."
+                            style={{ resize: 'none' }} // Esto evita que el usuario pueda ajustar manualmente el tamaño del textarea
+                          />
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td className="filita" colSpan="2">
+                        <br />
+                        <button type="submit" id="submit">
+                          Enviar
+                        </button>
+                      </td>
+                    </tr>
+
+                  </tbody>
+                </table>
               </form>
+
               {/*
               <form onSubmit={handleSubmit}>
 
@@ -563,7 +602,6 @@ function Soporte() {
               <br /><br />
             </div>
           </div>
-
         </div>
       </div>
     </RutaProtegida>
@@ -571,3 +609,5 @@ function Soporte() {
 }
 
 export default Soporte;
+
+

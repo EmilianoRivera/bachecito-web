@@ -107,9 +107,38 @@
     text-align: center;
 }
 
+.table_form_sp {
+    width: 100%;
+}
+
+.table_form_sp th,
+.table_form_sp td {
+    width: 50%;
+    /* Establecer el ancho al 50% para cada th y td */
+    padding: 10px;
+    /* Ajustar el relleno según sea necesario */
+    text-align: center;
+    /* Alinear el texto al centro si es necesario */
+}
+
+#titulo_sp {
+    width: 100%;
+    /* Asegurar que el título ocupe todo el ancho */
+}
+
+.container_FormularioSoporte .containerFR form table .columna_soporte_1 {
+    text-align: right;
+}
+
+.container_FormularioSoporte .containerFR form table .columna_soporte_2{
+    align-items: start;
+    justify-content: left;
+}
+
 .container_FormularioSoporte .containerFR #titulo_sp {
     color: #FF9F49;
     font-family: "Baloo Thambi 2", system-ui;
+    text-align: center;
 
 }
 
@@ -177,7 +206,7 @@ select::-ms-expand {
     padding: 10px;
     font-size: 13px;
     border-radius: 8px;
-    width: 35%;
+    width: 62%;
     outline: auto;
     outline-color: #FFF;
     color: #949494;
@@ -204,7 +233,7 @@ select::-ms-expand {
     /* Cambia el color del placeholder al pasar el mouse */
 }
 
-.container_FormularioSoporte .containerFR .wrapper{
+.container_FormularioSoporte .containerFR .wrapper {
     border-radius: 5px;
 }
 
@@ -221,7 +250,7 @@ select::-ms-expand {
     font-weight: 500;
     font-size: 16px;
     line-height: 1.4;
-    width: 35%;
+    width: 60%;
     height: 2%;
     transition: all 0.2s;
 }
@@ -241,7 +270,7 @@ select::-ms-expand {
     border-color: #FF9F49;
 }
 
-.container_FormularioSoporte .containerFR .wrapper textarea::placeholder{
+.container_FormularioSoporte .containerFR .wrapper textarea::placeholder {
     color: #D1D1D1;
 }
 
@@ -257,13 +286,11 @@ select::-ms-expand {
     letter-spacing: 0.5px;
     cursor: pointer;
     transition: .5s;
+    text-align: center;
 }
 
 
-.container_FormularioSoporte .containerFR form button:hover{
+.container_FormularioSoporte .containerFR form button:hover {
     background-color: #FF9F49;
     color: #fff;
 }
-
-
-
