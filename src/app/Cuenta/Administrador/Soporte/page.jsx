@@ -2,14 +2,12 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useAuthUser } from "../../../../../hooks/UseAuthUser";
- 
-import {  auth, db } from "../../../../../firebase";
+
+import { auth, db } from "../../../../../firebase";
 import { useRouter } from "next/navigation";
 import AuthContext from "../../../../../context/AuthContext";
-import RutaProtegida from "@/components/RutaProtegida";
 import "./Reportes.css";
 import "./Soporte.css";
-
 
 function Soporte() {
   useAuthUser();
@@ -23,18 +21,20 @@ function Soporte() {
   const [sistemaOperativo, setSistemaOperativo] = useState(
     "No se ha seleccionado un sistema operativo"
   );
-  const [asignarTarea, setAsignarTarea] = useState("Otro")
+  const [asignarTarea, setAsignarTarea] = useState("Otro");
   const [navegador, setNavegador] = useState(
     "No se ha seleccionado un navegador"
   );
   const [selectedRutaError, setSelectedRutaError] = useState("/NoEspecificado");
   const [foto, setFoto] = useState(null);
-  const [descripcionProblema, setDescripcionProblema] = useState("Sin descripcion");
+  const [descripcionProblema, setDescripcionProblema] =
+    useState("Sin descripcion");
 
   const [mostrarDetalle1, setMostrarDetalle1] = useState(false);
   const [mostrarDetalle2, setMostrarDetalle2] = useState(false);
   const [mostrarDetalle3, setMostrarDetalle3] = useState(false);
   const [mostrarDetalle4, setMostrarDetalle4] = useState(false);
+  const [ticket, setTickets] = useState([]);
 
   const toggleDetalle1 = () => {
     setMostrarDetalle1(!mostrarDetalle1);
@@ -54,19 +54,27 @@ function Soporte() {
 
   // Función para cambiar la imagen
   const obtenerImagen1 = () => {
-    return mostrarDetalle1 ? 'https://i.postimg.cc/wB2S0JqV/triangulo-1.png' : 'https://i.postimg.cc/Z5XxTn6Y/triangulo.png';
+    return mostrarDetalle1
+      ? "https://i.postimg.cc/wB2S0JqV/triangulo-1.png"
+      : "https://i.postimg.cc/Z5XxTn6Y/triangulo.png";
   };
 
   const obtenerImagen2 = () => {
-    return mostrarDetalle2 ? 'https://i.postimg.cc/wB2S0JqV/triangulo-1.png' : 'https://i.postimg.cc/Z5XxTn6Y/triangulo.png';
+    return mostrarDetalle2
+      ? "https://i.postimg.cc/wB2S0JqV/triangulo-1.png"
+      : "https://i.postimg.cc/Z5XxTn6Y/triangulo.png";
   };
 
   const obtenerImagen3 = () => {
-    return mostrarDetalle3 ? 'https://i.postimg.cc/wB2S0JqV/triangulo-1.png' : 'https://i.postimg.cc/Z5XxTn6Y/triangulo.png';
+    return mostrarDetalle3
+      ? "https://i.postimg.cc/wB2S0JqV/triangulo-1.png"
+      : "https://i.postimg.cc/Z5XxTn6Y/triangulo.png";
   };
 
   const obtenerImagen4 = () => {
-    return mostrarDetalle4 ? 'https://i.postimg.cc/wB2S0JqV/triangulo-1.png' : 'https://i.postimg.cc/Z5XxTn6Y/triangulo.png';
+    return mostrarDetalle4
+      ? "https://i.postimg.cc/wB2S0JqV/triangulo-1.png"
+      : "https://i.postimg.cc/Z5XxTn6Y/triangulo.png";
   };
 
   useEffect(() => {
@@ -95,7 +103,41 @@ function Soporte() {
         console.error("Error fetching data:", error);
       }
     }
+
+    
   }, []);
+
+  
+  useEffect(() => {
+    async function fetchTickets() {
+      try {
+        if (!userData || !userData.uid) {
+          console.error("UserData is not available or invalid");
+          return;
+        }
+  
+        const uid = userData.uid;
+        const ticketsData = await fetch(`http://localhost:3000/api/Ticket/${uid}`);
+        if (!ticketsData.ok) {
+          throw new Error("Failed to fetch tickets data");
+        }
+        console.log("first");
+        const tickets = await ticketsData.json();
+        console.log("VA POR AQUI", tickets);
+        setTickets(tickets);
+      } catch (error) {
+        console.error("Error fetching tickets:", error);
+      }
+    }
+  
+    // Ejecutar fetchTickets() solo si userData está disponible y tiene un valor válido
+    if (userData && userData.uid) {
+      fetchTickets();
+    }
+  }, [userData]); // Ejecutar cuando userData cambie
+  
+  
+  
   const catalogoRutaErrores = [
     { ruta: "/Cuenta/Administrador", modulo: "Inicio de Sesión" },
     { ruta: "/Administrador/Dashboard", modulo: "Dashboard" },
@@ -149,8 +191,23 @@ function Soporte() {
     "Samsung Internet",
     "Otro",
   ];
+    //Convertir timestamp
+    function formatTimestamp(timestamp) {
+      // Verifica si timestamp es un objeto con propiedades seconds y nanoseconds
+      if (timestamp && timestamp.seconds && timestamp.nanoseconds) {
+          // Crea una nueva instancia de Date utilizando los segundos del timestamp
+          const dateObject = new Date(timestamp.seconds * 1000); // Multiplica por 1000 para convertir segundos a milisegundos
+          // Formatea la fecha como una cadena legible
+          return dateObject.toLocaleDateString(); // Obtener solo la fecha sin la hora
+      } else {
+          // Si no se puede convertir, devuelve un mensaje de error
+          return "Aun no Resuelto";
+      }
+  }
 
-
+  const handleDetalles = () => {
+    alert("HO")
+  }
 
   // Obtener fecha actual al cargar el componente
   /*
@@ -170,7 +227,6 @@ function Soporte() {
 
   // Funciones para manejar los cambios en el select de errores y sistemas operativos
 
-
   const handleError = (e) => {
     const selectedErr = e.target.value;
     setErrorSeleccionado(selectedErr);
@@ -184,10 +240,10 @@ function Soporte() {
   };
 
   const handleAsignarTarea = (e) => {
-    const asignar = e.target.value
-    setAsignarTarea(asignar)
-    console.log(asignar)
-  }
+    const asignar = e.target.value;
+    setAsignarTarea(asignar);
+    console.log(asignar);
+  };
   const handleNavegador = (e) => {
     const selectedNavegador = e.target.value;
     setNavegador(selectedNavegador);
@@ -196,7 +252,7 @@ function Soporte() {
 
   const handleRutaError = (e) => {
     const ruta = e.target.value;
-    console.log(e.target.value)
+    console.log(e.target.value);
     setSelectedRutaError(ruta);
   };
 
@@ -210,15 +266,15 @@ function Soporte() {
     console.log(descripcionProblema);
     // Ajustar la altura del textarea
     if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto';
-      textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height =
+        textareaRef.current.scrollHeight + "px";
     }
   };
 
   const handleFileUpload = async () => {
-   
-    console.log("first")
-   /* 
+    console.log("first");
+    /* 
     const storage = getStorage(appSoporte);
     const randomId = Math.random().toString(36).substring(7);
     const imageName = `Ticket_${randomId}`;
@@ -230,23 +286,21 @@ function Soporte() {
     return getDownloadURL(storageRef); */
   };
   // Acá va toda la lógica
- 
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     const correoA = userData.correo;
-    const nombre = userData.nombre
+    const nombre = userData.nombre;
     const area = asignarTarea;
-    const uid = userData.uid
+    const uid = userData.uid;
     if (!foto) {
       console.error("No se ha seleccionado ninguna foto");
       return;
     }
 
- 
-  let res = prompt("¿Desea levantar el ticket? (SI/NO)");
-  if (res.toUpperCase() === "SI") {
-  try { 
- 
+    let res = prompt("¿Desea levantar el ticket? (SI/NO)");
+    if (res.toUpperCase() === "SI") {
+      try {
         const ticketResponse = await fetch(
           `http://localhost:3001/api/Ticket/${foto}/${uid}/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${encodeURIComponent(
             selectedRutaError
@@ -258,15 +312,15 @@ function Soporte() {
             },
             body: JSON.stringify({
               foto,
-              uid: uid, 
-              errorSeleccionado, 
-              sistemaOperativo, 
+              uid: uid,
+              errorSeleccionado,
+              sistemaOperativo,
               navegador,
-             selectedRutaError : encodeURIComponent(selectedRutaError),
+              selectedRutaError: encodeURIComponent(selectedRutaError),
               descripcionProblema,
               correoA,
-              nombre, 
-              area
+              nombre,
+              area,
             }),
           }
         );
@@ -283,18 +337,17 @@ function Soporte() {
         console.error("Error al enviar el formulario:", error);
       }
     } else {
-      alert("NO SE LEVANTARA SU TICKET")
+      alert("NO SE LEVANTARA SU TICKET");
     }
-
   };
   return (
     <div className="bodySoporte">
       <div className="containerSoporte">
-        <div className='containerPF'>
-          <h1 id='titulo_pf'>PREGUNTAS FRECUENTES 👀❓❓❓</h1>
+        <div className="containerPF">
+          <h1 id="titulo_pf">PREGUNTAS FRECUENTES 👀❓❓❓</h1>
           <div className="todas_las_pf">
-            <div className='container_preguntaFrecuente'>
-              <div className='pf'>
+            <div className="container_preguntaFrecuente">
+              <div className="pf">
                 <p>1.- ¿Cómo instalo la app móvil de Bachecito 26?</p>
                 <img src={obtenerImagen1()} alt="" onClick={toggleDetalle1} />
               </div>
@@ -302,19 +355,25 @@ function Soporte() {
                 <div className="descripcion_pf">
                   <p>
                     <br />
-                    Detalle de la respuesta a la pregunta frecuente 1.
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum aspernatur inventore optio cumque eius. Quisquam facilis quo possimus omnis veniam, provident odit architecto dolore, minima, placeat maiores alias sed recusandae.
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti suscipit labore quo molestiae quis illo sunt nulla cupiditate magni voluptatem eos aliquam impedit mollitia officia, minus distinctio ullam voluptates earum?
+                    Detalle de la respuesta a la pregunta frecuente 1. Lorem
+                    ipsum dolor sit amet consectetur, adipisicing elit. Harum
+                    aspernatur inventore optio cumque eius. Quisquam facilis quo
+                    possimus omnis veniam, provident odit architecto dolore,
+                    minima, placeat maiores alias sed recusandae. Lorem ipsum
+                    dolor sit, amet consectetur adipisicing elit. Deleniti
+                    suscipit labore quo molestiae quis illo sunt nulla
+                    cupiditate magni voluptatem eos aliquam impedit mollitia
+                    officia, minus distinctio ullam voluptates earum?
                     <br />
                   </p>
                 </div>
               )}
             </div>
-  
+
             <br />
-  
-            <div className='container_preguntaFrecuente'>
-              <div className='pf'>
+
+            <div className="container_preguntaFrecuente">
+              <div className="pf">
                 <p>2.- ¿Cómo desinstalo la app móvil de Bachecito 26?</p>
                 <img src={obtenerImagen2()} alt="" onClick={toggleDetalle2} />
               </div>
@@ -322,19 +381,25 @@ function Soporte() {
                 <div className="descripcion_pf">
                   <p>
                     <br />
-                    Detalle de la respuesta a la pregunta frecuente 2.
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum aspernatur inventore optio cumque eius. Quisquam facilis quo possimus omnis veniam, provident odit architecto dolore, minima, placeat maiores alias sed recusandae.
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti suscipit labore quo molestiae quis illo sunt nulla cupiditate magni voluptatem eos aliquam impedit mollitia officia, minus distinctio ullam voluptates earum?
+                    Detalle de la respuesta a la pregunta frecuente 2. Lorem
+                    ipsum dolor sit amet consectetur, adipisicing elit. Harum
+                    aspernatur inventore optio cumque eius. Quisquam facilis quo
+                    possimus omnis veniam, provident odit architecto dolore,
+                    minima, placeat maiores alias sed recusandae. Lorem ipsum
+                    dolor sit, amet consectetur adipisicing elit. Deleniti
+                    suscipit labore quo molestiae quis illo sunt nulla
+                    cupiditate magni voluptatem eos aliquam impedit mollitia
+                    officia, minus distinctio ullam voluptates earum?
                     <br />
                   </p>
                 </div>
               )}
             </div>
-  
+
             <br />
-  
-            <div className='container_preguntaFrecuente'>
-              <div className='pf'>
+
+            <div className="container_preguntaFrecuente">
+              <div className="pf">
                 <p>3.- ¿Cómo desinstalo la app móvil de Bachecito 26?</p>
                 <img src={obtenerImagen3()} alt="" onClick={toggleDetalle3} />
               </div>
@@ -342,19 +407,25 @@ function Soporte() {
                 <div className="descripcion_pf">
                   <p>
                     <br />
-                    Detalle de la respuesta a la pregunta frecuente 3.
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum aspernatur inventore optio cumque eius. Quisquam facilis quo possimus omnis veniam, provident odit architecto dolore, minima, placeat maiores alias sed recusandae.
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti suscipit labore quo molestiae quis illo sunt nulla cupiditate magni voluptatem eos aliquam impedit mollitia officia, minus distinctio ullam voluptates earum?
+                    Detalle de la respuesta a la pregunta frecuente 3. Lorem
+                    ipsum dolor sit amet consectetur, adipisicing elit. Harum
+                    aspernatur inventore optio cumque eius. Quisquam facilis quo
+                    possimus omnis veniam, provident odit architecto dolore,
+                    minima, placeat maiores alias sed recusandae. Lorem ipsum
+                    dolor sit, amet consectetur adipisicing elit. Deleniti
+                    suscipit labore quo molestiae quis illo sunt nulla
+                    cupiditate magni voluptatem eos aliquam impedit mollitia
+                    officia, minus distinctio ullam voluptates earum?
                     <br />
                   </p>
                 </div>
               )}
             </div>
-  
+
             <br />
-  
-            <div className='container_preguntaFrecuente'>
-              <div className='pf'>
+
+            <div className="container_preguntaFrecuente">
+              <div className="pf">
                 <p>4.- ¿Cómo desinstalo la app móvil de Bachecito 26?</p>
                 <img src={obtenerImagen4()} alt="" onClick={toggleDetalle4} />
               </div>
@@ -362,9 +433,15 @@ function Soporte() {
                 <div className="descripcion_pf">
                   <p>
                     <br />
-                    Detalle de la respuesta a la pregunta frecuente 4.
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum aspernatur inventore optio cumque eius. Quisquam facilis quo possimus omnis veniam, provident odit architecto dolore, minima, placeat maiores alias sed recusandae.
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti suscipit labore quo molestiae quis illo sunt nulla cupiditate magni voluptatem eos aliquam impedit mollitia officia, minus distinctio ullam voluptates earum?
+                    Detalle de la respuesta a la pregunta frecuente 4. Lorem
+                    ipsum dolor sit amet consectetur, adipisicing elit. Harum
+                    aspernatur inventore optio cumque eius. Quisquam facilis quo
+                    possimus omnis veniam, provident odit architecto dolore,
+                    minima, placeat maiores alias sed recusandae. Lorem ipsum
+                    dolor sit, amet consectetur adipisicing elit. Deleniti
+                    suscipit labore quo molestiae quis illo sunt nulla
+                    cupiditate magni voluptatem eos aliquam impedit mollitia
+                    officia, minus distinctio ullam voluptates earum?
                     <br />
                   </p>
                 </div>
@@ -372,13 +449,13 @@ function Soporte() {
             </div>
           </div>
         </div>
-  
-        <div className='container_FormularioSoporte'>
-          <div className='containerFR'>
+
+        <div className="container_FormularioSoporte">
+          <div className="containerFR">
             <br />
-  
-            <h2 id='titulo_sp'>Formulario de Soporte Técnico 👷</h2>
-  
+
+            <h2 id="titulo_sp">Formulario de Soporte Técnico 👷</h2>
+
             <form onSubmit={handleSubmit}>
               <label>Seleccione el error:</label>
               <select value={errorSeleccionado} onChange={handleError}>
@@ -422,7 +499,7 @@ function Soporte() {
               <br />
               <br />
               <br />
-  
+
               <label>Seleccione su navegador: </label>
               <select value={navegador} onChange={handleNavegador}>
                 <option value="">Seleccionar</option>
@@ -435,13 +512,13 @@ function Soporte() {
               <br />
               <br />
               <br />
-  
+
               <label>Adjuntar fotografía del problema: </label>
               <input type="file" accept="image/*" onChange={handleFileChange} />
               <br />
               <br />
               <br />
-  
+
               <label>Descripción del problema: </label>
               <textarea
                 value={descripcionProblema}
@@ -452,21 +529,58 @@ function Soporte() {
               <br />
               <br />
               <br />
-  
+
               <button type="submit" id="submit">
                 Enviar
               </button>
             </form>
+
+          
           </div>
+         
         </div>
+        <br /> <br />
+          <div className="">
+              <table>
+                <thead>
+                  <tr className="sticky-top">
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Area Encargada</th>
+                    <th>Descripcion del Problema</th>
+                    <th>Estado del Ticket</th>
+                    <th>Fecha De Envio</th>
+                    <th>Fecha De Resolución</th>
+                    <th>Folio</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                {ticket.map((ticket, index) => (
+                  <tr key={index}>
+                    <td>{ticket.nombre}</td>
+                    <td>{ticket.correoA}</td>
+                    <td>{ticket.area}</td>
+                    <td>{ticket.descripcionProblema}</td>
+                    <td>{ticket.estado}</td>
+                    <td>{formatTimestamp(ticket.fechaDeEnvio)}</td>
+                    <td>{formatTimestamp(ticket.fechaResuelto)}</td>
+                    <td>{ticket.folio}</td>
+                    <td><button onClick={()=> handleDetalles}>Detalles</button></td>
+                  </tr>
+                ))}
+                </tbody>
+             
+              </table>
+            </div>
       </div>
     </div>
   );
 }
 export default Soporte;
 
-
-              {/*
+{
+  /*
               <form onSubmit={handleSubmit}>
 
                 
@@ -567,4 +681,5 @@ export default Soporte;
                 <button type="submit" id="submit">Enviar</button>
 
               </form>
-              */}
+              */
+}
