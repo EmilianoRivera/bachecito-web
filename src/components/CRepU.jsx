@@ -36,15 +36,15 @@ function CRep() {
     </div>
     <div className="estados">
       <div className="in-red">
-        <div className="red"><span class="tooltip">Sin atender</span></div>
+        <div className="red"><span className="tooltip">Sin atender</span></div>
         <div className="cont-reportes">  {repEstado.sinAtender}  </div>
       </div>
       <div className="in-yellow">
-        <div className="yellow"><span class="tooltip">En atención</span></div>
+        <div className="yellow"><span className="tooltip">En atención</span></div>
         <div className="cont-reportes">  {repEstado.enAtencion} </div>
       </div>
       <div className="in-green">
-        <div className="green"><span class="tooltip">Atendido</span></div>
+        <div className="green"><span className="tooltip">Atendido</span></div>
         <div className="cont-reportes">  {repEstado.atendido} </div>
       </div>
     </div>

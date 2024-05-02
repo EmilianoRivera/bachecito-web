@@ -142,37 +142,6 @@ function Navbar() {
                 </Link>
               </>
             ) : (
-              <>
-                {isDev ? (
-                  <>
-                  <Link
-                      href="/Cuenta/Desarrolladores"
-                      className="opc"
-                    >
-                      Desarrolladores
-                    </Link>
-                    <Link
-                      href="/Cuenta/Desarrolladores/NuevoDev"
-                      className="opc"
-                    >
-                      Nuevo Desarrollador
-                    </Link>
-                    <Link
-                      href="/Cuenta/Desarrolladores/Tickets"
-                      className="opc"
-                    >
-                      Tickets
-                    </Link>
-                    <Link href="#" className="opc-admin"> 
-                      <img
-                        src="https://i.postimg.cc/qRJSHq08/salida-2.png"
-                        alt="salir"
-                        onClick={CerrarSesion}
-                      />
-                      <span className="hover-text">Salir</span>
-                    </Link>
-                  </>
-                ) : (
                   <>
                     <Link
                       href="/Cuenta/Usuario/Perfil"
@@ -193,8 +162,6 @@ function Navbar() {
                 )}
               </>
             )}
-          </>
-        )}
         {!isLogged && (
           <>
             <Link href="/Sobre_Nosotros" className="opc">
