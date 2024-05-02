@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import RutaProtegida from "@/components/RutaProtegida";
 import "./Soporte.css";
 
@@ -43,7 +43,6 @@ function Soporte() {
   const obtenerImagen4 = () => {
     return mostrarDetalle4 ? 'https://i.postimg.cc/wB2S0JqV/triangulo-1.png' : 'https://i.postimg.cc/Z5XxTn6Y/triangulo.png';
   };
-
 
 
   // Catálogo de errores
@@ -99,6 +98,7 @@ function Soporte() {
   const [rutaError, setRutaError] = useState('');
   const [foto, setFoto] = useState('');
   const [descripcionProblema, setDescripcionProblema] = useState('');
+  const textareaRef = useRef(null);
 
   // Obtener fecha actual al cargar el componente
   /*
@@ -153,6 +153,11 @@ function Soporte() {
   const handleDescripcionProblema = (e) => {
     setDescripcionProblema(e.target.value);
     console.log(descripcionProblema);
+    // Ajustar la altura del textarea
+    if (textareaRef.current) {
+      textareaRef.current.style.height = 'auto';
+      textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
+    }
   };
 
   const handleFileUpload = async () => {
@@ -215,90 +220,93 @@ function Soporte() {
         <div className="containerSoporte">
           <div className='containerPF'>
             <h1 id='titulo_pf'>PREGUNTAS FRECUENTES 👀❓❓❓</h1>
-
-            <div className='container_preguntaFrecuente'>
-              <div className='pf'>
-                <p>1.- ¿Cómo instalo la app móvil de Bachecito 26?</p>
-                <img src={obtenerImagen1()} alt="" onClick={toggleDetalle1} />
-              </div>
-              {mostrarDetalle1 && (
-                <div className="descripcion_pf">
-                  <p>
-                    <br />
-                    Detalle de la respuesta a la pregunta frecuente 1.
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum aspernatur inventore optio cumque eius. Quisquam facilis quo possimus omnis veniam, provident odit architecto dolore, minima, placeat maiores alias sed recusandae.
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti suscipit labore quo molestiae quis illo sunt nulla cupiditate magni voluptatem eos aliquam impedit mollitia officia, minus distinctio ullam voluptates earum?
-                    <br />
-                  </p>
+            <div className="todas_las_pf">
+              <div className='container_preguntaFrecuente'>
+                <div className='pf'>
+                  <p>1.- ¿Cómo instalo la app móvil de Bachecito 26?</p>
+                  <img src={obtenerImagen1()} alt="" onClick={toggleDetalle1} />
                 </div>
-              )}
+                {mostrarDetalle1 && (
+                  <div className="descripcion_pf">
+                    <p>
+                      <br />
+                      Detalle de la respuesta a la pregunta frecuente 1.
+                      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum aspernatur inventore optio cumque eius. Quisquam facilis quo possimus omnis veniam, provident odit architecto dolore, minima, placeat maiores alias sed recusandae.
+                      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti suscipit labore quo molestiae quis illo sunt nulla cupiditate magni voluptatem eos aliquam impedit mollitia officia, minus distinctio ullam voluptates earum?
+                      <br />
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              <br />
+
+              <div className='container_preguntaFrecuente'>
+                <div className='pf'>
+                  <p>2.- ¿Cómo desinstalo la app móvil de Bachecito 26?</p>
+                  <img src={obtenerImagen2()} alt="" onClick={toggleDetalle2} />
+                </div>
+                {mostrarDetalle2 && (
+                  <div className="descripcion_pf">
+                    <p>
+                      <br />
+                      Detalle de la respuesta a la pregunta frecuente 2.
+                      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum aspernatur inventore optio cumque eius. Quisquam facilis quo possimus omnis veniam, provident odit architecto dolore, minima, placeat maiores alias sed recusandae.
+                      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti suscipit labore quo molestiae quis illo sunt nulla cupiditate magni voluptatem eos aliquam impedit mollitia officia, minus distinctio ullam voluptates earum?
+                      <br />
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              <br />
+
+              <div className='container_preguntaFrecuente'>
+                <div className='pf'>
+                  <p>2.- ¿Cómo desinstalo la app móvil de Bachecito 26?</p>
+                  <img src={obtenerImagen3()} alt="" onClick={toggleDetalle3} />
+                </div>
+                {mostrarDetalle3 && (
+                  <div className="descripcion_pf">
+                    <p>
+                      <br />
+                      Detalle de la respuesta a la pregunta frecuente 2.
+                      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum aspernatur inventore optio cumque eius. Quisquam facilis quo possimus omnis veniam, provident odit architecto dolore, minima, placeat maiores alias sed recusandae.
+                      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti suscipit labore quo molestiae quis illo sunt nulla cupiditate magni voluptatem eos aliquam impedit mollitia officia, minus distinctio ullam voluptates earum?
+                      <br />
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              <br />
+
+              <div className='container_preguntaFrecuente'>
+                <div className='pf'>
+                  <p>2.- ¿Cómo desinstalo la app móvil de Bachecito 26?</p>
+                  <img src={obtenerImagen4()} alt="" onClick={toggleDetalle4} />
+                </div>
+                {mostrarDetalle4 && (
+                  <div className="descripcion_pf">
+                    <p>
+                      <br />
+                      Detalle de la respuesta a la pregunta frecuente 2.
+                      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum aspernatur inventore optio cumque eius. Quisquam facilis quo possimus omnis veniam, provident odit architecto dolore, minima, placeat maiores alias sed recusandae.
+                      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti suscipit labore quo molestiae quis illo sunt nulla cupiditate magni voluptatem eos aliquam impedit mollitia officia, minus distinctio ullam voluptates earum?
+                      <br />
+                    </p>
+                  </div>
+                )}
+              </div>
             </div>
 
-            <br />
-
-            <div className='container_preguntaFrecuente'>
-              <div className='pf'>
-                <p>2.- ¿Cómo desinstalo la app móvil de Bachecito 26?</p>
-                <img src={obtenerImagen2()} alt="" onClick={toggleDetalle2} />
-              </div>
-              {mostrarDetalle2 && (
-                <div className="descripcion_pf">
-                  <p>
-                    <br />
-                    Detalle de la respuesta a la pregunta frecuente 2.
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum aspernatur inventore optio cumque eius. Quisquam facilis quo possimus omnis veniam, provident odit architecto dolore, minima, placeat maiores alias sed recusandae.
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti suscipit labore quo molestiae quis illo sunt nulla cupiditate magni voluptatem eos aliquam impedit mollitia officia, minus distinctio ullam voluptates earum?
-                    <br />
-                  </p>
-                </div>
-              )}
-            </div>
-
-            <br />
-
-            <div className='container_preguntaFrecuente'>
-              <div className='pf'>
-                <p>2.- ¿Cómo desinstalo la app móvil de Bachecito 26?</p>
-                <img src={obtenerImagen3()} alt="" onClick={toggleDetalle3} />
-              </div>
-              {mostrarDetalle3 && (
-                <div className="descripcion_pf">
-                  <p>
-                    <br />
-                    Detalle de la respuesta a la pregunta frecuente 2.
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum aspernatur inventore optio cumque eius. Quisquam facilis quo possimus omnis veniam, provident odit architecto dolore, minima, placeat maiores alias sed recusandae.
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti suscipit labore quo molestiae quis illo sunt nulla cupiditate magni voluptatem eos aliquam impedit mollitia officia, minus distinctio ullam voluptates earum?
-                    <br />
-                  </p>
-                </div>
-              )}
-            </div>
-
-            <br />
-
-            <div className='container_preguntaFrecuente'>
-              <div className='pf'>
-                <p>2.- ¿Cómo desinstalo la app móvil de Bachecito 26?</p>
-                <img src={obtenerImagen4()} alt="" onClick={toggleDetalle4} />
-              </div>
-              {mostrarDetalle4 && (
-                <div className="descripcion_pf">
-                  <p>
-                    <br />
-                    Detalle de la respuesta a la pregunta frecuente 2.
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum aspernatur inventore optio cumque eius. Quisquam facilis quo possimus omnis veniam, provident odit architecto dolore, minima, placeat maiores alias sed recusandae.
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti suscipit labore quo molestiae quis illo sunt nulla cupiditate magni voluptatem eos aliquam impedit mollitia officia, minus distinctio ullam voluptates earum?
-                    <br />
-                  </p>
-                </div>
-              )}
-            </div>
           </div>
 
           <div className='container_FormularioSoporte'>
             <div className='containerFR'>
-              <br /><br /><br /><br />
-              <h2>Hola este es un formulario para el soporte :D</h2>
+              <br />
+
+              <h2 id='titulo_sp'>Formulario de Soporte Técnico 👷</h2>
 
               <form onSubmit={handleSubmit}>
 
@@ -314,43 +322,56 @@ function Soporte() {
                 <br />
               */}
 
-                <label>Seleccione el error:</label>
-                <select value={errorSeleccionado} onChange={handleError}>
-                  <option value="">Seleccionar</option>
-                  {catalogoErrores.map((error, index) => (
-                    <option key={index} value={error.nombre}>
-                      {`${error.nombre}`}
-                    </option>
-                  ))}
-                </select>
+                <label>Seleccione el error ❌:</label>
+                <br />
+                <div className='select'>
+                  <select value={errorSeleccionado} onChange={handleError}>
+                    <option value="">Seleccionar</option>
+                    {catalogoErrores.map((error, index) => (
+                      <option key={index} value={error.nombre}>
+                        {`${error.nombre}`}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
                 <br /><br /><br />
 
-                <label>Seleccione su sistema operativo: </label>
-                <select value={sistemaOperativo} onChange={handleSO}>
-                  <option value="">Seleccionar</option>
-                  {catalogoSistemaOperativo.map((sistema, index) => (
-                    <option key={index} value={sistema}>
-                      {`${sistema}`}
-                    </option>
-                  ))}
-                </select>
+                <label>Seleccione su sistema operativo 🖥️: </label>
+                <br />
+                <div className='select'>
+                  <select value={sistemaOperativo} onChange={handleSO}>
+                    <option value="">Seleccionar</option>
+                    {catalogoSistemaOperativo.map((sistema, index) => (
+                      <option key={index} value={sistema}>
+                        {`${sistema}`}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
                 <br /><br /><br />
 
-                <label>Seleccione su navegador: </label>
-                <select
-                  value={navegador}
-                  onChange={handleNavegador}
-                >
-                  <option value="">Seleccionar</option>
-                  {catalogoNavegadores.map((navegador, index) => (
-                    <option key={index} value={navegador}>
-                      {`${navegador}`}
-                    </option>
-                  ))}
-                </select>
+                <label>Seleccione su navegador 🌎: </label>
+                <br />
+                <div className='select'>
+                  <select
+                    value={navegador}
+                    onChange={handleNavegador}
+                  >
+                    <option value="">Seleccionar</option>
+                    {catalogoNavegadores.map((navegador, index) => (
+                      <option key={index} value={navegador}>
+                        {`${navegador}`}
+                      </option>
+                    ))}
+                  </select>
+                </div>
+
                 <br /><br /><br />
 
-                <label>Ruta donde se encontró el error: </label>
+                <label>Ruta donde se encontró el error 🔍: </label>
+                <br />
                 <input
                   type="text"
                   value={rutaError}
@@ -358,26 +379,36 @@ function Soporte() {
                 />
                 <br /><br /><br />
 
-                <label>Adjuntar fotografía del problema: </label>
+                <label>Adjuntar fotografía del problema 📸: </label>
+                <br />
                 <input
                   type="file"
                   accept="image/*"
                   onChange={handleFoto}
                 />
+                
                 <br /><br /><br />
 
-                <label>Descripción del problema: </label>
-                <textarea
-                  value={descripcionProblema}
-                  onChange={handleDescripcionProblema}
-                  rows="4"
-                  cols="50"
-                />
+                <div className="wrapper">
+                  <label>Descripción del problema 📝: </label>
+                  <br />
+                  <textarea
+                    ref={textareaRef}
+                    value={descripcionProblema}
+                    onChange={handleDescripcionProblema}
+                    rows="1" // Esto evita que el textarea se ajuste automáticamente en altura
+                    cols="50"
+                    placeholder="Se encontró un error en..."
+                    style={{ resize: 'none' }} // Esto evita que el usuario pueda ajustar manualmente el tamaño del textarea
+                  />
+                </div>
+
                 <br /><br /><br />
 
                 <button type="submit" id="submit">Enviar</button>
 
               </form>
+              <br /><br />
             </div>
           </div>
         </div>
