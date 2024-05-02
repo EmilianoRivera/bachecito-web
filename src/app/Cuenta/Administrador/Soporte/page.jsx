@@ -174,32 +174,32 @@ function Soporte() {
       return;
     }
 
-    const formData = new FormData();
-    formData.append("file", foto);
-    formData.append("uid", uid);
-    formData.append("errorSeleccionado", errorSeleccionado);
-    formData.append("sistemaOperativo", sistemaOperativo);
-    formData.append("navegador", navegador);
-    formData.append("selectedRutaError", encodeURIComponent(selectedRutaError));
-    formData.append("descripcionProblema", descripcionProblema);
-    formData.append("correoA", correoA);
-    formData.append("nombre", nombre);
-    formData.append("area", area);
-
+ 
   let res = prompt("¿Desea levantar el ticket? (SI/NO)");
   if (res.toUpperCase() === "SI") {
   try { 
-
-        const ticketResponse = await fetch(
-          `http://localhost:3001/api/Ticket/${userData.nombre}/${uid}/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${encodeURIComponent(
+/* 
+/${foto}/${uid}/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${encodeURIComponent(
             selectedRutaError
-          )}/${descripcionProblema}/${correoA}/${nombre}/${area}`,
+          )}/${descripcionProblema}/${correoA}/${nombre}/${area} */
+        const ticketResponse = await fetch(
+          `http://localhost:3001/api/Ticket`,
           {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: formData,
+            body: JSON.stringify({
+              foto,
+              uid, 
+              errorSeleccionado, 
+              sistemaOperativo, 
+             selectedRutaError : encodeURIComponent(selectedRutaError),
+              descripcionProblema,
+              correoA,
+              nombre, 
+              area
+            }),
           }
         );
 
@@ -264,8 +264,8 @@ function Soporte() {
           <label>Carácter de error</label>
           <select value={asignarTarea} onChange={handleAsignarTarea}>
            <option >Escoger carácter de error</option>
-           <option value="backend">Funcionalidad</option>
-           <option value="frontend">Diseño</option>
+           <option value="Backend">Funcionalidad</option>
+           <option value="Frontend">Diseño</option>
           </select>
           <label>Seleccione su sistema operativo: </label>
           <select value={sistemaOperativo} onChange={handleSO}>
