@@ -6,7 +6,6 @@ import { useAuthUser } from "../../../../../hooks/UseAuthUser";
 import { auth, db } from "../../../../../firebase";
 import { useRouter } from "next/navigation";
 import AuthContext from "../../../../../context/AuthContext";
-import "./Reportes.css";
 import "./Soporte.css";
 
 function Soporte() {
@@ -35,6 +34,8 @@ function Soporte() {
   const [mostrarDetalle3, setMostrarDetalle3] = useState(false);
   const [mostrarDetalle4, setMostrarDetalle4] = useState(false);
   const [ticket, setTickets] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [ticketEncontrado, setTicketEncontrado] = useState([]);
 
   const toggleDetalle1 = () => {
     setMostrarDetalle1(!mostrarDetalle1);
@@ -205,28 +206,21 @@ function Soporte() {
       }
   }
 
-  const handleDetalles = () => {
-    alert("HO")
+  const openModal = (folio) => {
+ 
+    const ticketEncontrados = ticket.find(ticket => ticket.folio === folio);
+    if (ticketEncontrados) { 
+      console.log("Ticket encontrado:", ticketEncontrados);
+      setTicketEncontrado(ticketEncontrados)
+    } else {
+      console.log("No se encontró ningún ticket con el folio:", folio);
+    }
+    setShowModal(true);
   }
-
-  // Obtener fecha actual al cargar el componente
-  /*
-  useEffect(() => {
-    const obtenerFechaActual = () => {
-      const fechaActual = new Date();
-      const dia = fechaActual.getDate();
-      const mes = fechaActual.getMonth() + 1;
-      const año = fechaActual.getFullYear();
-      const fechaFormateada = `${dia < 10 ? '0' + dia : dia}/${mes < 10 ? '0' + mes : mes}/${año}`;
-      setFecha(fechaFormateada);
-    };
-
-    obtenerFechaActual();
-  }, []);
-  */
-
-  // Funciones para manejar los cambios en el select de errores y sistemas operativos
-
+  const closeModal = () => {
+    setShowModal(false);
+  };
+  
   const handleError = (e) => {
     const selectedErr = e.target.value;
     setErrorSeleccionado(selectedErr);
@@ -551,7 +545,6 @@ function Soporte() {
                     <th>Estado del Ticket</th>
                     <th>Fecha De Envio</th>
                     <th>Fecha De Resolución</th>
-                    <th>Folio</th>
 
                   </tr>
                 </thead>
@@ -565,13 +558,35 @@ function Soporte() {
                     <td>{ticket.estado}</td>
                     <td>{formatTimestamp(ticket.fechaDeEnvio)}</td>
                     <td>{formatTimestamp(ticket.fechaResuelto)}</td>
-                    <td>{ticket.folio}</td>
-                    <td><button onClick={()=> handleDetalles}>Detalles</button></td>
+                    <td><button onClick={() => openModal(ticket.folio)}>Detalles</button></td>
+  
                   </tr>
                 ))}
                 </tbody>
              
               </table>
+              {showModal && (
+                 <div className="modal">
+                 <div className="modal-content">
+                   <span className="close" onClick={closeModal}>
+                     &times;
+                   </span>
+                   <p>Detalles del ticket</p>
+       <p><button onClick = {closeModal}>Cerrar</button></p>
+                    <p>Prioridad: {ticketEncontrado.priori}</p>
+                    <p>Estado: {ticketEncontrado.estado}</p>
+                   <p>Fecha Asignado: {formatTimestamp(ticketEncontrado.fechaAsignado)}</p>
+                   <p>Fecha De Envio: {formatTimestamp(ticketEncontrado.fechaDeEnvio)}</p>
+                   <p>Fecha De Resuelto: {formatTimestamp(ticketEncontrado.fechaResuleto)}</p>
+                   <p>Folio: {ticketEncontrado.folio}</p>
+                   <p>Area: {ticketEncontrado.area}</p>
+                   <p>Navegador: {ticketEncontrado.navegador}</p>
+                   <p>Sistema Operativo: {ticketEncontrado.sistemaOperativo}</p>
+                   <p>Tipo de error: {ticketEncontrado.errorSeleccionado}</p>
+                   <p>Ruta: {ticketEncontrado.rutitaD}</p>
+                 </div>
+               </div>
+              )}
             </div>
       </div>
     </div>
