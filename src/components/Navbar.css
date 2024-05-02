@@ -290,6 +290,8 @@
     display: flex;
     justify-content: center;
     align-items: center;
+    font-family: 'Nunito', sans-serif;
+    color: #6F6F6F;
   }
 
   .confirmation-contenido{
