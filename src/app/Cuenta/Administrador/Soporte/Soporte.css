@@ -1,48 +1,56 @@
 @import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Baloo+Thambi+2:wght@400..800&family=Nunito:ital,wght@0,200..1000;1,200..1000&display =intercambiar');
 
-.bodySoporte{
+.bodySoporte {
     padding: 0;
     margin: 0;
 }
 
-.containerSoporte{
+.containerSoporte {
     margin-top: 7%;
-    margin-left: 5%;
+    text-align: center;
+    position: relative;
 }
 
-.containerPF{
+.containerPF {
     position: relative;
-    z-index: 100;
+    z-index: 1000000;
     font-family: "Baloo Thambi 2", system-ui;
     width: 95%;
+    margin: 0 auto;
+    /* Centra horizontalmente */
 }
 
-.containerPF #titulo_pf{
+
+.containerPF #titulo_pf {
     color: #FF9F49;
 }
 
-.containerPF .container_preguntaFrecuente{
-    justify-content: space-between; /* Ajustar el espacio entre los elementos */
+.containerPF .container_preguntaFrecuente {
+    justify-content: space-between;
+    /* Ajustar el espacio entre los elementos */
     width: 60%;
     background-color: #F1F1F1;
     border-radius: 15px;
     align-items: center;
+    margin: 0 auto;
 }
 
-.containerPF .container_preguntaFrecuente .pf{
+.containerPF .container_preguntaFrecuente .pf {
     display: flex;
-    justify-content: space-between; /* Ajustar el espacio entre los elementos */
+    justify-content: space-between;
+    /* Ajustar el espacio entre los elementos */
 
 }
 
-.containerPF .container_preguntaFrecuente .pf p{
+.containerPF .container_preguntaFrecuente .pf p {
     margin-left: 5%;
     align-self: flex-start;
     height: 100%;
+    color: #1E1E1E;
 }
 
-.containerPF .container_preguntaFrecuente .pf img{
+.containerPF .container_preguntaFrecuente .pf img {
     height: 100%;
     width: 3%;
     margin-right: 20px;
@@ -50,7 +58,7 @@
     margin-top: 2.5%;
 }
 
-.descripcion_pf{
+.descripcion_pf {
     width: 100%;
     height: 100%;
     border-radius: 15px;
@@ -58,9 +66,204 @@
     padding-bottom: 8px;
 }
 
-.descripcion_pf p{
+.descripcion_pf p {
     text-align: justify;
     margin-left: 5%;
     margin-right: 5%;
+    color: #1E1E1E;
 }
+
+.container_FormularioSoporte {
+    background-color: #F1F1F1;
+    border-radius: 15px;
+    width: 60%;
+    margin-top: 5%;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5%;
+    margin: 0 auto;
+    /* Centra horizontalmente */
+    position: relative;
+}
+
+.container_FormularioSoporte .containerFR form {
+    z-index: 100;
+    position: relative;
+}
+
+.container_FormularioSoporte {
+    background-color: #F1F1F1;
+    border-radius: 15px;
+    width: 60%;
+    margin-top: 5%;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5%;
+}
+
+.container_FormularioSoporte .containerFR {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.container_FormularioSoporte .containerFR #titulo_sp {
+    color: #FF9F49;
+    font-family: "Baloo Thambi 2", system-ui;
+
+}
+
+.container_FormularioSoporte .containerFR form label {
+    color: #6F6F6F;
+    font-family: "Baloo Thambi 2", system-ui;
+    font-size: 18px;
+}
+
+.container_FormularioSoporte .containerFR form select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    outline: 0;
+    box-shadow: none;
+    border: 0 !important;
+    background: #D1D1D1;
+    background-image: none;
+    flex: 1;
+    padding: 0 .5em;
+    color: #1E1E1E;
+    cursor: pointer;
+    font-size: 1em;
+    font-family: "Baloo Thambi 2", system-ui;
+}
+
+select::-ms-expand {
+    display: none;
+}
+
+.select {
+    position: relative;
+    display: flex;
+    width: 18.5em;
+    height: 2.8em;
+    line-height: 3;
+    background: #949494;
+    overflow: hidden;
+    border-radius: .25em;
+    margin: 0 auto;
+    color: #3C3C3C;
+}
+
+.select::after {
+    content: '\25BC';
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0 1em;
+    background: #AAAAAA;
+    cursor: pointer;
+    pointer-events: none;
+    transition: .25s all ease;
+}
+
+.select:hover::after {
+    color: #1E1E1E;
+}
+
+.container_FormularioSoporte .containerFR input {
+    background-color: #FFF;
+    border: none;
+    margin: 8px 0;
+    padding: 10px;
+    font-size: 13px;
+    border-radius: 8px;
+    width: 35%;
+    outline: auto;
+    outline-color: #FFF;
+    color: #949494;
+    transition: outline 0.5s ease;
+    font-family: "Baloo Thambi 2", system-ui;
+}
+
+.container_FormularioSoporte .containerFR input:hover {
+    /* Cambia el color del texto al pasar el mouse */
+    outline-color: #FF9F49;
+    border-color: #ff9f49;
+    /* Agrega un borde naranja al pasar el mouse */
+}
+
+.container_FormularioSoporte .containerFR input::placeholder {
+    color: #949494;
+    /* Color del placeholder predeterminado */
+    transition: color 0.5s ease;
+    /* Transición suave */
+}
+
+.container_FormularioSoporte .containerFR input:hover::placeholder {
+    color: #ff9f49;
+    /* Cambia el color del placeholder al pasar el mouse */
+}
+
+.container_FormularioSoporte .containerFR .wrapper{
+    border-radius: 5px;
+}
+
+.container_FormularioSoporte .containerFR .wrapper textarea {
+    background-color: #FFFFFF;
+    color: #949494;
+    outline: auto;
+    outline-color: #FFF;
+    padding: 1em;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    outline: none;
+    font-family: "Baloo Thambi 2", system-ui;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 1.4;
+    width: 35%;
+    height: 2%;
+    transition: all 0.2s;
+}
+
+.container_FormularioSoporte .containerFR .wrapper textarea:hover {
+    cursor: pointer;
+    background-color: #FFFFFF;
+    outline-color: #FF9F49;
+
+}
+
+.container_FormularioSoporte .containerFR .wrapper textarea:focus {
+    cursor: text;
+    color: #6F6F6F;
+    font-family: "Baloo Thambi 2", system-ui;
+    background-color: #FFFFFF;
+    border-color: #FF9F49;
+}
+
+.container_FormularioSoporte .containerFR .wrapper textarea::placeholder{
+    color: #D1D1D1;
+}
+
+.container_FormularioSoporte .containerFR form button {
+    background-color: #6F6F6F;
+    color: #fff;
+    font-size: 15px;
+    font-family: "Baloo Thambi 2", system-ui;
+    padding: 7.5px 45px;
+    border: 1px solid transparent;
+    border-radius: 15px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: .5s;
+}
+
+
+.container_FormularioSoporte .containerFR form button:hover{
+    background-color: #FF9F49;
+    color: #fff;
+}
+
+
 

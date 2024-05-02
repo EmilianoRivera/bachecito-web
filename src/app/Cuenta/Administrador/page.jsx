@@ -3,6 +3,8 @@ import React, { useState, useEffect, useRef } from "react";
 import anime from 'animejs';
 import { auth, db } from "../../../../firebase";
 import { useRouter } from "next/navigation";
+import Preloader from "@/components/preloader1";
+
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
@@ -18,7 +20,7 @@ function Administrador() {
   
       const emailInput = document.querySelector('#correo');
       const passwordInput = document.querySelector('#contraseña');
-      const submitButton = document.querySelector('#iniciarSesion-btn');
+      const submitButton = document.querySelector('#iniciarSesion-btn-admin');
       const pathElement = document.querySelector('path');
   
       const createAnimation = (offsetValue, dashArrayValue) => {
@@ -59,11 +61,13 @@ function Administrador() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
 
   const handleSignIn = async (event) => {
     event.preventDefault();
     try {
+      setLoading(true); // Muestra el preloader
       const userCredential = await signInWithEmailAndPassword(
         auth,
         
@@ -123,12 +127,15 @@ function Administrador() {
       }
     } catch (error) {
       console.error(error.message);
+    } finally {
+      setLoading(false); // Oculta el preloader una vez completada la operación
     }
   };
 
     return (
-      <div className="page">
-        <div className="container">
+      <div className="page-adminLogin">
+        {loading && <Preloader />}
+        <div className="container-adminLogin">
           <div className="left">
             <div className="login">¡Hola!<p className='emoji'>👋</p></div>
             <div className="eula">Bienvenido administrador, asegurate de hacer buen uso de tu cuenta ¡gracias por tu labor!</div>
@@ -145,11 +152,11 @@ function Administrador() {
             </svg>
 
             <form className='centered' onSubmit={handleSignIn}>
-                <label >Correo</label>
-                <input type="text"  value={email}  onChange={(e) => setEmail(e.target.value)} id="correo" />
-                <label >Contraseña</label>
-                <input type="text"  value={password}  onChange={(e) => setPassword(e.target.value)}  id="contraseña" />
-                <button type="submit" id="iniciarSesion-btn">Iniciar Sesión</button>
+                <label className="label-admin">Correo</label>
+                <input className="input-admin" type="text"  value={email}  onChange={(e) => setEmail(e.target.value)} id="correo" />
+                <label className="label-admin">Contraseña</label>
+                <input className="input-admin" type="text"  value={password}  onChange={(e) => setPassword(e.target.value)}  id="contraseña" />
+                <button type="submit" id="iniciarSesion-btn-admin">Iniciar Sesión</button>
             </form>
           </div>
         </div>
