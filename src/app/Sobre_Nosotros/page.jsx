@@ -65,9 +65,9 @@ function SobreNosotros() {
 
   return (
 
-    <div className='body'>
+    <div className='bodySobreNosotros'>
   
-      <section id="hero" class="container flex-row">
+      <section id="hero" class="containerSobreNosotros flex-row">
         <div class="hero__content">
           <h1 class="title">
             Acerca de Bachecito 26
@@ -85,7 +85,7 @@ function SobreNosotros() {
    
 
  
-    <section id="about"class="container flex-center flex-column">
+    <section id="about"class="containerSobreNosotros flex-center flex-column">
       <h5 class="section-subheading">Bachecito 26</h5>
       <h2 class="section-heading text-center">
         ¡Adiós baches! ¡Hola Bachecito 26!
@@ -229,7 +229,7 @@ function SobreNosotros() {
     <section 
       id="services" 
       >
-      <div class="container">
+      <div class="containerSobreNosotros">
         <h5 class="section-subheading">¿Qué hace</h5>
         <h2 class="section-heading right">BACHECITO 26?
         </h2>

@@ -2,18 +2,31 @@
 @import url('https://fonts.googleapis.com/css2?family=Baloo+Thambi+2:wght@400..800&family=Nunito:ital,wght@0,200..1000;1,200..1000&display =intercambiar');
 
 .body{
-    background-color: #FFFFFF;
+    background-color: var(--background-color);
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 85vh;
+    margin-top: 10vh;
     align-items: center;
     justify-content: center;
+}
+
+.body2{
+    background-color: var(--background-color);
+    display: flex;
+    flex-direction: column;
+    height: 90vh;
+    top: 10vh;
+    align-items: center;
+    justify-content: center;
+    overflow-y: none;
+    overflow-x: hidden;
 }
 
 @media screen and (min-width: 1025px) {
 
 .container-registroUs{
-    background-color: #F1F1F1;
+    background-color: var(--background-color-2) !important;
     border-radius: 30px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
     align-items: center;
@@ -27,7 +40,7 @@
 }
 
 .container-registroUs .title{
-    color: #6F6F6F;
+    color: var(--text-color);
     font-size: 20px;
     text-align: center;
     font-family: "Nunito", sans-serif;
@@ -66,20 +79,20 @@
 }
 
 .container-registroUs a{
-    color: #333;
+    color: var(--text-color);
     font-size: 13px;
     text-decoration: none;
-    margin: 15px 0 10px;
+    margin: 5%;
 }
 
 .container-registroUs #olvi-contra{
-    color: #525252;
+    color: var(--text-color);
     font-size: 13px;
     text-decoration: none;
     margin: 15px 0 10px;
     position: absolute; 
     left: 10%;
-    top: 58.5%;
+    top: 55.5%;
 }
 
 .container-registroUs #olvi-contra:hover{
@@ -88,7 +101,13 @@
 
 }
 
-.container-registroUs button{
+.container-registroUs #admin-ini{
+    margin-top: 60%;
+    margin-left: 0;
+    margin-top: 10px;
+}
+
+.container-registroUs button, .alerta-logueado button{
     background-color: #ff9f49;
     color: #fff;
     font-size: 12px;
@@ -142,7 +161,7 @@
 }
 
 .container-registroUs form{
-    background-color: #F1F1F1;
+    background-color: var(--background-color-2);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -156,7 +175,7 @@
 }
 
 .container-registroUs .datos{
-    background-color: #FFF;
+    background-color: var(--background-color-3);
     border: none;
     margin: 8px 0;
     padding: 10px 15px;
@@ -164,8 +183,8 @@
     border-radius: 8px;
     width: 100%;
     outline: auto;
-    outline-color: #FFF;
-    color: #949494;
+    outline-color: var(--background-color);
+    color: var(--text-color);
     transition: outline 0.5s ease;
 }
 
@@ -175,7 +194,7 @@
 }
 
 .container-registroUs .datos::placeholder {
-    color: #949494; /* Color del placeholder predeterminado */
+    color: var(--text-color-3); /* Color del placeholder predeterminado */
     transition: color 0.5s ease; /* Transición suave */
 }
 
@@ -270,7 +289,6 @@
 }
 
 .toggle{
-
     background-image: url("https://i.postimg.cc/HxqFJnvy/imagen-cuenta.jpg");
     background-image: url("https://i.postimg.cc/RFskT4SN/imagen-cuenta.jpg");
     background-size:cover; /* Ajusta la imagen para cubrir todo el contenedor */
@@ -298,7 +316,7 @@
     align-items: center;
     justify-content: center;
     flex-direction: column;
-    padding: 0 30px;
+   
     text-align: center;
     top: 0;
     transform: translateX(0);
@@ -307,6 +325,7 @@
 
 .toggle-left{
     transform: translateX(-200%);
+    align-items: center;
 }
 
 .container-registroUs.active .toggle-left{
@@ -316,6 +335,7 @@
 .toggle-right{
     right: 0;
     transform: translateX(0);
+    align-items: center;
 }
 
 .container-registroUs.active .toggle-right{
@@ -328,13 +348,16 @@
 
   .apellidos-container #apmat, #appat {
     flex: 1; /* Permite que los campos de entrada de los apellidos se expandan para llenar el espacio disponible */
-    margin-right: 20px; /* Ajusta el margen entre los campos de entrada de los apellidos */
+    margin-right: 8%; /* Ajusta el margen entre los campos de entrada de los apellidos */
   }
 
   .apellidos-container #apmat, #appat:last-child {
-    margin-right: 0; /* Elimina el margen derecho del último campo de entrada de los apellidos */
+    margin-right: -5%; /* Elimina el margen derecho del último campo de entrada de los apellidos */
   }
 
+  #appat{
+    margin-left: -5%;
+  }
 
 
 /* Estilos personalizados para el checkbox */
@@ -354,8 +377,8 @@ input[type="checkbox"] {
     border: 2px solid #949494; /* Borde predeterminado */
     border-radius: 5px;
     position: absolute; 
-    left: 10.5%;
-    top: 78.35%;
+    left: 6.5%;
+    top: 77.35%;
 }
 
 /* Estilo para el checkbox cuando está marcado */
@@ -379,6 +402,7 @@ input[type="checkbox"]:checked::before {
 .checkbox-container {
     display: flex;
     margin-top: 10px; /* Ajusta el margen entre los campos de entrada y el checkbox */
+    width: 95%;
 }
 
 .checkbox-container input[type="checkbox"] {
@@ -392,9 +416,10 @@ input[type="checkbox"]:checked::before {
 
 #a-pri{
     position: absolute;
-    color: #525252;
+    color:var(--text-color-3);
     top: 73.7%;
-    left: 16.5%;
+    left: 13.5%;
+    width: 100%;
 }
 
 .privacy-policy {
@@ -437,7 +462,6 @@ input[type="checkbox"]:checked::before {
 @media screen and (max-width: 768px) {
     
     .container-registroUs{
-        background-color: #F1F1F1;
         border-radius: 30px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
         align-items: center;
@@ -450,7 +474,7 @@ input[type="checkbox"]:checked::before {
     }
     
     .container-registroUs .title{
-        color: #6F6F6F;
+        color: var(--text-color);
         font-size: 20px;
         text-align: center;
         font-family: "Nunito", sans-serif;
@@ -464,7 +488,7 @@ input[type="checkbox"]:checked::before {
     }
     
     .container-registroUs .title-2{
-        color: #6F6F6F;
+        color: #ffff;
         font-size: 32px;
         text-align: center;
         font-weight: 900;
@@ -489,14 +513,14 @@ input[type="checkbox"]:checked::before {
     }
     
     .container-registroUs a{
-        color: #333;
+        color: var(--text-color);
         font-size: 13px;
         text-decoration: none;
         margin: 15px 0 10px;
     }
     
     .container-registroUs #olvi-contra{
-        color: #525252;
+        color: var(--text-color);
         font-size: 13px;
         text-decoration: none;
         margin: 15px 0 10px;
@@ -566,7 +590,7 @@ input[type="checkbox"]:checked::before {
     }
     
     .container-registroUs form{
-        background-color: #F1F1F1;
+        background-color: var(--background-color-2);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -585,7 +609,7 @@ input[type="checkbox"]:checked::before {
     }
     
     .container-registroUs .datos{
-        background-color: #FFF;
+        background-color: var(--background-color-3);
         border: none;
         margin: 8px 0;
         padding: 10px 15px;
@@ -593,8 +617,8 @@ input[type="checkbox"]:checked::before {
         border-radius: 8px;
         width: 100%;
         outline: auto;
-        outline-color: #FFF;
-        color: #949494;
+        outline-color: var(--background-color);
+        color: var(--text-color);
         transition: outline 0.5s ease;
     }
     
@@ -604,7 +628,7 @@ input[type="checkbox"]:checked::before {
     }
     
     .container-registroUs .datos::placeholder {
-        color: #949494; /* Color del placeholder predeterminado */
+        color: var(--text-color-3); /* Color del placeholder predeterminado */
         transition: color 0.5s ease; /* Transición suave */
     }
     
@@ -815,7 +839,7 @@ input[type="checkbox"]:checked::before {
     
     #a-pri{
         position: absolute;
-        color: #525252;
+        color:var(--text-color-3);
         top: 71.5%;
         left: 17.5%;
     }
@@ -1270,4 +1294,22 @@ input[type="checkbox"]:checked::before {
         cursor: pointer;
         margin-top: 10px;
       }
+  }
+
+
+  .alerta-logueado{
+    background-color: #F1F1F1;
+    width: 35vw;
+    height: 35vh;
+    border-radius: 1.5rem;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-family: "Nunito", sans-serif;
+    padding-top: 20px;
+    padding-bottom: 20px;
+  }
+
+  .alerta-logueado h2{
+    color: #949494;
   }

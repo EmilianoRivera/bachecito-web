@@ -143,8 +143,8 @@
   }
 
   .leaflet-popup-content-wrapper {
-    width: 250px !important;
-    max-width: 250px !important;
+    width: 320px !important;
+    max-width: 320px !important;
     height: 200px !important;
     background-color: #ffffffa6 !important;
     max-height: 200px !important;
@@ -167,13 +167,20 @@
   .estado-popup{
     width: 120px;
     left: 125px;
-    top: 22px;
+    top: 18px;
+    position: fixed;
+  }
+
+  .ubicacion-popup{
+    width: 180px;
+    left: 125px;
+    top: 38px;
     position: fixed;
   }
 
   .descripcion-popup{
-    width: 120px;
+    width: 195px;
     left: 125px;
-    top: 55px;
+    top: 130px;
     position: fixed;
   }
