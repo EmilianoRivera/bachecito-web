@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { db, collection, getDocs, query, where } from "../../../../../firebase";
 import { getDoc } from "firebase/firestore";
-
+//Busca la alcaldia en la dirección
 function buscarAlcaldias(ubicacion) {
   const regexAlcaldiasCDMX =
     /(Azcapotzalco|Coyoacán|Cuajimalpa de Morelos|Gustavo A. Madero|Iztacalco|Iztapalapa|Magdalena Contreras|Miguel Hidalgo|Milpa Alta|Tláhuac|Tlalpan|Venustiano Carranza|Xochimilco)/gi;
@@ -18,7 +18,7 @@ function buscarAlcaldias(ubicacion) {
 
   return contAlcaldias;
 }
-
+//obtiene la fecha actual
 function obtenerFechaActual() {
   const fechaActual = new Date();
   const dia = fechaActual.getDate();
@@ -32,7 +32,7 @@ function obtenerFechaActual() {
 
   return fechaFormateada;
 }
-
+//del formato de la fecha que viene del módulo del dashboard, pasa de 12/04/2024 a 12/4/2024
 function formatearFecha(fecha) {
   const partesFecha = fecha.split("/"); // Dividir la fecha en partes por el separador '/'
   const dia = partesFecha[0];
@@ -42,44 +42,6 @@ function formatearFecha(fecha) {
   // Formatear la fecha en el formato deseado (por ejemplo, dd/mm/yyyy)
   return `${dia}/${parseInt(mes)}/${año}`;
 }
-
-async function fechaFiltroFormateada(fechaFiltro, fechaFormateada) {
-  let fechaReporteFiltrado;
-  switch(fechaFiltro) {
-    case "Hoy":
-      const filtroFechaHoy = query(
-        collection(db, "reportes"),
-        where("fechaReporte", "==", fechaFormateada)
-      );
-      
-      const reportesFechaHoy = await getDocs(
-        filtroFechaHoy
-      );
-      reportesFechaHoy.forEach((doc) => {
-        console.log(doc.data().fechaReporte) 
-      });
-
-      break;
-    
-    case "Esta semana":
-      break;
-    
-    case "Último mes":
-      break;
-    
-    case "Últimos 6 meses":
-      break;
-    
-    case "Este año":
-      break;
-    
-    case "Rango personalizado":
-      break;
-    
-  }
-  return fechaReporteFiltrado;
-}
-
 // Función para obtener el primer día de la semana
 function getInicioSemana(fechaHoy) {
   const diaSemana = fechaHoy.getDay();
@@ -89,7 +51,6 @@ function getInicioSemana(fechaHoy) {
   inicioSemana.setHours(0, 0, 0, 0); // Establecer la hora a las 00:00:00
   return inicioSemana; 
 }
-
 // Función para obtener el último día de la semana
 function getFinSemana(fechaHoy) {
   const diaSemana = fechaHoy.getDay();
@@ -97,15 +58,16 @@ function getFinSemana(fechaHoy) {
   finSemana.setDate(fechaHoy.getDate() + (6 - diaSemana));
   finSemana.setHours(23, 59, 59, 999); // Establecer la hora a las 23:59:59
   return finSemana;
-}
-
+} 
+//Casos del filtro de Fecha
 async function fechaFiltroFormateada(fechaFiltro) {
   switch (fechaFiltro) {
     case "Hoy":
       const fechaActual = obtenerFechaActual();
+      const fechaHoy = formatearFecha(fechaActual)
       const filtroFechaHoy = query(
         collection(db, "reportes"),
-        where("fechaReporte", "==", fechaActual)
+        where("fechaReporte", "==", fechaHoy)
       );
       const reportesFechaHoy = await getDocs(filtroFechaHoy);
       reportesFechaHoy.forEach((doc) => {
@@ -114,13 +76,13 @@ async function fechaFiltroFormateada(fechaFiltro) {
       break;
 
     case "Esta semana":
+      //aca hay un error con 
       const fechaActualSemana = obtenerFechaActual();
       const fechaFormateadaActualSemana = formatearFecha(fechaActualSemana)
-      const inicioSemana = getInicioSemana(new Date(fechaActualSemana));
+      console.log(new Date( ))
+      const inicioSemana = getInicioSemana(new Date( ));
+      const finSemana = getFinSemana(new Date( ));
 
-      const finSemana = getFinSemana(new Date(fechaActualSemana));
-
-console.log(fechaFormateadaActualSemana, " ", finSemana, " ", inicioSemana)
       const filtroSemana = query(
         collection(db, "reportes"),
         where("fechaReporte", ">=", inicioSemana),
@@ -153,7 +115,7 @@ console.log(fechaFormateadaActualSemana, " ", finSemana, " ", inicioSemana)
       console.log("Opción no válida");
   }
 }
-
+//Este maneja los casos de que si un filtro tiene el valor de Todos, Todas o Todos los tiempos
 async function filtroGeneral(
   fechaFiltro = "Todos los tiempos",
   fechaActual,
@@ -196,7 +158,7 @@ async function filtroGeneral(
 
   return reportesPorAlcaldia;
 }
-
+//Esta va a manejar todos los otros casos en donde no sean casos generales
 async function filtroEspecifico(fechaFiltro, fechaActual, estado, alcaldia) {
   switch (fechaFiltro) {
     case "Todos los tiempos":
@@ -243,7 +205,7 @@ async function filtroEspecifico(fechaFiltro, fechaActual, estado, alcaldia) {
       break;
   }
 }
-
+//Este recibe la petición del front, y enviará la respuesta
 export async function POST(request, { params }) {
   try {
     const [estado, alcaldia, fechaFiltro, startDate, endDate] = params.filtros; // Desestructura el array filtros en 5 variables
