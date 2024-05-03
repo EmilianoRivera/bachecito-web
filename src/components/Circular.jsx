@@ -1,5 +1,7 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
+import { db, collection, getDocs, query, where,   } from "../../firebase";
+
 import * as d3 from "d3";
 
 export default function Circular({
@@ -15,7 +17,10 @@ export default function Circular({
   const svgRef = useRef();
   const tooltipRef = useRef();
   const [rep, setRep] = useState([]); //guarda los reportes totales por alcaldia
+  
+  const [contAlcaldias, setContAlcaldias] = useState({})
   //const [totalRep, setTotalRep] = useState(0);
+  const [reportesCategorizados, setReportesCategorizados] = useState("");
   const [selectedSegment, setSelectedSegment] = useState(null);
   const [alcEstRep, setAlcEstRep] = useState(); //este guardar por alcaldia, la cantidad de reportes que tienen x estado
 
@@ -69,7 +74,42 @@ export default function Circular({
 
     fetchData();
   }, []);
+  function buscarAlcaldias(ubicacion) {
+    const regexAlcaldiasCDMX = /(Azcapotzalco|Coyoacán|Cuajimalpa de Morelos|Gustavo A. Madero|Iztacalco|Iztapalapa|Magdalena Contreras|Miguel Hidalgo|Milpa Alta|Tláhuac|Tlalpan|Venustiano Carranza|Xochimilco)/gi;
+    const contAlcaldias = {};
+    console.log(ubicacion)
+    const alcaldiasEnUbicacion = ubicacion.match(regexAlcaldiasCDMX);
+    
+    if (alcaldiasEnUbicacion) {
+      alcaldiasEnUbicacion.forEach(alcaldia => {
+        const alcaldiaLower = alcaldia.toLowerCase();
+        contAlcaldias[alcaldiaLower] = (contAlcaldias[alcaldiaLower] || 0) + 1;
+      });
+    }
+  
+    return contAlcaldias;
+  }
+  
+  async function fetchCategorizar(resultadoFiltros) {
+    try {
+      console.log(resultadoFiltros.length)
+      const response = await fetch(`/api/CategorizarRep/${resultadoFiltros}`); 
+      if (!response.ok ) {
+        throw new Error("Failed to fetch data");
+      }
+      const data = await response.json();
+      // Convertir el objeto en un array de objetos
+      const dataArray = Object.entries(data).map(([label, value]) => ({
+        label,
+        value,
+      }));
 
+      console.log("ESTA ES LA DATA LISTA PARA GRAFICAR",dataArray)
+      setReportesCategorizados(dataArray)
+    } catch (error) {
+      console.error("Error fetching data: ", error);
+    }
+  }
 
 
   //ESTE USEEFFECT SE ENCARGA DE OCULTAR LOS ELEMENTOS, Y REVISAR QUE SI CAMBIA ALGO EN EL FILTRO DEL ESTADO, SE EJECUTE LA FUNCION QUE CAMBIA LA GRAFICA
@@ -94,7 +134,6 @@ export default function Circular({
   }, [selectedSegment]);
 
   graficaCircular()
- 
  
   function graficaCircular(estado = estados, alcaldia=alcaldias, filtroFecha=filtroFechas, startDate=startDates, endDate=endDates) {
       const svg = d3.select(svgRef.current);
@@ -165,7 +204,6 @@ export default function Circular({
               startDate: startDate,
               endDate: endDate
             };
-            console.log("ALCALDIA QUE SE ENVIAAAAAAAAAAAAAAA" , nombreAlcaldia)
             // Realizar la solicitud POST con el objeto de parámetros en el cuerpo
             const datosNuevos = await fetch(`/api/filtros/${estado}/${nombreAlcaldia}/${filtroFecha}/${startDate}/${endDate}`, {
               method: 'POST',
@@ -175,13 +213,23 @@ export default function Circular({
               body: JSON.stringify(parametros) // Convertir el objeto a JSON
             });
             if (!datosNuevos.ok) {
-              throw new Error("Fallo a la petición de /api/filtros/estado/${estado}");
+              throw new Error("Fallaron los filtros");
             }
-            const estadosReportes = await datosNuevos.json();
-            console.log(estadosReportes);
+            const resultadoFiltros = await datosNuevos.json();
+            console.log(resultadoFiltros)
+            resultadoFiltros.forEach((doc) => {
+              console.log("ESTE ES DOC",doc)
+              const alcaldiasEnReporte = buscarAlcaldias(doc.ubicacion);
+              
+              console.log(alcaldiasEnReporte)
+              // Incrementar el contador para cada alcaldía encontrada en este reporte
+              Object.keys(alcaldiasEnReporte).forEach((alcaldia) => {
+                contAlcaldias[alcaldia] = (contAlcaldias[alcaldia] || 0) + alcaldiasEnReporte[alcaldia];
+              });
+            }); 
 
           } catch (error) {
-            console.error("Error a la hora de hacer la petición a /api/filtros/estado/${estado}: ", error);
+            console.error("Error a la hora de hacer la petición ", error);
           }
         }
 
@@ -192,10 +240,7 @@ export default function Circular({
  
     }
 
-    
-
  
-
   return (
     <div style={{ position: "relative", width, height, color:"white", }}>
       <svg ref={svgRef} width={width} height={height} style={{color:"white"}}></svg>
