@@ -319,6 +319,7 @@ async function fechaFiltroFormateadaEspecifico(
   startDate,
   endDate
 ) {
+  console.log(estado)
   let filtroEspecifico = []
   switch (fechaFiltro) {
     case "Hoy":
@@ -526,6 +527,7 @@ async function filtroGeneral(
 ) {
   let elementosFiltrados = [];  
   if (alcaldia === "Todas" && fechaFiltro === "Todos los tiempos") {
+    console.log(alcaldia, " ", fechaFiltro)
     const filtroGeneralAlcaldiaFechaQuery = query(
       collection(db, "reportes"),
       where("estado", "==", estado)
@@ -590,6 +592,7 @@ export async function POST(request, { params }) {
     const [estado, alcaldia, fechaFiltro, startDate, endDate] = params.filtros; // Desestructura el array filtros en 5 variables
     //llamada a funciones
     const fechaActual = obtenerFechaActual();
+    console.log(estado)
     if (
       estado === "Todos" ||
       alcaldia === "Todas" ||

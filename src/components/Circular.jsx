@@ -18,7 +18,7 @@ export default function Circular({
   const tooltipRef = useRef();
   const [rep, setRep] = useState([]); //guarda los reportes totales por alcaldia
   
-  const [contAlcaldias, setContAlcaldias] = useState({})
+  const [contAlcaldias, setContAlcaldias] = useState([])
   //const [totalRep, setTotalRep] = useState(0);
   const [reportesCategorizados, setReportesCategorizados] = useState("");
   const [selectedSegment, setSelectedSegment] = useState(null);
@@ -73,6 +73,7 @@ export default function Circular({
     }
 
     fetchData();
+    
   }, []);
   function buscarAlcaldias(ubicacion) {
     const regexAlcaldiasCDMX = /(Azcapotzalco|Coyoacán|Cuajimalpa de Morelos|Gustavo A. Madero|Iztacalco|Iztapalapa|Magdalena Contreras|Miguel Hidalgo|Milpa Alta|Tláhuac|Tlalpan|Venustiano Carranza|Xochimilco)/gi;
@@ -90,28 +91,7 @@ export default function Circular({
     return contAlcaldias;
   }
   
-  async function fetchCategorizar(resultadoFiltros) {
-    try {
-      console.log(resultadoFiltros.length)
-      const response = await fetch(`/api/CategorizarRep/${resultadoFiltros}`); 
-      if (!response.ok ) {
-        throw new Error("Failed to fetch data");
-      }
-      const data = await response.json();
-      // Convertir el objeto en un array de objetos
-      const dataArray = Object.entries(data).map(([label, value]) => ({
-        label,
-        value,
-      }));
-
-      console.log("ESTA ES LA DATA LISTA PARA GRAFICAR",dataArray)
-      setReportesCategorizados(dataArray)
-    } catch (error) {
-      console.error("Error fetching data: ", error);
-    }
-  }
-
-
+ 
   //ESTE USEEFFECT SE ENCARGA DE OCULTAR LOS ELEMENTOS, Y REVISAR QUE SI CAMBIA ALGO EN EL FILTRO DEL ESTADO, SE EJECUTE LA FUNCION QUE CAMBIA LA GRAFICA
   useEffect(() => {
     if (!selectedSegment) {
@@ -134,6 +114,62 @@ export default function Circular({
   }, [selectedSegment]);
 
   graficaCircular()
+function  nuevaGrafica () {
+  const svg = d3.select(svgRef.current);
+      const radius = Math.min(width, height) / 2;
+      
+ 
+      const pie = d3.pie().value((d) => d.value);
+
+      const arc = d3.arc().innerRadius(50).outerRadius(radius);
+
+      const arcs = svg
+        .selectAll("arc")
+        .data(pie(contAlcaldias))
+        .enter()
+        .append("g")
+        .attr("class", "arc")
+        .attr("transform", `translate(${width / 2}, ${height / 2})`);
+
+      arcs
+        .append("path")
+        .attr("fill", (d) => color(d.data.label))
+        .attr("d", arc)
+        .on("mouseover", (event, d) => {
+          setSelectedSegment(d);
+        })
+        .on("mouseout", () => {
+          setSelectedSegment(null);
+        });
+
+      arcs
+        .append("text")
+        .attr("transform", (d) => `translate(${arc.centroid(d)})`)
+        .attr("text-anchor", "middle")
+        .style("font-family", "Helvetica, sans-serif")
+        .text((d) => d.data.label.toUpperCase());
+
+      // Agregar el porcentaje fijo debajo de cada alcaldía
+      arcs
+        .append("text")
+        .attr("transform", (d) => {
+          const centroid = arc.centroid(d);
+          const x = centroid[0];
+          const y = centroid[1] + 20; // Ajusta la posición vertical del porcentaje fijo
+          return `translate(${x}, ${y})`;
+        })
+        .attr("text-anchor", "middle")
+        .attr("dy", "1em") // Ajusta la distancia vertical del texto
+        .text(
+          (d) =>
+            `${(((d.endAngle - d.startAngle) / (2 * Math.PI)) * 100).toFixed(
+              2
+            )}%`
+        );
+
+      const tooltip = d3.select(tooltipRef.current);
+      tooltip.style("visibility", "hidden");
+}
  
   function graficaCircular(estado = estados, alcaldia=alcaldias, filtroFecha=filtroFechas, startDate=startDates, endDate=endDates) {
       const svg = d3.select(svgRef.current);
@@ -216,31 +252,43 @@ export default function Circular({
               throw new Error("Fallaron los filtros");
             }
             const resultadoFiltros = await datosNuevos.json();
+            let ubicacion = ""
+            const contAlcaldiasFiltradas = {};
+            //ACA HAY QUE METER UNA VALIDACION DE SI EL resultadoFiltros es null o no devuelve nada
             console.log(resultadoFiltros)
             resultadoFiltros.forEach((doc) => {
               console.log("ESTE ES DOC",doc)
-              const alcaldiasEnReporte = buscarAlcaldias(doc.ubicacion);
+              console.log("ESTE ES DOC",typeof doc)
+              if (Array.isArray(doc)) {
+                doc.forEach(item => {
+                    ubicacion = item.ubicacion;
+                });
+              } else if (typeof doc === 'object') {
+                  ubicacion = doc.ubicacion;
+              } else {
+                console.error('El tipo de dato de doc no es compatible.');
+              }
+              const alcaldiasEnReporte = buscarAlcaldias(ubicacion);
               
-              console.log(alcaldiasEnReporte)
               // Incrementar el contador para cada alcaldía encontrada en este reporte
               Object.keys(alcaldiasEnReporte).forEach((alcaldia) => {
-                contAlcaldias[alcaldia] = (contAlcaldias[alcaldia] || 0) + alcaldiasEnReporte[alcaldia];
+                contAlcaldiasFiltradas[alcaldia] = (contAlcaldiasFiltradas[alcaldia] || 0) + alcaldiasEnReporte[alcaldia];
               });
             }); 
-
+            console.log("SIII",contAlcaldiasFiltradas)
+            return contAlcaldiasFiltradas;
           } catch (error) {
             console.error("Error a la hora de hacer la petición ", error);
+            return null
           }
         }
 
         fetchFiltroEstado();
-
- 
+        
       }
  
     }
 
- 
   return (
     <div style={{ position: "relative", width, height, color:"white", }}>
       <svg ref={svgRef} width={width} height={height} style={{color:"white"}}></svg>
