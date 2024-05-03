@@ -26,7 +26,7 @@ function Soporte() {
     "No se ha seleccionado un navegador"
   );
   const [selectedRutaError, setSelectedRutaError] = useState("/NoEspecificado");
-  const [foto, setFoto] = useState(null);
+  const [foto, setFoto] = useState("");
   const [descripcionProblema, setDescripcionProblema] = useState("Sin descripcion");
 
   const [mostrarDetalle1, setMostrarDetalle1] = useState(false);
@@ -95,30 +95,30 @@ function Soporte() {
     }
   }, []);
   const catalogoRutaErrores = [
-    { ruta: "/Cuenta/Administrador", modulo: "Inicio de Sesión" },
-    { ruta: "/Administrador/Dashboard", modulo: "Dashboard" },
-    { ruta: "/Administrador/Mapa", modulo: "Mapa" },
-    { ruta: "/Administrador/NuevoAdmin", modulo: "Nuevo Administrador" },
-    { ruta: "/Administrador/Reportes", modulo: "Reportes" },
-    { ruta: "/Administrador/Papelera", modulo: "Reportes" },
-    { ruta: "Otros", modulo: "Otra opción" },
+    { ruta: "/Cuenta/Administrador", modulo: "✅Inicio de Sesión" },
+    { ruta: "/Administrador/Dashboard", modulo: "📊 Dashboard" },
+    { ruta: "/Administrador/Mapa", modulo: "🗺️ Mapa" },
+    { ruta: "/Administrador/NuevoAdmin", modulo: "👤 Nuevo Administrador" },
+    { ruta: "/Administrador/Reportes", modulo: "⚠️ Reportes" },
+    { ruta: "/Administrador/Papelera", modulo: "⚠️ Reportes" },
+    { ruta: "Otros", modulo: "🔄️ Otra opción" },
   ];
 
   // Catálogo de errores
   const catalogoErrores = [
-    { clave: "S001", nombre: "Error de Inicio de Sesión" },
-    { clave: "S002", nombre: "Error de Registro" },
-    { clave: "D001", nombre: "Error al Cargar Estadísticas" },
-    { clave: "D002", nombre: "Error de Filtros" },
-    { clave: "M001", nombre: "Error al Cargar el Mapa" },
-    { clave: "M002", nombre: "Error de Ubicación" },
-    { clave: "R001", nombre: "Error al Cargar los Reportes" },
-    { clave: "R002", nombre: "Error al Cambiar estado de los Reportes" },
-    { clave: "R003", nombre: "Error al Mover reportes a la papelera" },
-    { clave: "P001", nombre: "Error al Visualizar reportes en la papelera" },
-    { clave: "P002", nombre: "Error al Eliminar reportes de la papelera" },
-    { clave: "T001", nombre: "Error al Enviar Ticket" },
-    { clave: "0000", nombre: "Otro: (Especificar en Descripcion)" },
+    { clave: "S001", nombre: "❌ Error de Inicio de Sesión" },
+    { clave: "S002", nombre: "📝 Error de Registro" },
+    { clave: "D001", nombre: "📊 Error al Cargar Estadísticas" },
+    { clave: "D002", nombre: "➰ Error de Filtros" },
+    { clave: "M001", nombre: "⏳ Error al Cargar el Mapa" },
+    { clave: "M002", nombre: "📌 Error de Ubicación" },
+    { clave: "R001", nombre: "⚠️ Error al Cargar los Reportes" },
+    { clave: "R002", nombre: "🚩 Error al Cambiar estado de los Reportes" },
+    { clave: "R003", nombre: "🗑️ Error al Mover reportes a la papelera" },
+    { clave: "P001", nombre: "👀 Error al Visualizar reportes en la papelera" },
+    { clave: "P002", nombre: "⛔ Error al Eliminar reportes de la papelera" },
+    { clave: "T001", nombre: "📨 Error al Enviar Ticket" },
+    { clave: "0000", nombre: "🔄️ Otro: (Especificar en Descripcion)" },
   ];
 
   // Catálogo de sistemas operativos
@@ -286,184 +286,177 @@ function Soporte() {
 
   };
   return (
-    <div className="bodySoporte">
-      <div className="containerSoporte">
-        <div className='containerPF'>
-          <h1 id='titulo_pf'>PREGUNTAS FRECUENTES 👀❓❓❓</h1>
-          <div className="todas_las_pf">
-            <div className='container_preguntaFrecuente'>
-              <div className='pf'>
-                <p>1.- ¿Cómo instalo la app móvil de Bachecito 26?</p>
-                <img src={obtenerImagen1()} alt="" onClick={toggleDetalle1} />
-              </div>
-              {mostrarDetalle1 && (
-                <div className="descripcion_pf">
-                  <p>
-                    <br />
-                    Detalle de la respuesta a la pregunta frecuente 1.
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum aspernatur inventore optio cumque eius. Quisquam facilis quo possimus omnis veniam, provident odit architecto dolore, minima, placeat maiores alias sed recusandae.
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti suscipit labore quo molestiae quis illo sunt nulla cupiditate magni voluptatem eos aliquam impedit mollitia officia, minus distinctio ullam voluptates earum?
-                    <br />
-                  </p>
+    <RutaProtegida>
+      <div className="bodySoporte">
+        <div className="containerSoporte">
+          <div className='containerPF'>
+            <h1 id='titulo_pf'>PREGUNTAS FRECUENTES 👀❓❓❓</h1>
+            <div className="todas_las_pf">
+              <div className='container_preguntaFrecuente'>
+                <div className='pf'>
+                  <p>1.- ¿Cómo instalo la app móvil de Bachecito 26?</p>
+                  <img src={obtenerImagen1()} alt="" onClick={toggleDetalle1} />
                 </div>
-              )}
-            </div>
-  
-            <br />
-  
-            <div className='container_preguntaFrecuente'>
-              <div className='pf'>
-                <p>2.- ¿Cómo desinstalo la app móvil de Bachecito 26?</p>
-                <img src={obtenerImagen2()} alt="" onClick={toggleDetalle2} />
+                {mostrarDetalle1 && (
+                  <div className="descripcion_pf">
+                    <p>
+                      <br />
+                      Detalle de la respuesta a la pregunta frecuente 1.
+                      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum aspernatur inventore optio cumque eius. Quisquam facilis quo possimus omnis veniam, provident odit architecto dolore, minima, placeat maiores alias sed recusandae.
+                      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti suscipit labore quo molestiae quis illo sunt nulla cupiditate magni voluptatem eos aliquam impedit mollitia officia, minus distinctio ullam voluptates earum?
+                      <br />
+                    </p>
+                  </div>
+                )}
               </div>
-              {mostrarDetalle2 && (
-                <div className="descripcion_pf">
-                  <p>
-                    <br />
-                    Detalle de la respuesta a la pregunta frecuente 2.
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum aspernatur inventore optio cumque eius. Quisquam facilis quo possimus omnis veniam, provident odit architecto dolore, minima, placeat maiores alias sed recusandae.
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti suscipit labore quo molestiae quis illo sunt nulla cupiditate magni voluptatem eos aliquam impedit mollitia officia, minus distinctio ullam voluptates earum?
-                    <br />
-                  </p>
-                </div>
-              )}
-            </div>
-  
-            <br />
-  
-            <div className='container_preguntaFrecuente'>
-              <div className='pf'>
-                <p>3.- ¿Cómo desinstalo la app móvil de Bachecito 26?</p>
-                <img src={obtenerImagen3()} alt="" onClick={toggleDetalle3} />
-              </div>
-              {mostrarDetalle3 && (
-                <div className="descripcion_pf">
-                  <p>
-                    <br />
-                    Detalle de la respuesta a la pregunta frecuente 3.
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum aspernatur inventore optio cumque eius. Quisquam facilis quo possimus omnis veniam, provident odit architecto dolore, minima, placeat maiores alias sed recusandae.
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti suscipit labore quo molestiae quis illo sunt nulla cupiditate magni voluptatem eos aliquam impedit mollitia officia, minus distinctio ullam voluptates earum?
-                    <br />
-                  </p>
-                </div>
-              )}
-            </div>
-  
-            <br />
-  
-            <div className='container_preguntaFrecuente'>
-              <div className='pf'>
-                <p>4.- ¿Cómo desinstalo la app móvil de Bachecito 26?</p>
-                <img src={obtenerImagen4()} alt="" onClick={toggleDetalle4} />
-              </div>
-              {mostrarDetalle4 && (
-                <div className="descripcion_pf">
-                  <p>
-                    <br />
-                    Detalle de la respuesta a la pregunta frecuente 4.
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum aspernatur inventore optio cumque eius. Quisquam facilis quo possimus omnis veniam, provident odit architecto dolore, minima, placeat maiores alias sed recusandae.
-                    Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti suscipit labore quo molestiae quis illo sunt nulla cupiditate magni voluptatem eos aliquam impedit mollitia officia, minus distinctio ullam voluptates earum?
-                    <br />
-                  </p>
-                </div>
-              )}
-            </div>
-          </div>
-        </div>
-  
-        <div className='container_FormularioSoporte'>
-          <div className='containerFR'>
-            <br />
-  
-            <h2 id='titulo_sp'>Formulario de Soporte Técnico 👷</h2>
-  
-            <form onSubmit={handleSubmit}>
-              <label>Seleccione el error:</label>
-              <select value={errorSeleccionado} onChange={handleError}>
-                <option>Tipo de Error</option>
-                {catalogoErrores.map((error, index) => (
-                  <option key={index} value={error.clave}>
-                    {error.nombre}
-                  </option>
-                ))}
-              </select>
-              <br />
-              <br />
-              <br />
-              <label>Módulo donde se encontró el error: </label>
-              <select value={selectedRutaError} onChange={handleRutaError}>
-                <option>Módulo del Error</option>
-                {catalogoRutaErrores.map((error, index) => (
-                  <option key={index} value={error.ruta}>
-                    {error.modulo}
-                  </option>
-                ))}
-              </select>
-              <br />
-              <br />
-              <br />
-              <label>Carácter de error</label>
-              <select value={asignarTarea} onChange={handleAsignarTarea}>
-                <option>Escoger carácter de error</option>
-                <option value="Backend">Funcionalidad</option>
-                <option value="Frontend">Diseño</option>
-              </select>
-              <label>Seleccione su sistema operativo: </label>
-              <select value={sistemaOperativo} onChange={handleSO}>
-                <option value="">Seleccionar</option>
-                {catalogoSistemaOperativo.map((sistema, index) => (
-                  <option key={index} value={sistema}>
-                    {sistema}
-                  </option>
-                ))}
-              </select>
-              <br />
-              <br />
-              <br />
-  
-              <label>Seleccione su navegador: </label>
-              <select value={navegador} onChange={handleNavegador}>
-                <option value="">Seleccionar</option>
-                {catalogoNavegadores.map((navegador, index) => (
-                  <option key={index} value={navegador}>
-                    {navegador}
-                  </option>
-                ))}
-              </select>
-              <br />
-              <br />
-              <br />
-  
-              <label>Adjuntar fotografía del problema: </label>
-              <input type="file" accept="image/*" onChange={handleFileChange} />
-              <br />
-              <br />
-              <br />
-  
-              <label>Descripción del problema: </label>
-              <textarea
-                value={descripcionProblema}
-                onChange={handleDescripcionProblema}
-                rows="4"
-                cols="50"
-              />
-              <br />
-              <br />
-              <br />
-  
-              <button type="submit" id="submit">
-                Enviar
-              </button>
-            </form>
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-export default Soporte;
 
+              <br />
 
+              <div className='container_preguntaFrecuente'>
+                <div className='pf'>
+                  <p>2.- ¿Cómo desinstalo la app móvil de Bachecito 26?</p>
+                  <img src={obtenerImagen2()} alt="" onClick={toggleDetalle2} />
+                </div>
+                {mostrarDetalle2 && (
+                  <div className="descripcion_pf">
+                    <p>
+                      <br />
+                      Detalle de la respuesta a la pregunta frecuente 2.
+                      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum aspernatur inventore optio cumque eius. Quisquam facilis quo possimus omnis veniam, provident odit architecto dolore, minima, placeat maiores alias sed recusandae.
+                      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti suscipit labore quo molestiae quis illo sunt nulla cupiditate magni voluptatem eos aliquam impedit mollitia officia, minus distinctio ullam voluptates earum?
+                      <br />
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              <br />
+
+              <div className='container_preguntaFrecuente'>
+                <div className='pf'>
+                  <p>2.- ¿Cómo desinstalo la app móvil de Bachecito 26?</p>
+                  <img src={obtenerImagen3()} alt="" onClick={toggleDetalle3} />
+                </div>
+                {mostrarDetalle3 && (
+                  <div className="descripcion_pf">
+                    <p>
+                      <br />
+                      Detalle de la respuesta a la pregunta frecuente 2.
+                      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum aspernatur inventore optio cumque eius. Quisquam facilis quo possimus omnis veniam, provident odit architecto dolore, minima, placeat maiores alias sed recusandae.
+                      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti suscipit labore quo molestiae quis illo sunt nulla cupiditate magni voluptatem eos aliquam impedit mollitia officia, minus distinctio ullam voluptates earum?
+                      <br />
+                    </p>
+                  </div>
+                )}
+              </div>
+
+              <br />
+
+              <div className='container_preguntaFrecuente'>
+                <div className='pf'>
+                  <p>2.- ¿Cómo desinstalo la app móvil de Bachecito 26?</p>
+                  <img src={obtenerImagen4()} alt="" onClick={toggleDetalle4} />
+                </div>
+                {mostrarDetalle4 && (
+                  <div className="descripcion_pf">
+                    <p>
+                      <br />
+                      Detalle de la respuesta a la pregunta frecuente 2.
+                      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum aspernatur inventore optio cumque eius. Quisquam facilis quo possimus omnis veniam, provident odit architecto dolore, minima, placeat maiores alias sed recusandae.
+                      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti suscipit labore quo molestiae quis illo sunt nulla cupiditate magni voluptatem eos aliquam impedit mollitia officia, minus distinctio ullam voluptates earum?
+                      <br />
+                    </p>
+                  </div>
+                )}
+              </div>
+            </div>
+
+          </div>
+
+          <div className='container_FormularioSoporte'>
+            <div className='containerFR'>
+              <br />
+
+              <h2 id='titulo_sp'>Formulario de Soporte Técnico 👷</h2>
+
+              <form onSubmit={handleSubmit}>
+                <label>Seleccione el error:</label>
+                <select value={errorSeleccionado} onChange={handleError}>
+                  <option>Tipo de Error</option>
+                  {catalogoErrores.map((errorSeleccionado, index) => (
+                    <option key={index} value={errorSeleccionado.clave}>
+                      {`${errorSeleccionado.nombre}`}
+                    </option>
+                  ))}
+                </select>
+                <br />
+                <br />
+                <br />
+                <label>Módulo donde se encontró el error: </label>
+                <select value={selectedRutaError} onChange={handleRutaError}>
+                  <option>Módulo del Error</option>
+                  {catalogoRutaErrores.map((errorOption, index) => (
+                    <option key={index} value={errorOption.ruta}>
+                      {`${errorOption.modulo}`}
+                    </option>
+                  ))}
+                </select>
+                <br />
+                <br />
+                <br />
+                <label>Carácter de error</label>
+                <select value={asignarTarea} onChange={handleAsignarTarea}>
+                  <option >Escoger carácter de error</option>
+                  <option value="backend">Funcionalidad</option>
+                  <option value="frontend">Diseño</option>
+                </select>
+                <label>Seleccione su sistema operativo: </label>
+                <select value={sistemaOperativo} onChange={handleSO}>
+                  <option value="">Seleccionar</option>
+                  {catalogoSistemaOperativo.map((sistema, index) => (
+                    <option key={index} value={sistema}>
+                      {`${sistema}`}
+                    </option>
+                  ))}
+                </select>
+                <br />
+                <br />
+                <br />
+
+                <label>Seleccione su navegador: </label>
+                <select value={navegador} onChange={handleNavegador}>
+                  <option value="">Seleccionar</option>
+                  {catalogoNavegadores.map((navegador, index) => (
+                    <option key={index} value={navegador}>
+                      {`${navegador}`}
+                    </option>
+                  ))}
+                </select>
+                <br />
+                <br />
+                <br />
+
+                <label>Adjuntar fotografía del problema: </label>
+                <input type="file" accept="image/*" onChange={handleFoto} />
+                <br />
+                <br />
+                <br />
+
+                <label>Descripción del problema: </label>
+                <textarea
+                  value={descripcionProblema}
+                  onChange={handleDescripcionProblema}
+                  rows="4"
+                  cols="50"
+                />
+                <br />
+                <br />
+                <br />
+
+                <button type="submit" id="submit">
+                  Enviar
+                </button>
+              </form>
               {/*
               <form onSubmit={handleSubmit}>
 
@@ -566,3 +559,15 @@ export default Soporte;
 
               </form>
               */}
+
+              <br /><br />
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </RutaProtegida>
+  );
+}
+
+export default Soporte;
