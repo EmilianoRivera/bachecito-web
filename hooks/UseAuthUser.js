@@ -4,12 +4,13 @@ import { auth, db } from "../firebase";
 import { useRouter , usePathname} from "next/navigation";
 import AuthContext from "../context/AuthContext";
 import { getDocs, collection, query, where } from "firebase/firestore";
+import { path } from "animejs";
 
 export const useAuthUser = () => {
   //hooks del router y del context
   const { push } = useRouter();
   const pathname = usePathname();
-  const { setisLogged, setIsAdmin } = useContext(AuthContext); 
+  const { setisLogged, setIsAdmin, setIsDev } = useContext(AuthContext); 
   
 
   useEffect(() => {
@@ -29,6 +30,7 @@ export const useAuthUser = () => {
             push("/Cuenta")
           }
           setisLogged(false);
+          setIsDev(false)
           setIsAdmin(false);
         } else {
           setisLogged(true);
@@ -39,14 +41,22 @@ export const useAuthUser = () => {
           if (!querySnapshot.empty) {
             const docSnapshot = querySnapshot.docs[0];
             const userData = docSnapshot.data();
-  
-            const isAdmin = userData.rol === "admin";
-            setIsAdmin(isAdmin);
+            let admin, dev;
+            if(userData.rol === "admin"){
+              admin = userData.rol
+              setIsAdmin(admin);
+            } else {
+             dev = userData.rol === "dev"
+             console.log(dev)
+              setIsDev(dev)
+            }
             
   
-            if (pathname === "/Cuenta/Administrador" && isAdmin) {
+            if (pathname === "/Cuenta/Administrador" && admin) {
               push("/Cuenta/Administrador/Dashboard"); 
-            } else if (pathname === "/Cuenta/Administrador") {
+            } else if (pathname === "/Cuenta" && dev) {
+              push("/Cuenta/Desarrolladores")
+            }else if (pathname === "/Cuenta/Administrador") {
               push("/");
             }
           } else {

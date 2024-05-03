@@ -280,3 +280,78 @@
   .navBar.admin .menuIcon{
     display: none;
   }
+
+  .confirmation-alert{
+    z-index: 100000;
+    position: fixed;
+    width: 90vw;
+    height: 80vh;
+    top: 12vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Nunito', sans-serif;
+    color: #6F6F6F;
+  }
+
+  .confirmation-contenido{
+    background-color: #ffffffcb;
+    backdrop-filter: blur(5px); 
+    padding: 20px;
+    border-radius: 1rem;
+    width: 25vw;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    text-justify: justify;
+    border: 2px solid #ffffff;
+  }
+
+  .boton-salir{
+    padding: 10px;
+    border-radius: 2rem;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: .3s;
+    width: 33%;
+    border: 1px solid #6F6F6F;
+    color: white;
+    background-color: #6F6F6F;
+  }
+  
+  .boton-salir:hover{
+    border: 1px solid #FF9F49;
+    color: white;
+    background-color: #FF9F49;
+    transition: .3s;
+  }
+  
+  .boton-cancelar2{
+    padding: 10px;
+    background-color: #ffffff;
+    border: 1px solid #6F6F6F;
+    color: #6F6F6F;
+    border-radius: 2rem;
+    width: 33%;
+    transition: .2s;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  .boton-cancelar2:hover{
+    
+    background-color: #ffffff;
+    border: 1px solid #FF9F49;
+    color: #FF9F49;
+    transition: .3s;
+  }
+
+  /*Modo oscuro*/
+  .darkMode{
+    background-color: #6F6F6F;
+    color: rgb(255, 255, 255);
+  }
+
+  .darkMode a{
+    color: #ffffff;
+  }

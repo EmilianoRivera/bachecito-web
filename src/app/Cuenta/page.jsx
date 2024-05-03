@@ -1,7 +1,9 @@
 "use client";
-import React, { useState} from "react";
+import React, { useState, useContext } from "react";
 import { auth, db } from "../../../firebase";
 import { useRouter } from "next/navigation";
+import Preloader from "@/components/preloader1";
+
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
@@ -17,12 +19,15 @@ import {
   addDoc,
 } from "firebase/firestore";
 import "./registro.css";
+import AuthContext from "../../../context/AuthContext";
 
 
 function Registro() {
   //elementos del router
   const { push } = useRouter();
   const router = useRouter();
+  const { isLogged } = useContext(AuthContext);
+  const [loading, setLoading] = useState(false);
   //elementos de validaciones
   const [active, setActive] = useState(false);
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
@@ -73,7 +78,7 @@ function Registro() {
 
     // Verificar si la longitud del valor es menor que el mínimo requerido
     if (value.length < minLength) {
-     
+
       setCanSubmit(false); // No se puede enviar el formulario
     } else {
       setCanSubmit(true); // Se puede enviar el formulario
@@ -104,7 +109,7 @@ function Registro() {
     const minLength = 4;
     // Verificar si la longitud del valor es menor que el mínimo requerido
     if (value.length < minLength) {
-      
+
       setCanSubmit(false); // No se puede enviar el formulario
     } else {
       setCanSubmit(true); // Se puede enviar el formulario
@@ -154,7 +159,7 @@ function Registro() {
     //  event.preventDefault(); // Evitar el envío automático del formulario
 
     if (!edadValida) {
-      
+
       return; // No se envía el formulario si la edad no es válida
     }
     if (!checkBoxChecked) {
@@ -192,7 +197,7 @@ function Registro() {
 
     // Verificar si la longitud del valor es menor que el mínimo requerido
     if (value.length < minLength) {
-    
+
       setCanSubmit(false); // No se puede enviar el formulario
     } else {
       setCanSubmit(true); // Se puede enviar el formulario
@@ -224,7 +229,7 @@ function Registro() {
 
     // Verificar si la longitud del valor es menor que el mínimo requerido
     if (value.length < minLength) {
-      
+
       setCanSubmit(false); // No se puede enviar el formulario
     } else {
       setCanSubmit(true); // Se puede enviar el formulario
@@ -259,7 +264,6 @@ function Registro() {
       };
 
       addDoc(usuariosCollection, nuevoUsuario);
-      alert("SE GUARDO SI OLA");
       push("/Cuenta/Usuario/Perfil");
     } catch (error) {
       console.error("Error al crear la cuenta: ", error);
@@ -269,11 +273,15 @@ function Registro() {
 
   const handleSignIn = async (event) => {
     event.preventDefault();
-  
+
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      setLoading(true); // Muestra el preloader
+      const userCredential = await signInWithEmailAndPassword(
+        auth,
+        email,
+        password
+      );
       const user = userCredential.user;
-  
       if (user && !user.emailVerified) {
         alert("Por favor, verifica tu correo electrónico para iniciar sesión.");
         signOut(auth);
@@ -281,16 +289,15 @@ function Registro() {
         const reportesRef = collection(db, "usuarios");
         const q = query(reportesRef, where("uid", "==", user.uid));
         const querySnapshot = await getDocs(q);
-  
+
         let estadoCuenta;
-  
+
         querySnapshot.forEach((doc) => {
           const data = doc.data();
           estadoCuenta = data.estadoCuenta;
         });
-  
         if (estadoCuenta === false) {
-          const confirm = confirm(
+          const confirm = window.confirm(
             "Tu cuenta ha sido desactivada. ¿Deseas restablecerla?"
           );
           if (confirm) {
@@ -300,25 +307,40 @@ function Registro() {
               });
             });
             alert("Cuenta restablecida correctamente");
-            router.push("/Cuenta/Usuario/Perfil"); // Utiliza router.push()
-            console.log("Usuario inició sesión con éxito:", user);
+            push("/Cuenta/Usuario/Perfil");
+
           } else {
             signOut(auth);
             alert("Inicio de sesión cancelado");
           }
         } else {
           alert("Inicio de sesión exitoso");
-          router.push("/Cuenta/Usuario/Perfil"); // Utiliza router.push()
-          console.log("Usuario inició sesión con éxito:", user);
+          push("/Cuenta/Usuario/Perfil");
+
         }
       }
     } catch (error) {
       setError(error.message);
       alert("Correo o contraseña incorrectos");
+    } finally {
+      setLoading(false); // Oculta el preloader una vez completada la operación
     }
   };
+  if (isLogged) {
+    return (
+      <div className="body2">
+        <div className="alerta-logueado">
+            <h1>🥳🎉</h1>
+            <h2>¡Tranquilo, ya estás logueado!</h2>
+        <button onClick={() => push("/Cuenta/Usuario/Perfil")}>Ir a tu perfil</button>
+
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="body">
+      {loading && <Preloader />}
       <div className={`container-registroUs ${active ? "active" : ""}`} id="container-registroUs">
         <div className="form-container sign-up">
           <form id="form-registro" onSubmit={handleSignUp}>

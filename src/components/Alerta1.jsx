@@ -1,32 +1,36 @@
+"use client"
 import React, { useState, useEffect } from 'react';
 
 const Alerta = ({ pageId }) => {
-  // Genera la clave de almacenamiento para esta página específica
-  const storageKey = `AlertaMostrada_${pageId}`;
+  // Estado para verificar si la alerta se ha mostrado o no en esta página específica
+  const [alertaMostrada, setAlertaMostrada] = useState(false);
 
   // Estado para verificar si la alerta se ha mostrado o no en esta página específica
-  const [alertaMostrada, setAlertaMostrada] = useState(() => {
-    // Verifica si localStorage está disponible y si la alerta ya fue mostrada
-    return typeof window !== 'undefined' && localStorage.getItem(storageKey) === 'true';
-  });
-
-  // Función para manejar el botón "No volver a mostrar"
   const manejarNoMostrar = () => {
-    // Guardar en localStorage que la alerta ya fue mostrada para esta página específica
-    localStorage.setItem(storageKey, 'true');
-    
     // Cambiar el estado de alertaMostrada a true para no volver a mostrar
     setAlertaMostrada(true);
   };
 
+  // Función para manejar el botón "No volver a mostrar"
   useEffect(() => {
-    if (!alertaMostrada && typeof window !== 'undefined') {
-        const alertaElement = document.getElementById("alerta");
-        if (alertaElement) {
-            alertaElement.style.transform = 'translate(-50%, 20%) scale(1)';
-        }
+    const storageKey = `AlertaMostrada_${pageId}`;
+    const alertaMostradaLocal = localStorage.getItem(storageKey) === 'true';
+    setAlertaMostrada(alertaMostradaLocal);
+    
+    if (!alertaMostradaLocal) {
+      const alertaElement = document.getElementById("alerta");
+      if (alertaElement) {
+          alertaElement.style.transform = 'translate(-50%, 20%) scale(1)';
+      }
     }
-}, [alertaMostrada]);
+  }, [pageId]);
+
+  useEffect(() => {
+    if (alertaMostrada) {
+      const storageKey = `AlertaMostrada_${pageId}`;
+      localStorage.setItem(storageKey, 'true');
+    }
+  }, [alertaMostrada, pageId]);
 
   return (
     !alertaMostrada && (
@@ -87,5 +91,16 @@ const styles = {
       textJustify: 'justify',
     },
 };
+
+const botonHoverStyle = `
+.boton:hover {
+    background-color: #cc7a35;
+    cursor: pointer;
+}
+`;
+
+const styleSheet = document.createElement('style');
+styleSheet.innerHTML = botonHoverStyle;
+document.head.appendChild(styleSheet);
 
 export default Alerta;

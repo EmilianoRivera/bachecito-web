@@ -14,10 +14,10 @@ export default function Circular({
   //AQUI ESTAN LOS ESTADOS Y EL HOOK DE USEREF, QUE HACE REFERENCIA AL ELEMENTO SVG QUE ESTA EN EL HTML
   const svgRef = useRef();
   const tooltipRef = useRef();
-  const [rep, setRep] = useState([]);
+  const [rep, setRep] = useState([]); //guarda los reportes totales por alcaldia
   //const [totalRep, setTotalRep] = useState(0);
   const [selectedSegment, setSelectedSegment] = useState(null);
-  const [alcEstRep, setAlcEstRep] = useState();
+  const [alcEstRep, setAlcEstRep] = useState(); //este guardar por alcaldia, la cantidad de reportes que tienen x estado
 
   const color = d3
     .scaleOrdinal()
@@ -94,92 +94,114 @@ export default function Circular({
   }, [selectedSegment]);
 
   graficaCircular()
-  
+ 
+ 
   function graficaCircular(estado = estados, alcaldia=alcaldias, filtroFecha=filtroFechas, startDate=startDates, endDate=endDates) {
       const svg = d3.select(svgRef.current);
       const radius = Math.min(width, height) / 2;
-      if (estados === "Sin Estado" && alcaldias === "Todas" && filtroFechas === "Hoy") {
-        const pie = d3.pie().value((d) => d.value);
-    
-          const arc = d3.arc().innerRadius(50).outerRadius(radius);
-    
-          const arcs = svg
-            .selectAll("arc")
-            .data(pie(rep))
-            .enter()
-            .append("g")
-            .attr("class", "arc")
-            .attr("transform", `translate(${width / 2}, ${height / 2})`);
-    
-          arcs
-            .append("path")
-            .attr("fill", (d) => color(d.data.label))
-            .attr("d", arc)
-            .on("mouseover", (event, d) => {
-              setSelectedSegment(d);
-            })
-            .on("mouseout", () => {
-              setSelectedSegment(null);
-            });
-    
-          arcs
-            .append("text")
-            .attr("transform", (d) => `translate(${arc.centroid(d)})`)
-            .attr("text-anchor", "middle")
-            .style("font-family", "Helvetica, sans-serif")
-            .text((d) => d.data.label.toUpperCase());
-    
-          // Agregar el porcentaje fijo debajo de cada alcaldía
-          arcs
-            .append("text")
-            .attr("transform", (d) => {
-              const centroid = arc.centroid(d);
-              const x = centroid[0];
-              const y = centroid[1] + 20; // Ajusta la posición vertical del porcentaje fijo
-              return `translate(${x}, ${y})`;
-            })
-            .attr("text-anchor", "middle")
-            .attr("dy", "1em") // Ajusta la distancia vertical del texto
-            .text(
-              (d) =>
-                `${(((d.endAngle - d.startAngle) / (2 * Math.PI)) * 100).toFixed(
-                  2
-                )}%`
-            );
-    
-          const tooltip = d3.select(tooltipRef.current);
-          tooltip.style("visibility", "hidden");
-    
-      } else {
-        /* async function fetchFiltroEstado() {
+      if (estados === "Todos" && alcaldia === "Todas" && filtroFechas === "Todos los tiempos") {
+   
+ 
+      const pie = d3.pie().value((d) => d.value);
+
+      const arc = d3.arc().innerRadius(50).outerRadius(radius);
+
+      const arcs = svg
+        .selectAll("arc")
+        .data(pie(rep))
+        .enter()
+        .append("g")
+        .attr("class", "arc")
+        .attr("transform", `translate(${width / 2}, ${height / 2})`);
+
+      arcs
+        .append("path")
+        .attr("fill", (d) => color(d.data.label))
+        .attr("d", arc)
+        .on("mouseover", (event, d) => {
+          setSelectedSegment(d);
+        })
+        .on("mouseout", () => {
+          setSelectedSegment(null);
+        });
+
+      arcs
+        .append("text")
+        .attr("transform", (d) => `translate(${arc.centroid(d)})`)
+        .attr("text-anchor", "middle")
+        .style("font-family", "Helvetica, sans-serif")
+        .text((d) => d.data.label.toUpperCase());
+
+      // Agregar el porcentaje fijo debajo de cada alcaldía
+      arcs
+        .append("text")
+        .attr("transform", (d) => {
+          const centroid = arc.centroid(d);
+          const x = centroid[0];
+          const y = centroid[1] + 20; // Ajusta la posición vertical del porcentaje fijo
+          return `translate(${x}, ${y})`;
+        })
+        .attr("text-anchor", "middle")
+        .attr("dy", "1em") // Ajusta la distancia vertical del texto
+        .text(
+          (d) =>
+            `${(((d.endAngle - d.startAngle) / (2 * Math.PI)) * 100).toFixed(
+              2
+            )}%`
+        );
+
+      const tooltip = d3.select(tooltipRef.current);
+      tooltip.style("visibility", "hidden");
+
+    } else {
+ 
+        const nombreAlcaldia = alcaldia.replace(/^[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+|[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+$/g, "");
+        async function fetchFiltroEstado() {
           try {
-            const response = await fetch(`/api/${estado}`); // Reemplaza "tuRuta" con la ruta adecuada de tu API
-            if (!response.ok) {
-              throw new Error("Failed to fetch data");
+            const parametros = {
+              estado: estado,
+              alcaldia: alcaldia,
+              filtroFecha: filtroFecha,
+              startDate: startDate,
+              endDate: endDate
+            };
+            console.log("ALCALDIA QUE SE ENVIAAAAAAAAAAAAAAA" , nombreAlcaldia)
+            // Realizar la solicitud POST con el objeto de parámetros en el cuerpo
+            const datosNuevos = await fetch(`/api/filtros/${estado}/${nombreAlcaldia}/${filtroFecha}/${startDate}/${endDate}`, {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json' // Indicar que el cuerpo es JSON
+              },
+              body: JSON.stringify(parametros) // Convertir el objeto a JSON
+            });
+            if (!datosNuevos.ok) {
+              throw new Error("Fallo a la petición de /api/filtros/estado/${estado}");
             }
-            const reportes = await response.json();
-            // Haz lo que necesites con los datos
-            console.log(reportes);
+            const estadosReportes = await datosNuevos.json();
+            console.log(estadosReportes);
+
           } catch (error) {
-            console.error("Error fetching reportes: ", error);
+            console.error("Error a la hora de hacer la petición a /api/filtros/estado/${estado}: ", error);
           }
         }
-      
-        fetchFiltroEstado(); */
-          console.log(alcEstRep)
-        }
+
+        fetchFiltroEstado();
+
+ 
+      }
+ 
+    }
+
     
-      
-  }
 
-
+ 
 
   return (
-    <div style={{ position: "relative", width, height }}>
-      <svg ref={svgRef} width={width} height={height}></svg>
+    <div style={{ position: "relative", width, height, color:"white", }}>
+      <svg ref={svgRef} width={width} height={height} style={{color:"white"}}></svg>
       <div
         ref={tooltipRef}
-        className="tooltip"
+        className="tooltip-grcir"
         style={{ position: "absolute", top: 10, right: 10 }}
       >
         <div className="tooltip-label"></div>

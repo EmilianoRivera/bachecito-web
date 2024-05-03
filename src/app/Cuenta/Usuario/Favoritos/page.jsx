@@ -3,6 +3,7 @@
 import React from 'react';
 import { useRef, useEffect, useState } from 'react';
 import "../Favoritos/favoritos.css";
+import ReportesComponente  from "@/components/Favoritos";
 
 function Favoritos() {
 
@@ -28,201 +29,21 @@ function Favoritos() {
   }, []);
 
   return (
-    <div className='body'>
+    <div className='body-favoritos'>
 
       {showTitles && (
         <div className={`titles ${showTitles ? 'show' : 'hide'}`}>
           <h1 id='title-main'>Seguimiento de tus baches guardados 🐜</h1>
-          <h2 id='textito'>Aquí podrás visualizar el seguimiento de los baches que has guardado de otros usuarios.</h2>
+          <h2 id='textito'>¡Bienvenido al apartado de tus reportes favoritos!, aquí podrás ver los reportes que has guardado de otros usuarios realizados por medio 
+          de la aplicación móvil de Bachecito 26, según su estado de gestión. ¡Esperamos que sea más fácil para ti darle seguimiento a los que sean de tu interes!</h2>
         </div>
       )}
-      
-     
-        <div className={`container-tipos ${showTitles ? '' : 'margin-top'}`}>
-
-        <div className="column">
-          <h3 className='tipo' id='sin-at'>Sin Atender</h3>
-        </div>
-
-        <div className="column">
-          <h3 className='tipo' id='en-at'>En atención</h3>
-        </div>
-
-        <div className="column">
-          <h3 className='tipo' id='at'>Atendidos</h3>
-        </div>
-
-        </div>
-
-
-      <div className="scrollable-section">
-        <div className="container-reportes">
-          <div className="column">
-            <div className="reportes-boxes">
-              <div className="box2" id="box2">
-                <div className="column-left">
-                  <div className="fotografía">
-                    <img src="" alt="" />
-                  </div>
-                  <div className="column-left-inferior">
-                    <div className="fecha">
-                    </div>
-
-                    <div className="contador">
-                      <div className="icon">
-                        <img
-                          src="https://i.postimg.cc/s2ZYz740/exclamacion-de-diamante.png"
-                          className="logo" 
-                        />
-                      </div>
-                      <div className="number">
-                        0
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="column-right">
-                  <div className="column-right-superior">
-                    <div className="estado" id='estado-sin-at'>
-                    </div>
-
-                    <div className="guardar">
-                      <img
-                        src="https://i.postimg.cc/W335wqws/estrella-2.png"
-                        className="icon-star" 
-                      />
-                    </div>
-                  </div>
-
-                  <div className="ubicacion">
-                    <h3>Ubicación</h3>
-                    <div className="box-ubi">
-                    </div>
-                  </div>
-
-                  <div className="descripcion">
-                    <h3>Descripción</h3>
-                    <div className="box-des">
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="column">
-            <div className="reportes-boxes">
-              <div className="box2" id="box2">
-                <div className="column-left">
-                  <div className="fotografía">
-                    <img src="" alt="" />
-                  </div>
-                  <div className="column-left-inferior">
-                    <div className="fecha">
-                    </div>
-
-                    <div className="contador">
-                      <div className="icon">
-                        <img
-                          src="https://i.postimg.cc/s2ZYz740/exclamacion-de-diamante.png"
-                          className="logo" 
-                        />
-                      </div>
-                      <div className="number">
-                        0
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="column-right">
-                  <div className="column-right-superior">
-                    <div className="estado" id='estado-en-at'>
-                    </div>
-
-                    <div className="guardar">
-                      <img
-                        src="https://i.postimg.cc/W335wqws/estrella-2.png"
-                        className="icon-star" 
-                      />
-                    </div>
-                  </div>
-
-                  <div className="ubicacion">
-                    <h3>Ubicación</h3>
-                    <div className="box-ubi">
-                    </div>
-                  </div>
-
-                  <div className="descripcion">
-                    <h3>Descripción</h3>
-                    <div className="box-des">
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="column">
-            <div className="reportes-boxes">
-              <div className="box2" id="box2">
-                <div className="column-left">
-                  <div className="fotografía">
-                    <img src="" alt="" />
-                  </div>
-                  <div className="column-left-inferior">
-                    <div className="fecha">
-                    </div>
-
-                    <div className="contador">
-                      <div className="icon">
-                        <img
-                          src="https://i.postimg.cc/s2ZYz740/exclamacion-de-diamante.png"
-                          className="logo" 
-                        />
-                      </div>
-                      <div className="number">
-                        0
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                <div className="column-right">
-                  <div className="column-right-superior">
-                    <div className="estado" id='estado-at'>
-                    </div>
-
-                    <div className="guardar">
-                      <img
-                        src="https://i.postimg.cc/W335wqws/estrella-2.png"
-                        className="icon-star" 
-                      />
-                    </div>
-                  </div>
-
-                  <div className="ubicacion">
-                    <h3>Ubicación</h3>
-                    <div className="box-ubi">
-                    </div>
-                  </div>
-
-                  <div className="descripcion">
-                    <h3>Descripción</h3>
-                    <div className="box-des">
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
+      <ReportesComponente></ReportesComponente>
+        
     </div>
       
 
-    </div>
+
   );
 }
 
