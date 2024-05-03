@@ -345,3 +345,13 @@
     color: #FF9F49;
     transition: .3s;
   }
+
+  /*Modo oscuro*/
+  .darkMode{
+    background-color: #6F6F6F;
+    color: rgb(255, 255, 255);
+  }
+
+  .darkMode a{
+    color: #ffffff;
+  }

@@ -15,6 +15,7 @@ function Navbar() {
   const [menuActive, setMenuActive] = useState(false);
   const [showMenuIcon, setShowMenuIcon] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false); // Estado para mostrar la alerta de confirmación
+  const [darkMode, setDarkMode] = useState(false);
   const router = useRouter();
   useEffect(() => {
     const handleResize = () => {
@@ -58,7 +59,7 @@ function Navbar() {
     <div
       className={`navBar ${isAdmin ? "admin" : ""} ${
         menuActive ? "showMenu" : ""
-      }`}
+      }${darkMode ? "darkMode" : ""}`}
     >
       <Link href="/" className="bachecito26">
         <img
@@ -141,37 +142,6 @@ function Navbar() {
                 </Link>
               </>
             ) : (
-              <>
-                {isDev ? (
-                  <>
-                  <Link
-                      href="/Cuenta/Desarrolladores"
-                      className="opc"
-                    >
-                      Desarrolladores
-                    </Link>
-                    <Link
-                      href="/Cuenta/Desarrolladores/NuevoDev"
-                      className="opc"
-                    >
-                      Nuevo Desarrollador
-                    </Link>
-                    <Link
-                      href="/Cuenta/Desarrolladores/Tickets"
-                      className="opc"
-                    >
-                      Tickets
-                    </Link>
-                    <Link href="#" className="opc-admin"> 
-                      <img
-                        src="https://i.postimg.cc/qRJSHq08/salida-2.png"
-                        alt="salir"
-                        onClick={CerrarSesion}
-                      />
-                      <span className="hover-text">Salir</span>
-                    </Link>
-                  </>
-                ) : (
                   <>
                     <Link
                       href="/Cuenta/Usuario/Perfil"
@@ -192,8 +162,6 @@ function Navbar() {
                 )}
               </>
             )}
-          </>
-        )}
         {!isLogged && (
           <>
             <Link href="/Sobre_Nosotros" className="opc">
@@ -220,6 +188,9 @@ function Navbar() {
           onCancel={() => setShowConfirmation(false)}
         />
       )}
+      <button onClick={() => setDarkMode(!darkMode)}>
+        {darkMode ? "Desactivar Modo Oscuro" : "Activar Modo Oscuro"}
+      </button>
     </div>
   );
 }
