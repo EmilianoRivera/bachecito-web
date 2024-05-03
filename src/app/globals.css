@@ -1,12 +1,56 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
 
+:root {
+  --background-color: #fff;
+  --text-color: #666;
+  --background-color-2: #f1f1f1;
+  --text-color-3: #949494;
+}
+
+.dark-mode {
+  --background-color: #1E1E1E;
+  --text-color: #f1f1f1;
+  --text-color-3: #bdbdbd;
+  --background-color-2: #2e2e2e;
+}
+
+.btn-dark{
+  z-index: 1000000;
+  position: fixed;
+  top: 4rem;
+  right: 0;
+  background: none;
+  border: none;
+  cursor: pointer;
+  align-items: center;
+  justify-content: center;
+  display: flex;
+}
+.btn-dark img {
+  width: 3vw;
+  height: 3vw;
+}
+
+.btn-dark .lunaaaa {
+  width: 2vw;
+  height: 2vw;
+  margin-right: .5vw;
+  margin-top: .5vw;
+}
+
+body{
+  background-color: var(--background-color);
+}
+
 .container-inicio{
   font-family: 'Poppins', sans-serif;
   margin-top: 5%;
   font-weight: 300;
   cursor: none;
   scroll-behavior: smooth;
+  background-color: var(--background-color);
+  
 }
 
 /*---------------------SECCIÓN 1-----------------------------------*/
@@ -30,7 +74,7 @@
 .text-inicio1 p {
   font-size: 23px;
   margin: 0;
-  color: #666;
+  color: var(--text-color);
 }
 
 .content-inicio {
@@ -56,12 +100,12 @@
 
 .text-inicio p {
   font-size: 20px;
-  color: #666;
+  color: var(--text-color);
 }
 
 .text-inicio2 p {
   font-size: 20px;
-  color: #666;
+  color: var(--text-color);
 }
 
 .Bachecito-26-txt{
@@ -134,8 +178,8 @@
   font-weight: 900;
 }
 .text-sec2 p{
-    font-size: 23px;
-    color: #666;
+    font-size: 23px;  
+    color: var(--text-color);
     text-align: justify;
 }
 
@@ -343,7 +387,7 @@ canvas {
 
 .text-section2 p {
   font-size: 1.5vw;
-  color: #666;
+  color: var(--text-color);
   text-align: justify;
 }
 
@@ -361,7 +405,7 @@ canvas {
 
 .text-section2-right p {
   font-size: 1.5vw;
-  color: #666;
+  color: var(--text-color);
   text-align: right;
 }
 
@@ -421,7 +465,7 @@ canvas {
 
 .text-sec4-inicio p {
   margin-top: -2%;
-  color: #666;
+  color: var(--text-color);
   font-size: 20px;
 }
 
@@ -437,7 +481,7 @@ canvas {
 .fill-button {
   padding: 10px 20px;
   font-size: 16px;
-  background-color: #fff;
+  background-color: var(--background-color);
   color: #FF9F49;
   border: 2px solid #FF9F49;
   outline: none;
@@ -452,7 +496,7 @@ canvas {
 }
 
 .fill-button:hover{
-  color: #fff;
+  color: var(--text-color);
 }
 
 .fill-button::before {
@@ -460,7 +504,7 @@ canvas {
   justify-content: center;
   align-items: center;
   display: flex;
-  color: #fff;
+  color: var(--text-color);
   content: "";
   position: absolute;
   top: 0;
@@ -472,7 +516,7 @@ canvas {
 }
 
 .fill-button:hover::before {
-  color: #fff;
+  color: var(--text-color);
   left: 0;
 }
 
@@ -534,14 +578,14 @@ canvas {
   backface-visibility: hidden;
 }
 .card-front {
-  background-color: #bbb;
+  background-color: var(--background-color-2);
   border-radius: 2vw;
   color: black;
 }
 .card-back {
   border-radius: 2vw;
   font-size: 23px;
-  background-color: #F1F1F1;
+  background-color: var(--background-color-2);
   color: #9D9D9D;
   transform: rotateY(180deg);
   display: flex;
@@ -567,7 +611,7 @@ canvas {
   margin-bottom: 60px;
   -webkit-appearance: none;
   appearance: none;
-  background-color: #ffffff;
+  background-color: var(--background-color-1);
   color: #FF9F49;
   border-radius: 50px;
   border: none;
@@ -676,7 +720,7 @@ canvas {
 }
 
 .text-sec6-inicio p {
-  color: #666;  
+  color: var(--text-color);
   font-size: 25px;
   font-weight: 900;
   text-decoration: none;
