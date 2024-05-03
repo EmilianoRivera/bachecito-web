@@ -28,6 +28,7 @@ function Soporte() {
   const [foto, setFoto] = useState(null);
   const [descripcionProblema, setDescripcionProblema] =
     useState("Sin descripcion");
+ 
 
   const [mostrarDetalle1, setMostrarDetalle1] = useState(false);
   const [mostrarDetalle2, setMostrarDetalle2] = useState(false);
@@ -140,30 +141,30 @@ function Soporte() {
   
   
   const catalogoRutaErrores = [
-    { ruta: "/Cuenta/Administrador", modulo: "Inicio de Sesión" },
-    { ruta: "/Administrador/Dashboard", modulo: "Dashboard" },
-    { ruta: "/Administrador/Mapa", modulo: "Mapa" },
-    { ruta: "/Administrador/NuevoAdmin", modulo: "Nuevo Administrador" },
-    { ruta: "/Administrador/Reportes", modulo: "Reportes" },
-    { ruta: "/Administrador/Papelera", modulo: "Reportes" },
-    { ruta: "Otros", modulo: "Otra opción" },
+    { ruta: "/Cuenta/Administrador", modulo: "✅Inicio de Sesión" },
+    { ruta: "/Administrador/Dashboard", modulo: "📊 Dashboard" },
+    { ruta: "/Administrador/Mapa", modulo: "🗺️ Mapa" },
+    { ruta: "/Administrador/NuevoAdmin", modulo: "👤 Nuevo Administrador" },
+    { ruta: "/Administrador/Reportes", modulo: "⚠️ Reportes" },
+    { ruta: "/Administrador/Papelera", modulo: "⚠️ Reportes" },
+    { ruta: "Otros", modulo: "🔄️ Otra opción" },
   ];
 
   // Catálogo de errores
   const catalogoErrores = [
-    { clave: "S001", nombre: "Error de Inicio de Sesión" },
-    { clave: "S002", nombre: "Error de Registro" },
-    { clave: "D001", nombre: "Error al Cargar Estadísticas" },
-    { clave: "D002", nombre: "Error de Filtros" },
-    { clave: "M001", nombre: "Error al Cargar el Mapa" },
-    { clave: "M002", nombre: "Error de Ubicación" },
-    { clave: "R001", nombre: "Error al Cargar los Reportes" },
-    { clave: "R002", nombre: "Error al Cambiar estado de los Reportes" },
-    { clave: "R003", nombre: "Error al Mover reportes a la papelera" },
-    { clave: "P001", nombre: "Error al Visualizar reportes en la papelera" },
-    { clave: "P002", nombre: "Error al Eliminar reportes de la papelera" },
-    { clave: "T001", nombre: "Error al Enviar Ticket" },
-    { clave: "0000", nombre: "Otro: (Especificar en Descripcion)" },
+    { clave: "S001", nombre: "❌ Error de Inicio de Sesión" },
+    { clave: "S002", nombre: "📝 Error de Registro" },
+    { clave: "D001", nombre: "📊 Error al Cargar Estadísticas" },
+    { clave: "D002", nombre: "➰ Error de Filtros" },
+    { clave: "M001", nombre: "⏳ Error al Cargar el Mapa" },
+    { clave: "M002", nombre: "📌 Error de Ubicación" },
+    { clave: "R001", nombre: "⚠️ Error al Cargar los Reportes" },
+    { clave: "R002", nombre: "🚩 Error al Cambiar estado de los Reportes" },
+    { clave: "R003", nombre: "🗑️ Error al Mover reportes a la papelera" },
+    { clave: "P001", nombre: "👀 Error al Visualizar reportes en la papelera" },
+    { clave: "P002", nombre: "⛔ Error al Eliminar reportes de la papelera" },
+    { clave: "T001", nombre: "📨 Error al Enviar Ticket" },
+    { clave: "0000", nombre: "🔄️ Otro: (Especificar en Descripcion)" },
   ];
 
   // Catálogo de sistemas operativos
@@ -493,7 +494,7 @@ function Soporte() {
               <br />
               <br />
               <br />
-
+ 
               <label>Seleccione su navegador: </label>
               <select value={navegador} onChange={handleNavegador}>
                 <option value="">Seleccionar</option>
@@ -595,7 +596,7 @@ function Soporte() {
 export default Soporte;
 
 {
-  /*
+  /* 
               <form onSubmit={handleSubmit}>
 
                 
@@ -696,5 +697,16 @@ export default Soporte;
                 <button type="submit" id="submit">Enviar</button>
 
               </form>
-              */
+ 
+
+              <br /><br />
+            </div>
+          </div>
+        </div>
+      </div> 
+  );
 }
+
+export default Soporte;
+ 
+*/}
