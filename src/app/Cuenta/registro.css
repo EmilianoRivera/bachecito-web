@@ -2,16 +2,17 @@
 @import url('https://fonts.googleapis.com/css2?family=Baloo+Thambi+2:wght@400..800&family=Nunito:ital,wght@0,200..1000;1,200..1000&display =intercambiar');
 
 .body{
-    background-color: #FFFFFF;
+    background-color: var(--background-color);
     display: flex;
     flex-direction: column;
-    height: 100vh;
+    height: 85vh;
+    margin-top: 10vh;
     align-items: center;
     justify-content: center;
 }
 
 .body2{
-    background-color: #FFFFFF;
+    background-color: var(--background-color);
     display: flex;
     flex-direction: column;
     height: 90vh;
@@ -25,7 +26,7 @@
 @media screen and (min-width: 1025px) {
 
 .container-registroUs{
-    background-color: #F1F1F1;
+    background-color: var(--background-color-2) !important;
     border-radius: 30px;
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
     align-items: center;
@@ -39,7 +40,7 @@
 }
 
 .container-registroUs .title{
-    color: #6F6F6F;
+    color: var(--text-color);
     font-size: 20px;
     text-align: center;
     font-family: "Nunito", sans-serif;
@@ -78,14 +79,14 @@
 }
 
 .container-registroUs a{
-    color: #333;
+    color: var(--text-color);
     font-size: 13px;
     text-decoration: none;
     margin: 5%;
 }
 
 .container-registroUs #olvi-contra{
-    color: #525252;
+    color: var(--text-color);
     font-size: 13px;
     text-decoration: none;
     margin: 15px 0 10px;
@@ -160,7 +161,7 @@
 }
 
 .container-registroUs form{
-    background-color: #F1F1F1;
+    background-color: var(--background-color-2);
     display: flex;
     align-items: center;
     justify-content: center;
@@ -174,7 +175,7 @@
 }
 
 .container-registroUs .datos{
-    background-color: #FFF;
+    background-color: var(--background-color-3);
     border: none;
     margin: 8px 0;
     padding: 10px 15px;
@@ -182,8 +183,8 @@
     border-radius: 8px;
     width: 100%;
     outline: auto;
-    outline-color: #FFF;
-    color: #949494;
+    outline-color: var(--background-color);
+    color: var(--text-color);
     transition: outline 0.5s ease;
 }
 
@@ -193,7 +194,7 @@
 }
 
 .container-registroUs .datos::placeholder {
-    color: #949494; /* Color del placeholder predeterminado */
+    color: var(--text-color-3); /* Color del placeholder predeterminado */
     transition: color 0.5s ease; /* Transición suave */
 }
 
@@ -415,7 +416,7 @@ input[type="checkbox"]:checked::before {
 
 #a-pri{
     position: absolute;
-    color: #525252;
+    color:var(--text-color-3);
     top: 73.7%;
     left: 13.5%;
     width: 100%;
@@ -461,7 +462,6 @@ input[type="checkbox"]:checked::before {
 @media screen and (max-width: 768px) {
     
     .container-registroUs{
-        background-color: #F1F1F1;
         border-radius: 30px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
         align-items: center;
@@ -474,7 +474,7 @@ input[type="checkbox"]:checked::before {
     }
     
     .container-registroUs .title{
-        color: #6F6F6F;
+        color: var(--text-color);
         font-size: 20px;
         text-align: center;
         font-family: "Nunito", sans-serif;
@@ -488,7 +488,7 @@ input[type="checkbox"]:checked::before {
     }
     
     .container-registroUs .title-2{
-        color: #6F6F6F;
+        color: #ffff;
         font-size: 32px;
         text-align: center;
         font-weight: 900;
@@ -513,14 +513,14 @@ input[type="checkbox"]:checked::before {
     }
     
     .container-registroUs a{
-        color: #333;
+        color: var(--text-color);
         font-size: 13px;
         text-decoration: none;
         margin: 15px 0 10px;
     }
     
     .container-registroUs #olvi-contra{
-        color: #525252;
+        color: var(--text-color);
         font-size: 13px;
         text-decoration: none;
         margin: 15px 0 10px;
@@ -590,7 +590,7 @@ input[type="checkbox"]:checked::before {
     }
     
     .container-registroUs form{
-        background-color: #F1F1F1;
+        background-color: var(--background-color-2);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -609,7 +609,7 @@ input[type="checkbox"]:checked::before {
     }
     
     .container-registroUs .datos{
-        background-color: #FFF;
+        background-color: var(--background-color-3);
         border: none;
         margin: 8px 0;
         padding: 10px 15px;
@@ -617,8 +617,8 @@ input[type="checkbox"]:checked::before {
         border-radius: 8px;
         width: 100%;
         outline: auto;
-        outline-color: #FFF;
-        color: #949494;
+        outline-color: var(--background-color);
+        color: var(--text-color);
         transition: outline 0.5s ease;
     }
     
@@ -628,7 +628,7 @@ input[type="checkbox"]:checked::before {
     }
     
     .container-registroUs .datos::placeholder {
-        color: #949494; /* Color del placeholder predeterminado */
+        color: var(--text-color-3); /* Color del placeholder predeterminado */
         transition: color 0.5s ease; /* Transición suave */
     }
     
@@ -839,7 +839,7 @@ input[type="checkbox"]:checked::before {
     
     #a-pri{
         position: absolute;
-        color: #525252;
+        color:var(--text-color-3);
         top: 71.5%;
         left: 17.5%;
     }

@@ -59,7 +59,7 @@ function Navbar() {
     <div
       className={`navBar ${isAdmin ? "admin" : ""} ${
         menuActive ? "showMenu" : ""
-      }${darkMode ? "darkMode" : ""}`}
+      }`}
     >
       <Link href="/" className="bachecito26">
         <img
@@ -188,9 +188,6 @@ function Navbar() {
           onCancel={() => setShowConfirmation(false)}
         />
       )}
-      <button onClick={() => setDarkMode(!darkMode)}>
-        {darkMode ? "Desactivar Modo Oscuro" : "Activar Modo Oscuro"}
-      </button>
     </div>
   );
 }
