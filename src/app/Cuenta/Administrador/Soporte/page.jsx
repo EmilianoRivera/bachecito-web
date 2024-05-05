@@ -39,6 +39,8 @@ function Soporte() {
   const [mostrarDetalle9, setMostrarDetalle9] = useState(false);
   const [mostrarDetalle10, setMostrarDetalle10] = useState(false);
   const [ticket, setTickets] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [ticketEncontrado, setTicketEncontrado] = useState([]);
 
   const toggleDetalle1 = () => {
     setMostrarDetalle1(!mostrarDetalle1);
@@ -269,8 +271,16 @@ function Soporte() {
       }
   }
 
-  const handleDetalles = () => {
-    alert("HO")
+  const openModal = (folio) => {
+ 
+    const ticketEncontrados = ticket.find(ticket => ticket.folio === folio);
+    if (ticketEncontrados) { 
+      console.log("Ticket encontrado:", ticketEncontrados);
+      setTicketEncontrado(ticketEncontrados)
+    } else {
+      console.log("No se encontró ningún ticket con el folio:", folio);
+    }
+    setShowModal(true);
   }
 
   // Obtener fecha actual al cargar el componente
@@ -291,6 +301,10 @@ function Soporte() {
 
   // Funciones para manejar los cambios en el select de errores y sistemas operativos
 
+  const closeModal = () => {
+    setShowModal(false);
+  };
+  
   const handleError = (e) => {
     const selectedErr = e.target.value;
     setErrorSeleccionado(selectedErr);
@@ -899,9 +913,6 @@ function Soporte() {
           </div>
         </div>
 
-
-
-
         <br /> <br />
           <div className="">
               <table>
@@ -914,7 +925,6 @@ function Soporte() {
                     <th>Estado del Ticket</th>
                     <th>Fecha De Envio</th>
                     <th>Fecha De Resolución</th>
-                    <th>Folio</th>
 
                   </tr>
                 </thead>
@@ -928,13 +938,36 @@ function Soporte() {
                     <td>{ticket.estado}</td>
                     <td>{formatTimestamp(ticket.fechaDeEnvio)}</td>
                     <td>{formatTimestamp(ticket.fechaResuelto)}</td>
-                    <td>{ticket.folio}</td>
-                    <td><button onClick={()=> handleDetalles}>Detalles</button></td>
+                    <td><button onClick={() => openModal(ticket.folio)}>Detalles</button></td>
+  
                   </tr>
                 ))}
                 </tbody>
              
               </table>
+              {showModal && (
+                 <div className="modal">
+                 <div className="modal-content">
+                   <span className="close" onClick={closeModal}>
+                     &times;
+                   </span>
+                   <p>Detalles del ticket</p>
+       <p><button onClick = {closeModal}>Cerrar</button></p>
+                    <p>Prioridad: {ticketEncontrado.priori}</p>
+                    <p>Estado: {ticketEncontrado.estado}</p>
+                   <p>Fecha Asignado: {formatTimestamp(ticketEncontrado.fechaAsignado)}</p>
+                   <p>Fecha De Envio: {formatTimestamp(ticketEncontrado.fechaDeEnvio)}</p>
+                   <p>Fecha De Resuelto: {formatTimestamp(ticketEncontrado.fechaResuleto)}</p>
+                   <p>Folio: {ticketEncontrado.folio}</p>
+                   <p>Area: {ticketEncontrado.area}</p>
+                   <p>Navegador: {ticketEncontrado.navegador}</p>
+                   <p>Sistema Operativo: {ticketEncontrado.sistemaOperativo}</p>
+                   <p>Tipo de error: {ticketEncontrado.errorSeleccionado}</p>
+                   <p>Ruta: {ticketEncontrado.rutitaD}</p>
+                 </div>
+               </div>
+              )}
+
             </div>
       </div>
     </div>
@@ -942,107 +975,3 @@ function Soporte() {
 }
 export default Soporte;
 
-{
-  /*
-              <form onSubmit={handleSubmit}>
-
-                
-                <label>Fecha:</label>
-                <input type="text" defaultValue={fecha} readOnly/>
-                <br /><br />
-
-                <h5>Obtener nombre del usuario acá</h5>
-                <br />
-
-                <h5>Obtener correo del usuario acá</h5>
-                <br />
-              
-
-                <label>Seleccione el error ❌:</label>
-                <br />
-                <div className='select'>
-                  <select value={errorSeleccionado} onChange={handleError}>
-                    <option value="">Seleccionar</option>
-                    {catalogoErrores.map((error, index) => (
-                      <option key={index} value={error.nombre}>
-                        {${error.nombre}}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <br /><br /><br />
-
-                <label>Seleccione su sistema operativo 🖥: </label>
-                <br />
-                <div className='select'>
-                  <select value={sistemaOperativo} onChange={handleSO}>
-                    <option value="">Seleccionar</option>
-                    {catalogoSistemaOperativo.map((sistema, index) => (
-                      <option key={index} value={sistema}>
-                        {${sistema}}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <br /><br /><br />
-
-                <label>Seleccione su navegador 🌎: </label>
-                <br />
-                <div className='select'>
-                  <select
-                    value={navegador}
-                    onChange={handleNavegador}
-                  >
-                    <option value="">Seleccionar</option>
-                    {catalogoNavegadores.map((navegador, index) => (
-                      <option key={index} value={navegador}>
-                        {${navegador}}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <br /><br /><br />
-
-                <label>Ruta donde se encontró el error 🔍: </label>
-                <br />
-                <input
-                  type="text"
-                  value={rutaError}
-                  onChange={handleRutaError}
-                />
-                <br /><br /><br />
-
-                <label>Adjuntar fotografía del problema 📸: </label>
-                <br />
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFoto}
-                />
-                
-                <br /><br /><br />
-
-                <div className="wrapper">
-                  <label>Descripción del problema 📝: </label>
-                  <br />
-                  <textarea
-                    ref={textareaRef}
-                    value={descripcionProblema}
-                    onChange={handleDescripcionProblema}
-                    rows="1" // Esto evita que el textarea se ajuste automáticamente en altura
-                    cols="50"
-                    placeholder="Se encontró un error en..."
-                    style={{ resize: 'none' }} // Esto evita que el usuario pueda ajustar manualmente el tamaño del textarea
-                  />
-                </div>
-
-                <br /><br /><br />
-
-                <button type="submit" id="submit">Enviar</button>
-
-              </form>
-              */
-}
