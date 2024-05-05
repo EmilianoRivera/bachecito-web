@@ -1,5 +1,19 @@
+:root {
+  --background-color: #fff;
+  --text-color: #6f6f6f;
+  --background-color-3: #ffffffde;
+  --background-color-2: #f1f1f1;
+}
+
+.dark-mode {
+  --background-color: #1E1E1E;
+  --text-color: #fff;
+  --background-color-2: #2e2e2e;
+  --background-color-3: #1e1e1ed2;
+}
+
 .navBar {
-    background-color: #ffffffde;
+    background-color: var(--background-color-3);
     overflow: hidden;
     position: fixed;
     top: 0;
@@ -10,7 +24,7 @@
   .navBar a {
     justify-content: center;
     float: left;
-    color: #6f6f6f;
+    color: var(--text-color);
     margin-right: 8px;
     padding: 14px 16px;
     text-decoration: none;
@@ -240,7 +254,7 @@
       width:4rem;
       border-radius: 5rem;
       margin-left: 93vw;
-      background-color: #F1F1F1;
+      background-color: var(--background-color-2);
       height: 64vh;
       padding-top: 5vh;
       padding-bottom: 5vh;
@@ -344,4 +358,14 @@
     border: 1px solid #FF9F49;
     color: #FF9F49;
     transition: .3s;
+  }
+
+  /*Modo oscuro*/
+  .darkMode{
+    background-color: #6F6F6F;
+    color: rgb(255, 255, 255);
+  }
+
+  .darkMode a{
+    color: #ffffff;
   }
