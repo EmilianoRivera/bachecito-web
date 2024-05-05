@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useAuthUser } from "../../../../../hooks/UseAuthUser";
-import { auth, db } from "../../../../../firebase";
+import { auth, db , app2, app} from "../../../../../firebase";
 import { useRouter } from "next/navigation";
 import AuthContext from "../../../../../context/AuthContext";
 import "./Soporte.css";
@@ -335,7 +335,7 @@ function Soporte() {
   };
 
   const handleFoto = (e) => {
-    setFoto(e.target.files[0]);
+    setFoto(e.target.value);
   };
 
   const handleFileChange = (e) => {
@@ -355,17 +355,20 @@ function Soporte() {
   };
 
   const handleFileUpload = async () => {
-    console.log("first");
-    /* 
-    const storage = getStorage(appSoporte);
+    const archivo = document.querySelector('input[type="file"]');
+    const archivito = archivo.files[0];
+
+    if (!archivito) {
+      console.error("No se ha seleccionado ningún archivo");
+      return;
+    }
+
+    const storage = getStorage(app2);
     const randomId = Math.random().toString(36).substring(7);
-    const imageName = Ticket_${randomId};
-    const storageRef = ref(
-      storage,
-      ImagenesTickets/${userData.uid}/${imageName}
-    );
+    const imageName = `Ticket_${randomId}`;
+    const storageRef = ref(storage, `ImagenesTickets/${imageName}`);
     await uploadBytes(storageRef, archivito);
-    return getDownloadURL(storageRef); */
+    return getDownloadURL(storageRef);
   };
   // Acá va toda la lógica
 
@@ -375,16 +378,13 @@ function Soporte() {
     const nombre = userData.nombre;
     const area = asignarTarea;
     const uid = userData.uid;
-    if (!foto) {
-      console.error("No se ha seleccionado ninguna foto");
-      return;
-    }
-
+      const url = await handleFileUpload();
+     
     let res = prompt("¿Desea levantar el ticket? (SI/NO)");
     if (res.toUpperCase() === "SI") {
       try {
         const ticketResponse = await fetch(
-          `http://localhost:3001/api/Ticket/${foto}/${uid}/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${encodeURIComponent(
+          `http://localhost:3001/api/Ticket/${url}/${uid}/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${encodeURIComponent(
             selectedRutaError
           )}/${descripcionProblema}/${correoA}/${nombre}/${area}`,
           {
@@ -393,7 +393,7 @@ function Soporte() {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              foto,
+              url,
               uid: uid,
               errorSeleccionado,
               sistemaOperativo,

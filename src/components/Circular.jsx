@@ -1,6 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { db, collection, getDocs, query, where,   } from "../../firebase";
+import { db, collection, getDocs, query, where,    } from "../../firebase";
 
 import * as d3 from "d3";
 
