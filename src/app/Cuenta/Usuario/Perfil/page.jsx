@@ -243,33 +243,33 @@ export default function Perfil() {
         </div>
 
         {reportes.map((reporte, index) => (
-          <div className="box2" id="box2" key={index}>
-            <div className="column-left">
-              <div className="fotografía">
+          <div className="box2-2" id="box2-2" key={index}>
+            <div className="column-left2">
+              <div className="fotografía2">
                 <img
                   src={reporte.imagenURL}
                   alt=""
-                  style={{ maxWidth: "100%", maxHeight: "100%" }}
+                  style={{ maxWidth: "100%", maxHeight: "100%", borderRadius:"1rem", }}
                 />
               </div>
-              <div className="column-left-inferior">
-                <div className="fecha">{reporte.fechaReporte}</div>
+              <div className="column-left-inferior2">
+                <div className="fecha2">{reporte.fechaReporte}</div>
 
-                <div className="contador">
-                  <div className="icon">
+                <div className="contador2">
+                  <div className="icon2">
                     <img
                       src="https://i.postimg.cc/s2ZYz740/exclamacion-de-diamante.png"
-                      className="logo"
+                      className="logo2"
                     />
                   </div>
-                  <div className="number">{reporte.contador}</div>
+                  <div className="number2">{reporte.contador}</div>
                 </div>
               </div>
             </div>
 
-            <div className="column-right">
-              <div className="column-right-superior">
-                <div className="estado">
+            <div className="column-right2">
+              <div className="column-right-superior2">
+                <div className="estado2">
                   {reporte.estado === "Sin atender" && (
                     <img
                       src={sinAtenderIcon.src}
@@ -305,15 +305,15 @@ export default function Perfil() {
                   )}
                 </div>
 
-                <div className="guardar">
+                <div className="guardar2">
  
                   {userData && userData.uid && userData.foliosGuardados && userData.foliosGuardados.includes(reporte.folio) ? (
                     <img src="https://i.postimg.cc/W335wqws/estrella-2.png"
-                      className="icon-star" alt="Folio guardado" onClick={() => guardarFoliosEnDB(reporte.folio, userData)}/>
+                      className="icon-star2" alt="Folio guardado" onClick={() => guardarFoliosEnDB(reporte.folio, userData)}/>
  
                   ) : (
                     <img
-                      className="icon-star"
+                      className="icon-star2"
                       src={estrella.src}
                       alt="Guardar folio"
                       onClick={() => guardarFoliosEnDB(reporte.folio, userData)}
@@ -322,14 +322,14 @@ export default function Perfil() {
                 </div>
               </div>
 
-              <div className="ubicacion">
+              <div className="ubicacion2">
                 <h3>Ubicación:</h3>
-                <div className="box-ubi">{reporte.ubicacion}</div>
+                <div className="box-ubi2">{reporte.ubicacion}</div>
               </div>
 
-              <div className="descripcion">
+              <div className="descripcion2">
                 <h3>Descripción</h3>
-                <div className="box-des">{reporte.descripcion}</div>
+                <div className="box-des2">{reporte.descripcion}</div>
               </div>
             </div>
           </div>

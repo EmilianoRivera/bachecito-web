@@ -270,7 +270,7 @@
     position: relative;
   }
   .navBar.admin .opc-admin:hover{
-    background-color: #f1f1f1;
+    background-color: var(--background-color-2);
     transform: translate(-20px);
     border-radius: 3rem;
     transition: .2s;

@@ -832,7 +832,7 @@ const Map = () => {
         id="map"
       >
         <TileLayer
-          url="https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=cB1pkcJ37buZmTAzdPhV"
+          url="https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=Pyxxe8P2qOBkCkRdy5jX	"
           attribution="Map data &copy; <a href='https://www.openstreetmap.org/'>OpenStreetMap</a> contributors, 
           <a href='https://creativecommons.org/licenses/by-sa/2.0/'>CC-BY-SA</a>, 
           Imagery © <a href='https://www.maptiler.com/'>MapTiler</a>"
