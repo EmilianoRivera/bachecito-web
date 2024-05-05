@@ -4,10 +4,18 @@
 .bodySoporte {
     padding: 0;
     margin: 0;
+    height: 85vh;
+    top: 10vh;
+    width: 90vw;
+    position: fixed;
+    left: 2vw;
+    overflow-y: scroll;
+    position: relative;
+    z-index: 10000;
+    overflow-x: hidden;
 }
 
 .containerSoporte {
-    margin-top: 7%;
     text-align: center;
     position: relative;
 }
@@ -16,7 +24,7 @@
     position: relative;
     z-index: 100;
     font-family: "Baloo Thambi 2", system-ui;
-    width: 90%;
+    width: 98%;
     margin: 0 auto;
     /* Centra horizontalmente */
 }
@@ -27,88 +35,74 @@
 }
 
 .boxPF{
-    width: 85%;
-    padding-top: 3vw;
-    padding-bottom: 3vw;
+    padding-top: 2vw;
+    padding-bottom: 2vw;
     padding-left: 5vw;
     padding-right: 5vw;
     height: auto;
     border-radius: 6vh;
-    margin-bottom: 5%;
+    margin-bottom: 3%;
     position: relative;
 }
 
 #boxPF{
-    background-color: #FFF;
+    background-color: var(--background-color-2);
 }
 
 .containerLetritasPF {
 display: flex;
 align-items: center;
 justify-content: center;
-height: 100%;
+justify-items: center;
+height: 10vh;
+}
+.svg-soporte{
+  font: 3.5rem Arial;
+  font-weight: 900;
+  width: 100%;
+  height: 20vh;
+  margin-top: 4%;
 }
 
-header {
-display: block;
-position: relative;
-width: 55vw;
-height: 20vw;
-}
+.svg-soporte text {
+    fill: #ff9f49;
+    stroke: #ff9f49;
+    fill-opacity: 1;
+    stroke-width: 0;
+    stroke-dasharray: 100% 0;
+    animation: stroke-offset 4s ease-out;
+  }
 
-.containerLetritasPF h1, .containerLetritasPF span.copyPF {
-font-family:monospace;
-font-weight: bold;
-font-size: 11vw;
-display: block;
-position: absolute;
-top: 0px;
-left: 0px;
-line-height: 1;
-height: 20vw;
-margin: 0;
-padding: 0;
-text-shadow: -.15vw -.15vw 0 #000, .15vw -.15vw 0 #000, -.15vw .15vw 0 #000,
-.15vw .15vw 0 #000;
-}
+  @keyframes stroke-offset {
+    0% {
+      fill-opacity: 0;
+      stroke-width: 0;
+      stroke-dasharray: 0% 100%;
+    }
+    25% {
+      stroke-width: 2px;
+    }
+    50% {
+      fill-opacity: 0;
+    }
+    75% {
+      stroke-width: 2px;
+    }
+    100% {
+      stroke-width: 0;
+    }
+  }
 
-.containerLetritasPF h1 {
-color: #fff6da;
-z-index: 50;
-}
-
-.copy-1_PF {
-transform: perspective(500px) translate3d(0, 0, -15px);
-color: #FFD557;
-z-index: 40;
-}
-
-.copy-2_PF {
-transform: perspective(500px) translate3d(0, 0, -30px);
-color: #FF9F49;
-z-index: 30;
-}
-
-.copy-3_PF {
-transform: perspective(500px) translate3d(0, 0, -45px);
-color: #FF4D35;
-z-index: 20;
-}
-
-.copy-4_PF {
-transform: perspective(500px) translate3d(0, 0, -60px);
-color: #D90416;
-z-index: 10;
-}
 
 .containerPF .container_preguntaFrecuente {
     justify-content: space-between;
     /* Ajustar el espacio entre los elementos */
-    width: 60%;
-    background-color: #F1F1F1;
+    width: 100%;
+    background-color: var(--background-color-2);
     border-radius: 15px;
     align-items: center;
     margin: 0 auto;
+    height: auto;
 }
 
 .containerPF .container_preguntaFrecuente .pf {
@@ -121,37 +115,40 @@ z-index: 10;
 .containerPF .container_preguntaFrecuente .pf p {
     margin-left: 5%;
     align-self: flex-start;
-    height: 100%;
-    color: #1E1E1E;
+    height: 90%;
+    color: var(--text-color);
+    font-size: 1.3rem;
 }
 
 .containerPF .container_preguntaFrecuente .pf img {
     height: 100%;
-    width: 3%;
+    width: 20px;
     margin-right: 20px;
     align-items: center;
-    margin-top: 2.5%;
+    margin-top: 20px;
 }
 
 .descripcion_pf {
-    width: 100%;
-    height: 100%;
+    width: 90%;
+    height: auto;
     border-radius: 15px;
-    background-color: #F1F1F1;
+    background-color: var(--background-color);
     padding-bottom: 8px;
+    margin-left: 5%;
+
 }
 
 .descripcion_pf p {
     text-align: justify;
     margin-left: 5%;
     margin-right: 5%;
-    color: #1E1E1E;
+    color: var(--text-color);
 }
 
 .container_FormularioSoporte {
-    background-color: #F1F1F1;
+    background-color: var(--background-color-2);
     border-radius: 15px;
-    width: 60%;
+    width: 100%;
     margin-top: 5%;
     align-items: center;
     justify-content: center;
@@ -167,7 +164,7 @@ z-index: 10;
 }
 
 .container_FormularioSoporte {
-    background-color: #F1F1F1;
+    background-color: var(--background-color-2);
     border-radius: 15px;
     width: 60%;
     margin-top: 5%;
@@ -188,7 +185,7 @@ z-index: 10;
 
 .table_form_sp th,
 .table_form_sp td {
-    width: 50%;
+    width: 35%;
     /* Establecer el ancho al 50% para cada th y td */
     padding: 10px;
     /* Ajustar el relleno según sea necesario */
@@ -218,7 +215,7 @@ z-index: 10;
 }
 
 .container_FormularioSoporte .containerFR form label {
-    color: #6F6F6F;
+    color: var(--text-color);
     font-family: "Baloo Thambi 2", system-ui;
     font-size: 18px;
 }
@@ -231,11 +228,11 @@ z-index: 10;
     outline: 0;
     box-shadow: none;
     border: 0 !important;
-    background: #D1D1D1;
+    background: var(--background-color-6);
     background-image: none;
     flex: 1;
     padding: 0 .5em;
-    color: #1E1E1E;
+    color: var(--text-color-3);
     cursor: pointer;
     font-size: 1em;
     font-family: "Baloo Thambi 2", system-ui;
@@ -275,16 +272,16 @@ select::-ms-expand {
 }
 
 .container_FormularioSoporte .containerFR input {
-    background-color: #FFF;
+    background-color: var(--background-color-6);
     border: none;
     margin: 8px 0;
     padding: 10px;
     font-size: 13px;
     border-radius: 8px;
-    width: 70%;
+    width: 74%;
     outline: auto;
-    outline-color: #FFF;
-    color: #949494;
+    outline-color: var(--background-color-6);
+    color: var(--text-color-3);
     transition: outline 0.5s ease;
     font-family: "Baloo Thambi 2", system-ui;
 }
@@ -297,7 +294,7 @@ select::-ms-expand {
 }
 
 .container_FormularioSoporte .containerFR input::placeholder {
-    color: #949494;
+    color:var(--text-color-3);
     /* Color del placeholder predeterminado */
     transition: color 0.5s ease;
     /* Transición suave */
@@ -313,35 +310,32 @@ select::-ms-expand {
 }
 
 .container_FormularioSoporte .containerFR .wrapper textarea {
-    background-color: #FFFFFF;
+    background-color: var(--background-color-6);
     color: #949494;
     outline: auto;
-    outline-color: #FFF;
+    outline-color: var(--background-color-6);
     padding: 1em;
     border-radius: 10px;
     border: 2px solid transparent;
-    outline: none;
     font-family: "Baloo Thambi 2", system-ui;
     font-weight: 500;
     font-size: 16px;
     line-height: 1.4;
-    width: 67%;
+    width: 71%;
     height: 2%;
     transition: all 0.2s;
 }
 
 .container_FormularioSoporte .containerFR .wrapper textarea:hover {
     cursor: pointer;
-    background-color: #FFFFFF;
     outline-color: #FF9F49;
 
 }
 
 .container_FormularioSoporte .containerFR .wrapper textarea:focus {
     cursor: text;
-    color: #6F6F6F;
+    color: var(--text-color);
     font-family: "Baloo Thambi 2", system-ui;
-    background-color: #FFFFFF;
     border-color: #FF9F49;
 }
 
@@ -362,10 +356,28 @@ select::-ms-expand {
     cursor: pointer;
     transition: .5s;
     text-align: center;
+    width: 50%;
 }
 
 
 .container_FormularioSoporte .containerFR form button:hover {
     background-color: #FF9F49;
     color: #fff;
+}
+
+::-webkit-scrollbar {
+    width: 10px; /* Ancho de la barra de desplazamiento */
+}
+
+::-webkit-scrollbar-track {
+    background: none; /* Color del fondo de la barra de desplazamiento */
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--background-color-6); /* Color de la barra de desplazamiento */
+    border-radius: 5px; /* Radio de la esquina de la barra de desplazamiento */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--background-color-2); /* Color de la barra de desplazamiento al pasar el mouse sobre ella */
 }
