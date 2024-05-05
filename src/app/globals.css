@@ -1,18 +1,39 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+body, div{
+  transition: .3s;
+}
 
 :root {
   --background-color: #fff;
   --text-color: #666;
   --background-color-2: #f1f1f1;
   --text-color-3: #949494;
+  --background-color-4: #fff;
+  --background-color-5: #fff;
+  --text-color-5: #606060;
+  --background-color-6: #d1d1d1;
+
+  --text-color-6: #FF5136;
+  --background-color-7: #ffffffc7;
+
+  --background-image-1:url("https://i.postimg.cc/hGJ2TBZ9/form-Admin.png");
 }
 
 .dark-mode {
   --background-color: #1E1E1E;
   --text-color: #f1f1f1;
-  --text-color-3: #bdbdbd;
+  --text-color-5: #606060;
+  --text-color-3: #ffffff;
   --background-color-2: #2e2e2e;
+  --background-color-4: #525252;
+  --background-color-5: #2e2e2e;
+  --background-color-6: #505050;
+  --text-color-6: #ff9c8d;
+  --background-color-7: #363636a8;
+
+  --background-image-1:url("https://i.postimg.cc/L5h56x86/Whats-App-Image-2024-05-04-at-19-09-21.jpg");
+
 }
 
 .btn-dark{
@@ -28,15 +49,15 @@
   display: flex;
 }
 .btn-dark img {
-  width: 3vw;
-  height: 3vw;
+  width: 40px;
+  width: 40px;
 }
 
 .btn-dark .lunaaaa {
-  width: 2vw;
-  height: 2vw;
-  margin-right: .5vw;
-  margin-top: .5vw;
+  width: 30px;
+  height: 30px;
+  margin-right: 5px;
+  margin-top: 5px;
 }
 
 body{

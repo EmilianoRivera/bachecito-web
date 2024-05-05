@@ -1,5 +1,9 @@
 
 @import url('https://rsms.me/inter/inter-ui.css');
+body, div{
+  transition: none ;
+
+}
 
 .page-adminLogin {
   font-family: 'Inter UI', sans-serif;
@@ -71,7 +75,7 @@
     right: 50px;
 }
 .right {
-  background: #ffffff;
+  background: var(--background-color);
   border: 2px solid #FF9F49;
   position: relative;
   width: 50%;
@@ -105,7 +109,7 @@
   position: absolute;
 }
 .container-adminLogin label {
-  color:  #949494;
+  color:  var(--text-color);
   display: block;
   font-size: 14px;
   height: 16px;
@@ -115,11 +119,11 @@
 .container-adminLogin input {
   background: transparent;
   border: 0;
-  color: #6F6F6F;
+  color: var(--text-color);
   font-size: 17px;
   height: 30px;
   line-height: 30px;
-  border-bottom: 1px solid rgba(218, 218, 218, 0.212);
+  border-bottom: 1px solid var(--background-color-2);
   outline: none !important;
   width: 100%;
 }

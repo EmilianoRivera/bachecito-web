@@ -185,7 +185,7 @@ function Favoritos() {
               <div className="box2-favs" key={index}>
                 <div className="column-favs-left">
                   <div className="fotografía-favs">
-                    <img src= {report.imagenURL} style={{ maxWidth: '100%', maxHeight: '100%', borderRadius:"4vh" }} alt="" />
+                    <img src= {report.imagenURL} style={{ maxWidth: '100%', maxHeight: '100%', borderRadius:"1rem", }} alt="" />
                   </div>
                   <div className="column-favs-left-inferior">
                     <div className="fecha-favs">
@@ -244,7 +244,7 @@ function Favoritos() {
               <div key={index} className="box2-favs" >
                 <div className="column-favs-left">
                   <div className="fotografía-favs">
-                    <img src= {report.imagenURL} style={{ maxWidth: '100%', maxHeight: '100%' }}alt="" />
+                    <img src= {report.imagenURL} style={{ maxWidth: '100%', maxHeight: '100%', borderRadius:"1rem" }}alt="" />
                   </div>
                   <div className="column-favs-left-inferior">
                     <div className="fecha-favs">
