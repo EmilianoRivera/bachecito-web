@@ -2,12 +2,10 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useAuthUser } from "../../../../../hooks/UseAuthUser";
-import {  auth, db } from "../../../../../firebase";
+import { auth, db , app2, app} from "../../../../../firebase";
 import { useRouter } from "next/navigation";
 import AuthContext from "../../../../../context/AuthContext";
-import RutaProtegida from "@/components/RutaProtegida";
 import "./Soporte.css";
-
 
 function Soporte() {
   useAuthUser();
@@ -21,18 +19,28 @@ function Soporte() {
   const [sistemaOperativo, setSistemaOperativo] = useState(
     "No se ha seleccionado un sistema operativo"
   );
-  const [asignarTarea, setAsignarTarea] = useState("Otro")
+  const [asignarTarea, setAsignarTarea] = useState("Otro");
   const [navegador, setNavegador] = useState(
     "No se ha seleccionado un navegador"
   );
   const [selectedRutaError, setSelectedRutaError] = useState("/NoEspecificado");
-  const [foto, setFoto] = useState("");
-  const [descripcionProblema, setDescripcionProblema] = useState("Sin descripcion");
+  const [foto, setFoto] = useState(null);
+  const [descripcionProblema, setDescripcionProblema] =
+    useState("");
 
   const [mostrarDetalle1, setMostrarDetalle1] = useState(false);
   const [mostrarDetalle2, setMostrarDetalle2] = useState(false);
   const [mostrarDetalle3, setMostrarDetalle3] = useState(false);
   const [mostrarDetalle4, setMostrarDetalle4] = useState(false);
+  const [mostrarDetalle5, setMostrarDetalle5] = useState(false);
+  const [mostrarDetalle6, setMostrarDetalle6] = useState(false);
+  const [mostrarDetalle7, setMostrarDetalle7] = useState(false);
+  const [mostrarDetalle8, setMostrarDetalle8] = useState(false);
+  const [mostrarDetalle9, setMostrarDetalle9] = useState(false);
+  const [mostrarDetalle10, setMostrarDetalle10] = useState(false);
+  const [ticket, setTickets] = useState([]);
+  const [showModal, setShowModal] = useState(false);
+  const [ticketEncontrado, setTicketEncontrado] = useState([]);
 
   const toggleDetalle1 = () => {
     setMostrarDetalle1(!mostrarDetalle1);
@@ -50,21 +58,89 @@ function Soporte() {
     setMostrarDetalle4(!mostrarDetalle4);
   };
 
+  const toggleDetalle5 = () => {
+    setMostrarDetalle5(!mostrarDetalle5);
+  };
+
+  const toggleDetalle6 = () => {
+    setMostrarDetalle6(!mostrarDetalle6);
+  };
+
+  const toggleDetalle7 = () => {
+    setMostrarDetalle7(!mostrarDetalle7);
+  };
+
+  const toggleDetalle8 = () => {
+    setMostrarDetalle8(!mostrarDetalle8);
+  };
+
+  const toggleDetalle9 = () => {
+    setMostrarDetalle9(!mostrarDetalle9);
+  };
+
+  const toggleDetalle10 = () => {
+    setMostrarDetalle10(!mostrarDetalle10);
+  };
+
   // Función para cambiar la imagen
   const obtenerImagen1 = () => {
-    return mostrarDetalle1 ? 'https://i.postimg.cc/wB2S0JqV/triangulo-1.png' : 'https://i.postimg.cc/Z5XxTn6Y/triangulo.png';
+    return mostrarDetalle1
+      ? "https://i.postimg.cc/wB2S0JqV/triangulo-1.png"
+      : "https://i.postimg.cc/Z5XxTn6Y/triangulo.png";
   };
 
   const obtenerImagen2 = () => {
-    return mostrarDetalle2 ? 'https://i.postimg.cc/wB2S0JqV/triangulo-1.png' : 'https://i.postimg.cc/Z5XxTn6Y/triangulo.png';
+    return mostrarDetalle2
+      ? "https://i.postimg.cc/wB2S0JqV/triangulo-1.png"
+      : "https://i.postimg.cc/Z5XxTn6Y/triangulo.png";
   };
 
   const obtenerImagen3 = () => {
-    return mostrarDetalle3 ? 'https://i.postimg.cc/wB2S0JqV/triangulo-1.png' : 'https://i.postimg.cc/Z5XxTn6Y/triangulo.png';
+    return mostrarDetalle3
+      ? "https://i.postimg.cc/wB2S0JqV/triangulo-1.png"
+      : "https://i.postimg.cc/Z5XxTn6Y/triangulo.png";
   };
 
   const obtenerImagen4 = () => {
-    return mostrarDetalle4 ? 'https://i.postimg.cc/wB2S0JqV/triangulo-1.png' : 'https://i.postimg.cc/Z5XxTn6Y/triangulo.png';
+    return mostrarDetalle4
+      ? "https://i.postimg.cc/wB2S0JqV/triangulo-1.png"
+      : "https://i.postimg.cc/Z5XxTn6Y/triangulo.png";
+  };
+
+  const obtenerImagen5 = () => {
+    return mostrarDetalle5
+      ? "https://i.postimg.cc/wB2S0JqV/triangulo-1.png"
+      : "https://i.postimg.cc/Z5XxTn6Y/triangulo.png";
+  };
+
+  const obtenerImagen6 = () => {
+    return mostrarDetalle6
+      ? "https://i.postimg.cc/wB2S0JqV/triangulo-1.png"
+      : "https://i.postimg.cc/Z5XxTn6Y/triangulo.png";
+  };
+
+  const obtenerImagen7 = () => {
+    return mostrarDetalle7
+      ? "https://i.postimg.cc/wB2S0JqV/triangulo-1.png"
+      : "https://i.postimg.cc/Z5XxTn6Y/triangulo.png";
+  };
+
+  const obtenerImagen8 = () => {
+    return mostrarDetalle8
+      ? "https://i.postimg.cc/wB2S0JqV/triangulo-1.png"
+      : "https://i.postimg.cc/Z5XxTn6Y/triangulo.png";
+  };
+
+  const obtenerImagen9 = () => {
+    return mostrarDetalle9
+      ? "https://i.postimg.cc/wB2S0JqV/triangulo-1.png"
+      : "https://i.postimg.cc/Z5XxTn6Y/triangulo.png";
+  };
+
+  const obtenerImagen10 = () => {
+    return mostrarDetalle10
+      ? "https://i.postimg.cc/wB2S0JqV/triangulo-1.png"
+      : "https://i.postimg.cc/Z5XxTn6Y/triangulo.png";
   };
 
   useEffect(() => {
@@ -93,7 +169,41 @@ function Soporte() {
         console.error("Error fetching data:", error);
       }
     }
+
+
   }, []);
+
+
+  useEffect(() => {
+    async function fetchTickets() {
+      try {
+        if (!userData || !userData.uid) {
+          console.error("UserData is not available or invalid");
+          return;
+        }
+
+        const uid = userData.uid;
+        const ticketsData = await fetch(`http://localhost:3000/api/Ticket/${uid}`);
+        if (!ticketsData.ok) {
+          throw new Error("Failed to fetch tickets data");
+        }
+        console.log("first");
+        const tickets = await ticketsData.json();
+        console.log("VA POR AQUI", tickets);
+        setTickets(tickets);
+      } catch (error) {
+        console.error("Error fetching tickets:", error);
+      }
+    }
+
+    // Ejecutar fetchTickets() solo si userData está disponible y tiene un valor válido
+    if (userData && userData.uid) {
+      fetchTickets();
+    }
+  }, [userData]); // Ejecutar cuando userData cambie
+
+
+
   const catalogoRutaErrores = [
     { ruta: "/Cuenta/Administrador", modulo: "✅Inicio de Sesión" },
     { ruta: "/Administrador/Dashboard", modulo: "📊 Dashboard" },
@@ -147,8 +257,31 @@ function Soporte() {
     "Samsung Internet",
     "Otro",
   ];
+  //Convertir timestamp
+  function formatTimestamp(timestamp) {
+    // Verifica si timestamp es un objeto con propiedades seconds y nanoseconds
+    if (timestamp && timestamp.seconds && timestamp.nanoseconds) {
+      // Crea una nueva instancia de Date utilizando los segundos del timestamp
+      const dateObject = new Date(timestamp.seconds * 1000); // Multiplica por 1000 para convertir segundos a milisegundos
+      // Formatea la fecha como una cadena legible
+      return dateObject.toLocaleDateString(); // Obtener solo la fecha sin la hora
+    } else {
+      // Si no se puede convertir, devuelve un mensaje de error
+      return "Aun no Resuelto";
+    }
+  }
 
-
+  const openModal = (folio) => {
+ 
+    const ticketEncontrados = ticket.find(ticket => ticket.folio === folio);
+    if (ticketEncontrados) { 
+      console.log("Ticket encontrado:", ticketEncontrados);
+      setTicketEncontrado(ticketEncontrados)
+    } else {
+      console.log("No se encontró ningún ticket con el folio:", folio);
+    }
+    setShowModal(true);
+  }
 
   // Obtener fecha actual al cargar el componente
   /*
@@ -158,7 +291,7 @@ function Soporte() {
       const dia = fechaActual.getDate();
       const mes = fechaActual.getMonth() + 1;
       const año = fechaActual.getFullYear();
-      const fechaFormateada = `${dia < 10 ? '0' + dia : dia}/${mes < 10 ? '0' + mes : mes}/${año}`;
+      const fechaFormateada = ${dia < 10 ? '0' + dia : dia}/${mes < 10 ? '0' + mes : mes}/${año};
       setFecha(fechaFormateada);
     };
 
@@ -168,7 +301,10 @@ function Soporte() {
 
   // Funciones para manejar los cambios en el select de errores y sistemas operativos
 
-
+  const closeModal = () => {
+    setShowModal(false);
+  };
+  
   const handleError = (e) => {
     const selectedErr = e.target.value;
     setErrorSeleccionado(selectedErr);
@@ -182,10 +318,10 @@ function Soporte() {
   };
 
   const handleAsignarTarea = (e) => {
-    const asignar = e.target.value
-    setAsignarTarea(asignar)
-    console.log(asignar)
-  }
+    const asignar = e.target.value;
+    setAsignarTarea(asignar);
+    console.log(asignar);
+  };
   const handleNavegador = (e) => {
     const selectedNavegador = e.target.value;
     setNavegador(selectedNavegador);
@@ -194,8 +330,12 @@ function Soporte() {
 
   const handleRutaError = (e) => {
     const ruta = e.target.value;
-    console.log(e.target.value)
+    console.log(e.target.value);
     setSelectedRutaError(ruta);
+  };
+
+  const handleFoto = (e) => {
+    setFoto(e.target.value);
   };
 
   const handleFileChange = (e) => {
@@ -208,45 +348,43 @@ function Soporte() {
     console.log(descripcionProblema);
     // Ajustar la altura del textarea
     if (textareaRef.current) {
-      textareaRef.current.style.height = 'auto';
-      textareaRef.current.style.height = textareaRef.current.scrollHeight + 'px';
+      textareaRef.current.style.height = "auto";
+      textareaRef.current.style.height =
+        textareaRef.current.scrollHeight + "px";
     }
   };
 
   const handleFileUpload = async () => {
-   
-    console.log("first")
-   /* 
-    const storage = getStorage(appSoporte);
-    const randomId = Math.random().toString(36).substring(7);
-    const imageName = `Ticket_${randomId}`;
-    const storageRef = ref(
-      storage,
-      `ImagenesTickets/${userData.uid}/${imageName}`
-    );
-    await uploadBytes(storageRef, archivito);
-    return getDownloadURL(storageRef); */
-  };
-  // Acá va toda la lógica
- 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const correoA = userData.correo;
-    const nombre = userData.nombre
-    const area = asignarTarea;
-    const uid = userData.uid
-    if (!foto) {
-      console.error("No se ha seleccionado ninguna foto");
+    const archivo = document.querySelector('input[type="file"]');
+    const archivito = archivo.files[0];
+
+    if (!archivito) {
+      console.error("No se ha seleccionado ningún archivo");
       return;
     }
 
- 
-  let res = prompt("¿Desea levantar el ticket? (SI/NO)");
-  if (res.toUpperCase() === "SI") {
-  try { 
- 
+    const storage = getStorage(app2);
+    const randomId = Math.random().toString(36).substring(7);
+    const imageName = `Ticket_${randomId}`;
+    const storageRef = ref(storage, `ImagenesTickets/${imageName}`);
+    await uploadBytes(storageRef, archivito);
+    return getDownloadURL(storageRef);
+  };
+  // Acá va toda la lógica
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const correoA = userData.correo;
+    const nombre = userData.nombre;
+    const area = asignarTarea;
+    const uid = userData.uid;
+      const url = await handleFileUpload();
+     
+    let res = prompt("¿Desea levantar el ticket? (SI/NO)");
+    if (res.toUpperCase() === "SI") {
+      try {
         const ticketResponse = await fetch(
-          `http://localhost:3001/api/Ticket/${foto}/${uid}/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${encodeURIComponent(
+          `http://localhost:3001/api/Ticket/${url}/${uid}/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${encodeURIComponent(
             selectedRutaError
           )}/${descripcionProblema}/${correoA}/${nombre}/${area}`,
           {
@@ -255,16 +393,16 @@ function Soporte() {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              foto,
-              uid: uid, 
-              errorSeleccionado, 
-              sistemaOperativo, 
+              url,
+              uid: uid,
+              errorSeleccionado,
+              sistemaOperativo,
               navegador,
-             selectedRutaError : encodeURIComponent(selectedRutaError),
+              selectedRutaError: encodeURIComponent(selectedRutaError),
               descripcionProblema,
               correoA,
-              nombre, 
-              area
+              nombre,
+              area,
             }),
           }
         );
@@ -281,293 +419,459 @@ function Soporte() {
         console.error("Error al enviar el formulario:", error);
       }
     } else {
-      alert("NO SE LEVANTARA SU TICKET")
+      alert("NO SE LEVANTARA SU TICKET");
     }
-
   };
+
   return (
-    <RutaProtegida>
-      <div className="bodySoporte">
-        <div className="containerSoporte">
-          <div className='containerPF'>
-            <h1 id='titulo_pf'>PREGUNTAS FRECUENTES 👀❓❓❓</h1>
-            <div className="todas_las_pf">
-              <div className='container_preguntaFrecuente'>
-                <div className='pf'>
-                  <p>1.- ¿Cómo instalo la app móvil de Bachecito 26?</p>
-                  <img src={obtenerImagen1()} alt="" onClick={toggleDetalle1} />
-                </div>
-                {mostrarDetalle1 && (
-                  <div className="descripcion_pf">
-                    <p>
-                      <br />
-                      Detalle de la respuesta a la pregunta frecuente 1.
-                      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum aspernatur inventore optio cumque eius. Quisquam facilis quo possimus omnis veniam, provident odit architecto dolore, minima, placeat maiores alias sed recusandae.
-                      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti suscipit labore quo molestiae quis illo sunt nulla cupiditate magni voluptatem eos aliquam impedit mollitia officia, minus distinctio ullam voluptates earum?
-                      <br />
-                    </p>
-                  </div>
-                )}
-              </div>
+    <div className="bodySoporte">
+      <div className="containerSoporte">
+        <div className="containerPF">
 
-              <br />
-
-              <div className='container_preguntaFrecuente'>
-                <div className='pf'>
-                  <p>2.- ¿Cómo desinstalo la app móvil de Bachecito 26?</p>
-                  <img src={obtenerImagen2()} alt="" onClick={toggleDetalle2} />
-                </div>
-                {mostrarDetalle2 && (
-                  <div className="descripcion_pf">
-                    <p>
-                      <br />
-                      Detalle de la respuesta a la pregunta frecuente 2.
-                      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum aspernatur inventore optio cumque eius. Quisquam facilis quo possimus omnis veniam, provident odit architecto dolore, minima, placeat maiores alias sed recusandae.
-                      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti suscipit labore quo molestiae quis illo sunt nulla cupiditate magni voluptatem eos aliquam impedit mollitia officia, minus distinctio ullam voluptates earum?
-                      <br />
-                    </p>
-                  </div>
-                )}
-              </div>
-
-              <br />
-
-              <div className='container_preguntaFrecuente'>
-                <div className='pf'>
-                  <p>2.- ¿Cómo desinstalo la app móvil de Bachecito 26?</p>
-                  <img src={obtenerImagen3()} alt="" onClick={toggleDetalle3} />
-                </div>
-                {mostrarDetalle3 && (
-                  <div className="descripcion_pf">
-                    <p>
-                      <br />
-                      Detalle de la respuesta a la pregunta frecuente 2.
-                      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum aspernatur inventore optio cumque eius. Quisquam facilis quo possimus omnis veniam, provident odit architecto dolore, minima, placeat maiores alias sed recusandae.
-                      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti suscipit labore quo molestiae quis illo sunt nulla cupiditate magni voluptatem eos aliquam impedit mollitia officia, minus distinctio ullam voluptates earum?
-                      <br />
-                    </p>
-                  </div>
-                )}
-              </div>
-
-              <br />
-
-              <div className='container_preguntaFrecuente'>
-                <div className='pf'>
-                  <p>2.- ¿Cómo desinstalo la app móvil de Bachecito 26?</p>
-                  <img src={obtenerImagen4()} alt="" onClick={toggleDetalle4} />
-                </div>
-                {mostrarDetalle4 && (
-                  <div className="descripcion_pf">
-                    <p>
-                      <br />
-                      Detalle de la respuesta a la pregunta frecuente 2.
-                      Lorem ipsum dolor sit amet consectetur, adipisicing elit. Harum aspernatur inventore optio cumque eius. Quisquam facilis quo possimus omnis veniam, provident odit architecto dolore, minima, placeat maiores alias sed recusandae.
-                      Lorem ipsum dolor sit, amet consectetur adipisicing elit. Deleniti suscipit labore quo molestiae quis illo sunt nulla cupiditate magni voluptatem eos aliquam impedit mollitia officia, minus distinctio ullam voluptates earum?
-                      <br />
-                    </p>
-                  </div>
-                )}
-              </div>
-            </div>
-
-          </div>
-
-          <div className='container_FormularioSoporte'>
-            <div className='containerFR'>
-              <br />
-
-              <h2 id='titulo_sp'>Formulario de Soporte Técnico 👷</h2>
-
-              <form onSubmit={handleSubmit}>
-                <label>Seleccione el error:</label>
-                <select value={errorSeleccionado} onChange={handleError}>
-                  <option>Tipo de Error</option>
-                  {catalogoErrores.map((errorSeleccionado, index) => (
-                    <option key={index} value={errorSeleccionado.clave}>
-                      {`${errorSeleccionado.nombre}`}
-                    </option>
-                  ))}
-                </select>
-                <br />
-                <br />
-                <br />
-                <label>Módulo donde se encontró el error: </label>
-                <select value={selectedRutaError} onChange={handleRutaError}>
-                  <option>Módulo del Error</option>
-                  {catalogoRutaErrores.map((errorOption, index) => (
-                    <option key={index} value={errorOption.ruta}>
-                      {`${errorOption.modulo}`}
-                    </option>
-                  ))}
-                </select>
-                <br />
-                <br />
-                <br />
-                <label>Carácter de error</label>
-                <select value={asignarTarea} onChange={handleAsignarTarea}>
-                  <option >Escoger carácter de error</option>
-                  <option value="backend">Funcionalidad</option>
-                  <option value="frontend">Diseño</option>
-                </select>
-                <label>Seleccione su sistema operativo: </label>
-                <select value={sistemaOperativo} onChange={handleSO}>
-                  <option value="">Seleccionar</option>
-                  {catalogoSistemaOperativo.map((sistema, index) => (
-                    <option key={index} value={sistema}>
-                      {`${sistema}`}
-                    </option>
-                  ))}
-                </select>
-                <br />
-                <br />
-                <br />
-
-                <label>Seleccione su navegador: </label>
-                <select value={navegador} onChange={handleNavegador}>
-                  <option value="">Seleccionar</option>
-                  {catalogoNavegadores.map((navegador, index) => (
-                    <option key={index} value={navegador}>
-                      {`${navegador}`}
-                    </option>
-                  ))}
-                </select>
-                <br />
-                <br />
-                <br />
-
-                <label>Adjuntar fotografía del problema: </label>
-                <input type="file" accept="image/*" onChange={handleFoto} />
-                <br />
-                <br />
-                <br />
-
-                <label>Descripción del problema: </label>
-                <textarea
-                  value={descripcionProblema}
-                  onChange={handleDescripcionProblema}
-                  rows="4"
-                  cols="50"
-                />
-                <br />
-                <br />
-                <br />
-
-                <button type="submit" id="submit">
-                  Enviar
-                </button>
-              </form>
-              {/*
-              <form onSubmit={handleSubmit}>
-
-                
-                <label>Fecha:</label>
-                <input type="text" defaultValue={fecha} readOnly/>
-                <br /><br />
-
-                <h5>Obtener nombre del usuario acá</h5>
-                <br />
-
-                <h5>Obtener correo del usuario acá</h5>
-                <br />
-              
-
-                <label>Seleccione el error ❌:</label>
-                <br />
-                <div className='select'>
-                  <select value={errorSeleccionado} onChange={handleError}>
-                    <option value="">Seleccionar</option>
-                    {catalogoErrores.map((error, index) => (
-                      <option key={index} value={error.nombre}>
-                        {`${error.nombre}`}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <br /><br /><br />
-
-                <label>Seleccione su sistema operativo 🖥️: </label>
-                <br />
-                <div className='select'>
-                  <select value={sistemaOperativo} onChange={handleSO}>
-                    <option value="">Seleccionar</option>
-                    {catalogoSistemaOperativo.map((sistema, index) => (
-                      <option key={index} value={sistema}>
-                        {`${sistema}`}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <br /><br /><br />
-
-                <label>Seleccione su navegador 🌎: </label>
-                <br />
-                <div className='select'>
-                  <select
-                    value={navegador}
-                    onChange={handleNavegador}
-                  >
-                    <option value="">Seleccionar</option>
-                    {catalogoNavegadores.map((navegador, index) => (
-                      <option key={index} value={navegador}>
-                        {`${navegador}`}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <br /><br /><br />
-
-                <label>Ruta donde se encontró el error 🔍: </label>
-                <br />
-                <input
-                  type="text"
-                  value={rutaError}
-                  onChange={handleRutaError}
-                />
-                <br /><br /><br />
-
-                <label>Adjuntar fotografía del problema 📸: </label>
-                <br />
-                <input
-                  type="file"
-                  accept="image/*"
-                  onChange={handleFoto}
-                />
-                
-                <br /><br /><br />
-
-                <div className="wrapper">
-                  <label>Descripción del problema 📝: </label>
-                  <br />
-                  <textarea
-                    ref={textareaRef}
-                    value={descripcionProblema}
-                    onChange={handleDescripcionProblema}
-                    rows="1" // Esto evita que el textarea se ajuste automáticamente en altura
-                    cols="50"
-                    placeholder="Se encontró un error en..."
-                    style={{ resize: 'none' }} // Esto evita que el usuario pueda ajustar manualmente el tamaño del textarea
-                  />
-                </div>
-
-                <br /><br /><br />
-
-                <button type="submit" id="submit">Enviar</button>
-
-              </form>
-              */}
-
-              <br /><br />
+          <div className="boxPF" id="boxPF">
+            <div className="containerLetritasPF" id="containerLetritasPF">
+              <svg className="svg-soporte">
+                <text text-anchor="middle" x="50%" y="50%">PREGUNTAS FRECUENTES</text>
+              </svg>
             </div>
           </div>
 
+          <div className="todas_las_pf">
+            <div className="container_preguntaFrecuente">
+              <div className="pf">
+                <p>1.- ¿Cómo elimino un reporte de bache en el sistema?</p>
+                <img src={obtenerImagen1()} alt="" onClick={toggleDetalle1} />
+              </div>
+              {mostrarDetalle1 && (
+                <div className="descripcion_pf">
+                  <p>
+                    <br />
+                    Para eliminar un reporte de bache del sistema primero accede
+                    al apartado de "Reportes". Una vez allí, al posicionar el 
+                    cursor sobre cada reporte, verás la opción "ELIMINAR". Al
+                    hacer clic en el ícono, el reporte se enviará a la papelera. 
+                    Si deseas eliminarlo de manera permanente, dirígete al 
+                    apartado de papelera dentro de "Reportes" y haz clic en el
+                    ícono correspondiente, lo que eliminará el reporte sin 
+                    posibilidad de restaurarlo.
+                    <br />
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <br />
+
+            <div className="container_preguntaFrecuente">
+              <div className="pf">
+                <p>2.- ¿Qué debo hacer si elimino accidentalmente un reporte?</p>
+                <img src={obtenerImagen2()} alt="" onClick={toggleDetalle2} />
+              </div>
+              {mostrarDetalle2 && (
+                <div className="descripcion_pf">
+                  <p>
+                    <br />
+                    Si eliminaste accidentalmente un reporte, no te preocupes. 
+                    Dentro de "Reportes" se dispone de una papelera donde se 
+                    almacenan los reportes eliminados y los cuales pueden ser 
+                    restaurados nuevamente al panel de visualización de reportes. 
+                    Sin embargo, es importante tener en cuenta que si eliminas 
+                    un reporte dentro de la papelera, ya no habrá forma de 
+                    recuperarlo. Por lo tanto, te recomendamos leer detenidamente 
+                    las alertas de confirmación para evitar eliminar reportes de 
+                    manera accidental.
+                    <br />
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <br />
+
+            <div className="container_preguntaFrecuente">
+              <div className="pf">
+                <p>3.- ¿Hay alguna forma de restaurar un reporte eliminado?</p>
+                <img src={obtenerImagen3()} alt="" onClick={toggleDetalle3} />
+              </div>
+              {mostrarDetalle3 && (
+                <div className="descripcion_pf">
+                  <p>
+                    <br />
+                    Sí, dentro de "Reportes" contamos con una papelera de reportes 
+                    eliminados donde puedes restaurar los reportes que eliminaste 
+                    recientemente. Sin embargo, es importante tener en cuenta que si 
+                    decides eliminar un reporte desde la papelera, ya no habrá manera 
+                    de restaurarlo, por lo que te recomendamos tener cuidado al manejar 
+                    los reportes dentro de la papelera.
+                    <br />
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <br />
+
+            <div className="container_preguntaFrecuente">
+              <div className="pf">
+                <p>4.- ¿Qué acciones puedo realizar en el apartado de visualización de reportes?</p>
+                <img src={obtenerImagen4()} alt="" onClick={toggleDetalle4} />
+              </div>
+              {mostrarDetalle4 && (
+                <div className="descripcion_pf">
+                  <p>
+                    <br />
+                    Cada reporte está identificado por un número de folio, fecha, 
+                    fotografía, estado, dirección y el número de veces que ha sido 
+                    reportado. En esta sección, los usuarios pueden realizar las 
+                    siguientes acciones:
+                    <br />
+
+                    <ul>
+                      <li><b>Filtrar los reportes por fecha:</b> En la esquina superior 
+                      izquierda, se puede filtrar cada reporte  por Rango Fechas con opciones 
+                      como "Todos los tiempos", "Hoy", "Esta semana", "Último mes", "Últimos 
+                      6 meses", "Este año" y "Rango personalizado".</li>
+                      <li><b>Filtrar los reportes por alcaldía:</b> En la esquina superior 
+                      izquierda, se ofrece la posibilidad de filtrar los reportes por alcaldía 
+                      en los que se puede elegir entre "Todas" o seleccionar cada alcaldía 
+                      individualmente.</li>
+                      <li><b>Filtrar los reportes por estado:</b> En la esquina superior izquierda, 
+                      los reportes pueden ser filtrados por estado, en los que se incluyen opciones 
+                      como “Todos”, “Sin atender”, “En atención” y “Atendido”. </li>
+                      <li><b>Eliminar reporte:</b> Para eliminar un reporte, al pasar el mouse sobre
+                       cada uno, aparece la opción "ELIMINAR" junto a "#REPORTADO" en el lado derecho. 
+                       Al hacer clic, se despliega una alerta solicitando confirmación de eliminación 
+                       con el folio del reporte. Si se selecciona eliminar, el reporte será trasladado 
+                       a la papelera, en caso de poner la opción de cancelar, el reporte seguirá mostrándose. </li>
+                      <li> <b>Acceso a la papelera:</b> En la esquina superior derecha, se ubica la papelera 
+                      que contiene los reportes eliminados. Cada uno conserva su identificación, añadiendo 
+                      las opciones de “RESTAURAR” para devolver el reporte al panel de visualización de 
+                      reportes y “ELIMINAR” para eliminarlo permanentemente.  </li>
+                    </ul>
+                    <br />
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <br />
+
+            <div className="container_preguntaFrecuente">
+              <div className="pf">
+                <p>5.- ¿Qué debo hacer si experimento problemas técnicos al usar el sistema?</p>
+                <img src={obtenerImagen5()} alt="" onClick={toggleDetalle5} />
+              </div>
+              {mostrarDetalle5 && (
+                <div className="descripcion_pf">
+                  <p>
+                    <br />
+                    Si experimentas problemas técnicos al usar el sistema te recomendamos ir a nuestro 
+                    apartado de "Soporte" en el que a través de un formulario podrás reportar los 
+                    problemas técnicos que encuentres y nuestro equipo se encargará de procesar tu 
+                    reporte para resolver el problema lo antes posible.
+                    <br />
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <br />
+
+            <div className="container_preguntaFrecuente">
+              <div className="pf">
+                <p>6.- ¿Qué tipo de problemas puedo reportar a través del formulario de soporte?</p>
+                <img src={obtenerImagen6()} alt="" onClick={toggleDetalle6} />
+              </div>
+              {mostrarDetalle6 && (
+                <div className="descripcion_pf">
+                  <p>
+                    <br />
+                    Entre los problemas que se pueden reportar se encuentran los errores en el 
+                    funcionamiento del sistema, dificultades técnicas al acceder a ciertas funciones, 
+                    problemas de rendimiento, errores de visualización o cualquier otra dificultad 
+                    que encuentres mientras utilizas el sistema.
+                    <br />
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <br />
+
+            <div className="container_preguntaFrecuente">
+              <div className="pf">
+                <p>7.- ¿Cómo puedo verificar el estado de mi solicitud de soporte?</p>
+                <img src={obtenerImagen7()} alt="" onClick={toggleDetalle7} />
+              </div>
+              {mostrarDetalle7 && (
+                <div className="descripcion_pf">
+                  <p>
+                    <br />
+                    Para verificar el estado de su solicitud lo podrá ver en el mismo módulo de 
+                    soporte. Su ticket contendrá un apartado de estado, donde podrá ver si está 
+                    en proceso, resuelto o enviado. Una vez que su solicitud sea atendida y 
+                    resuelta, verá que su estado cambia a "Resuelto". De esta manera, podrá 
+                    mantenerse al tanto del progreso y la resolución de su solicitud.
+                    <br />
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <br />
+
+            <div className="container_preguntaFrecuente">
+              <div className="pf">
+                <p>8.- ¿Cuál es el tiempo de respuesta esperado para los problemas reportados a través del formulario de soporte?</p>
+                <img src={obtenerImagen8()} alt="" onClick={toggleDetalle8} />
+              </div>
+              {mostrarDetalle8 && (
+                <div className="descripcion_pf">
+                  <p>
+                    <br />
+                    El tiempo de respuesta esperado para los problemas reportados a través 
+                    del formulario de soporte dependerá del tipo de error detectado por el 
+                    usuario. Sin embargo, este tendrá un plazo máximo de 24 horas después 
+                    de haber enviado el formulario para el ticket.
+                    <br />
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <br />
+
+            <div className="container_preguntaFrecuente">
+              <div className="pf">
+                <p>9.- ¿Cuál es el horario de atención del equipo de soporte técnico?</p>
+                <img src={obtenerImagen9()} alt="" onClick={toggleDetalle9} />
+              </div>
+              {mostrarDetalle9 && (
+                <div className="descripcion_pf">
+                  <p>
+                    <br />
+                    El horario de atención del equipo de soporte técnico es de 11:00 AM 
+                    a 6:00 PM en el cual estaremos listos para procesar y resolver 
+                    cualquier problema técnico que puedas presentar.
+                    <br />
+                  </p>
+                </div>
+              )}
+            </div>
+
+            <br />
+
+            <div className="container_preguntaFrecuente">
+              <div className="pf">
+                <p>10.- ¿Cómo puedo descargar la aplicación móvil para reportar baches en la Ciudad de México?</p>
+                <img src={obtenerImagen10()} alt="" onClick={toggleDetalle10} />
+              </div>
+              {mostrarDetalle10 && (
+                <div className="descripcion_pf">
+                  <p>
+                    <br />
+                    Para descargar nuestra aplicación móvil dirígete al apartado de "Inicio" 
+                    antes de iniciar sesión, al final de esta sección encontrarás un botón 
+                    de "Descargar la Aplicación". Haz clic en ese botón y podrás descargar 
+                    la aplicación móvil directamente a tu dispositivo. Una vez descargada, 
+                    podrás empezar a utilizarla para el reporte de baches de manera rápida 
+                    y sencilla.
+                    <br />
+                  </p>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
+
+        <div className='container_FormularioSoporte'>
+          <div className='containerFR'>
+            <br />
+            <form onSubmit={handleSubmit}>
+
+              <table className='table_form_sp'>
+                <thead>
+                  <tr>
+                    <td className="filita" colSpan="2"><h2 id='titulo_sp'>👷 Formulario de Soporte Técnico 🛠️</h2></td>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr>
+                    <td className="columna_soporte_1"><label>Seleccione el error:</label></td>
+                    <td className="columna_soporte_2">
+                      <div className="select">
+                        <select value={errorSeleccionado} onChange={handleError}>
+                          <option>Tipo de Error</option>
+                          {catalogoErrores.map((errorSeleccionado, index) => (
+                            <option key={index} value={errorSeleccionado.clave}>
+                              {`${errorSeleccionado.nombre}`}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td className="columna_soporte_1"><label>Módulo donde se encontró el error: </label></td>
+                    <td className="columna_soporte_2">
+                      <div className="select">
+                        <select value={selectedRutaError} onChange={handleRutaError}>
+                          <option>Módulo del Error</option>
+                          {catalogoRutaErrores.map((errorOption, index) => (
+                            <option key={index} value={errorOption.ruta}>
+                              {`${errorOption.modulo}`}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td className="columna_soporte_1"><label>Carácter de error:</label></td>
+                    <td className="columna_soporte_2">
+                      <div className="select">
+                        <select value={asignarTarea} onChange={handleAsignarTarea}>
+                          <option >Escoger carácter de error</option>
+                          <option value="backend">🖥️ Funcionalidad</option>
+                          <option value="frontend">🎨 Diseño</option>
+                        </select>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td className="columna_soporte_1"><label>Seleccione su sistema operativo: </label></td>
+                    <td className="columna_soporte_2">
+                      <div className="select">
+                        <select value={sistemaOperativo} onChange={handleSO}>
+                          <option value="">Sistema Operativo</option>
+                          {catalogoSistemaOperativo.map((sistema, index) => (
+                            <option key={index} value={sistema}>
+                              {`${sistema}`}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td className="columna_soporte_1"><label>Seleccione su navegador: </label></td>
+                    <td className="columna_soporte_2">
+                      <div className="select">
+                        <select value={navegador} onChange={handleNavegador}>
+                          <option value="">Navegador</option>
+                          {catalogoNavegadores.map((navegador, index) => (
+                            <option key={index} value={navegador}>
+                              {`${navegador}`}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td className="columna_soporte_1"><label>Adjuntar fotografía del problema: </label></td>
+                    <td className="columna_soporte_2">
+                      <input type="file" accept="image/*" onChange={handleFoto} />
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td className="columna_soporte_1"><label>Descripción del problema: </label></td>
+                    <td className="columna_soporte_2">
+                      <div className="wrapper">
+                        <textarea
+                          ref={textareaRef}
+                          value={descripcionProblema}
+                          onChange={handleDescripcionProblema}
+                          rows="1" // Esto evita que el textarea se ajuste automáticamente en altura
+                          cols="50"
+                          placeholder="El error se encontró en..."
+                          style={{ resize: 'none' }} // Esto evita que el usuario pueda ajustar manualmente el tamaño del textarea
+                        />
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td className="filita" colSpan="2">
+                      <br />
+                      <button type="submit" id="submit">
+                        Enviar
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+              <br />
+            </form>
+          </div>
+        </div>
+
+        <br /> <br />
+
+          <div className="">
+              <table>
+                <thead>
+                  <tr className="sticky-top">
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Area Encargada</th>
+                    <th>Descripcion del Problema</th>
+                    <th>Estado del Ticket</th>
+                    <th>Fecha De Envio</th>
+                    <th>Fecha De Resolución</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                {ticket.map((ticket, index) => (
+                  <tr key={index}>
+                    <td>{ticket.nombre}</td>
+                    <td>{ticket.correoA}</td>
+                    <td>{ticket.area}</td>
+                    <td>{ticket.descripcionProblema}</td>
+                    <td>{ticket.estado}</td>
+                    <td>{formatTimestamp(ticket.fechaDeEnvio)}</td>
+                    <td>{formatTimestamp(ticket.fechaResuelto)}</td>
+                    <td><button onClick={() => openModal(ticket.folio)}>Detalles</button></td>
+  
+                  </tr>
+                ))}
+                </tbody>
+             
+              </table>
+              {showModal && (
+                 <div className="modal">
+                 <div className="modal-content">
+                   <span className="close" onClick={closeModal}>
+                     &times;
+                   </span>
+                   <p>Detalles del ticket</p>
+       <p><button onClick = {closeModal}>Cerrar</button></p>
+                    <p>Prioridad: {ticketEncontrado.priori}</p>
+                    <p>Estado: {ticketEncontrado.estado}</p>
+                   <p>Fecha Asignado: {formatTimestamp(ticketEncontrado.fechaAsignado)}</p>
+                   <p>Fecha De Envio: {formatTimestamp(ticketEncontrado.fechaDeEnvio)}</p>
+                   <p>Fecha De Resuelto: {formatTimestamp(ticketEncontrado.fechaResuleto)}</p>
+                   <p>Folio: {ticketEncontrado.folio}</p>
+                   <p>Area: {ticketEncontrado.area}</p>
+                   <p>Navegador: {ticketEncontrado.navegador}</p>
+                   <p>Sistema Operativo: {ticketEncontrado.sistemaOperativo}</p>
+                   <p>Tipo de error: {ticketEncontrado.errorSeleccionado}</p>
+                   <p>Ruta: {ticketEncontrado.rutitaD}</p>
+                 </div>
+               </div>
+              )}
+
+            </div>
       </div>
-    </RutaProtegida>
+    </div>
   );
 }
-
 export default Soporte;
