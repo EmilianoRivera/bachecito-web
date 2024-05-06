@@ -15,6 +15,7 @@ function Navbar() {
   const [menuActive, setMenuActive] = useState(false);
   const [showMenuIcon, setShowMenuIcon] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false); // Estado para mostrar la alerta de confirmación
+  const [darkMode, setDarkMode] = useState(false);
   const router = useRouter();
   useEffect(() => {
     const handleResize = () => {

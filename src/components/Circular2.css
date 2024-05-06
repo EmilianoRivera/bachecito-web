@@ -1,7 +1,8 @@
 #pie-chart {
   backdrop-filter: blur(3px);
-  background-color: #ffffffc7;
+  background-color: var(--background-color-7);
   width: 22vw;
+  color: var(--text-color);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -24,16 +25,17 @@
   width: 100%;
   height: 40%;
   backdrop-filter: blur(3px);
-  background-color: #ffffffc7;
+  background-color: var(--background-color-7);
   border-radius: 1rem;
   margin-bottom: 2.5%;
   align-items: center;
   display: flex;
+  color: var(--text-color);
   justify-content: center;
 }
 
 .encabezado h1 {
-  color: #6F6F6F;
+  color: var(--text-color-3);
   font-family: 'Poppins', sans-serif;
   margin-right: 10px;
   font-size: 17px;
@@ -41,7 +43,7 @@
 }
 
 .contador {
-  color: #FF4D35;
+  color: var(--text-color-6);
   font-family: 'Poppins', sans-serif;
   font-size: 16px;
   font-weight: 800;
@@ -57,7 +59,7 @@
 .in-red {
   width: 32%;
   height: 100%;
-  background-color: #ffffffc7;
+  background-color: var(--background-color-7);
   backdrop-filter: blur(3px);
   border-radius: 1rem;
   align-items: center;
@@ -76,7 +78,7 @@
 }
 
 .cont-reportes {
-  color: #6F6F6F;
+  color: var(--text-color-3);
   font-family: 'Poppins', sans-serif;
   font-size: 17px;
   justify-content: center;
@@ -92,7 +94,7 @@
   height: 100%;
   margin-left: 2%;
   backdrop-filter: blur(3px);
-  background-color: #ffffffc7;
+  background-color: var(--background-color-7);
 
   border-radius: 1rem;
   align-items: center;
@@ -115,7 +117,7 @@
   height: 100%;
   margin-left: 2%;
   backdrop-filter: blur(3px);
-  background-color: #ffffffc7;
+  background-color: var(--background-color-7);
 
   border-radius: 1rem;
   align-items: center;

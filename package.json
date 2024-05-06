@@ -26,6 +26,7 @@
     "react-leaflet": "^4.2.1",
     "react-slick": "^0.30.2",
     "resend": "^3.2.0",
+    "sharp": "^0.33.3",
     "slick-carousel": "^1.8.1",
     "swiper": "^11.1.0",
     "swiper-react": "^1.0.0"

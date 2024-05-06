@@ -1,6 +1,6 @@
 .container-preloader {
   min-height: 100vh;
-  background: #f9fff9;
+  background: var(--background-color);
   /* center in the viewport */
   display: grid;
   justify-content: center;
