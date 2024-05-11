@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import { db, collection, getDocs, query, where,    } from "../../firebase";
-
+import { db, collection, getDocs, query, where,  } from "../../firebase";
 import * as d3 from "d3";
 
 export default function Circular({
@@ -63,7 +62,6 @@ export default function Circular({
           label,
           value,
         }));
-
         setRep(dataArray);
         // setTotalRep(data2);
         setAlcEstRep(data3);
@@ -303,3 +301,4 @@ function  nuevaGrafica () {
     </div>
   );
 }
+
