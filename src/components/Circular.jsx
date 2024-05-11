@@ -62,7 +62,6 @@ export default function Circular({
           label,
           value,
         }));
-
         setRep(dataArray);
         // setTotalRep(data2);
         setAlcEstRep(data3);
@@ -302,3 +301,4 @@ function  nuevaGrafica () {
     </div>
   );
 }
+

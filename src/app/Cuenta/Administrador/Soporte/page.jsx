@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useAuthUser } from "../../../../../hooks/UseAuthUser";
-import { auth, db } from "../../../../../firebase";
+import { auth, db , app2, app} from "../../../../../firebase";
 import { useRouter } from "next/navigation";
 import AuthContext from "../../../../../context/AuthContext";
 import "./Soporte.css";
@@ -170,10 +170,10 @@ function Soporte() {
       }
     }
 
-    
+
   }, []);
 
-  
+
   useEffect(() => {
     async function fetchTickets() {
       try {
@@ -181,7 +181,7 @@ function Soporte() {
           console.error("UserData is not available or invalid");
           return;
         }
-  
+
         const uid = userData.uid;
         const ticketsData = await fetch(`http://localhost:3000/api/Ticket/${uid}`);
         if (!ticketsData.ok) {
@@ -195,15 +195,15 @@ function Soporte() {
         console.error("Error fetching tickets:", error);
       }
     }
-  
+
     // Ejecutar fetchTickets() solo si userData está disponible y tiene un valor válido
     if (userData && userData.uid) {
       fetchTickets();
     }
   }, [userData]); // Ejecutar cuando userData cambie
-  
-  
-  
+
+
+
   const catalogoRutaErrores = [
     { ruta: "/Cuenta/Administrador", modulo: "✅Inicio de Sesión" },
     { ruta: "/Administrador/Dashboard", modulo: "📊 Dashboard" },
@@ -257,18 +257,18 @@ function Soporte() {
     "Samsung Internet",
     "Otro",
   ];
-    //Convertir timestamp
-    function formatTimestamp(timestamp) {
-      // Verifica si timestamp es un objeto con propiedades seconds y nanoseconds
-      if (timestamp && timestamp.seconds && timestamp.nanoseconds) {
-          // Crea una nueva instancia de Date utilizando los segundos del timestamp
-          const dateObject = new Date(timestamp.seconds * 1000); // Multiplica por 1000 para convertir segundos a milisegundos
-          // Formatea la fecha como una cadena legible
-          return dateObject.toLocaleDateString(); // Obtener solo la fecha sin la hora
-      } else {
-          // Si no se puede convertir, devuelve un mensaje de error
-          return "Aun no Resuelto";
-      }
+  //Convertir timestamp
+  function formatTimestamp(timestamp) {
+    // Verifica si timestamp es un objeto con propiedades seconds y nanoseconds
+    if (timestamp && timestamp.seconds && timestamp.nanoseconds) {
+      // Crea una nueva instancia de Date utilizando los segundos del timestamp
+      const dateObject = new Date(timestamp.seconds * 1000); // Multiplica por 1000 para convertir segundos a milisegundos
+      // Formatea la fecha como una cadena legible
+      return dateObject.toLocaleDateString(); // Obtener solo la fecha sin la hora
+    } else {
+      // Si no se puede convertir, devuelve un mensaje de error
+      return "Aun no Resuelto";
+    }
   }
 
   const openModal = (folio) => {
@@ -335,7 +335,7 @@ function Soporte() {
   };
 
   const handleFoto = (e) => {
-    setFoto(e.target.files[0]);
+    setFoto(e.target.value);
   };
 
   const handleFileChange = (e) => {
@@ -355,17 +355,20 @@ function Soporte() {
   };
 
   const handleFileUpload = async () => {
-    console.log("first");
-    /* 
-    const storage = getStorage(appSoporte);
+    const archivo = document.querySelector('input[type="file"]');
+    const archivito = archivo.files[0];
+
+    if (!archivito) {
+      console.error("No se ha seleccionado ningún archivo");
+      return;
+    }
+
+    const storage = getStorage(app2);
     const randomId = Math.random().toString(36).substring(7);
-    const imageName = Ticket_${randomId};
-    const storageRef = ref(
-      storage,
-      ImagenesTickets/${userData.uid}/${imageName}
-    );
+    const imageName = `Ticket_${randomId}`;
+    const storageRef = ref(storage, `ImagenesTickets/${imageName}`);
     await uploadBytes(storageRef, archivito);
-    return getDownloadURL(storageRef); */
+    return getDownloadURL(storageRef);
   };
   // Acá va toda la lógica
 
@@ -375,16 +378,13 @@ function Soporte() {
     const nombre = userData.nombre;
     const area = asignarTarea;
     const uid = userData.uid;
-    if (!foto) {
-      console.error("No se ha seleccionado ninguna foto");
-      return;
-    }
-
+      const url = await handleFileUpload();
+     
     let res = prompt("¿Desea levantar el ticket? (SI/NO)");
     if (res.toUpperCase() === "SI") {
       try {
         const ticketResponse = await fetch(
-          `http://localhost:3001/api/Ticket/${foto}/${uid}/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${encodeURIComponent(
+          `http://localhost:3001/api/Ticket/${url}/${uid}/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${encodeURIComponent(
             selectedRutaError
           )}/${descripcionProblema}/${correoA}/${nombre}/${area}`,
           {
@@ -393,7 +393,7 @@ function Soporte() {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              foto,
+              url,
               uid: uid,
               errorSeleccionado,
               sistemaOperativo,
@@ -423,105 +423,18 @@ function Soporte() {
     }
   };
 
-
-  //LETRITAS COOL DE PF
-  const routerPF = useRouter();
-    useEffect(() => {
-        const mouse = newV2();
-        const center = newV2();
-        const distanceFromCenter = newV2();
-        const distanceLerped = newV2();
-        let simulateMouseMovement = true;
-
-        const perspective = 500;
-        const translateZ = -22;
-        const rotate = 1.5;
-        const skew = 3;
-
-        const containerReportes = document.getElementById("containerLetritasPF");
-        const copies = document.getElementsByClassName("copyPF");
-
-        function updateCenter() {
-            const rect = containerReportes.getBoundingClientRect();
-            center.x = rect.left + rect.width / 2;
-            center.y = rect.top + rect.height / 2;
-        }
-
-        function trackMousePosition(event) {
-            simulateMouseMovement = false;
-            mouse.x = event.clientX;
-            mouse.y = event.clientY;
-            distanceFromCenter.x = center.x - mouse.x;
-            distanceFromCenter.y = center.y - mouse.y;
-        }
-
-        function fakeMousePosition(t) {
-            distanceFromCenter.x = Math.sin(t / 500) * window.innerWidth * 0.5;
-            distanceFromCenter.y = Math.cos(t / 500) * window.innerWidth * 0.2;
-        }
-
-        function updateTextPosition(t) {
-            if (simulateMouseMovement) fakeMousePosition(t);
-
-            lerpV2(distanceLerped, distanceFromCenter);
-
-            for (var i = 1; i < copies.length + 1; i++) {
-                const copy = copies[i - 1];
-                copy.style.transform = makeTransformString(
-                    i * distanceLerped.y * 0.05,
-                    i * translateZ,
-                    i * rotate * (distanceLerped.x * 0.003),
-                    i * skew * (distanceLerped.x * 0.003)
-                );
-            }
-
-            requestAnimationFrame(updateTextPosition);
-        }
-
-        function makeTransformString(y, z, rotate, skew) {
-            return `perspective(${perspective}px) translate3d(0px, ${y}px, ${z}px) rotate(${rotate}deg) skew(${skew}deg)`;
-        }
-
-        function lerpV2(position, targetPosition) {
-            position.x += (targetPosition.x - position.x) * 0.2;
-            position.y += (targetPosition.y - position.y) * 0.2;
-        }
-
-        function newV2(x = 0, y = 0) {
-            return {
-                x: x,
-                y: y
-            };
-        }
-
-        updateCenter();
-        document.addEventListener("mousemove", trackMousePosition);
-        window.addEventListener("resize", updateCenter);
-        requestAnimationFrame(updateTextPosition);
-
-        return () => {
-            document.removeEventListener("mousemove", trackMousePosition);
-            window.removeEventListener("resize", updateCenter);
-        };
-    }, [routerPF]);
-
-
   return (
     <div className="bodySoporte">
       <div className="containerSoporte">
         <div className="containerPF">
 
           <div className="boxPF" id="boxPF">
-                <div className="containerLetritasPF" id="containerLetritasPF">
-                    <header>
-                        <h1>Preguntas Frecuentes</h1>
-                        <span aria-hidden="true" className="copyPF copy-1_PF">Preguntas Frecuentes</span>
-                        <span aria-hidden="true" className="copyPF copy-2_PF">Preguntas Frecuentes</span>
-                        <span aria-hidden="true" className="copyPF copy-3_PF">Preguntas Frecuentes</span>
-                        <span aria-hidden="true" className="copyPF copy-4_PF">Preguntas Frecuentes</span>
-                    </header>
-                </div>
+            <div className="containerLetritasPF" id="containerLetritasPF">
+              <svg className="svg-soporte">
+                <text text-anchor="middle" x="50%" y="50%">PREGUNTAS FRECUENTES</text>
+              </svg>
             </div>
+          </div>
 
           <div className="todas_las_pf">
             <div className="container_preguntaFrecuente">
@@ -626,7 +539,7 @@ function Soporte() {
               )}
             </div>
 
-            <br/>
+            <br />
 
             <div className="container_preguntaFrecuente">
               <div className="pf">
@@ -652,7 +565,7 @@ function Soporte() {
               )}
             </div>
 
-            <br/>
+            <br />
 
             <div className="container_preguntaFrecuente">
               <div className="pf">
@@ -677,8 +590,8 @@ function Soporte() {
                 </div>
               )}
             </div>
-            
-            <br/>
+
+            <br />
 
             <div className="container_preguntaFrecuente">
               <div className="pf">
@@ -704,7 +617,7 @@ function Soporte() {
               )}
             </div>
 
-            <br/>
+            <br />
 
             <div className="container_preguntaFrecuente">
               <div className="pf">
@@ -730,7 +643,7 @@ function Soporte() {
               )}
             </div>
 
-            <br/>
+            <br />
 
             <div className="container_preguntaFrecuente">
               <div className="pf">
@@ -756,7 +669,7 @@ function Soporte() {
               )}
             </div>
 
-            <br/>
+            <br />
 
             <div className="container_preguntaFrecuente">
               <div className="pf">
@@ -785,135 +698,136 @@ function Soporte() {
         </div>
 
         <div className='container_FormularioSoporte'>
-            <div className='containerFR'>
+          <div className='containerFR'>
+            <br />
+            <form onSubmit={handleSubmit}>
+
+              <table className='table_form_sp'>
+                <thead>
+                  <tr>
+                    <td className="filita" colSpan="2"><h2 id='titulo_sp'>👷 Formulario de Soporte Técnico 🛠️</h2></td>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  <tr>
+                    <td className="columna_soporte_1"><label>Seleccione el error:</label></td>
+                    <td className="columna_soporte_2">
+                      <div className="select">
+                        <select value={errorSeleccionado} onChange={handleError}>
+                          <option>Tipo de Error</option>
+                          {catalogoErrores.map((errorSeleccionado, index) => (
+                            <option key={index} value={errorSeleccionado.clave}>
+                              {`${errorSeleccionado.nombre}`}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td className="columna_soporte_1"><label>Módulo donde se encontró el error: </label></td>
+                    <td className="columna_soporte_2">
+                      <div className="select">
+                        <select value={selectedRutaError} onChange={handleRutaError}>
+                          <option>Módulo del Error</option>
+                          {catalogoRutaErrores.map((errorOption, index) => (
+                            <option key={index} value={errorOption.ruta}>
+                              {`${errorOption.modulo}`}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td className="columna_soporte_1"><label>Carácter de error:</label></td>
+                    <td className="columna_soporte_2">
+                      <div className="select">
+                        <select value={asignarTarea} onChange={handleAsignarTarea}>
+                          <option >Escoger carácter de error</option>
+                          <option value="backend">🖥️ Funcionalidad</option>
+                          <option value="frontend">🎨 Diseño</option>
+                        </select>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td className="columna_soporte_1"><label>Seleccione su sistema operativo: </label></td>
+                    <td className="columna_soporte_2">
+                      <div className="select">
+                        <select value={sistemaOperativo} onChange={handleSO}>
+                          <option value="">Sistema Operativo</option>
+                          {catalogoSistemaOperativo.map((sistema, index) => (
+                            <option key={index} value={sistema}>
+                              {`${sistema}`}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td className="columna_soporte_1"><label>Seleccione su navegador: </label></td>
+                    <td className="columna_soporte_2">
+                      <div className="select">
+                        <select value={navegador} onChange={handleNavegador}>
+                          <option value="">Navegador</option>
+                          {catalogoNavegadores.map((navegador, index) => (
+                            <option key={index} value={navegador}>
+                              {`${navegador}`}
+                            </option>
+                          ))}
+                        </select>
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td className="columna_soporte_1"><label>Adjuntar fotografía del problema: </label></td>
+                    <td className="columna_soporte_2">
+                      <input type="file" accept="image/*" onChange={handleFoto} />
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td className="columna_soporte_1"><label>Descripción del problema: </label></td>
+                    <td className="columna_soporte_2">
+                      <div className="wrapper">
+                        <textarea
+                          ref={textareaRef}
+                          value={descripcionProblema}
+                          onChange={handleDescripcionProblema}
+                          rows="1" // Esto evita que el textarea se ajuste automáticamente en altura
+                          cols="50"
+                          placeholder="El error se encontró en..."
+                          style={{ resize: 'none' }} // Esto evita que el usuario pueda ajustar manualmente el tamaño del textarea
+                        />
+                      </div>
+                    </td>
+                  </tr>
+
+                  <tr>
+                    <td className="filita" colSpan="2">
+                      <br />
+                      <button type="submit" id="submit">
+                        Enviar
+                      </button>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
               <br />
-              <form onSubmit={handleSubmit}>
-
-                <table className='table_form_sp'>
-                  <thead>
-                    <tr>
-                      <td className="filita" colSpan="2"><h2 id='titulo_sp'>👷 Formulario de Soporte Técnico 🛠️</h2></td>
-                    </tr>
-                  </thead>
-
-                  <tbody>
-                    <tr>
-                      <td className="columna_soporte_1"><label>Seleccione el error:</label></td>
-                      <td className="columna_soporte_2">
-                        <div className="select">
-                          <select value={errorSeleccionado} onChange={handleError}>
-                            <option>Tipo de Error</option>
-                            {catalogoErrores.map((errorSeleccionado, index) => (
-                              <option key={index} value={errorSeleccionado.clave}>
-                                {`${errorSeleccionado.nombre}`}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td className="columna_soporte_1"><label>Módulo donde se encontró el error: </label></td>
-                      <td className="columna_soporte_2">
-                        <div className="select">
-                          <select value={selectedRutaError} onChange={handleRutaError}>
-                            <option>Módulo del Error</option>
-                            {catalogoRutaErrores.map((errorOption, index) => (
-                              <option key={index} value={errorOption.ruta}>
-                                {`${errorOption.modulo}`}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td className="columna_soporte_1"><label>Carácter de error:</label></td>
-                      <td className="columna_soporte_2">
-                        <div className="select">
-                          <select value={asignarTarea} onChange={handleAsignarTarea}>
-                            <option >Escoger carácter de error</option>
-                            <option value="backend">🖥️ Funcionalidad</option>
-                            <option value="frontend">🎨 Diseño</option>
-                          </select>
-                        </div>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td className="columna_soporte_1"><label>Seleccione su sistema operativo: </label></td>
-                      <td className="columna_soporte_2">
-                        <div className="select">
-                          <select value={sistemaOperativo} onChange={handleSO}>
-                            <option value="">Sistema Operativo</option>
-                            {catalogoSistemaOperativo.map((sistema, index) => (
-                              <option key={index} value={sistema}>
-                                {`${sistema}`}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td className="columna_soporte_1"><label>Seleccione su navegador: </label></td>
-                      <td className="columna_soporte_2">
-                        <div className="select">
-                          <select value={navegador} onChange={handleNavegador}>
-                            <option value="">Navegador</option>
-                            {catalogoNavegadores.map((navegador, index) => (
-                              <option key={index} value={navegador}>
-                                {`${navegador}`}
-                              </option>
-                            ))}
-                          </select>
-                        </div>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td className="columna_soporte_1"><label>Adjuntar fotografía del problema: </label></td>
-                      <td className="columna_soporte_2">
-                        <input type="file" accept="image/*" onChange={handleFoto} />
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td className="columna_soporte_1"><label>Descripción del problema: </label></td>
-                      <td className="columna_soporte_2">
-                        <div className="wrapper">
-                          <textarea
-                            ref={textareaRef}
-                            value={descripcionProblema}
-                            onChange={handleDescripcionProblema}
-                            rows="1" // Esto evita que el textarea se ajuste automáticamente en altura
-                            cols="50"
-                            placeholder="El error se encontró en..."
-                            style={{ resize: 'none' }} // Esto evita que el usuario pueda ajustar manualmente el tamaño del textarea
-                          />
-                        </div>
-                      </td>
-                    </tr>
-
-                    <tr>
-                      <td className="filita" colSpan="2">
-                        <br />
-                        <button type="submit" id="submit">
-                          Enviar
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-                <br/>
-              </form>
+            </form>
           </div>
         </div>
 
         <br /> <br />
+
           <div className="">
               <table>
                 <thead>
@@ -974,4 +888,3 @@ function Soporte() {
   );
 }
 export default Soporte;
-
