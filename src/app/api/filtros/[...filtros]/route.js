@@ -42,7 +42,7 @@ function formatearFecha(fecha) {
   const año = partesFecha[2];
 
   // Formatear la fecha en el formato deseado (por ejemplo, dd/mm/yyyy)
-  return `${dia}/${parseInt(mes)}/${año}`;
+  return `${parseInt(dia)}/${parseInt(mes)}/${año}`;
 }
 
 
@@ -138,8 +138,10 @@ async function fechaFiltroFormateada(
   startDate,
   endDate
 ) {
+  let resultados = []; // Array para almacenar los datos obtenidos
   switch (fechaFiltro) {
     case "Hoy":
+
       const fechaActualHoy = formatearFecha(obtenerFechaActual());
       const filtroFechaHoy = query(
         collection(db, "reportes"),
@@ -147,7 +149,7 @@ async function fechaFiltroFormateada(
       );
       const reportesFechaHoy = await getDocs(filtroFechaHoy);
       reportesFechaHoy.forEach((doc) => {
-        console.log(doc.data());
+        resultados.push(doc.data());
       });
       break;
 
@@ -162,7 +164,8 @@ async function fechaFiltroFormateada(
         const reporte = doc.data();
         const fechaReporte = parsearDeStringADate(reporte.fechaReporte);
         if (fechaReporte >= inicioSemana && fechaReporte <= finSemana) {
-          console.log(reporte);
+          console.log(reporte)
+          resultados.push(reporte);
         }
       });
       break;
@@ -195,7 +198,8 @@ async function fechaFiltroFormateada(
           const añoDeFechaActual = extraerAnioDesdeString(formatearFecha(fechaActual))
           // Comparar el mes del reporte con el mes actual
           if (mesReporte == mesAnterior && añoReporte == añoDeFechaActual ) {
-            console.log(reporte);
+            console.log(reporte)
+            resultados.push(reporte);
           }
         });
       } catch (error) {
@@ -225,7 +229,8 @@ async function fechaFiltroFormateada(
             fechaReporte >= fechaSeisMesesAtras &&
             fechaReporte <= fechaActual
           ) {
-            console.log(reporte);
+            console.log(reporte)
+            resultados.push(reporte);
           }
         });
 
@@ -269,7 +274,8 @@ async function fechaFiltroFormateada(
 
           // Comparar los años
           if (añoReporte === añoActual) {
-            console.log(reporte);
+            console.log(reporte)
+            resultados.push(reporte);
           }
         });
       } catch (error) {
@@ -292,7 +298,7 @@ async function fechaFiltroFormateada(
         console.log(parsearDeStringADate(reporte.fechaReporte)>= new Date(startDate))
          */
         if ( fechaReporte >= newStartDate && fechaReporte <= newLastEnd) {
-          console.log(reporte.folio);
+          resultados.push(reporte);
         }
       });
 
@@ -301,6 +307,7 @@ async function fechaFiltroFormateada(
     default:
       console.log("Opción no válida");
   }
+  return resultados;
 }
 
 //Todos los casos especificos de los tres filtros
@@ -312,10 +319,14 @@ async function fechaFiltroFormateadaEspecifico(
   startDate,
   endDate
 ) {
+  console.log(estado)
+  let filtroEspecifico = []
   switch (fechaFiltro) {
     case "Hoy":
       console.log("CASO DE HOY")
+
       const fechaActualHoy = formatearFecha(obtenerFechaActual());
+  
       const filtroFechaHoy = query(
         collection(db, "reportes"),
         where("fechaReporte", "==", fechaActualHoy),
@@ -326,7 +337,8 @@ async function fechaFiltroFormateadaEspecifico(
         const reporte = doc.data();
         const alcaldiaDelReporte = buscarAlcaldias(reporte.ubicacion);
         if (alcaldiaDelReporte === alcaldia  ) {
-          console.log(reporte);
+          console.log(reporte)
+          filtroEspecifico.push(reporte)
         }
       });
       break;
@@ -344,7 +356,8 @@ async function fechaFiltroFormateadaEspecifico(
         
         const alcaldiaDelReporte = buscarAlcaldias(reporte.ubicacion);
         if (fechaReporte >= inicioSemana && fechaReporte <= finSemana && alcaldiaDelReporte === alcaldia) {
-          console.log(reporte);
+          console.log(reporte)
+          filtroEspecifico.push(reporte)
         }
       });
       break;
@@ -381,7 +394,8 @@ async function fechaFiltroFormateadaEspecifico(
 
             // Comparar el mes del reporte con el mes actual
             if (mesReporte == mesAnterior && añoReporte == añoDeFechaActual && alcaldiaDelReporte === alcaldia ) {
-              console.log(reporte);
+              filtroEspecifico.push(reporte)
+              console.log(reporte)
             }
           });
         } catch (error) {
@@ -415,8 +429,9 @@ async function fechaFiltroFormateadaEspecifico(
             
 
           ) {
+            console.log(reporte)
+            filtroEspecifico.push(reporte)
 
-            console.log(reporte);
           }
         });
 
@@ -462,7 +477,9 @@ async function fechaFiltroFormateadaEspecifico(
 
           // Comparar los años
           if (añoReporte === añoActual && alcaldiaDelReporte === alcaldia) {
-            console.log(reporte);
+            console.log(reporte)
+            filtroEspecifico.push(reporte)
+
           }
         });
       } catch (error) {
@@ -484,8 +501,9 @@ async function fechaFiltroFormateadaEspecifico(
         if (fechaReporte >= newStartDate && fechaReporte <= newLastEnd
           && alcaldiaDelReporte === alcaldia
         ) {
-          console.log("first")
-          console.log(reporte.folio);
+          console.log(reporte)
+          filtroEspecifico.push(reporte)
+
         }
 
       });
@@ -495,6 +513,7 @@ async function fechaFiltroFormateadaEspecifico(
     default:
       console.log("Opción no válida");
   }
+  return filtroEspecifico
 }
 
 //Maneja todos los casos cuando alguno de los filtros tiene valores generales como Todos los estados o Todas las alcaldias o Todos los tiempos
@@ -506,30 +525,29 @@ async function filtroGeneral(
   startDate,
   endDate
 ) {
-  let elementosFiltrados = [];
-  let reportesPorAlcaldia = {}; // Definir reportesPorAlcaldia fuera del switch
-  let estados;
-  let alcaldias;
-
+  let elementosFiltrados = [];  
   if (alcaldia === "Todas" && fechaFiltro === "Todos los tiempos") {
+    console.log(alcaldia, " ", fechaFiltro)
     const filtroGeneralAlcaldiaFechaQuery = query(
       collection(db, "reportes"),
       where("estado", "==", estado)
     );
-
+    
     const reportesAlcaldiaFecha = await getDocs(
       filtroGeneralAlcaldiaFechaQuery
     );
     reportesAlcaldiaFecha.forEach((doc) => {
-      console.log(doc.data());
+      elementosFiltrados.push(doc.data())
     });
+
   } else if (alcaldia === "Todas" && estado === "Todos") {
-    const formateoFechaFiltro = fechaFiltroFormateada(
+    const formateoFechaFiltro = await fechaFiltroFormateada(
       fechaFiltro,
       fechaActual,
       startDate,
       endDate
     );
+    elementosFiltrados.push(formateoFechaFiltro)
   } else if (fechaFiltro === "Todos los tiempos" && estado === "Todos") {
     //obtener ubicacion
     const refDoc = collection(db, "reportes");
@@ -537,14 +555,12 @@ async function filtroGeneral(
     reportesAlcaldiaFecha.forEach((doc) => {
       const reporte = doc.data();
       const alcaldiaDelReporte = buscarAlcaldias(reporte.ubicacion);
-      console.log(buscarAlcaldias(reporte.ubicacion));
       if (alcaldia === alcaldiaDelReporte) {
-        console.log(reporte);
+        elementosFiltrados.push(reporte)
       }
     });
   }
-
-  return reportesPorAlcaldia;
+  return elementosFiltrados;
 }
 
 //Maneja todos los casos que son específicos, exceptuando los valores de cuando son Todos los estado o Todas las alcaldias o Todos los tiempos
@@ -556,7 +572,8 @@ async function filtroEspecifico(
   startDate,
   endDate
 ) {
-  const formateoFechaFiltroEspecifico = fechaFiltroFormateadaEspecifico(
+  let filtroEspecifico = []
+  const formateoFechaFiltroEspecifico = await fechaFiltroFormateadaEspecifico(
     fechaFiltro,
     fechaActual,
     estado,
@@ -564,6 +581,9 @@ async function filtroEspecifico(
     startDate,
     endDate
   );
+
+  filtroEspecifico.push(formateoFechaFiltroEspecifico)
+  return filtroEspecifico
 }
 
 //Funcion que recibe y envia la petición
@@ -572,13 +592,14 @@ export async function POST(request, { params }) {
     const [estado, alcaldia, fechaFiltro, startDate, endDate] = params.filtros; // Desestructura el array filtros en 5 variables
     //llamada a funciones
     const fechaActual = obtenerFechaActual();
+    console.log(estado)
     if (
       estado === "Todos" ||
       alcaldia === "Todas" ||
       fechaFiltro === "Todos los tiempos"
     ) {
-      console.log("PRIMER CASO" ,fechaFiltro, " ", fechaActual, " ", estado, " ", alcaldia, " ", startDate, " ", endDate)
-      const filtradoGeneral = filtroGeneral(
+
+      const filtradoGeneral = await filtroGeneral(
         fechaFiltro,
         fechaActual,
         estado,
@@ -586,9 +607,11 @@ export async function POST(request, { params }) {
         startDate,
         endDate
       );
+      return NextResponse.json(filtradoGeneral)
+
     } else {
-      console.log("SEGUNDO CASO", fechaFiltro, " ", fechaActual, " ", estado, " ", alcaldia, " ", startDate, " ", endDate)
-      const filtradoEspecifico = filtroEspecifico(
+
+      const filtradoEspecifico = await filtroEspecifico(
         fechaFiltro,
         fechaActual,
         estado,
@@ -596,8 +619,8 @@ export async function POST(request, { params }) {
         startDate,
         endDate
       );
+      return NextResponse.json(filtradoEspecifico)
     }  
-    return NextResponse.json("s")
   } catch (error) {
     console.error("Error al obtener reportes:", error);
     return NextResponse.error("Error al obtener reportes", { status: 500 });

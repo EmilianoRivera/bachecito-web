@@ -162,7 +162,6 @@ export default function NuevoAdmin() {
         </div>
 
         <div className='imagen-nuevoAdmin'>
-            <img src="https://i.postimg.cc/sXkS5jM1/Imagen-registro-Admin.png" alt="" />
         </div>
         
         </div>
