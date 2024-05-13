@@ -65,17 +65,17 @@ function SobreNosotros() {
 
   return (
 
-    <div className='body'>
+    <div className='bodySobreNosotros'>
   
-      <section id="hero" class="container flex-row">
+      <section id="hero" class="containerSobreNosotros flex-row">
         <div class="hero__content">
           <h1 class="title">
             Acerca de Bachecito 26
           </h1>
           <p class="text">
-            Proyecto desarrollado por estudiantes del Centro de
-            Estudios Científicos y Tecnológicos 9 "Juan de Dios Bátiz".
-          </p>
+    Proyecto desarrollado por estudiantes del Centro de
+    Estudios Científicos y Tecnológicos 9 Juan de Dios Bátiz;.
+  </p>
           <a href="../app/page.jsx" class="btn btn-primary">Inicio</a>
         </div>
         <div class="hero__img">
@@ -85,7 +85,7 @@ function SobreNosotros() {
    
 
  
-    <section id="about"class="container flex-center flex-column">
+    <section id="about"class="containerSobreNosotros flex-center flex-column">
       <h5 class="section-subheading">Bachecito 26</h5>
       <h2 class="section-heading text-center">
         ¡Adiós baches! ¡Hola Bachecito 26!
@@ -229,7 +229,7 @@ function SobreNosotros() {
     <section 
       id="services" 
       >
-      <div class="container">
+      <div class="containerSobreNosotros">
         <h5 class="section-subheading">¿Qué hace</h5>
         <h2 class="section-heading right">BACHECITO 26?
         </h2>
@@ -290,7 +290,7 @@ function SobreNosotros() {
             <h3 class="services__title">Enviar Reporte</h3>
             <p class="service__text">
               Todos los reportes de bache realizados por los usuarios de nuestra aplicación
-              son eviados a este sistema web en el apartado de "Reportes".
+              son eviados a este sistema web en el apartado de Reportes.
             </p>
             <div class="arrow-icon">
               <i class="fas fa-arrow-right"></i>

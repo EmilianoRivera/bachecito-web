@@ -1,5 +1,5 @@
 "use client";
-import { MapContainer, Marker, TileLayer, Popup, Polygon } from "react-leaflet";
+import { MapContainer, Marker, TileLayer, Popup, Polygon,Circle } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "./map.css"
@@ -727,6 +727,7 @@ const polygonOptions = {
 
 const Map = () => {
   const [markers, setMarkers] = useState([]);
+  const [userLocation, setUserLocation] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -763,13 +764,30 @@ const Map = () => {
     fetchData();
   }, []);
 
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setUserLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          });
+        },
+        (error) => {
+          console.error("Error getting user location:", error);
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
+  }, []);
   function getIconUrl(estado) {
     switch (estado) {
       case "Atendido":
         return atendidoIcon.src;
       case "En atención":
         return enProcesoIcon.src;
-      case "Sin Atender":
+      case "Sin atender":
         return sinAtenderIcon.src;
       default:
         return MarkerIcon.src; // Icono por defecto si el estado no coincide con ninguno de los casos anteriores
@@ -777,7 +795,7 @@ const Map = () => {
   }
   async function reverse(ubi, descripcion) {
     try {
-      const apiKey = 'AIzaSyDUhkmX0nWDYHvkG9fxVG-K1jCK6k-bSaI';
+      const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
       const encodedAddress = encodeURIComponent(ubi);
       const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodedAddress}&key=${apiKey}`);
       const data = await response.json();
@@ -796,6 +814,7 @@ const Map = () => {
     }
   }
 
+ const radius=800;
   return (
     <div>
       <MapContainer
@@ -813,12 +832,26 @@ const Map = () => {
         id="map"
       >
         <TileLayer
-          url="https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=cB1pkcJ37buZmTAzdPhV"
+          url="https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=Pyxxe8P2qOBkCkRdy5jX	"
           attribution="Map data &copy; <a href='https://www.openstreetmap.org/'>OpenStreetMap</a> contributors, 
           <a href='https://creativecommons.org/licenses/by-sa/2.0/'>CC-BY-SA</a>, 
           Imagery © <a href='https://www.maptiler.com/'>MapTiler</a>"
         />
          <Polygon pathOptions={polygonOptions} positions={polygon} />
+         {userLocation && userLocation.lat && userLocation.lng && (
+   <Circle
+   radius={radius}
+   fillColor="orange"
+   fillOpacity={0.5}
+   center={[userLocation.lat, userLocation.lng]}
+   pathOptions={{
+     color: "blue", // Color del borde
+     weight: 0.1  ,     // Grosor del borde
+   }}
+ />
+)}
+
+
         {markers.map((marker, index) => (
           <Marker
             key={index}
@@ -827,16 +860,20 @@ const Map = () => {
               new L.Icon({
                 iconUrl: getIconUrl(marker.estados),
                 iconRetinaUrl: getIconUrl(marker.estados),
-                iconSize: [25, 25],
+                iconSize: [20, 20],
               })
             }
           >
-            <Popup>  <div>
-            <p>Fecha: {marker.fecha}</p>
-                <h3>{marker.descripcion}</h3>
-                <img src={marker.imagenURL} alt="Foto del reporte" style={{ maxWidth: '100%' }} />
-                <p>Estado: {marker.estados}</p>
-              </div></Popup>
+
+            <Popup id="popup">  
+              <div className="reportito-popup">
+                <img src={marker.imagenURL} alt="Foto del reporte" style={{ maxWidth: '95px', borderRadius:'1rem', }} />
+                <p className="fecha-popup">Fecha: {marker.fecha}</p>
+                <p className="estado-popup">Estado: {marker.estados}</p>
+                <p className="descripcion-popup">Descripción: {marker.descripcion}</p>
+              </div>
+            </Popup>
+
           </Marker>
         ))}
       </MapContainer>

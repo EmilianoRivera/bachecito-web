@@ -1,6 +1,5 @@
 import Link from 'next/link';
 import './Navbar.css';
-
 function LogoAdmin() {
   return (
     <header>
@@ -8,7 +7,7 @@ function LogoAdmin() {
         <Link href="/" className="bachecito26">
           <img
             src="https://i.postimg.cc/T3NQg97V/Logo.png"
-            alt="Logo Bachecito 26" className='nopelien'
+            alt={"Logo Bachecito 26"} className='nopelien'
           />
           BACHECITO 26
         </Link>

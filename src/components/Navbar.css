@@ -1,5 +1,19 @@
+:root {
+  --background-color: #fff;
+  --text-color: #6f6f6f;
+  --background-color-3: #ffffffde;
+  --background-color-2: #f1f1f1;
+}
+
+.dark-mode {
+  --background-color: #1E1E1E;
+  --text-color: #fff;
+  --background-color-2: #2e2e2e;
+  --background-color-3: #1e1e1ed2;
+}
+
 .navBar {
-    background-color: #ffffffde;
+    background-color: var(--background-color-3);
     overflow: hidden;
     position: fixed;
     top: 0;
@@ -10,7 +24,7 @@
   .navBar a {
     justify-content: center;
     float: left;
-    color: #6f6f6f;
+    color: var(--text-color);
     margin-right: 8px;
     padding: 14px 16px;
     text-decoration: none;
@@ -67,6 +81,7 @@
     margin-right: 10px;
     display: inline-block;
     top: -7px;
+    z-index: 1000;
   }
   
   body::-webkit-scrollbar {
@@ -123,6 +138,8 @@
     background-color: #ff9e49ce; 
     margin: 6px;
     transition: all 0.4s ease;
+    position: fi  xed;
+    z-index: 10000;
   }
   
   .menu-icon.span-anime span:first-child {
@@ -200,4 +217,155 @@
       align-items: right;
       justify-content: right;
     }
+  }
+
+  .ilusion{
+    background-color: #ffffffde;
+    width: 1000vw;
+    height: 60px;
+    top: 0;
+    position: fixed;
+    margin-left: -100vw;
+    z-index: -10;
+  }
+  .navBar.admin {
+    /* Estilos específicos para el navbar cuando isAdmin es true */
+    background-color: #bb0d0d00;
+      position: fixed;
+      /*Hay un problema en esta parte, pero todos los elementos con los que se 
+      quiera interactuar como botones deben de tener un z-index: 100;
+      y un position relative para que se pueda interactuar con ellos sobre del navbar
+      en el apartado de administrador */
+  }
+
+  .navBar.admin a{
+    color: #ff9f49;
+    margin: 0;
+  }
+
+  .navBar.admin .bachecito26{
+    color: #ff9f49;
+  }
+
+  .navBar.admin .menuItems{
+    display: flex;
+      flex-direction: column;
+      margin-top: 17vh;
+      width:4rem;
+      border-radius: 5rem;
+      margin-left: 93vw;
+      background-color: var(--background-color-2);
+      height: 64vh;
+      padding-top: 5vh;
+      padding-bottom: 5vh;
+  }
+
+  .navBar.admin .opc-admin img{
+    width: 2rem;
+  }
+
+  .navBar.admin .opc-admin{
+    border-radius: 3rem;
+    transition: .2s;
+    position: relative;
+  }
+  .navBar.admin .opc-admin:hover{
+    background-color: var(--background-color-2);
+    transform: translate(-20px);
+    border-radius: 3rem;
+    transition: .2s;
+  }
+
+  .hover-text {
+    position: absolute;
+    top: 1.3rem;
+    right: 110%;
+    opacity: 0; 
+    z-index: 10000;
+    transition: opacity 0.2s ease-in; 
+  }
+  
+  .opc-admin:hover .hover-text {
+    transform: translate(-20px);
+    transition: opacity 0.1s ease-out; 
+    opacity: 1; 
+  }
+
+  .navBar.admin .menuIcon{
+    display: none;
+  }
+
+  .confirmation-alert{
+    z-index: 100000;
+    position: fixed;
+    width: 90vw;
+    height: 80vh;
+    top: 12vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-family: 'Nunito', sans-serif;
+    color: #6F6F6F;
+  }
+
+  .confirmation-contenido{
+    background-color: #ffffffcb;
+    backdrop-filter: blur(5px); 
+    padding: 20px;
+    border-radius: 1rem;
+    width: 25vw;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    text-justify: justify;
+    border: 2px solid #ffffff;
+  }
+
+  .boton-salir{
+    padding: 10px;
+    border-radius: 2rem;
+    margin-right: 10px;
+    cursor: pointer;
+    transition: .3s;
+    width: 33%;
+    border: 1px solid #6F6F6F;
+    color: white;
+    background-color: #6F6F6F;
+  }
+  
+  .boton-salir:hover{
+    border: 1px solid #FF9F49;
+    color: white;
+    background-color: #FF9F49;
+    transition: .3s;
+  }
+  
+  .boton-cancelar2{
+    padding: 10px;
+    background-color: #ffffff;
+    border: 1px solid #6F6F6F;
+    color: #6F6F6F;
+    border-radius: 2rem;
+    width: 33%;
+    transition: .2s;
+    cursor: pointer;
+    margin-right: 10px;
+  }
+  
+  .boton-cancelar2:hover{
+    
+    background-color: #ffffff;
+    border: 1px solid #FF9F49;
+    color: #FF9F49;
+    transition: .3s;
+  }
+
+  /*Modo oscuro*/
+  .darkMode{
+    background-color: #6F6F6F;
+    color: rgb(255, 255, 255);
+  }
+
+  .darkMode a{
+    color: #ffffff;
   }

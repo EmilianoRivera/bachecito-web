@@ -1,12 +1,12 @@
 body {
-    background-color: white;
+    background-color: var(--background-color);
     font-family: 'Poppins', sans-serif;
     
   }
 
         .main-containerReportes{
-            background-color: #ffffff;
-            width: 100%;
+            background-color: var(--background-color);
+            width: 99%;
             justify-content: center;
             justify-items: center;
             align-items: center;
@@ -27,7 +27,7 @@ body {
         }
 
         #box1{
-            background-color: #F1F1F1;
+            background-color: var(--background-color-2);
         }
 
         .containerReportes {
@@ -89,6 +89,7 @@ body {
         z-index: 10;
         }
 
+
         .reportes-boxes{
             flex: 1;
             overflow-y: auto; /* Agrega scroll vertical si el contenido es más largo que el área visible */
@@ -99,12 +100,11 @@ body {
         
 
         .box2{
-            break-inside: avoid; /* Evita que los divs se rompan en medio de las columnas */
             width: 100%;
-            padding: 6%;
+            padding: 2rem;
             border-radius: 6vh;
             margin-bottom: 10%;
-            background-color: #F1F1F1;
+            background-color: var(--background-color-2);
             display: flex;
             box-sizing: border-box;
         }
@@ -140,23 +140,28 @@ body {
 
 /*-----------------------Reportes------------------------*/
         .column-left{
-            width: 45%;
+            width: 50%;
             height: 100%;
-            background: #F1F1F1;
         }
 
         .fotografía{
             width: 100%;
             height: 52vh;
-            background-color: #ffffff;
             border-radius: 5vh;
             margin-bottom: 25px;
+        }
+
+        .fotografía img{
+            border-radius: 3vh;
+        }
+
+        #imagenURL{
+            border-radius: 5vh;
         }
 
         .column-left-inferior{
             height: 30px;
             width: 100%;
-            background-color: #F1F1F1;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -166,11 +171,11 @@ body {
             width: 65%;
             border-radius: 5vh;
             height: 38px;
-            background-color: #ffffff;
+            background-color: var(--background-color-4);
             justify-content: center;
             text-align: center;
             display: flex;
-            color: #1E1E1E;
+            color: var(--text-color);
             font-weight:400;
             font-size: large;
             padding-top: 9px;
@@ -183,7 +188,6 @@ body {
             display:inline-block;
             align-items: center;
             justify-content: center;
-            background-color: #F1F1F1;
             color:#949494;
             font-weight:900;
         }
@@ -216,7 +220,6 @@ body {
         }
 
         .column-right-superior{
-            background-color: #F1F1F1;
             width: 100%;
             display: flex;
             height: 40px;
@@ -226,7 +229,11 @@ body {
             width: 75%;
             border-radius: 5vh;
             height: 40px;
-            background-color: #ffffff;
+            color: #000;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: none;
         }
 
         .guardar{
@@ -235,24 +242,28 @@ body {
             align-items: center;
         }
         .icon-star{
-            height: 90%;
+            height: 2.5rem;
             align-self: center;
             justify-self: end;
         }
 
-        .ubicacion{
+        .ubicacion {
             width: 100%;
-            height: 150px;
+            min-height: 150px;
+            height: auto;
             display: block;
             margin-bottom: 20px;
             margin-top: 20px;
         }
-
-        .box-ubi{
-            height: 80%;
-            background-color: #ffffff;
+        
+        .box-ubi {
+            height: 60%;
+            background-color: var(--background-color-4);
             border-radius: 3vh;
-            margin-top: -25px;
+            margin-top: -20px;
+            color: var(--text-color);
+            padding: 15px;
+            font-size: .9rem;
         }
 
         .descripcion{
@@ -261,10 +272,12 @@ body {
         }
 
         .box-des{
-            height: 80%;
+            height: 60%;
             margin-top: -25px;
-            background-color: #ffffff;
+            background-color: var(--background-color-4);
             border-radius: 3vh;
+            color: var(--text-color);
+            padding: 15px;
         }
 
         @media (max-width: 800px) { /* Por ejemplo, cuando la pantalla es más estrecha que 800px */
@@ -278,6 +291,39 @@ body {
                 font-size: larger;
             }
             .box2 h3{
+                font-size: 1.3rem;
+            }
+            .box-ubi{
+                font-size: .9rem;
+            }
+
+            .box-des{
+                font-size: .9rem;
+            }
+          }
+
+          @media (max-width: 1000px) {
+            .box2 h3{
                 font-size: 1.2rem;
+            }
+            .box-ubi{
+                font-size: .8rem;
+            }
+
+            .box-des{
+                font-size: .8rem;
+            }
+          }
+
+          @media (max-width: 1080px) {
+            .box2 h3{
+                font-size: 1.4rem;
+            }
+            .box-ubi{
+                font-size: .9rem;
+            }
+
+            .box-des{
+                font-size: .9rem;
             }
           }

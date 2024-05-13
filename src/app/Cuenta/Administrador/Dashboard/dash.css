@@ -1,50 +1,364 @@
 .container-general {
-    margin-top: 100px; /* Bajar 100px para dejar espacio para el navbar */
-    padding: 20px;
-    background-color: #f5f5f5;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-top: 9vh; /* Bajar 100px para dejar espacio para el navbar */
+    border-radius: 1.5rem;
+    position: fixed;
+    z-index: 100;
+    margin-left: 1rem;
+    width: 90vw;
+    height: 87vh;
+    overflow-x: hidden;
+    overflow-y: scroll;
   }
   
-  .filtros {
+  .filtros-dashboard{
+    width: 62vw;
+    min-width: 62vw;
+    height: 8vh;
+    background-color: var(--background-color-2);
+    margin-bottom: 2vh;
+    border-radius: 1.5rem;
+    align-items: center;
     display: flex;
-    flex-direction: column;
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    z-index: 1000;
+    justify-content: space-between;
+    font-family: 'Poppins', sans-serif;
+    top: 0;
+    position: sticky;
+    border-bottom: 5px solid var(--background-color);
+    border-right: 5px solid var(--background-color);
+   }
+   
+   #fechas img{
+       width: 1.7rem;
+       margin-right: 1rem;
+   }
+
+   #alcaldia img{
+    width: 1.7rem;
+    margin-right: 1rem;
+    }
+    
+    #estado img{
+    width: 1.7rem;
+    margin-right: 1rem;
+    }
+
+  .filtro-dashboard {
+    height: 8vh;
+    flex: 1;
+    margin-right: 10px;
+    align-items: center;
+    padding-left: 2rem;
+    display:flex;
   }
-  
-  .filtros > div {
-    margin-bottom: 10px;
-  }
-  
-  .reportes {
-    margin-top: 20px;
+
+  .filtro-dashboard label {
+    font-size: 17px;
+    margin-bottom: 5px;
     display: flex;
-    flex-direction: column;
+    align-items: center;
+    color: #ff9f49;
+    position:absolute;
+  }
+
+  #fechas label{
+    display: flex;
+    align-items: center;
+    font-size: 17px;
+    margin-bottom: 5px;
+    color: #ff9f49;
   }
   
-  .reportes > div {
-    background-color: #fff;
-    padding: 10px;
-    margin-bottom: 10px;
-    border-radius: 8px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+  .filtro-dashboard select {
+    width: 70%;
+    display: block;
+    padding: 5px;
+    font-size: 14px;
+    border: none;
+    background-color: var(--background-color-2);
+    border-radius: 1rem;
+    color: var(--text-color);
+    transform: translateY(5vh) translateX(3vw);
+  }
+
+  .filtro-dashboard select option{
+    border-radius: 1rem;
+    border: none;
+  }
+
+  .filtro-dashboard select option:hover{
+    background-color: #ff9f49;
+
+  }
+
+  #fechas select {
+    width: 70%;
+    padding: 5px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: none;
+    background-color: var(--background-color-2);
+    border-radius: 1rem;
+    color: var(--text-color);
   }
   
+  .custom-date {
+    display: flex;
+    margin-top: 5px;
+    transform: translateY(5vh) translateX(3.2vw);
+  }
+
+  .custom-date .datepicker {
+    padding: 5px;
+    font-size: 14px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+  .custom-date > * {
+    margin-right: 5px;
+  }
+  
+  .flex-dashboard{
+    display: flex;
+  }
+
   .grafica-circular,
-  .grafica-barras,
   .grafica-barras-hz {
-    margin-top: 20px;
+    margin-top: 15px;
   }
   
   .grafica-circular,
   .grafica-barras,
   .grafica-barras-hz > div {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    background-color: var(--background-color-2);
+    padding: 15px;
+    border-radius: 1rem;
   }
   
+  ::-webkit-scrollbar {
+    width: 10px; /* Ancho de la barra de desplazamiento */
+}
+
+::-webkit-scrollbar-track {
+    background: none; /* Color del fondo de la barra de desplazamiento */
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--background-color-6); /* Color de la barra de desplazamiento */
+    border-radius: 5px; /* Radio de la esquina de la barra de desplazamiento */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--background-color-2); /* Color de la barra de desplazamiento al pasar el mouse sobre ella */
+}
+
+/*Contador reportes*/
+
+.totalReportes{
+  margin-bottom: 1rem;
+  width: 35vw;
+  height: 25vh;
+}
+
+.encabezado{
+  width: 100%;
+  height: 40%;
+  background-color: var(--background-color-2);
+  border-radius: 1rem;
+  margin-bottom: 2.5%;
+  align-items: center;
+  display: flex;
+  justify-content: center;
+}
+
+.encabezado h1{
+  color: var(--text-color);
+  font-family: 'Poppins', sans-serif;
+  margin-right: 10px;
+  font-size: 20px;
+  font-weight: 600;
+}
+
+.contador{
+  color: #FF4D35;
+  font-family: 'Poppins', sans-serif;
+  font-size: 18px;
+  font-weight:800;
+}
+
+.estados{
+  width: 100%;
+  display: flex;
+  height: 52%;
+}
+
+.in-red{
+  width: 32%;
+  height: 100%;
+  background-color:var(--background-color-2);
+  border-radius: 1rem;
+  align-items: center;
+  display:block;
+  justify-content: center;
+}
+
+.red{
+  width: 70%;
+  height: 23%;
+  margin-left: 15%;
+  border-radius: 1rem;
+  background-color: #FF5136;
+  margin-top: 7%;
+  margin-bottom: 2%;
+  cursor: pointer;
+}
+
+.tooltip {
+  visibility: hidden;
+  width: 120px;
+  background-color: #dcdcdc96;
+  font-family: 'Poppins', sans-serif;
+  color: var(--text-color-3);
+  text-align: center;
+  border-radius: 1rem;
+  padding: 5px 0;
+
+  /* Posición absoluta */
+  position: absolute;
+  z-index: 10;
+}
+
+/* Hacer que aparezca cuando el cursor está sobre el elemento */
+.red:hover .tooltip {
+  visibility: visible;
+}
+
+.yellow:hover .tooltip {
+  visibility: visible;
+}
+
+.green:hover .tooltip {
+  visibility: visible;
+}
+/* Posición del span de la leyenda */
+.tooltip {
+  transform: translateY(-120%);
+}
+
+.cont-reportes{
+  color: var(--text-color);
+  font-family: 'Poppins', sans-serif;
+  font-size: 22px;
+  justify-content: center;
+  align-items: center;
+  display: flex;
+  width: 80%;
+  margin-left: 10%;
+  font-weight: 900;
+}
+
+.in-yellow{
+  width: 32%;
+  height: 100%;
+  margin-left: 2%;
+  background-color:var(--background-color-2);
+  border-radius: 1rem;
+  align-items: center;
+  display:block;
+  justify-content: center;
+}
+
+.yellow{
+  width: 70%;
+  height: 23%;
+  margin-left: 15%;
+  border-radius: 1rem;
+  background-color: #FFC63D;
+  margin-top: 7%;
+  margin-bottom: 2%;
+  cursor: pointer;
+}
+
+.in-green{
+  width: 32%;
+  height: 100%;
+  margin-left: 2%;
+  background-color:var(--background-color-2);
+  border-radius: 1rem;
+  align-items: center;
+  display:block;
+  justify-content: center;
+}
+
+.green{
+  width: 70%;
+  height: 23%;
+  margin-left: 15%;
+  cursor: pointer;
+  border-radius: 1rem;
+  background-color: #A4DF77;
+  margin-top: 7%;
+  margin-bottom: 2%;
+}
+
+.ladoIZ-dashboard{
+  margin-right: 15px;
+  width: 35vw;
+  height: auto;
+}
+
+/*Grafica circular*/
+.grafica-circular{
+  width: 33vw;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  display: flex;
+}
+
+.grafica-circular h3{
+  color: var(--text-color);
+  font-family: 'Poppins', sans-serif;
+  margin-right: 35px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/*Grafica barras*/
+.grafica-barras{
+  width: 50vw;
+  height: 69vh;
+}
+
+.grafica-barras h3{
+  color: var(--text-color);
+  font-family: 'Poppins', sans-serif;
+  margin-right: 35px;
+  font-size: 16px;
+  font-weight: 600;
+  margin-left: 20px;
+}
+
+.tooltip-grcir {
+  visibility: hidden;
+  width: auto;
+  background-color: #ffffffef;
+  font-family: 'Poppins', sans-serif;
+  color: #606060;
+  text-align: center;
+  border-radius: 1rem;
+  padding: 10px;
+  font-weight: 400;
+  /* Posición absoluta */
+  position: absolute;
+  z-index: 10;
+}
+
+.grafica-barras-hz{
+  width: 85vw;
+  border-radius: 1rem;
+  padding: 20px;
+  height: auto;
+  background-color: var(--background-color-2);
+}

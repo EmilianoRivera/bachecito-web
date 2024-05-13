@@ -1,0 +1,383 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito:ital,wght@0,200..1000;1,200..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Baloo+Thambi+2:wght@400..800&family=Nunito:ital,wght@0,200..1000;1,200..1000&display =intercambiar');
+
+.bodySoporte {
+    padding: 0;
+    margin: 0;
+    height: 85vh;
+    top: 10vh;
+    width: 90vw;
+    position: fixed;
+    left: 2vw;
+    overflow-y: scroll;
+    position: relative;
+    z-index: 10000;
+    overflow-x: hidden;
+}
+
+.containerSoporte {
+    text-align: center;
+    position: relative;
+}
+
+.containerPF {
+    position: relative;
+    z-index: 100;
+    font-family: "Baloo Thambi 2", system-ui;
+    width: 98%;
+    margin: 0 auto;
+    /* Centra horizontalmente */
+}
+
+
+.containerPF #titulo_pf {
+    color: #FF9F49;
+}
+
+.boxPF{
+    padding-top: 2vw;
+    padding-bottom: 2vw;
+    padding-left: 5vw;
+    padding-right: 5vw;
+    height: auto;
+    border-radius: 6vh;
+    margin-bottom: 3%;
+    position: relative;
+}
+
+#boxPF{
+    background-color: var(--background-color-2);
+}
+
+.containerLetritasPF {
+display: flex;
+align-items: center;
+justify-content: center;
+justify-items: center;
+height: 10vh;
+}
+.svg-soporte{
+  font: 3.5rem Arial;
+  font-weight: 900;
+  width: 100%;
+  height: 20vh;
+  margin-top: 4%;
+}
+
+.svg-soporte text {
+    fill: #ff9f49;
+    stroke: #ff9f49;
+    fill-opacity: 1;
+    stroke-width: 0;
+    stroke-dasharray: 100% 0;
+    animation: stroke-offset 4s ease-out;
+  }
+
+  @keyframes stroke-offset {
+    0% {
+      fill-opacity: 0;
+      stroke-width: 0;
+      stroke-dasharray: 0% 100%;
+    }
+    25% {
+      stroke-width: 2px;
+    }
+    50% {
+      fill-opacity: 0;
+    }
+    75% {
+      stroke-width: 2px;
+    }
+    100% {
+      stroke-width: 0;
+    }
+  }
+
+
+.containerPF .container_preguntaFrecuente {
+    justify-content: space-between;
+    /* Ajustar el espacio entre los elementos */
+    width: 100%;
+    background-color: var(--background-color-2);
+    border-radius: 15px;
+    align-items: center;
+    margin: 0 auto;
+    height: auto;
+}
+
+.containerPF .container_preguntaFrecuente .pf {
+    display: flex;
+    justify-content: space-between;
+    /* Ajustar el espacio entre los elementos */
+
+}
+
+.containerPF .container_preguntaFrecuente .pf p {
+    margin-left: 5%;
+    align-self: flex-start;
+    height: 90%;
+    color: var(--text-color);
+    font-size: 1.3rem;
+}
+
+.containerPF .container_preguntaFrecuente .pf img {
+    height: 100%;
+    width: 20px;
+    margin-right: 20px;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.descripcion_pf {
+    width: 90%;
+    height: auto;
+    border-radius: 15px;
+    background-color: var(--background-color);
+    padding-bottom: 8px;
+    margin-left: 5%;
+
+}
+
+.descripcion_pf p {
+    text-align: justify;
+    margin-left: 5%;
+    margin-right: 5%;
+    color: var(--text-color);
+}
+
+.container_FormularioSoporte {
+    background-color: var(--background-color-2);
+    border-radius: 15px;
+    width: 100%;
+    margin-top: 5%;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5%;
+    margin: 0 auto;
+    /* Centra horizontalmente */
+    position: relative;
+}
+
+.container_FormularioSoporte .containerFR form {
+    z-index: 100;
+    position: relative;
+}
+
+.container_FormularioSoporte {
+    background-color: var(--background-color-2);
+    border-radius: 15px;
+    width: 60%;
+    margin-top: 5%;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 5%;
+}
+
+.container_FormularioSoporte .containerFR {
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+.table_form_sp {
+    width: 100%;
+}
+
+.table_form_sp th,
+.table_form_sp td {
+    width: 35%;
+    /* Establecer el ancho al 50% para cada th y td */
+    padding: 10px;
+    /* Ajustar el relleno según sea necesario */
+    text-align: center;
+    /* Alinear el texto al centro si es necesario */
+}
+
+#titulo_sp {
+    width: 100%;
+    /* Asegurar que el título ocupe todo el ancho */
+}
+
+.container_FormularioSoporte .containerFR form table .columna_soporte_1 {
+    text-align: right;
+}
+
+.container_FormularioSoporte .containerFR form table .columna_soporte_2{
+    align-items: start;
+    justify-content: left;
+}
+
+.container_FormularioSoporte .containerFR #titulo_sp {
+    color: #FF9F49;
+    font-family: "Baloo Thambi 2", system-ui;
+    text-align: center;
+
+}
+
+.container_FormularioSoporte .containerFR form label {
+    color: var(--text-color);
+    font-family: "Baloo Thambi 2", system-ui;
+    font-size: 18px;
+}
+
+.container_FormularioSoporte .containerFR form select {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    -ms-appearance: none;
+    appearance: none;
+    outline: 0;
+    box-shadow: none;
+    border: 0 !important;
+    background: var(--background-color-6);
+    background-image: none;
+    flex: 1;
+    padding: 0 .5em;
+    color: var(--text-color-3);
+    cursor: pointer;
+    font-size: 1em;
+    font-family: "Baloo Thambi 2", system-ui;
+}
+
+select::-ms-expand {
+    display: none;
+}
+
+.select {
+    position: relative;
+    display: flex;
+    width: 18.5em;
+    height: 2.8em;
+    line-height: 3;
+    background: #949494;
+    overflow: hidden;
+    border-radius: .25em;
+    margin: 0 auto;
+    color: #3C3C3C;
+}
+
+.select::after {
+    content: '\25BC';
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0 1em;
+    background: #AAAAAA;
+    cursor: pointer;
+    pointer-events: none;
+    transition: .25s all ease;
+}
+
+.select:hover::after {
+    color: #1E1E1E;
+}
+
+.container_FormularioSoporte .containerFR input {
+    background-color: var(--background-color-6);
+    border: none;
+    margin: 8px 0;
+    padding: 10px;
+    font-size: 13px;
+    border-radius: 8px;
+    width: 74%;
+    outline: auto;
+    outline-color: var(--background-color-6);
+    color: var(--text-color-3);
+    transition: outline 0.5s ease;
+    font-family: "Baloo Thambi 2", system-ui;
+}
+
+.container_FormularioSoporte .containerFR input:hover {
+    /* Cambia el color del texto al pasar el mouse */
+    outline-color: #FF9F49;
+    border-color: #ff9f49;
+    /* Agrega un borde naranja al pasar el mouse */
+}
+
+.container_FormularioSoporte .containerFR input::placeholder {
+    color:var(--text-color-3);
+    /* Color del placeholder predeterminado */
+    transition: color 0.5s ease;
+    /* Transición suave */
+}
+
+.container_FormularioSoporte .containerFR input:hover::placeholder {
+    color: #ff9f49;
+    /* Cambia el color del placeholder al pasar el mouse */
+}
+
+.container_FormularioSoporte .containerFR .wrapper {
+    border-radius: 5px;
+}
+
+.container_FormularioSoporte .containerFR .wrapper textarea {
+    background-color: var(--background-color-6);
+    color: #949494;
+    outline: auto;
+    outline-color: var(--background-color-6);
+    padding: 1em;
+    border-radius: 10px;
+    border: 2px solid transparent;
+    font-family: "Baloo Thambi 2", system-ui;
+    font-weight: 500;
+    font-size: 16px;
+    line-height: 1.4;
+    width: 71%;
+    height: 2%;
+    transition: all 0.2s;
+}
+
+.container_FormularioSoporte .containerFR .wrapper textarea:hover {
+    cursor: pointer;
+    outline-color: #FF9F49;
+
+}
+
+.container_FormularioSoporte .containerFR .wrapper textarea:focus {
+    cursor: text;
+    color: var(--text-color);
+    font-family: "Baloo Thambi 2", system-ui;
+    border-color: #FF9F49;
+}
+
+.container_FormularioSoporte .containerFR .wrapper textarea::placeholder {
+    color: #D1D1D1;
+}
+
+.container_FormularioSoporte .containerFR form button {
+    background-color: #6F6F6F;
+    color: #fff;
+    font-size: 15px;
+    font-family: "Baloo Thambi 2", system-ui;
+    padding: 7.5px 45px;
+    border: 1px solid transparent;
+    border-radius: 15px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    cursor: pointer;
+    transition: .5s;
+    text-align: center;
+    width: 50%;
+}
+
+
+.container_FormularioSoporte .containerFR form button:hover {
+    background-color: #FF9F49;
+    color: #fff;
+}
+
+::-webkit-scrollbar {
+    width: 10px; /* Ancho de la barra de desplazamiento */
+}
+
+::-webkit-scrollbar-track {
+    background: none; /* Color del fondo de la barra de desplazamiento */
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--background-color-6); /* Color de la barra de desplazamiento */
+    border-radius: 5px; /* Radio de la esquina de la barra de desplazamiento */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--background-color-2); /* Color de la barra de desplazamiento al pasar el mouse sobre ella */
+}

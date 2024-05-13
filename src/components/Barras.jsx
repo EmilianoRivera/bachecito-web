@@ -3,7 +3,6 @@ import * as d3 from "d3";
 
 export default function Barras({ width, height }) {
   const svgRef = useRef();
-  const data = [1, 2, 3, 4];
   const [dataAlcaldia, setAlcaldiaReporte] = useState([]);
   const [totalReporte, setTotalReportes] = useState(0);
   const [semanas, setSemanas] = useState(0);
@@ -13,15 +12,15 @@ export default function Barras({ width, height }) {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch("/api/g2");
+       //const response = await fetch("/api/g2");
         const totalReportesResponse = await fetch("/api/reportesTotales");
 
-        if (!response.ok || !totalReportesResponse.ok) {
+        if (/* !response.ok || */ !totalReportesResponse.ok) {
           throw new Error("Failed to fetch data");
         }
 
-        const { contAlcaldias, fechaMenor, fechaMayor, semanas } =
-          await response.json();
+        /* const { contAlcaldias, fechaMenor, fechaMayor, semanas } =
+          await response.json(); */
         const totalReportes = await totalReportesResponse.json();
 
         const dataArray = Object.entries(contAlcaldias).map(
@@ -51,6 +50,8 @@ export default function Barras({ width, height }) {
   console.log("TOTAL DE REPORTES", totalReporte);
    */
   useEffect(() => {
+  const data = [1, 2, 3, 4];
+
     if (!data || !data.length) return;
 
     const svg = d3.select(svgRef.current);

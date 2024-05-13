@@ -2,7 +2,7 @@
 "use client"
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
-import ReportesComponente  from "@/components/Reportes";
+import ReportesComponente  from "@/components/Reportes2";
 import React from 'react';
 import './Reportes.css';
 {/*OTRA COSA, AQUI LA LOGICA DE DESPLEGAR LOS REPORTES, ESTA EN OTRO ARCHIVO, LO HICE COMPONENTE PARA REUZARLO EN VARIAS PARTES, EL COMPONENTE SE LLAMA ReportesComponente */}
@@ -103,15 +103,16 @@ export default function Reportes() {
             <div className="box1" id="box1">
                 <h2>Bienvenido al área de reportes 🐜</h2>
                 <p>
-                    Aquí podrás visualizar los reportes hechos por los usuarios de Bachecito 26;
+                    Aquí podrás visualizar los reportes hechos por los usuarios de Bachecito 26 móvil;
                     también puedes guardar los baches reportados por estos mismos con el icono de la
                     estrellita ⭐ para después verlos en la lista de seguimiento del apartado “Baches
-                    Guardados”.
+                    Guardados” una vez que inicies sesión. ¡Únete a la lista realizando reportes desde tu teléfono!
                 </p>
             </div>
             <div>
 
             <ReportesComponente />
+            
             </div>
             
         </div>
