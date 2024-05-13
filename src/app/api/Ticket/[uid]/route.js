@@ -35,7 +35,7 @@ export async function GET(request, {params}) {
         throw new Error("Failed to fetch user data");
       }
       const tickets = await res.json();
-      
+      console.log("first")
     return NextResponse.json(tickets);
   } catch (error) {
     console.error("Error al obtener los tickets:", error);
