@@ -183,7 +183,7 @@ function Soporte() {
         }
 
         const uid = userData.uid;
-        const ticketsData = await fetch(`http://localhost:3000/api/Ticket/${uid}`);
+        const ticketsData = await fetch(`/api/Ticket/${uid}`);
         if (!ticketsData.ok) {
           throw new Error("Failed to fetch tickets data");
         }
@@ -378,22 +378,19 @@ function Soporte() {
     const nombre = userData.nombre;
     const area = asignarTarea;
     const uid = userData.uid;
-      const url = await handleFileUpload();
-     
+    const url = await handleFileUpload();
+    
     let res = prompt("¿Desea levantar el ticket? (SI/NO)");
     if (res.toUpperCase() === "SI") {
       try {
-        const ticketResponse = await fetch(
-          `http://localhost:3001/api/Ticket/${url}/${uid}/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${encodeURIComponent(
-            selectedRutaError
-          )}/${descripcionProblema}/${correoA}/${nombre}/${area}`,
-          {
+ 
+        const ticketResponse = await fetch(`/api/RegistrarTicket/${encodeURIComponent(url)}/${uid}/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${encodeURIComponent(selectedRutaError)}/${descripcionProblema}/${correoA}/${nombre}/${area}`,{
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              url,
+              url: encodeURIComponent(url),
               uid: uid,
               errorSeleccionado,
               sistemaOperativo,
@@ -406,7 +403,6 @@ function Soporte() {
             }),
           }
         );
-
         if (ticketResponse.ok) {
           console.log("Formulario enviado con éxito");
         } else {
