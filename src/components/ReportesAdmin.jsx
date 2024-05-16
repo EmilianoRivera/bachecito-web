@@ -12,7 +12,7 @@ export default function ReportesAdmin() {
     const [isEstadoAlertVisible, setIsEstadoAlertVisible] = useState(false);
     const [alertaEstadoData, setAlertaEstadoData] = useState({ folio: null, estadoActual: null });
     const [alcaldiaSeleccionada, setAlcaldiaSeleccionada] = useState("Todas");
-
+    const [searchLocation, setSearchLocation] = useState("");
     function showDeleteHeader() {
         const table = document.querySelector('.containerReportesAdmin table');
         table.classList.add('show-header');
@@ -270,6 +270,15 @@ export default function ReportesAdmin() {
         setEstado(estadoSeleccionado)
     };
 
+
+    const filtrarReportesPorUbi = (ubi) => {
+        const ubicacionLowerCase = ubi.toLowerCase();
+        const reportesFiltrados = rep.filter(reporte => reporte.ubicacion.toLowerCase().includes(ubicacionLowerCase));
+        setReportesFiltrados(reportesFiltrados);
+    };
+    useEffect(() => {
+        filtrarReportesPorUbi(searchLocation);
+    }, [searchLocation, rep]);
     /**setEstado(e.target.value);
         console.log("Estado") */
 
@@ -402,7 +411,14 @@ const filtrarReportesPorAlcaldia = (alcaldiaSeleccionada) => {
                                 <option value="Atendido">Atendido</option>
                             </select>
                         )}
-
+                    </div>
+                    <div>
+                    <input
+  type="text"
+  placeholder="Buscar ubicación..."
+  value={searchLocation}
+  onChange={(e) => setSearchLocation(e.target.value)}
+/>
                     </div>
                 </div>
 

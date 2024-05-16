@@ -21,7 +21,7 @@ function ReportesComponente() {
   const [rep, setRep] = useState([]);
   const { isLogged } = useContext(AuthContext);
   const [userData, setUserData] = useState(null);
-  const [searchTerm, setSearchTerm] = useState("");
+ // const [searchTerm, setSearchTerm] = useState("");
   const [searchLocation, setSearchLocation] = useState("");
   const [searchStatus, setSearchStatus] = useState("");
   const [searchFolio, setSearchFolio] = useState("");
@@ -129,7 +129,7 @@ function ReportesComponente() {
     }));
   };
   const filteredReports = rep.filter((report) =>
-    report.descripcion.toLowerCase().includes(searchTerm.toLowerCase()) &&
+    //report.descripcion.toLowerCase().includes(searchTerm.toLowerCase()) &&
     report.ubicacion.toLowerCase().includes(searchLocation.toLowerCase()) &&
     (searchStatus === "" || report.estado.toLowerCase() === searchStatus.toLowerCase()) &&
     (searchFolio === "" || report.folio.startsWith(searchFolio)) &&
