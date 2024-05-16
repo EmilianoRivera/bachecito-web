@@ -1,8 +1,7 @@
-"use client"
 import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 
-export default function BarrasHz ({  width, height }) {
+export default function BarrasHz({ width, height }) {
   const svgRef = useRef();
 
   useEffect(() => {
@@ -28,6 +27,17 @@ export default function BarrasHz ({  width, height }) {
       .range([0, height]) // Rango de la altura
       .padding(0.1); // Espaciado entre las barras
 
+    // Define una escala de colores personalizada
+    const colorScale = d3.scaleOrdinal()
+      .domain(data.map(d => d.name))
+      .range([
+        "#FF8A57",
+        "#FFB54E",
+        "#FFE75F",
+        "#D3FF7A",
+        "#90F49B",
+      ]);
+
     // Barras
     svg.selectAll("rect")
       .data(data)
@@ -37,7 +47,7 @@ export default function BarrasHz ({  width, height }) {
       .attr("y", d => yScale(d.name))
       .attr("width", d => xScale(d.value))
       .attr("height", yScale.bandwidth())
-      .attr("fill", "steelblue");
+      .attr("fill", d => colorScale(d.name));
 
     // Etiquetas
     svg.selectAll("text")
@@ -57,14 +67,7 @@ export default function BarrasHz ({  width, height }) {
     svg.append("g")
       .attr("transform", `translate(0, ${height})`)
       .call(d3.axisBottom(xScale));
-
- 
- 
-  }, [ height, width]);
- 
- 
+  }, [height, width]);
 
   return <svg ref={svgRef} width={width} height={height}></svg>;
 }
-
-
