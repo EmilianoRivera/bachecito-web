@@ -9,7 +9,7 @@
     margin-left: 1.5vw;
     height: 100vh;
     width: 95vw;
-    background-color: #ffffff;
+    background-color: var(--background-color);
     overflow-x: hidden;
     overflow-y: hidden;
     font-family: 'Inter UI', sans-serif;
@@ -26,7 +26,7 @@
     border-radius: 6vh;
     margin-left: 3vw;
     margin-top: 5vh;
-    background-color: #F1F1F1;
+    background-color: var(--background-color-2);
 }
 
 
@@ -39,7 +39,7 @@
 }
 
 #textito{
-    color: #6F6F6F;
+    color: var(--text-color);
     font-family: "Baloo Thambi 2", system-ui;
     font-weight: 500;
     margin-top: -10px;
@@ -52,15 +52,14 @@
     margin-bottom: 0;
     padding: 0;
     top: 0;
-    margin-top: -3rem;
+    margin-top: -4rem;
     overflow-x: hidden;
 }
   
 .column-favs {
     flex: 1; /* Las columnas ocuparán el mismo espacio */
-    margin: 0 10px; /* Margen entre las columnas */
+    margin: 0 15px; /* Margen entre las columnas */
     overflow-x: hidden;
-    padding: 10px; /* Espacio interno dentro de las columnas */
 }
 
 .tipo{
@@ -85,7 +84,7 @@
 .container-reportes-favs {
     display: flex; /* Establece el contenedor como un flex container */
     margin-bottom: 15%;
-    margin-top: -10%;
+    margin-top: -8%;
     overflow-y: auto;
     overflow-x: hidden;
 }
@@ -104,7 +103,7 @@
     padding: 6%;
     border-radius: 6vh;
     margin-bottom: 10%;
-    background-color: #F1F1F1;
+    background-color: var(--background-color-2);
     display: flex;
     box-sizing: border-box;
 }
@@ -132,21 +131,18 @@
 .column-favs-left{
     width: 45%;
     height: 100%;
-    background: #F1F1F1;
 }
 
 .fotografía-favs{
     width: 100%;
-    height: 45vh;
-    background-color: #ffffff;
-    border-radius: 4vh;
+    height: auto;
+    border-radius: 1rem;
     margin-bottom: 15px;
 }
 
 .column-favs-left-inferior{
     height: 30px;
     width: 100%;
-    background-color: #F1F1F1;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -156,24 +152,23 @@
     width: 90%;
     border-radius: 5vh;
     height: 2.5vh;
-    background-color: #ffffff;
+    background-color: var(--background-color-4);
     justify-content: center;
     text-align: center;
     display: flex;
-    color: #1E1E1E;
+    color: var(--text-color);
     font-weight:400;
     font-size: large;
-    padding-top: 9px;
+    padding: 10px;
 }
 
 .contador-favs{
     margin-left: 10%;
-    margin-top: -1%;
+    margin-top: 15%;
     width: 20%;
     display:inline-block;
     align-items: center;
     justify-content: center;
-    background-color: #F1F1F1;
     color:#949494;
     font-weight:900;
 }
@@ -242,7 +237,7 @@
 }
 
 .icon-favs-star{
-    height: 90%;
+    height: 30px;
     align-self: center;
     justify-self: end;
 }
@@ -255,10 +250,11 @@
 
 .box-ubi-favs{
     height: 75%;
-    background-color: #ffffff;
+    background-color: var(--background-color-4);
     border-radius: 3vh;
     margin-top: -15px;
     padding: 15px;
+    color: var(--text-color);
 }
 
 .descripcion-favs{
@@ -269,9 +265,10 @@
 
 .box-des-favs{
     height: 45%;
-    background-color: #ffffff;
+    background-color: var(--background-color-4);
     margin-top: -15px;
     border-radius: 3vh;
+    color: var(--text-color);
     padding: 15px;
 }
 

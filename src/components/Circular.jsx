@@ -1,6 +1,46 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
+import { db, collection, getDocs, query, where } from "../../firebase";
 import * as d3 from "d3";
+
+async function fetchFiltroEstado(
+  estado,
+  alcaldia,
+  filtroFecha,
+  startDate,
+  endDate
+) {
+  //console.log(estado, " ", alcaldia, " ", filtroFecha, " ", startDate, " ", endDate)
+  try {
+    const parametros = {
+      estado: estado,
+      alcaldia: alcaldia,
+      filtroFecha: filtroFecha,
+      startDate: startDate,
+      endDate: endDate,
+    };
+
+    const datosNuevos = await fetch(
+      `/api/filtros/${estado}/${alcaldia}/${filtroFecha}/${startDate}/${endDate}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json", 
+        },
+        body: JSON.stringify(parametros), 
+      }
+    );
+    if (!datosNuevos.ok) {
+      throw new Error("Fallaron los filtros");
+    }
+    const resultadoFiltros = await datosNuevos.json();
+    console.log(resultadoFiltros)
+    
+  } catch (error) {
+    console.error("Error a la hora de hacer la petición ", error);
+    return null;
+  }
+}
 
 export default function Circular({
   width,
@@ -15,7 +55,10 @@ export default function Circular({
   const svgRef = useRef();
   const tooltipRef = useRef();
   const [rep, setRep] = useState([]); //guarda los reportes totales por alcaldia
+
+  const [contAlcaldias, setContAlcaldias] = useState([]);
   //const [totalRep, setTotalRep] = useState(0);
+  const [reportesCategorizados, setReportesCategorizados] = useState("");
   const [selectedSegment, setSelectedSegment] = useState(null);
   const [alcEstRep, setAlcEstRep] = useState(); //este guardar por alcaldia, la cantidad de reportes que tienen x estado
 
@@ -58,7 +101,6 @@ export default function Circular({
           label,
           value,
         }));
-
         setRep(dataArray);
         // setTotalRep(data2);
         setAlcEstRep(data3);
@@ -69,8 +111,6 @@ export default function Circular({
 
     fetchData();
   }, []);
-
-
 
   //ESTE USEEFFECT SE ENCARGA DE OCULTAR LOS ELEMENTOS, Y REVISAR QUE SI CAMBIA ALGO EN EL FILTRO DEL ESTADO, SE EJECUTE LA FUNCION QUE CAMBIA LA GRAFICA
   useEffect(() => {
@@ -92,16 +132,23 @@ export default function Circular({
         .text(`${percentage}%`);
     }
   }, [selectedSegment]);
+  graficaCircular();
 
-  graficaCircular()
- 
- 
-  function graficaCircular(estado = estados, alcaldia=alcaldias, filtroFecha=filtroFechas, startDate=startDates, endDate=endDates) {
-      const svg = d3.select(svgRef.current);
-      const radius = Math.min(width, height) / 2;
-      if (estados === "Todos" && alcaldia === "Todas" && filtroFechas === "Todos los tiempos") {
-   
- 
+
+  function graficaCircular(
+    estado = estados,
+    alcaldia = alcaldias,
+    filtroFecha = filtroFechas,
+    startDate = startDates,
+    endDate = endDates
+  ) {
+    const svg = d3.select(svgRef.current);
+    const radius = Math.min(width, height) / 2;
+    if (
+      estados === "Todos" &&
+      alcaldia === "Todas" &&
+      filtroFechas === "Todos los tiempos"
+    ) {
       const pie = d3.pie().value((d) => d.value);
 
       const arc = d3.arc().innerRadius(50).outerRadius(radius);
@@ -152,53 +199,31 @@ export default function Circular({
 
       const tooltip = d3.select(tooltipRef.current);
       tooltip.style("visibility", "hidden");
-
     } else {
- 
-        const nombreAlcaldia = alcaldia.replace(/^[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+|[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+$/g, "");
-        async function fetchFiltroEstado() {
-          try {
-            const parametros = {
-              estado: estado,
-              alcaldia: alcaldia,
-              filtroFecha: filtroFecha,
-              startDate: startDate,
-              endDate: endDate
-            };
-            console.log("ALCALDIA QUE SE ENVIAAAAAAAAAAAAAAA" , nombreAlcaldia)
-            // Realizar la solicitud POST con el objeto de parámetros en el cuerpo
-            const datosNuevos = await fetch(`/api/filtros/${estado}/${nombreAlcaldia}/${filtroFecha}/${startDate}/${endDate}`, {
-              method: 'POST',
-              headers: {
-                'Content-Type': 'application/json' // Indicar que el cuerpo es JSON
-              },
-              body: JSON.stringify(parametros) // Convertir el objeto a JSON
-            });
-            if (!datosNuevos.ok) {
-              throw new Error("Fallo a la petición de /api/filtros/estado/${estado}");
-            }
-            const estadosReportes = await datosNuevos.json();
-            console.log(estadosReportes);
-
-          } catch (error) {
-            console.error("Error a la hora de hacer la petición a /api/filtros/estado/${estado}: ", error);
-          }
-        }
-
-        fetchFiltroEstado();
-
- 
-      }
- 
+      const nombreAlcaldia = alcaldia.replace(
+        /^[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+|[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+$/g,
+        ""
+      );
+      console.log("-----------",nombreAlcaldia)
+      fetchFiltroEstado(
+        estado,
+        nombreAlcaldia,
+        filtroFecha,
+        startDate,
+        endDate,
+        
+      );
     }
-
-    
-
- 
+  }
 
   return (
-    <div style={{ position: "relative", width, height, color:"white", }}>
-      <svg ref={svgRef} width={width} height={height} style={{color:"white"}}></svg>
+    <div style={{ position: "relative", width, height, color: "white" }}>
+      <svg
+        ref={svgRef}
+        width={width}
+        height={height}
+        style={{ color: "white" }}
+      ></svg>
       <div
         ref={tooltipRef}
         className="tooltip-grcir"

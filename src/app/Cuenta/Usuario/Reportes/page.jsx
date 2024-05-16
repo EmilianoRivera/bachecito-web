@@ -89,6 +89,7 @@ export default function Reportes() {
             window.removeEventListener("resize", updateCenter);
         };
     }, [router]);
+    
     return (
        
             <div className="main-containerReportes">

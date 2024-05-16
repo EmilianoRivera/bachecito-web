@@ -29,7 +29,7 @@ body {
     text-align: left;
     border-top-left-radius: 2rem;
     border-bottom-left-radius: 2rem;
-    border-right: .3rem solid #ffffff ;
+    border-right: .3rem solid var(--background-color) ;
     border-top-right-radius: 2rem;
     border-bottom-right-radius: 2rem;
     text-align: center;
@@ -44,10 +44,11 @@ body {
   }
 
   td{
-    border-top: .3rem solid #ffffff ;
-    background-color: #f1f1f1;
+    border-top: .3rem solid var(--background-color) ;
+    background-color: var(--background-color-2);
     padding-left: 12px;
     padding-right: 12px;
+    color: var(--text-color);
     height: 60px;
   }
 
@@ -79,6 +80,7 @@ body {
   border: none;
   width: 100%;
   height: 2rem;
+  background: none;
   cursor: pointer;
 }
 
@@ -91,22 +93,22 @@ body {
 }
 
 ::-webkit-scrollbar-track {
-    background: #f1f1f1; /* Color del fondo de la barra de desplazamiento */
+    background: var(--background-color); /* Color del fondo de la barra de desplazamiento */
 }
 
 ::-webkit-scrollbar-thumb {
-    background: #d1d1d1; /* Color de la barra de desplazamiento */
+    background: var(--background-color-6); /* Color de la barra de desplazamiento */
     border-radius: 5px; /* Radio de la esquina de la barra de desplazamiento */
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: #c9c9c9; /* Color de la barra de desplazamiento al pasar el mouse sobre ella */
+    background: var(--background-color-6); /* Color de la barra de desplazamiento al pasar el mouse sobre ella */
 }
 
 .filtros2{
   width: 62vw;
   height: 8vh;
-  background-color: #F1F1F1;
+  background-color: var(--background-color-2);
   margin-bottom: 2vh;
   border-radius: 1.5rem;
   align-items: center;
@@ -311,7 +313,7 @@ body {
 }
 
 .papelera{
-  background-color: #F1F1F1;
+  background-color: var(--background-color-2);
   width: 15vw;
   height: 8vh;
   margin-bottom: 2vh;
@@ -325,10 +327,10 @@ body {
 }
 
 .papelera img{
-  height: 2rem;
+  height: 1.5rem;
   position: absolute;
   margin-top: -3px;
-  margin-left: -40px;
+  margin-left: -30px;
 }
 
 .flex-papelera{
