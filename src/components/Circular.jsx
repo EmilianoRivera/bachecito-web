@@ -1,7 +1,5 @@
 "use client";
 import React, { useEffect, useRef, useState } from "react";
-import * as Highcharts from 'highcharts';
-import * as Dashboards from '@highcharts/dashboards';
 import { db, collection, getDocs, query, where } from "../../firebase";
 import * as d3 from "d3";
 
@@ -27,21 +25,59 @@ async function fetchFiltroEstado(
       {
         method: "POST",
         headers: {
-          "Content-Type": "application/json", 
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify(parametros), 
+        body: JSON.stringify(parametros),
       }
     );
     if (!datosNuevos.ok) {
       throw new Error("Fallaron los filtros");
     }
     const resultadoFiltros = await datosNuevos.json();
-    console.log(resultadoFiltros)
-    
+    //console.log(resultadoFiltros)
+    return resultadoFiltros;
   } catch (error) {
     console.error("Error a la hora de hacer la petición ", error);
     return null;
   }
+}
+
+function buscarAlcaldias(ubicacion) {
+  const regexAlcaldiasCDMX =
+    /(Álvaro Obregón|Azcapotzalco|Benito Juárez|Coyoacán|Cuajimalpa de Morelos|Cuauhtémoc|Gustavo A. Madero|Iztacalco|Iztapalapa|La Magdalena Contreras|Miguel Hidalgo|Milpa Alta|Tlalpan|Tláhuac|Venustiano Carranza|Xochimilco)/gi;
+  const contAlcaldias = {};
+
+  const alcaldiasEnUbicacion = ubicacion.match(regexAlcaldiasCDMX);
+
+  if (alcaldiasEnUbicacion) {
+    alcaldiasEnUbicacion.forEach((alcaldia) => {
+      const alcaldiaLower = alcaldia.toLowerCase();
+      contAlcaldias[alcaldiaLower] = (contAlcaldias[alcaldiaLower] || 0) + 1;
+    });
+  }
+
+  return contAlcaldias;
+}
+
+function formatearDatos(result) {
+  const contAlcaldias = {};
+  let alcaldiasEnReporte;
+  if (result !== null) {
+    result.forEach((obj) => {
+      if (obj.ubicacion) {
+        alcaldiasEnReporte = buscarAlcaldias(obj.ubicacion);
+      }
+
+      Object.keys(alcaldiasEnReporte).forEach((alcaldia) => {
+        contAlcaldias[alcaldia] =
+          (contAlcaldias[alcaldia] || 0) + alcaldiasEnReporte[alcaldia];
+      });
+    });
+
+   
+    return contAlcaldias;
+  }
+  console.error("Cargando datos");
 }
 
 export default function Circular({
@@ -103,6 +139,7 @@ export default function Circular({
           label,
           value,
         }));
+        console.log("first", typeof dataArray);
         setRep(dataArray);
         // setTotalRep(data2);
         setAlcEstRep(data3);
@@ -112,6 +149,7 @@ export default function Circular({
     }
 
     fetchData();
+
   }, []);
 
   //ESTE USEEFFECT SE ENCARGA DE OCULTAR LOS ELEMENTOS, Y REVISAR QUE SI CAMBIA ALGO EN EL FILTRO DEL ESTADO, SE EJECUTE LA FUNCION QUE CAMBIA LA GRAFICA
@@ -134,35 +172,83 @@ export default function Circular({
         .text(`${percentage}%`);
     }
   }, [selectedSegment]);
-  graficaCircular();
+  obtenerDatos();
 
-
-  function graficaCircular(
-    estado = estados,
-    alcaldia = alcaldias,
-    filtroFecha = filtroFechas,
-    startDate = startDates,
-    endDate = endDates
-  ) {
+  function graficar() {
     const svg = d3.select(svgRef.current);
+    svg.selectAll("*").remove();
     const radius = Math.min(width, height) / 2;
-    if (
-      estados === "Todos" &&
-      alcaldia === "Todas" &&
-      filtroFechas === "Todos los tiempos"
-    ) {
+  
+    const pie = d3.pie().value((d) => d.value);
+  
+    const arc = d3.arc().innerRadius(50).outerRadius(radius);
+  
+    const arcs = svg
+      .selectAll("arc")
+      .data(pie(rep))
+      .enter()
+      .append("g")
+      .attr("class", "arc")
+      .attr("transform", `translate(${width / 2}, ${height / 2})`);
+  
+    arcs
+      .append("path")
+      .attr("fill", (d) => color(d.data.label))
+      .attr("d", arc)
+      .on("mouseover", (event, d) => {
+        setSelectedSegment(d);
+      })
+      .on("mouseout", () => {
+        setSelectedSegment(null);
+      });
+  
+    arcs
+      .append("text")
+      .attr("transform", (d) => `translate(${arc.centroid(d)})`)
+      .attr("textAnchor", "middle")
+      .style("font-family", "Helvetica, sans-serif")
+      .text((d) => d.data.label.toUpperCase());
+  
+    // Agregar el porcentaje fijo debajo de cada alcaldía
+    arcs
+      .append("text")
+      .attr("transform", (d) => {
+        const centroid = arc.centroid(d);
+        const x = centroid[0];
+        const y = centroid[1] + 20; // Ajusta la posición vertical del porcentaje fijo
+        return `translate(${x}, ${y})`;
+      })
+      .attr("text-anchor", "middle")
+      .attr("dy", "1em") // Ajusta la distancia vertical del texto
+      .text(
+        (d) =>
+          `${(((d.endAngle - d.startAngle) / (2 * Math.PI)) * 100).toFixed(2)}%`
+      );
+  
+    const tooltip = d3.select(tooltipRef.current);
+    tooltip.style("visibility", "hidden");
+  }
+  
+  function grafica2(rep2) {
+  
+      const svg = d3.select(svgRef.current);
+ 
+      svg.selectAll("*").remove();
+    
+      const radius = Math.min(width, height) / 2;
+    
       const pie = d3.pie().value((d) => d.value);
-
+    
       const arc = d3.arc().innerRadius(50).outerRadius(radius);
-
+    
       const arcs = svg
         .selectAll("arc")
-        .data(pie(rep))
+        .data(pie(rep2))
         .enter()
         .append("g")
         .attr("class", "arc")
         .attr("transform", `translate(${width / 2}, ${height / 2})`);
-
+    
       arcs
         .append("path")
         .attr("fill", (d) => color(d.data.label))
@@ -173,14 +259,14 @@ export default function Circular({
         .on("mouseout", () => {
           setSelectedSegment(null);
         });
-
+    
       arcs
         .append("text")
         .attr("transform", (d) => `translate(${arc.centroid(d)})`)
-        .attr("text-anchor", "middle")
+        .attr("textAnchor", "middle")
         .style("font-family", "Helvetica, sans-serif")
         .text((d) => d.data.label.toUpperCase());
-
+    
       // Agregar el porcentaje fijo debajo de cada alcaldía
       arcs
         .append("text")
@@ -194,27 +280,46 @@ export default function Circular({
         .attr("dy", "1em") // Ajusta la distancia vertical del texto
         .text(
           (d) =>
-            `${(((d.endAngle - d.startAngle) / (2 * Math.PI)) * 100).toFixed(
-              2
-            )}%`
+            `${(((d.endAngle - d.startAngle) / (2 * Math.PI)) * 100).toFixed(2)}%`
         );
-
+    
       const tooltip = d3.select(tooltipRef.current);
       tooltip.style("visibility", "hidden");
-    } else {
-      const nombreAlcaldia = alcaldia.replace(
-        /^[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+|[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+$/g,
-        ""
-      );
-      console.log("-----------",nombreAlcaldia)
-      fetchFiltroEstado(
-        estado,
-        nombreAlcaldia,
-        filtroFecha,
-        startDate,
-        endDate,
-        
-      );
+     
+    
+  }
+  async function obtenerDatos(
+    estado = estados,
+    alcaldia = alcaldias,
+    filtroFecha = filtroFechas,
+    startDate = startDates,
+    endDate = endDates
+  ) {
+    const nombreAlcaldia = alcaldia.replace(
+      /^[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+|[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+$/g,
+      ""
+    );
+
+    const result = await fetchFiltroEstado(
+      estado,
+      nombreAlcaldia,
+      filtroFecha,
+      startDate,
+      endDate
+    );
+
+    const contAlcaldias = formatearDatos(result);
+
+    const dataArray = Object.entries(contAlcaldias).map(([label, value]) => ({
+      label,
+      value,
+    }));
+    graficar();
+    if (dataArray!== null) {
+       
+      
+    
+      grafica2(dataArray)
     }
   }
 

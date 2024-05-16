@@ -21,7 +21,11 @@ function ReportesComponente() {
   const [rep, setRep] = useState([]);
   const { isLogged } = useContext(AuthContext);
   const [userData, setUserData] = useState(null);
-
+  const [searchTerm, setSearchTerm] = useState("");
+  const [searchLocation, setSearchLocation] = useState("");
+  const [searchStatus, setSearchStatus] = useState("");
+  const [searchFolio, setSearchFolio] = useState("");
+  const [searchDate, setSearchDate] = useState("");
   useEffect(() => {
     const fetchUserData = async () => {
       if (isLogged) {
@@ -124,10 +128,63 @@ function ReportesComponente() {
         : [...(prevUserData.foliosGuardados || []), folio],
     }));
   };
+  const filteredReports = rep.filter((report) =>
+    report.descripcion.toLowerCase().includes(searchTerm.toLowerCase()) &&
+    report.ubicacion.toLowerCase().includes(searchLocation.toLowerCase()) &&
+    (searchStatus === "" || report.estado.toLowerCase() === searchStatus.toLowerCase()) &&
+    (searchFolio === "" || report.folio.startsWith(searchFolio)) &&
+    (searchDate === "" || report.fechaReporte === searchDate)
+);
 
+  
+  
   return (
-    <div className="reportes-boxes">
-      {rep.map((report, index) => (
+       <div className="reportes-boxes">
+                <input
+  type="text"
+  placeholder="Buscar ubicación..."
+  value={searchLocation}
+  onChange={(e) => setSearchLocation(e.target.value)}
+/>
+
+<select
+  value={searchStatus}
+  onChange={(e) => setSearchStatus(e.target.value)}
+>
+  <option value="">Seleccionar estado...</option>
+  <option value="Sin atender">Sin atender</option>
+  <option value="En atención">En atención</option>
+  <option value="Atendido">Atendido</option>
+</select>
+<select
+  value={searchFolio}
+  onChange={(e) => setSearchFolio(e.target.value)}
+>
+  <option value="">Seleccionar alcaldia...</option>
+  <option value="001">🐴 Álvaro Obregón</option>
+  <option value="002">🐜 Azcapotzalco</option>
+  <option value="003">🐷 Benito Juárez</option>
+  <option value="004">🐺 Coyoacán</option>
+  <option value="005">🌳 Cuajimalpa de Morelos</option>
+  <option value="006">🦅 Cuauhtémoc</option>
+  <option value="007">🌿 Gustavo A. Madero</option>
+  <option value="008">🏠 Iztacalco</option>
+  <option value="009">🐭 Iztapalapa</option>
+  <option value="010">🏔 La Magdalena Contreras</option>
+  <option value="011">🦗 Miguel Hidalgo</option>
+  <option value="012">🌾 Milpa Alta</option>
+  <option value="013">🌋 Tláhuac</option>
+  <option value="014">🦶 Tlalpan</option>
+  <option value="015">🌻 Venustiano Carranza</option>
+  <option value="016">🐠 Xochimilco</option>
+  
+  
+</select>
+
+{filteredReports.length === 0 ? (
+            <div className="alert alert-warning">No se encontraron resultados</div>
+        ) : (
+      filteredReports.map((report, index) => (
         <div className="box2" id="box2" key={index}>
           <div className="prueba">
             <div className="columnm-left">
@@ -195,7 +252,8 @@ function ReportesComponente() {
             </div>
           </div>
         </div>
-      ))}
+          ))
+        )}
     </div>
   );
 }

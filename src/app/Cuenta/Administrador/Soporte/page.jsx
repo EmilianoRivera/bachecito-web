@@ -427,7 +427,7 @@ function Soporte() {
           <div className="boxPF" id="boxPF">
             <div className="containerLetritasPF" id="containerLetritasPF">
               <svg className="svg-soporte">
-                <text text-anchor="middle" x="50%" y="50%">PREGUNTAS FRECUENTES</text>
+                <text textAnchor="middle" x="50%" y="50%">PREGUNTAS FRECUENTES</text>
               </svg>
             </div>
           </div>
