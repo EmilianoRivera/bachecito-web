@@ -36,7 +36,7 @@ async function fetchFiltroEstado(
       throw new Error("Fallaron los filtros");
     }
     const resultadoFiltros = await datosNuevos.json();
-    console.log(resultadoFiltros[0].folio)
+    console.log(resultadoFiltros)
     
   } catch (error) {
     console.error("Error a la hora de hacer la petición ", error);
