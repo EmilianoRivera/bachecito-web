@@ -6,7 +6,6 @@ import { useAuthUser } from "../../../../../hooks/UseAuthUser";
 import { auth, db } from "../../../../../firebase";
 import { useRouter } from "next/navigation";
 import AuthContext from "../../../../../context/AuthContext";
-import "./Reportes.css";
 import "./Soporte.css";
 
 function Soporte() {
@@ -29,7 +28,6 @@ function Soporte() {
   const [foto, setFoto] = useState(null);
   const [descripcionProblema, setDescripcionProblema] =
     useState("Sin descripcion");
- 
 
   const [mostrarDetalle1, setMostrarDetalle1] = useState(false);
   const [mostrarDetalle2, setMostrarDetalle2] = useState(false);
@@ -140,30 +138,30 @@ function Soporte() {
   
   
   const catalogoRutaErrores = [
-    { ruta: "/Cuenta/Administrador", modulo: "✅Inicio de Sesión" },
-    { ruta: "/Administrador/Dashboard", modulo: "📊 Dashboard" },
-    { ruta: "/Administrador/Mapa", modulo: "🗺️ Mapa" },
-    { ruta: "/Administrador/NuevoAdmin", modulo: "👤 Nuevo Administrador" },
-    { ruta: "/Administrador/Reportes", modulo: "⚠️ Reportes" },
-    { ruta: "/Administrador/Papelera", modulo: "⚠️ Reportes" },
-    { ruta: "Otros", modulo: "🔄️ Otra opción" },
+    { ruta: "/Cuenta/Administrador", modulo: "Inicio de Sesión" },
+    { ruta: "/Administrador/Dashboard", modulo: "Dashboard" },
+    { ruta: "/Administrador/Mapa", modulo: "Mapa" },
+    { ruta: "/Administrador/NuevoAdmin", modulo: "Nuevo Administrador" },
+    { ruta: "/Administrador/Reportes", modulo: "Reportes" },
+    { ruta: "/Administrador/Papelera", modulo: "Reportes" },
+    { ruta: "Otros", modulo: "Otra opción" },
   ];
 
   // Catálogo de errores
   const catalogoErrores = [
-    { clave: "S001", nombre: "❌ Error de Inicio de Sesión" },
-    { clave: "S002", nombre: "📝 Error de Registro" },
-    { clave: "D001", nombre: "📊 Error al Cargar Estadísticas" },
-    { clave: "D002", nombre: "➰ Error de Filtros" },
-    { clave: "M001", nombre: "⏳ Error al Cargar el Mapa" },
-    { clave: "M002", nombre: "📌 Error de Ubicación" },
-    { clave: "R001", nombre: "⚠️ Error al Cargar los Reportes" },
-    { clave: "R002", nombre: "🚩 Error al Cambiar estado de los Reportes" },
-    { clave: "R003", nombre: "🗑️ Error al Mover reportes a la papelera" },
-    { clave: "P001", nombre: "👀 Error al Visualizar reportes en la papelera" },
-    { clave: "P002", nombre: "⛔ Error al Eliminar reportes de la papelera" },
-    { clave: "T001", nombre: "📨 Error al Enviar Ticket" },
-    { clave: "0000", nombre: "🔄️ Otro: (Especificar en Descripcion)" },
+    { clave: "S001", nombre: "Error de Inicio de Sesión" },
+    { clave: "S002", nombre: "Error de Registro" },
+    { clave: "D001", nombre: "Error al Cargar Estadísticas" },
+    { clave: "D002", nombre: "Error de Filtros" },
+    { clave: "M001", nombre: "Error al Cargar el Mapa" },
+    { clave: "M002", nombre: "Error de Ubicación" },
+    { clave: "R001", nombre: "Error al Cargar los Reportes" },
+    { clave: "R002", nombre: "Error al Cambiar estado de los Reportes" },
+    { clave: "R003", nombre: "Error al Mover reportes a la papelera" },
+    { clave: "P001", nombre: "Error al Visualizar reportes en la papelera" },
+    { clave: "P002", nombre: "Error al Eliminar reportes de la papelera" },
+    { clave: "T001", nombre: "Error al Enviar Ticket" },
+    { clave: "0000", nombre: "Otro: (Especificar en Descripcion)" },
   ];
 
   // Catálogo de sistemas operativos
@@ -218,7 +216,7 @@ function Soporte() {
       const dia = fechaActual.getDate();
       const mes = fechaActual.getMonth() + 1;
       const año = fechaActual.getFullYear();
-      const fechaFormateada = `${dia < 10 ? '0' + dia : dia}/${mes < 10 ? '0' + mes : mes}/${año}`;
+      const fechaFormateada = ${dia < 10 ? '0' + dia : dia}/${mes < 10 ? '0' + mes : mes}/${año};
       setFecha(fechaFormateada);
     };
 
@@ -278,10 +276,10 @@ function Soporte() {
     /* 
     const storage = getStorage(appSoporte);
     const randomId = Math.random().toString(36).substring(7);
-    const imageName = `Ticket_${randomId}`;
+    const imageName = Ticket_${randomId};
     const storageRef = ref(
       storage,
-      `ImagenesTickets/${userData.uid}/${imageName}`
+      ImagenesTickets/${userData.uid}/${imageName}
     );
     await uploadBytes(storageRef, archivito);
     return getDownloadURL(storageRef); */
@@ -501,6 +499,87 @@ function Soporte() {
               <br />
               <br />
 
+              <label>Seleccione su navegador: </label>
+              <select value={navegador} onChange={handleNavegador}>
+                <option value="">Seleccionar</option>
+                {catalogoNavegadores.map((navegador, index) => (
+                  <option key={index} value={navegador}>
+                    {navegador}
+                  </option>
+                ))}
+              </select>
+              <br />
+              <br />
+              <br />
+
+              <label>Adjuntar fotografía del problema: </label>
+              <input type="file" accept="image/*" onChange={handleFileChange} />
+              <br />
+              <br />
+              <br />
+
+              <label>Descripción del problema: </label>
+              <textarea
+                value={descripcionProblema}
+                onChange={handleDescripcionProblema}
+                rows="4"
+                cols="50"
+              />
+              <br />
+              <br />
+              <br />
+
+              <button type="submit" id="submit">
+                Enviar
+              </button>
+            </form>
+
+          
+          </div>
+         
+        </div>
+        <br /> <br />
+          <div className="">
+              <table>
+                <thead>
+                  <tr className="sticky-top">
+                    <th>Nombre</th>
+                    <th>Correo</th>
+                    <th>Area Encargada</th>
+                    <th>Descripcion del Problema</th>
+                    <th>Estado del Ticket</th>
+                    <th>Fecha De Envio</th>
+                    <th>Fecha De Resolución</th>
+                    <th>Folio</th>
+
+                  </tr>
+                </thead>
+                <tbody>
+                {ticket.map((ticket, index) => (
+                  <tr key={index}>
+                    <td>{ticket.nombre}</td>
+                    <td>{ticket.correoA}</td>
+                    <td>{ticket.area}</td>
+                    <td>{ticket.descripcionProblema}</td>
+                    <td>{ticket.estado}</td>
+                    <td>{formatTimestamp(ticket.fechaDeEnvio)}</td>
+                    <td>{formatTimestamp(ticket.fechaResuelto)}</td>
+                    <td>{ticket.folio}</td>
+                    <td><button onClick={()=> handleDetalles}>Detalles</button></td>
+                  </tr>
+                ))}
+                </tbody>
+             
+              </table>
+            </div>
+      </div>
+    </div>
+  );
+}
+export default Soporte;
+
+{
+  /*
               <form onSubmit={handleSubmit}>
 
                 
@@ -522,7 +601,7 @@ function Soporte() {
                     <option value="">Seleccionar</option>
                     {catalogoErrores.map((error, index) => (
                       <option key={index} value={error.nombre}>
-                        {`${error.nombre}`}
+                        {${error.nombre}}
                       </option>
                     ))}
                   </select>
@@ -530,14 +609,14 @@ function Soporte() {
 
                 <br /><br /><br />
 
-                <label>Seleccione su sistema operativo 🖥️: </label>
+                <label>Seleccione su sistema operativo 🖥: </label>
                 <br />
                 <div className='select'>
                   <select value={sistemaOperativo} onChange={handleSO}>
                     <option value="">Seleccionar</option>
                     {catalogoSistemaOperativo.map((sistema, index) => (
                       <option key={index} value={sistema}>
-                        {`${sistema}`}
+                        {${sistema}}
                       </option>
                     ))}
                   </select>
@@ -555,7 +634,7 @@ function Soporte() {
                     <option value="">Seleccionar</option>
                     {catalogoNavegadores.map((navegador, index) => (
                       <option key={index} value={navegador}>
-                        {`${navegador}`}
+                        {${navegador}}
                       </option>
                     ))}
                   </select>
@@ -601,15 +680,5 @@ function Soporte() {
                 <button type="submit" id="submit">Enviar</button>
 
               </form>
- 
-
-              <br /><br />
-            </div>
-          </div>
-        </div>
-      </div> 
-  );
+              */
 }
-
-export default Soporte;
- 
