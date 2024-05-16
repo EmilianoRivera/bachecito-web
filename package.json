@@ -9,12 +9,14 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@highcharts/dashboards": "^2.1.0",
     "@prisma/client": "^5.11.0",
     "animejs": "^3.2.2",
     "aos": "^2.3.4",
     "d3": "^7.9.0",
     "dc": "^4.2.7",
     "firebase": "^10.9.0",
+    "highcharts": "^11.4.1",
     "leaflet": "^1.9.4",
     "next": "^14.2.3",
     "nextjs-progressbar": "^0.0.16",
