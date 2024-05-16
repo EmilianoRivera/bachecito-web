@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import "./dash.css";
-import Barras from "@/components/BarrasU";
+import Barras from "@/components/Barras";
 import Circular from "@/components/Circular";
 import BarrasHz from "@/components/BarrasHz";
 import CRep from "@/components/CRepU";
