@@ -43,6 +43,29 @@ export default function Barras({ width, height }) {
     // Limpia el área de representación
     svg.selectAll("*").remove();
 
+    // Define una escala de colores personalizada
+    const colorScale = d3
+      .scaleOrdinal()
+      .domain(data.map((_, i) => i))
+      .range([
+        "#FF8A57",
+        "#FFB54E",
+        "#FFE75F",
+        "#D3FF7A",
+        "#90F49B",
+        "#2EC4B6",
+        "#49C3FB",
+        "#65A6FA",
+        "#5D9DD5",
+        "#65A6FA",
+        "#49C3FB",
+        "#2EC4B6",
+        "#90F49B",
+        "#D3FF7A",
+        "#FFE75F",
+        "#FFB54E",
+      ]);
+
     // Agregamos los rectángulos
     svg
       .selectAll("rect")
@@ -53,7 +76,7 @@ export default function Barras({ width, height }) {
       .attr("y", (d) => yScale(d))
       .attr("width", xScale.bandwidth())
       .attr("height", (d) => height - yScale(d))
-      .attr("fill", "steelblue");
+      .attr("fill", (_, i) => colorScale(i)); // Asigna un color diferente a cada barra
 
     // Agregamos los ejes
     svg
