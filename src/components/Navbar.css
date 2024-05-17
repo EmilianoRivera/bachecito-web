@@ -250,13 +250,14 @@
   .navBar.admin .menuItems{
     display: flex;
       flex-direction: column;
-      margin-top: 17vh;
+      margin-top: 21vh;
       width:4rem;
       border-radius: 5rem;
       margin-left: 93vw;
       background-color: var(--background-color-2);
-      height: 64vh;
-      padding-top: 5vh;
+      min-height: 50vh;
+      height: 62vh;
+      padding-top: 3vh;
       padding-bottom: 5vh;
   }
 
