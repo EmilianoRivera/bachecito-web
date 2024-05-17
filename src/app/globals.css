@@ -42,7 +42,7 @@ body, div{
   z-index: 1000000;
   position: fixed;
   top: 4rem;
-  right: 0;
+  right: 2rem;
   background: none;
   border: none;
   cursor: pointer;
