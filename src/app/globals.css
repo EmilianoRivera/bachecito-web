@@ -775,4 +775,8 @@ canvas {
     text-justify: justify;
     align-self: ce;
   }
+
+  .container-inicio{
+  cursor:default;
+  }
 }
