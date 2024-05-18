@@ -11,7 +11,7 @@ import ConfirmationAlert from "@/components/ConfirmationAlert"; // Importa el co
 
 function Navbar() {
   useAuthUser();
-  const { isLogged, isAdmin, isDev } = useContext(AuthContext);
+  const { isLogged, isAdmin } = useContext(AuthContext);
   const [menuActive, setMenuActive] = useState(false);
   const [showMenuIcon, setShowMenuIcon] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false); // Estado para mostrar la alerta de confirmación
