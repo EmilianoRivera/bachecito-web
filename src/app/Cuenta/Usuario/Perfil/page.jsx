@@ -308,13 +308,15 @@ export default function Perfil() {
                 <div className="guardar2">
  
                   {userData && userData.uid && userData.foliosGuardados && userData.foliosGuardados.includes(reporte.folio) ? (
-                    <img src="https://i.postimg.cc/W335wqws/estrella-2.png"
+                    <img src="https://i.postimg.cc/RVrPJ3rN/estrella-1.png"
+                    style={{ opacity: 1, transition: 'opacity 0.3s ease' }}
                       className="icon-star2" alt="Folio guardado" onClick={() => guardarFoliosEnDB(reporte.folio, userData)}/>
  
                   ) : (
                     <img
                       className="icon-star2"
-                      src={estrella.src}
+                      src="https://i.postimg.cc/52PmmT4T/estrella.png"
+                      style={{ opacity: 0.5, transition: 'opacity 0.3s ease' }}
                       alt="Guardar folio"
                       onClick={() => guardarFoliosEnDB(reporte.folio, userData)}
                     />
