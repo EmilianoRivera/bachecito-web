@@ -17,8 +17,9 @@
     overflow: hidden;
     position: fixed;
     top: 0;
-    width: 100%;
+    left: -.5px;
     z-index: 100;
+    width: 100%;
   }
   
   .navBar a {
@@ -171,6 +172,11 @@
   @media (max-width: 800px) {
     .navBar{
       width: 100%;
+      backdrop-filter: blur(2px);
+      z-index: 10000000000;
+      
+      top: 0;
+      position: fixed;
     }
   
     .menuItems {
@@ -189,7 +195,7 @@
     .navBar a {
       justify-content: right;
       color: #6f6f6f;
-      margin-right: 8px;
+      margin-right: -10px;
       padding: 14px 16px;
       text-decoration: none;
       font-size: 100%;
