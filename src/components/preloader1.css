@@ -11,6 +11,9 @@
   z-index: 100000;
   width: 100vw;
   height: 100vh;
+  top: 0;
+  margin-top: 0;
+  padding-top: 0;
 }
 /* on the svg element set up a default value for the --stroke-dash and --stroke-dash-negative attributes
 46 roughly being the length of the longest path.air
