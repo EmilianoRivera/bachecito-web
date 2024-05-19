@@ -10,9 +10,9 @@ import { ContextAuthProvider } from "../../context/AuthContext";
   description: "Página de Bachecito 26, para el reporte de tus baches",
 };
  */
-
 export default function RootLayout({ children }) {
   const [darkMode, setDarkMode] = useState(false);
+  const [windowWidth, setWindowWidth] = useState(0); // Estado para almacenar el ancho de la ventana
 
   useEffect(() => {
     const savedDarkMode = localStorage.getItem('darkMode') === 'true';
@@ -23,7 +23,26 @@ export default function RootLayout({ children }) {
     } else {
       document.documentElement.classList.remove('dark-mode');
     }
-  }, []);
+
+    updateWindowWidth(); // Actualiza el ancho de la ventana cuando el componente se monta inicialmente
+
+    // Función para actualizar el estado del ancho de la ventana cuando cambia
+    const handleResize = () => {
+      updateWindowWidth();
+    };
+
+    // Agrega un event listener para manejar cambios en el tamaño de la ventana
+    window.addEventListener('resize', handleResize);
+
+    // Limpia el event listener cuando el componente se desmonta
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []); // Dependencia vacía para que se ejecute solo una vez al montar el componente
+
+  const updateWindowWidth = () => {
+    setWindowWidth(window.innerWidth);
+  };
 
   const toggleDarkMode = () => {
     const newDarkMode = !darkMode;
@@ -61,7 +80,7 @@ export default function RootLayout({ children }) {
           </button>
           {children}
         </ContextAuthProvider>
-        <Cursor />
+        {windowWidth > 800 && <Cursor />} {/* Muestra el cursor solo si el ancho de la ventana es mayor a 800px */}
       </body>
     </html>
   );

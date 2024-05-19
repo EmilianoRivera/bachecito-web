@@ -15,14 +15,18 @@ function Navbar() {
   const [menuActive, setMenuActive] = useState(false);
   const [showMenuIcon, setShowMenuIcon] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false); // Estado para mostrar la alerta de confirmación
-  const [darkMode, setDarkMode] = useState(false);
   const router = useRouter();
+  
   useEffect(() => {
     const handleResize = () => {
-      setShowMenuIcon(window.innerWidth <= 800);
+      const isMobile = window.innerWidth <= 800;
+      setShowMenuIcon(isMobile);
+      if (!isMobile) {
+        setMenuActive(false); 
+      }
     };
 
-    handleResize(); // Call on initial render
+    handleResize(); 
     window.addEventListener("resize", handleResize);
 
     return () => window.removeEventListener("resize", handleResize);
@@ -142,26 +146,26 @@ function Navbar() {
                 </Link>
               </>
             ) : (
-                  <>
-                    <Link
-                      href="/Cuenta/Usuario/Perfil"
-                      className="opc btn--white prueba"
-                    >
-                      <span>Perfil →</span>
-                    </Link>
-                    <Link href="/Cuenta/Usuario/Favoritos" className="opc">
-                      Baches Guardados
-                    </Link>
-                    <Link href="/Cuenta/Usuario/Estadisticas" className="opc">
-                      Estadísticas
-                    </Link>
-                    <Link href="/Cuenta/Usuario/Reportes" className="opc">
-                      Reportes
-                    </Link>
-                  </>
-                )}
+              <>
+                <Link
+                  href="/Cuenta/Usuario/Perfil"
+                  className="opc btn--white prueba"
+                >
+                  <span>Perfil →</span>
+                </Link>
+                <Link href="/Cuenta/Usuario/Favoritos" className="opc">
+                  Baches Guardados
+                </Link>
+                <Link href="/Cuenta/Usuario/Estadisticas" className="opc">
+                  Estadísticas
+                </Link>
+                <Link href="/Cuenta/Usuario/Reportes" className="opc">
+                  Reportes
+                </Link>
               </>
             )}
+          </>
+        )}
         {!isLogged && (
           <>
             <Link href="/Sobre_Nosotros" className="opc">

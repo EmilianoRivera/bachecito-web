@@ -1,177 +1,183 @@
-*{
+* {
   transition: .3s ease-in;
 }
 
 .container-perfil {
-    display: flex;
-    height: 88vh;
-    margin-top: 8.3vh;
-    font-family: 'Poppins', sans-serif;
+  display: flex;
+  height: 88vh;
+  margin-top: 8.3vh;
+  font-family: 'Poppins', sans-serif;
 
-  }
+}
 
 
-  .container-perfil h2{
-    font-size: 1.4rem;
-    color: var(--text-color-3);
+.container-perfil h2 {
+  font-size: 1.4rem;
+  color: var(--text-color-3);
   transition: .5s;
   font-weight: 400;
-  }
-
-
-  .container-perfil h3{
-    font-size: 1.3rem;
-    color: #FF7A3E;
-    margin-top: 0px;
 }
 
 
-.line-vertical{
+.container-perfil h3 {
+  font-size: 1.3rem;
+  color: #FF7A3E;
+  margin-top: 0px;
+}
+
+
+.line-vertical {
   width: 3px;
   background-color: var(--background-color-2);
-    margin-top: 2vh;
-    height: 86vh;
-    margin-right: 1.5%;
- 
+  margin-top: 2vh;
+  height: 86vh;
+  margin-right: 1.5%;
+
 }
 
 
-  #leftSide {
-    width: 30vw; /* Ancho de la parte izquierda */
-    min-width: 300px; /* Ancho de la parte izquierda */
-    overflow: hidden;
-    margin-top: 1%;
-    margin-left: 3%;
-  }
-
-
-  .right-side {
-    overflow-y: auto; /* Agrega scroll vertical si el contenido es más largo que el área visible */
-    width: 60%;
-    flex: 1;
-    display: flex;
-    flex-wrap: wrap; /* Permite que los elementos se envuelvan en filas */
-    justify-content: space-between; /* Distribuye los elementos uniformemente */
-    margin-top: 3vh;
-    padding-top: 3vw;
-    position: relative;
-    box-sizing: border-box;
-  }
-
-
-  .encabezado-historial{
-    position: fixed;
-    width: 100%;
-    margin-top: -11vh;
-    z-index: 50;
-    background-color: var(--background-color);
-  }
-
-
-  .column-left2{
-    width: 45%;
-    height: 100%;
+#leftSide {
+  width: 30vw;
+  /* Ancho de la parte izquierda */
+  min-width: 300px;
+  /* Ancho de la parte izquierda */
+  overflow: hidden;
+  margin-top: 1%;
+  margin-left: 3%;
 }
 
 
-.fotografía2{
-    width: 100%;
-    height: 43vh;
-    border-radius: 5vh;
-    margin-bottom: 25px;
+.right-side {
+  overflow-y: auto;
+  /* Agrega scroll vertical si el contenido es más largo que el área visible */
+  width: 60%;
+  flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  /* Permite que los elementos se envuelvan en filas */
+  justify-content: space-between;
+  /* Distribuye los elementos uniformemente */
+  margin-top: 3vh;
+  padding-top: 3vw;
+  position: relative;
+  box-sizing: border-box;
 }
 
 
-.column-left-inferior2{
-    height: 30px;
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+.encabezado-historial {
+  position: fixed;
+  width: 100%;
+  margin-top: -11vh;
+  z-index: 50;
+  background-color: var(--background-color);
 }
 
 
-.fecha2{
-    width: 65%;
-    border-radius: 5vh;
-    height: 38px;
-    background-color: var(--background-color-4);
-    justify-content: center;
-    text-align: center;
-    display: flex;
-    color: var(--text-color);
-    font-weight:400;
-    font-size: large;
-    padding-top: 9px;
+.column-left2 {
+  width: 45%;
+  height: 100%;
 }
 
 
-.contador2{
-    margin-left: 5%;
-    margin-top: 7%;
-    width: 30%;
-    display:inline-block;
-    align-items: center;
-    justify-content: center;
-    color:var(--text-color-3);
-    font-weight:900;
+.fotografía2 {
+  width: 100%;
+  height: 43vh;
+  border-radius: 5vh;
+  margin-bottom: 25px;
 }
 
 
-.icon2{
-    justify-content: center;
-    align-items: center;
-    align-content: center;
-    display: flex;
+.column-left-inferior2 {
+  height: 30px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 
-.logo2{
-    width: 30px;
-    margin-bottom: 7px;
+.fecha2 {
+  width: 65%;
+  border-radius: 5vh;
+  height: 38px;
+  background-color: var(--background-color-4);
+  justify-content: center;
+  text-align: center;
+  display: flex;
+  color: var(--text-color);
+  font-weight: 400;
+  font-size: large;
+  padding-top: 9px;
 }
 
 
-.number2{
-    justify-content: center;
-    align-items: center;
-    align-content: center;
-    display: flex;
-    margin-top: -7px;
+.contador2 {
+  margin-left: 5%;
+  margin-top: 7%;
+  width: 30%;
+  display: inline-block;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-color-3);
+  font-weight: 900;
 }
 
 
-.column-right2{
-    width: 50%;
-    margin-left: 5%;
-    padding: 0;
-    height: auto;
+.icon2 {
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  display: flex;
 }
 
 
-.column-right-superior2{
-    width: 100%;
-    display: flex;
-    height: 40px;
+.logo2 {
+  width: 30px;
+  margin-bottom: 7px;
 }
 
 
-.estado2{
-    width: 75%;
-    border-radius: 5vh;
-    height: 40px;
+.number2 {
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+  display: flex;
+  margin-top: -7px;
 }
 
 
-.guardar2{
-    margin-left: 10%;
-    justify-content: center;
-    align-items: center;
+.column-right2 {
+  width: 50%;
+  margin-left: 5%;
+  padding: 0;
+  height: auto;
 }
-.icon-star2{
-    height: 90%;
-    align-self: center;
-    justify-self: end;
+
+
+.column-right-superior2 {
+  width: 100%;
+  display: flex;
+  height: 40px;
+}
+
+
+.estado2 {
+  width: 75%;
+  border-radius: 5vh;
+  height: 40px;
+}
+
+
+.guardar2 {
+  margin-left: 10%;
+  justify-content: center;
+  align-items: center;
+}
+
+.icon-star2 {
+  height: 90%;
+  align-self: center;
+  justify-self: end;
 }
 
 
@@ -185,43 +191,44 @@
 }
 
 
-.box-ubi2{
-    height: 80%;
-    background-color: var(--background-color-4);
-    border-radius: 3vh;
-    color: var(--text-color);
-            padding: 15px;
-            margin-top: -15px;
-   font-size: 1rem;
+.box-ubi2 {
+  height: 80%;
+  background-color: var(--background-color-4);
+  border-radius: 3vh;
+  color: var(--text-color);
+  padding: 15px;
+  margin-top: -15px;
+  font-size: 1rem;
 }
 
 
-.descripcion2{
-    width: 100%;
-    min-height: 100px;
-    height: auto;
+.descripcion2 {
+  width: 100%;
+  min-height: 100px;
+  height: auto;
 }
 
 
-.box-des2{
-    height: 80%;
-    margin-top: -15px;
-    background-color: var(--background-color-4);
-    border-radius: 3vh;
-   font-size: 1rem;
-   padding: 15px;
-            color: var(--text-color);
+.box-des2 {
+  height: 80%;
+  margin-top: -15px;
+  background-color: var(--background-color-4);
+  border-radius: 3vh;
+  font-size: 1rem;
+  padding: 15px;
+  color: var(--text-color);
 }
 
 
-.box2-2{
-  width: 47.5%;
+.box2-2 {
+  width: 47%;
   padding: 1.8rem;
   border-radius: 2rem;
   margin-bottom: 4%;
   background-color: var(--background-color-2);
   display: flex;
   box-sizing: border-box;
+  margin-right: 18px;
 }
 
 
@@ -263,7 +270,7 @@
   display: flex;
   justify-content: center;
   margin-bottom: 10px;
-  
+
 }
 
 
@@ -314,7 +321,7 @@
 }
 
 
-.cerrar-sesion-btn:hover{
+.cerrar-sesion-btn:hover {
   color: #ffff;
   background-color: #FF4D35;
   transition: .5s;
@@ -339,90 +346,100 @@
 }
 
 
-#toggleButton{
+#toggleButton {
   position: fixed;
-  bottom: 45vh; /* Puedes ajustar esta posición según tu diseño */
-  left: 20px; /* Puedes ajustar esta posición según tu diseño */
-  z-index: 999; /* Ajusta el valor de z-index si es necesario */
+  bottom: 45vh;
+  /* Puedes ajustar esta posición según tu diseño */
+  left: 20px;
+  /* Puedes ajustar esta posición según tu diseño */
+  z-index: 999;
+  /* Ajusta el valor de z-index si es necesario */
   background-color: #ffffff00;
   border: none;
 }
 
 
-#toggleButton img{
+#toggleButton img {
   width: 25px;
 }
 
 
-  /* Media query para pantallas más pequeñas */
-  @media (max-width: 800px) { /* Por ejemplo, cuando la pantalla es más estrecha que 800px */
-    
-    .encabezado-historial{
-      margin-top: -13vh;
-      background-color: var(--background-color);
-      z-index: 50;
-    }
-    .right-side {
+/* Media query para pantallas más pequeñas */
+@media (max-width: 800px) {
+  /* Por ejemplo, cuando la pantalla es más estrecha que 800px */
+
+  .encabezado-historial {
+    margin-top: -13vh;
+    background-color: var(--background-color);
+    z-index: 50;
+  }
+
+  .right-side {
     height: auto;
     margin-top: 10vh;
-      padding-top: 10%;
-      padding-left: 5%;
-      margin-top: 5vh;
-      overflow-x: hidden;
-    }
-
-
-    .container-perfil h2{
-      font-size: 1.2rem;
-      font-weight: 400;
-    }
-
-
-    .box2-2{
-      position: relative;
-  min-width: 300px;
-padding: 30px;
-width: auto;
-    }
-
-
-    .container-perfil h3{
-      font-size: 1.1rem;
-      color: #FF7A3E;
-      margin-top: -10px;
-  }
+    padding-top: 10%;
+    padding-left: 5%;
+    margin-top: 5vh;
+    overflow-x: hidden;
   }
 
 
-  @media (max-width: 1000px) {
-    .right-side {
-      margin-top: 5vh;
-      column-count: 1; /* Cambia a una sola columna */
-    }
+  .container-perfil h2 {
+    font-size: 1.2rem;
+    font-weight: 400;
   }
 
 
-  ::-webkit-scrollbar {
-    width: 5px; /* Ancho de la barra de desplazamiento */
+  .box2-2 {
+    position: relative;
+    min-width: 300px;
+    padding: 30px;
+    width: auto;
+  }
+
+
+  .container-perfil h3 {
+    font-size: 1.1rem;
+    color: #FF7A3E;
+    margin-top: -10px;
+  }
+}
+
+
+@media (max-width: 1000px) {
+  .right-side {
+    margin-top: 5vh;
+    column-count: 1;
+    /* Cambia a una sola columna */
+  }
+}
+
+
+::-webkit-scrollbar {
+  width: 5px;
+  /* Ancho de la barra de desplazamiento */
 }
 
 
 /* Estilo para el riel de la barra de desplazamiento */
 ::-webkit-scrollbar-track {
-    background-color: var(--background-color-2); /* Color del fondo del riel */
+  background-color: var(--background-color-2);
+  /* Color del fondo del riel */
 }
 
 
 /* Estilo para el pulgar (scrollbar) */
 ::-webkit-scrollbar-thumb {
-    background-color: var(--text-color-3); /* Color del pulgar */
-    border-radius: 6px; /* Borde redondeado del pulgar */
-    transition: .5s;
+  background-color: var(--background-color-4);
+  /* Color del pulgar */
+  border-radius: 6px;
+  /* Borde redondeado del pulgar */
+  transition: .5s;
 }
 
 
 /* Cambia el color del pulgar cuando el mouse está sobre él */
 ::-webkit-scrollbar-thumb:hover {
-    transition: 1s;
-    background-color: #FF9F49;
+  transition: 1s;
+  background-color: #FF9F49;
 }
