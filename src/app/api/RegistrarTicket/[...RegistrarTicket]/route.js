@@ -4,7 +4,7 @@ import { db2, collection, addDoc, getDocs, app2 } from "../../../../../firebase"
 //import nodemailer from "nodemailer";
 import { Resend } from "resend";
 
-const resend = new Resend(process.env.NEXT_PUBLIC_RESEND_API_KEY);
+const resend = new Resend(process.env.NEXT_PUBLIC_SOPORTE_RESEND_API_KEY);
 
 async function folioTicket(errorSeleccionado, rutaError) {
   const refTickets = collection(db2, "tickets");
