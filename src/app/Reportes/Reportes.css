@@ -461,3 +461,73 @@ header {
         height: 65vh;
     }
 }
+
+.filters-search{
+    width: 60vw;
+    display: flex;
+    height: auto;
+    margin-bottom: 5vh;
+    position: sticky;
+    margin-top: 0;
+    top: 11vh;
+    z-index: 100;
+    right: 0;
+    backdrop-filter: blur(1px);
+    background-color: var(--background-color-8);
+    padding-top: 5px;
+    padding-bottom: 5px;
+    border-radius: 5rem;
+}
+
+.Buscador{
+    background-color: var(--background-color-2);
+    border: 2px solid #00000000;
+    position: sticky;
+    top: 0;
+    color: var(--text-color);
+    border-radius: 2rem;
+    padding: 11px;
+    transition: .2s;
+    outline: none;
+    min-width: 30vw;
+    right: 0;
+    margin-right: 0;
+    position: relative;
+}
+
+.Buscador-img{
+    margin-top: .7rem;
+    width: 1.3rem;
+    height: 1.2rem;
+    transform: translate(-2.2rem);
+}
+
+.Buscador:hover{
+    transition: .2s;
+    border: 2px solid #949494;
+}
+
+.Buscador:focus{
+    transition: .2s;
+    border: 2px solid #ff9f49;
+}
+
+.filter-estados{
+    background-color: var(--background-color-2);
+    color: var(--text-color);
+    border-radius: 5rem;
+    padding-left: 10px;
+    padding-right: 10px;
+    width: 13vw;
+    outline: none;
+    border: 2px solid #00000000;
+    margin-right: 2vw;
+}
+
+.filter-estados option{
+    background-color: var(--background-color-2);
+    color: var(--text-color);
+    border-radius: 1rem;
+    border: none;
+    outline: none;
+}

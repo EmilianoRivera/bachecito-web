@@ -1298,7 +1298,7 @@ input[type="checkbox"]:checked::before {
 
 
   .alerta-logueado{
-    background-color: #F1F1F1;
+    background-color: var(--background-color-2);
     width: 35vw;
     height: 35vh;
     border-radius: 1.5rem;
