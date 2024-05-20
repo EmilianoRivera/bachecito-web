@@ -54,7 +54,7 @@ async function fetchFiltroEstado(
   }
 }
 
-export function buscarAlcaldias(ubicacion) {
+  function buscarAlcaldias(ubicacion) {
   const regexAlcaldiasCDMX =
     /(Álvaro Obregón|Azcapotzalco|Benito Juárez|Coyoacán|Cuajimalpa de Morelos|Cuauhtémoc|Gustavo A. Madero|Iztacalco|Iztapalapa|La Magdalena Contreras|Miguel Hidalgo|Milpa Alta|Tlalpan|Tláhuac|Venustiano Carranza|Xochimilco)/gi;
   const alcaldiasEnUbicacion = ubicacion.match(regexAlcaldiasCDMX);

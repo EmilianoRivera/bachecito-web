@@ -757,7 +757,7 @@ const Map = ({ searchFolio, searchStatus }) => {
 
         // Filtrar los marcadores según los filtros
 const filteredMarkers = filterMarkers(markersData);
-console.log("Filtered Markers:", filteredMarkers);
+//console.log("Filtered Markers:", filteredMarkers);
 
 // Establecer los marcadores filtrados como estado
 setMarkers(filteredMarkers);
@@ -769,8 +769,8 @@ setMarkers(filteredMarkers);
  fetchData();
 }, [searchFolio, searchStatus]);
 const filterMarkers = (markersData) => {
-  console.log("searchStatus:", searchStatus);
-  console.log("searchFolio:", searchFolio);
+/*   console.log("searchStatus:", searchStatus);
+  console.log("searchFolio:", searchFolio); */
   return markersData.filter(marker =>
     (searchStatus === "" || marker.estados.toLowerCase() === searchStatus.toLowerCase()) &&
     (searchFolio === ""|| ( marker.folio.startsWith(searchFolio)))

@@ -43,7 +43,7 @@ function Dashboard() {
   const [isEstadoSelectVisible, setIsEstadoSelectVisible] = useState(false);
 
   const handleAlcaldiaChange = (e) => {
-    console.log("Alcaldía seleccionada:", e.target.value);
+   // console.log("Alcaldía seleccionada:", e.target.value);
     setAlcaldia(e.target.value);
   };
 
@@ -53,7 +53,7 @@ function Dashboard() {
 
   const handleFechaChange = (e) => {
     const selectedValue = e.target.value;
-    console.log("Fecha seleccionada:", selectedValue);
+   // console.log("Fecha seleccionada:", selectedValue);
     setFiltroFecha(selectedValue);
   };
   return (
