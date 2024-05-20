@@ -48,13 +48,18 @@ export default function MapAdmin() {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [filtroFecha, setFiltroFecha] = useState("");
+  const [estado, setEstado] = useState("Sin estado")
+  const [alcaldia, setAlcaldia] = useState("Sin alcaldia")
 
   const handleAlcaldiaChange = (e) => {
     console.log("Alcaldía seleccionada:", e.target.value);
+    const alcaldia = e.target.value
+    setAlcaldia(alcaldia)
   };
 
   const handleEstadoChange = (e) => {
-    setEstado(e.target.value);
+    const estado = e.target.value
+    setEstado(estado);
   };
 
   const handleFechaChange = (e) => {
@@ -63,6 +68,8 @@ export default function MapAdmin() {
     setFiltroFecha(selectedValue);
   };
 
+
+  
   return (
     <div className="container-mapa-admin">
       <div className="filtros2">

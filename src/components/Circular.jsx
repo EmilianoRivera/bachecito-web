@@ -94,12 +94,9 @@ export default function Circular({
   const tooltipRef = useRef();
   const [rep, setRep] = useState([]); //guarda los reportes totales por alcaldia
 
-  const [contAlcaldias, setContAlcaldias] = useState([]);
-  //const [totalRep, setTotalRep] = useState(0);
-  const [reportesCategorizados, setReportesCategorizados] = useState("");
+ 
   const [selectedSegment, setSelectedSegment] = useState(null);
-  const [alcEstRep, setAlcEstRep] = useState(); //este guardar por alcaldia, la cantidad de reportes que tienen x estado
-
+ 
   const color = d3
     .scaleOrdinal()
     .domain(rep.map((d) => d.label))
@@ -282,7 +279,8 @@ export default function Circular({
           (d) =>
             `${(((d.endAngle - d.startAngle) / (2 * Math.PI)) * 100).toFixed(2)}%`
         );
-    
+        
+        
       const tooltip = d3.select(tooltipRef.current);
       tooltip.style("visibility", "hidden");
      

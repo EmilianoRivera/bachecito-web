@@ -136,7 +136,6 @@ export async function POST(request, { params }) {
     
    // console.log("DEL POST",estado, " ", endDate, " ", fechaFiltro, " ", alcaldia, " ", startDate)
     const fechaActual = obtenerFechaActual();
-    console.log("rep")
     if (estado ==="Todos" && alcaldia === "Todas" && fechaFiltro === "Todos los tiempos") {
       const refRep = collection(db, "reportes")
       const getReportes = await getDocs(refRep)
