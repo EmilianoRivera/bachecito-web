@@ -44,16 +44,11 @@ export default function Estadisticas() {
   return (
     <div className="container">
       <div className="izquierda-mapa">
-        <div className="filtros">
-          <div>   <Link href="/Cuenta/Usuario/Reportar">ola</Link></div>
-          <div className="fecha">
-            <label
-              onClick={() => setIsFechaSelectVisible(!isFechaSelectVisible)}
-            >
-              Rango Fechas
-            </label>
-            {isFechaSelectVisible && (
-              <select onChange={handleFechaChange}>
+        <div className="filtros-estadisticas-u">
+
+          <div className="fecha-estadisticas">
+            
+              <select onChange={handleFechaChange} className="filter-estados-estadisticas">
                 <option value="Todos los tiempos">Todos los tiempos</option>
                 <option value="Hoy">Hoy</option>
                 <option value="Esta semana">Esta semana</option>
@@ -62,7 +57,6 @@ export default function Estadisticas() {
                 <option value="Este año">Este año</option>
                 <option value="Rango personalizado">Rango personalizado</option>
               </select>
-            )}
             {filtroFecha === "Rango personalizado" && (
               <div className="custom-date">
                 <DatePicker
@@ -78,36 +72,36 @@ export default function Estadisticas() {
               </div>
             )}
           </div>
-          <div className="alcaldia">
-          <select
-        className="filter-estados"
-        value={searchFolio}
-        onChange={handleAlcaldiaChange}
-      >
-        <option value="">Todas las alcaldías</option>
-        <option value="001">🐴 Álvaro Obregón</option>
-        <option value="002">🐜 Azcapotzalco</option>
-        <option value="003">🐷 Benito Juárez</option>
-        <option value="004">🐺 Coyoacán</option>
-        <option value="005">🌳 Cuajimalpa de Morelos</option>
-        <option value="006">🦅 Cuauhtémoc</option>
-        <option value="007">🌿 Gustavo A. Madero</option>
-        <option value="008">🏠 Iztacalco</option>
-        <option value="009">🐭 Iztapalapa</option>
-        <option value="010">🏔 La Magdalena Contreras</option>
-        <option value="011">🦗 Miguel Hidalgo</option>
-        <option value="012">🌾 Milpa Alta</option>
-        <option value="013">🌋 Tláhuac</option>
-        <option value="014">🦶 Tlalpan</option>
-        <option value="015">🌻 Venustiano Carranza</option>
-        <option value="016">🐠 Xochimilco</option>
-      </select>
+          <div className="alcaldia-estadisticas">
+            <select
+              className="filter-estados-estadisticas"
+              value={searchFolio}
+              onChange={handleAlcaldiaChange}
+            >
+              <option value="">Todas las alcaldías</option>
+              <option value="001">🐴 Álvaro Obregón</option>
+              <option value="002">🐜 Azcapotzalco</option>
+              <option value="003">🐷 Benito Juárez</option>
+              <option value="004">🐺 Coyoacán</option>
+              <option value="005">🌳 Cuajimalpa de Morelos</option>
+              <option value="006">🦅 Cuauhtémoc</option>
+              <option value="007">🌿 Gustavo A. Madero</option>
+              <option value="008">🏠 Iztacalco</option>
+              <option value="009">🐭 Iztapalapa</option>
+              <option value="010">🏔 La Magdalena Contreras</option>
+              <option value="011">🦗 Miguel Hidalgo</option>
+              <option value="012">🌾 Milpa Alta</option>
+              <option value="013">🌋 Tláhuac</option>
+              <option value="014">🦶 Tlalpan</option>
+              <option value="015">🌻 Venustiano Carranza</option>
+              <option value="016">🐠 Xochimilco</option>
+            </select>
           </div>
-          <div className="estado">
+          <div className="estado-estadisticas">
             <select
               value={searchStatus}
               onChange={(e) => setSearchStatus(e.target.value)}
-              className="filter-estados"
+              className="filter-estados-estadisticas"
             >
               <option value="">Todos los estados</option>
               <option value="Sin atender">Sin atender</option>
@@ -122,18 +116,24 @@ export default function Estadisticas() {
             width={250}
             height={200}
             estados={estado}
-            alcaldia= {alcaldia}
+            alcaldia={alcaldia}
             fechaFiltro={filtroFecha}
             startDates={startDate}
             endDates={endDate}
           />
         </div>
       </div>
-      <div className="mapa">
-        {/* Renderiza el mapa solo si está inicializado */}
-        {mapInitialized && (
-          <DynamicMap searchFolio={searchFolio} searchStatus={searchStatus} />
-        )}
+
+      <div className="derecha-mapaa">
+        <div className="acceso-reportar">
+          <p>¿Has visto algún bache y olvidaste reportarlo? <Link className="acceso" href="/Cuenta/Usuario/Reportar"> ¡Reportalo desde aquí!           <img className="icono-acceso" src="https://i.postimg.cc/fLhvc42Q/angulo-pequeno-derecho.png" alt="" /></Link></p>
+        </div>
+        <div className="mapa">
+          {/* Renderiza el mapa solo si está inicializado */}
+          {mapInitialized && (
+            <DynamicMap searchFolio={searchFolio} searchStatus={searchStatus} />
+          )}
+        </div>
       </div>
     </div>
   );

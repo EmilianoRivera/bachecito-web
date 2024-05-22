@@ -338,6 +338,7 @@ function Registro() {
       </div>
     );
   }
+
   return (
     <div className="body">
       {loading && <Preloader />}

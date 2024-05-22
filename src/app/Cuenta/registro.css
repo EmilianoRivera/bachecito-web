@@ -907,7 +907,7 @@ input[type="checkbox"]:checked::before {
     }
     
     .container-registroUs .title-2{
-        color: #6F6F6F;
+        color: #fff;
         font-size: 32px;
         text-align: center;
         font-weight: 900;
@@ -1312,4 +1312,48 @@ input[type="checkbox"]:checked::before {
 
   .alerta-logueado h2{
     color: #949494;
+  }
+
+
+  /*--------------------------Responsivo------------------------------*/
+  @media (max-width: 800px){
+    .body{
+        width: 91vw;
+        margin-left: 3vw;
+        margin-top: 10%;
+        height: 83vh;
+    }
+
+    .container-registroUs #ini-title{
+        position: absolute;
+        top: 15%;
+    }
+
+    .container-registroUs .title-2{
+        font-size: 25px;
+    }
+
+    .container-registroUs p{
+        font-size: 14px;
+    }
+
+    .container-registroUs a{
+        font-size: 12px;
+    }
+
+    .container-registroUs #olvi-contra{
+        font-size: 12px;
+    }
+
+    .container-registroUs .cuentita{
+    }
+
+    .toggle-panel{
+        margin-left: -5%;
+    }
+
+    .toggle-right{
+        margin-left: 10%;
+
+    }
   }
