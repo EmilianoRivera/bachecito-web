@@ -1,5 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
+import Link from "next/link";
 import CRep from "@/components/CRepU";
 import BarrasU from "@/components/BarrasU";
 import DatePicker from "react-datepicker";
@@ -44,6 +45,7 @@ export default function Estadisticas() {
     <div className="container">
       <div className="izquierda-mapa">
         <div className="filtros">
+          <div>   <Link href="/Cuenta/Usuario/Reportar">ola</Link></div>
           <div className="fecha">
             <label
               onClick={() => setIsFechaSelectVisible(!isFechaSelectVisible)}

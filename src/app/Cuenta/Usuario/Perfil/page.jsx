@@ -14,12 +14,9 @@ import {
   getDocs,
   getDoc,
 } from "firebase/firestore";
-import Alerta from "@/components/Alerta2";
 import atendidoIcon from "../../../../imgs/fondoVerde.png";
 import enProcesoIcon from "../../../../imgs/fondoAmarillo.png";
 import sinAtenderIcon from "../../../../imgs/fondoRojo.png";
-import estrella from "../../../../imgs/estrella.png";
-import estrella2 from "../../../../imgs/estrella2.png";
 export default function Perfil() {
   useAuthUser();
   const router = useRouter();
