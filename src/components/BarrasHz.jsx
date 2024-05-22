@@ -45,7 +45,12 @@ export default function BarrasHz({
     }
     fetchData();
   }, []);
+
   const transformData = (data) => {
+    if (!data) {
+      return [];
+    }
+
     const transformedData = [];
     alcaldias.forEach((alcaldia) => {
       const alcaldiaData = data[alcaldia];
@@ -72,6 +77,9 @@ export default function BarrasHz({
     return transformedData;
   };
   
+  if (!alcEstRep) {
+    return <div>Cargando datos...</div>; // Mensaje de carga
+  }
   
   return (
     <ResponsiveContainer width="100%" height={height}>
