@@ -1,0 +1,10 @@
+.main-container{
+    margin-left: 1rem;
+    background-color: #c0000000;
+    width: 90vw;
+    height: 85vh;
+    z-index: 100;
+    position: relative;
+    overflow-y: auto;
+    top: -5vh;
+}

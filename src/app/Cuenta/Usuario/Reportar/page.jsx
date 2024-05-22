@@ -120,8 +120,7 @@ function ReportBachePage() {
                 </div>
                 <button type="submit">Enviar</button>
             </form>
-            {/* Pasa la función setSelectedLocation al componente del mapa */}
-            <div> <DynamicMap setSelectedLocation={setSelectedLocation} /></div>
+            <div> <DynamicMap/></div>
         </div>
     );
 }
