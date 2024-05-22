@@ -16,21 +16,21 @@
   display: block;
 }
 
-.filtros{
+.filtros-estadisticas-u{
   width: 100%;
   height: 10vh;
-  background-color: var(--background-color-2);
-  margin-bottom: 1rem;
   border-radius: 1.5rem;
+  display:flex;
+  margin-top: 10px;
 }
 
-.totalReportes{
-  margin-bottom: 1rem;
+.totalReportes-estadisticas{
+  margin-bottom: 2%;
   width: 100%;
-  height: 25vh;
+  height: 24vh;
 }
 
-.encabezado{
+.encabezado-estadisticas{
   width: 100%;
   height: 40%;
   background-color: var(--background-color-2);
@@ -41,7 +41,7 @@
   justify-content: center;
 }
 
-.encabezado h1{
+.encabezado-estadisticas h1{
   color: var(--text-color);
   font-family: 'Poppins', sans-serif;
   margin-right: 10px;
@@ -49,17 +49,17 @@
   font-weight: 600;
 }
 
-.contador{
+.contador-estadisticas{
   color: #FF4D35;
   font-family: 'Poppins', sans-serif;
   font-size: 18px;
   font-weight:800;
 }
 
-.estados{
+.estados-estadisticas{
   width: 100%;
   display: flex;
-  height: 52%;
+  height: 48%;
 }
 
 .in-red{
@@ -79,7 +79,6 @@
   border-radius: 1rem;
   background-color: #FF5136;
   margin-top: 7%;
-  margin-bottom: 2%;
   color: var(--text-color);
 }
 
@@ -115,7 +114,7 @@
   transform: translateY(-120%);
 }
 
-.cont-reportes{
+.cont-reportes-estadisticas{
   color: var(--text-color);
   font-family: 'Poppins', sans-serif;
   font-size: 22px;
@@ -145,7 +144,6 @@
   border-radius: 1rem;
   background-color: #FFC63D;
   margin-top: 7%;
-  margin-bottom: 2%;
 }
 
 .in-green{
@@ -166,7 +164,6 @@
   border-radius: 1rem;
   background-color: #A4DF77;
   margin-top: 7%;
-  margin-bottom: 2%;
 }
 
 .estadisticas{
@@ -176,10 +173,42 @@
   background-color: var(--background-color-2);
 }
 
+.derecha-mapaa{
+  display: block;
+  font-family: 'Poppins', sans-serif;
+
+}
+
 .mapa {
     position: relative;
+    max-height: 50vh;
   }
   
+  .acceso-reportar{
+    background-color: var(--background-color-2);
+    width: 100%;
+  border-radius: 1rem;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  margin-bottom: 2%;
+  height: 9vh;
+  color: var(--text-color);
+  }
+
+  .acceso{
+    font-style: none;
+    color: #FF9F49;
+
+  }
+
+  .icono-acceso{
+    width: 1.7rem;
+    position: absolute;
+    margin-top: -5px;
+  }
 
 .custom .leaflet-popup-tip,
     .custom .leaflet-popup-content-wrapper {
@@ -227,3 +256,29 @@
     top: 55px;
     position: fixed;
   }
+
+  .filter-estados-estadisticas{
+    background-color: var(--background-color-2);
+    color: var(--text-color);
+    border-radius: 5rem;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    width: 11.6vw;
+    outline: none;
+    border: 2px solid #00000000;
+    margin-right: 1vw;
+}
+
+.filter-estados-estadisticas option{
+    background-color: var(--background-color-2);
+    color: var(--text-color);
+    border-radius: 1rem;
+    border: none;
+    outline: none;
+}
+
+.estado-estadisticas{
+  position:relative ;
+}
