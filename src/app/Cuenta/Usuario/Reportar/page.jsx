@@ -8,8 +8,8 @@ import styles from './reportes.css';
 // Importa el componente del mapa de manera dinámica
 const DynamicMap = dynamic(() => import("@/components/MapR"), {
     ssr: false,
-  });
-  
+});
+
 
 function ReportBachePage() {
     const router = useRouter();
@@ -22,6 +22,20 @@ function ReportBachePage() {
 
     const [userData, setUserData] = useState({});
     const [selectedLocation, setSelectedLocation] = useState(null);
+
+
+    const [imagenFondo, setImagenFondo] = useState('');
+
+    const handleChange2 = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                setImagenFondo(reader.result);
+            };
+            reader.readAsDataURL(file);
+        }
+    };
 
     useEffect(() => {
         if (typeof window !== "undefined") {
@@ -88,40 +102,53 @@ function ReportBachePage() {
     };
 
     return (
-        <div>
-            <h1>Reportar Bache</h1>
-            <form onSubmit={handleSubmit}>
-                <div>
-                    <label htmlFor="nombre">Reporte Hecho Por:</label>
-                    <p>{userData.nombre} {userData.apellidoPaterno}</p>
+        <div className="container-reportar">
+            <div className='izquierda-reportar'>
+
+                <form onSubmit={handleSubmit}>
+                    <div className='nombress'>
+                        <label htmlFor="nombre">REPORTE HECHO POR</label>
+                        <p className='nombres-blanco'>{userData.nombre} {userData.apellidoPaterno} {userData.apellidoMaterno}</p>
+                    </div>
+                    <div className='ubicacionn'>
+                        <label htmlFor="ubicacion">UBICACIÓN</label>
+                        <p className='ubicacion-blanco'>{selectedLocation}</p> {/* Muestra la ubicación seleccionada */}
+                    </div>
+
+                    <div className='flexForm'>
+                        <div className='descripcionnn'>
+                            <label htmlFor="descripcion">DESCRIPCIÓN</label>
+                            <textarea
+                                id="descripcion"
+                                name="descripcion"
+                                value={formData.descripcion}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                        <div className='fotografiaaa'>
+                            <label htmlFor="archivo">FOTOGRAFÍA</label>
+                            <input  style={{ backgroundImage: `url(${imagenFondo})` }}
+                                type="file"
+                                id="archivo"
+                                name="archivo"
+                                onChange={handleChange2}
+                            />
+                        </div>
+                        <button className='submiiit' type="submit">¡REPORTAR!</button>
+                    </div>
+                </form>
+            </div>
+
+            <div className='derecha-reportar'>
+                <div className='intro-reportar'>
+                    <p>
+                        ¡Mueve el marcador para obtener automáticamente la ubicación del bachecito a reportar!
+                    </p>
                 </div>
-                <div>
-                    <label htmlFor="ubicacion">Ubicación:</label>
-                    <p>{selectedLocation}</p> {/* Muestra la ubicación seleccionada */}
-                </div>
-                <div>
-                    <label htmlFor="descripcion">Descripción:</label>
-                    <textarea
-                        id="descripcion"
-                        name="descripcion"
-                        value={formData.descripcion}
-                        onChange={handleChange}
-                        required
-                    />
-                </div>
-                <div>
-                    <label htmlFor="archivo">Subir archivo:</label>
-                    <input
-                        type="file"
-                        id="archivo"
-                        name="archivo"
-                        onChange={handleChange}
-                    />
-                </div>
-                <button type="submit">Enviar</button>
-            </form>
-            {/* Pasa la función setSelectedLocation al componente del mapa */}
-            <div> <DynamicMap setSelectedLocation={setSelectedLocation} /></div>
+                {/* Pasa la función setSelectedLocation al componente del mapa */}
+                <div> <DynamicMap setSelectedLocation={setSelectedLocation} /></div>
+            </div>
         </div>
     );
 }
