@@ -476,7 +476,7 @@ function Registro() {
               ¿Olvidaste tu contraseña? 😰
             </a>
             <a id="admin-ini" href="#" onClick={handleAdminLinkClick}>
-              Administrador 😰
+              Administrador 😎
             </a>
             <button id="iniciarSesion-btn">Iniciar Sesión</button>
           </form>
