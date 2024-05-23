@@ -786,7 +786,7 @@ const Map = () => {
       <div>
         <MapContainer
           style={{
-            height: "85vh",
+            height: "72vh",
             width: "59vw",
           }}
           center={[19.453986, -99.17505]}

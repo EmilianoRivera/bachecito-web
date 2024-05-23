@@ -76,7 +76,7 @@ export default function RootLayout({ children }) {
         <ContextAuthProvider>
           <Navbar />
           <button className="btn-dark" onClick={toggleDarkMode}>
-            {darkMode ? <img src="https://i.postimg.cc/FKmmRCvG/dom.png" /> : <img className="lunaaaa" src="https://i.postimg.cc/cLf0dypr/luna.png" />}
+            {darkMode ? <img src="https://i.postimg.cc/90d68651/dom-1.png" /> : <img className="lunaaaa" src="https://i.postimg.cc/cLf0dypr/luna.png" />}
           </button>
           {children}
         </ContextAuthProvider>
