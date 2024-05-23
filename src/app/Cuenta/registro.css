@@ -178,7 +178,7 @@
 }
 
 .container-registroUs .datos{
-    background-color: var(--background-color-2);
+    background-color: var(--background-color);
     border: none;
     margin: 8px 0;
     padding: 10px 15px;
@@ -633,7 +633,7 @@ input[type="checkbox"]:checked::before {
     }
     
     .container-registroUs .datos{
-        background-color: var(--background-color-3);
+        background-color: var(--background-color);
         border: none;
         margin: 8px 0;
         padding: 10px 15px;
@@ -1055,7 +1055,7 @@ input[type="checkbox"]:checked::before {
 }
 
 .container-registroUs .datos{
-    background-color: var(--background-color-2);
+    background-color: var(--background-color);
     border: none;
     margin: 8px 0;
     padding: 10px 15px;
