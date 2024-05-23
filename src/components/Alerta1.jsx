@@ -36,8 +36,8 @@ const Alerta = ({ pageId }) => {
     !alertaMostrada && (
       <div style={styles.back}>
         <div id="alerta" style={styles.alerta}>
-            <h1 style={styles.saludo}>¡Hola! 🖐</h1>
-            <p style={styles.text}>Bienvenido a la sección de Estadísticas, aquí podrás ver los reportes realizados dentro de la CDMX por usuarios de la aplicación móvil de Bachecito 26 y el número de reportes totales según su estado de gestión.</p>
+            <h1 style={styles.saludo}>¡Hola! 🥳</h1>
+            <p style={styles.text}>Bienvenido a la sección de Estadísticas, aquí podrás ver los reportes realizados dentro de la CDMX por usuarios de la aplicación móvil de Bachecito 26 (¡Y también de Bachecito web!) así como el número de reportes totales según su estado de gestión.</p>
             <button className='boton' style={styles.boton} onClick={manejarNoMostrar}>No volver a mostrar</button>
         </div>
       </div>
@@ -50,7 +50,6 @@ const styles = {
       backdropFilter: 'blur(5px)', // Aplica un desenfoque al fondo
       zIndex: 100000,
       position: 'fixed',
-      backgroundColor: 'rgba(255, 255, 255, 0.2)',
       width: '100vw',
       height: '100vh',
     },

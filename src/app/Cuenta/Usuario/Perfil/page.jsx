@@ -17,6 +17,7 @@ import {
 import atendidoIcon from "../../../../imgs/fondoVerde.png";
 import enProcesoIcon from "../../../../imgs/fondoAmarillo.png";
 import sinAtenderIcon from "../../../../imgs/fondoRojo.png";
+import Alerta from "@/components/Alerta3";
 export default function Perfil() {
   useAuthUser();
   const router = useRouter();
@@ -196,7 +197,7 @@ export default function Perfil() {
 
   return (
     <div className="container-perfil">
-      {/* <Alerta pageId="Pagina-Perfil"></Alerta> */}
+      <Alerta pageId="Perfil"></Alerta> 
       {isLogged && userData && (
         <div id="leftSide" style={{ display: showLeftSide ? "block" : "none" }}>
           <div className="profile-card">
