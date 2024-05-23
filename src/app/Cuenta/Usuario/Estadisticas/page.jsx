@@ -7,6 +7,7 @@ import DatePicker from "react-datepicker";
 import dynamic from "next/dynamic";
 import "react-datepicker/dist/react-datepicker.css";
 import "./style.css";
+import Alerta from "@/components/Alerta1"
 
 // Importa el componente del mapa de manera dinámica
 const DynamicMap = dynamic(() => import("@/components/Map"), {
@@ -43,6 +44,7 @@ export default function Estadisticas() {
 
   return (
     <div className="container">
+    <Alerta></Alerta>
       <div className="izquierda-mapa">
         <div className="filtros-estadisticas-u">
 
@@ -126,7 +128,7 @@ export default function Estadisticas() {
 
       <div className="derecha-mapaa">
         <div className="acceso-reportar">
-          <p>¿Has visto algún bache y olvidaste reportarlo? <Link className="acceso" href="/Cuenta/Usuario/Reportar"> ¡Reportalo desde aquí!           <img className="icono-acceso" src="https://i.postimg.cc/fLhvc42Q/angulo-pequeno-derecho.png" alt="" /></Link></p>
+          <p>¿Has visto algún bache y olvidaste reportarlo desde la app? <Link className="acceso" href="/Cuenta/Usuario/Reportar"> ¡Reportalo desde aquí!           <img className="icono-acceso" src="https://i.postimg.cc/fLhvc42Q/angulo-pequeno-derecho.png" alt="" /></Link></p>
         </div>
         <div className="mapa">
           {/* Renderiza el mapa solo si está inicializado */}

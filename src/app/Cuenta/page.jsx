@@ -431,9 +431,9 @@ function Registro() {
                 onChange={handleCheckBoxChange}
               />
               <p id="a-pri">
-                He leído y acepto la{" "}
+                He leído y acepto los{" "}
                 <a href="#" id="a-pol" onClick={handlePrivacyPolicyClick}>
-                  Política de Privacidad
+                  Términos y Condiciones
                 </a>
                 😉
               </p>
