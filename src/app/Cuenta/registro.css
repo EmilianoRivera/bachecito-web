@@ -1320,7 +1320,7 @@ input[type="checkbox"]:checked::before {
         width: 91vw;
         margin-left: 3vw;
         margin-top: 10%;
-        height: 83vh;
+        height: 85vh;
     }
 
     .container-registroUs #ini-title{
@@ -1388,8 +1388,8 @@ input[type="checkbox"]:checked::before {
     }
 
     #form-registro{
-        margin-top: -35%;
-        width: 100%;height: 50%;
+        margin-top: -7vh;
+        height: 50%;
         width: 70vw;
     }
 
@@ -1480,10 +1480,9 @@ input[type="checkbox"]:checked::before {
 
     .checkbox-container {
         display: flex;
-        margin-top: 110%; /* Ajusta el margen entre los campos de entrada y el checkbox */
+        margin-top: 13.5rem; /* Ajusta el margen entre los campos de entrada y el checkbox */
         width: 95vw;
         left: -5vw;
-
         position: absolute;
     }
 
@@ -1501,7 +1500,7 @@ input[type="checkbox"]:checked::before {
         border-radius: 15px;
         font-weight: 600;
         letter-spacing: 0.5px;
-        margin-top: 15vw;
+        margin-top: 5vh;
         cursor: pointer;
     }
   }
