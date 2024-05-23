@@ -432,6 +432,7 @@ export default function ReportesAdmin() {
                     <Link href="/Cuenta/Administrador/Papelera" className="papelera-option"><img src="https://i.postimg.cc/02gZVXL3/basura.png" alt="soporte" />PAPELERA</Link>
                 </div>
             </div>
+            
             <table>
                 <thead>
                     <tr className='sticky-top'>

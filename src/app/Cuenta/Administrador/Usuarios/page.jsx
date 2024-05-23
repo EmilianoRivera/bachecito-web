@@ -10,6 +10,16 @@ function Page() {
     const [selectedIncidentDates, setSelectedIncidentDates] = useState({});
     const [descripcionIncidencia, setDescripcionIncidencia] = useState("");
 
+    function showDeleteHeader() {
+        const table = document.querySelector('.containerReportesAdmin table');
+        table.classList.add('show-header');
+    }
+
+    function hideDeleteHeader() {
+        const table = document.querySelector('.containerReportesAdmin table');
+        table.classList.remove('show-header');
+    }
+
     useEffect(() => {
         async function fetchData() {
             try {
@@ -96,33 +106,33 @@ const handleDetailsClick = async (uid) => {
 
 
     return (
-        <div className='main-container'>
-            <h1>Usuarios</h1>
+        <div className='main-container-users'>
             <table>
                 <thead>
-                    <tr>
+                    <tr className='sticky-top'>
                         <th>Nombre</th>
                         <th>Email</th>
                         <th>Estado de la cuenta</th>
-                        <th>No. de Reportes</th>
-                        <th>No. de Incidencias</th>
+                        <th>#Reportes</th>
+                        <th>#Incidencias</th>
                         <th>Acciones</th>
+                        <th className="eliminar-header">ELIMINAR</th>
                     </tr>
                 </thead>
                 <tbody>
                     {users.map(user => (
-                        <tr key={user.uid}>
+                        <tr className='Users' key={user.uid}>
                             <td>{user.nombre} {user.apellidoPaterno}</td>
                             <td>{user.correo}</td>
                             <td>{user.estadoCuenta ? 'Activa' : 'Deshabilitada'}</td>
                             <td>{user.numRep ?? 0}</td>
                             <td>{user.incidencias ?? 0}</td>
                             <td>
-                                <button onClick={() => handleDetailsClick(user.uid)}>Detalles</button>
-                            </td>
-                            <td>
                                 <input type="text" value={descripcionIncidencia} onChange={(e) => setDescripcionIncidencia(e.target.value)} placeholder="Descripción" />
                                 <button onClick={() => incidencia(user.uid, descripcionIncidencia)}>Agregar incidencia</button>
+                            </td>
+                            <td className='eliminar'>
+                                <button onClick={() => handleDetailsClick(user.uid)}>Detalles</button>
                             </td>
                         </tr>
                     ))}

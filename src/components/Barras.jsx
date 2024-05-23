@@ -125,7 +125,7 @@ export default function Barras({
     <ResponsiveContainer width="100%" height={height}>
       <BarChart
         margin={{ top: 20, right: 150, left: 50, bottom: 20 }}
-        data={datas}
+        data={datas} style={{fontFamily: 'sans-serif', fontSize: '13px',}}
       >
         <CartesianGrid stroke="#ccc" />
         <XAxis
@@ -136,6 +136,7 @@ export default function Barras({
           angle={-45}
           textAnchor="end"
           interval={0}
+          style={{fontFamily: 'sans-serif', fontSize: '13px',}}
         />
 
         <YAxis />
@@ -145,6 +146,7 @@ export default function Barras({
             return [`${value}`, `Alcaldía: ${payload.alcaldia}`];
           }}
           labelFormatter={(label) => moment(label).format("DD MMM YYYY")}
+          style={{fontFamily: 'sans-serif', fontSize: '13px',}}
         />
         <Bar dataKey="contador" fill="#8884d8" barSize={30} minPointSize={1}>
           {datas.map((entry, index) => (
