@@ -725,7 +725,7 @@ const polygonOptions = {
 const Map = () => {
     const [userLocation, setUserLocation] = useState(null);
     const [markerPosition, setMarkerPosition] = useState(null);
-  
+
     useEffect(() => {
       if (navigator.geolocation) {
         navigator.geolocation.getCurrentPosition(
@@ -742,7 +742,7 @@ const Map = () => {
         console.error("Geolocation is not supported by this browser.");
       }
     }, []);
-        
+
     useEffect(() => {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(
@@ -760,18 +760,18 @@ const Map = () => {
             console.error("Geolocation is not supported by this browser.");
         }
     }, []);
-    
+
     async function reverse(coordinates) {
       try {
         const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
         const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinates}&key=${apiKey}`);
         const data = await response.json();
-  
+
         if (data.status !== 'OK' || data.results.length === 0) {
           console.error(`No se encontraron resultados para las coordenadas: ${coordinates}`);
           return null;
         }
-  
+
         const address = data.results[0].formatted_address;
         return address;
       } catch (error) {
@@ -779,9 +779,9 @@ const Map = () => {
         return null;
       }
     }
-  
+
     const radius = 800;
-  
+
     return (
       <div>
         <MapContainer
@@ -817,10 +817,9 @@ const Map = () => {
               }}
             />
           )}
-  
+
           {markerPosition && (
        <Marker
-       icon={MarkerIcon}
        position={markerPosition}
        draggable={true}
        eventHandlers={{
@@ -833,11 +832,11 @@ const Map = () => {
          }
        }}
      />
-     
+
           )}
         </MapContainer>
       </div>
     );
   };
-  
+
   export default Map;
