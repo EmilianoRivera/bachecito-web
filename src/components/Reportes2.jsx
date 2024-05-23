@@ -113,6 +113,7 @@ function ReportesComponente() {
             />
             <img className="Buscador-img" src="https://i.postimg.cc/k5QNBFHC/busqueda-1.png" alt="" />
 
+            <div className="responsive-filters">
             <select
                 value={searchStatus}
                 onChange={(e) => setSearchStatus(e.target.value)}
@@ -148,6 +149,7 @@ function ReportesComponente() {
 
 
             </select>
+            </div>
             </div>
 
             <div className="reportes-boxes">
