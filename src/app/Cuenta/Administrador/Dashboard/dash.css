@@ -343,6 +343,15 @@
   margin-left: 20px;
 }
 
+.grafica-barras-hz h3{
+  color: var(--text-color);
+  font-family: 'Poppins', sans-serif;
+  margin-right: 35px;
+  font-size: 16px;
+  font-weight: 600;
+  margin-left: 20px;
+}
+
 .tooltip-grcir {
   visibility: hidden;
   width: auto;
