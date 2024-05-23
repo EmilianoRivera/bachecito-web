@@ -539,7 +539,7 @@ header {
 /*--------------------------------RESPONSIVOOOOO----------------------------*/
 @media(max-width:1200px){
     .filter-estados{
-        width: 22vw;
+        width: 20vw;
     }
 
     .box2 {
@@ -569,13 +569,22 @@ header {
     }
 
     .filters-search{
-        width: 80vw;
+        width: 78vw;
     }
 }
 
 @media(max-width:800px){
     .filter-estados{
-        width: 22vw;
+        background-color: var(--background-color-2);
+        color: var(--text-color);
+        border-radius: 5rem;
+        padding: 5px;
+        width: 30vw;
+        outline: none;
+        border: 2px solid #00000000;
+        margin-right: 2vw;
+        margin-top: 10px;
+        margin-bottom: 2px;
     }
 
     .box2 {
@@ -600,7 +609,34 @@ header {
     }
 
     .filters-search{
-        width: 80vw;
+        width: 60vw;
+        display: block;
+    padding-left: 6px;
+    
+    height: auto;
+        border-radius: 1rem;
+    }
+
+    .Buscador{
+        padding: 8px;
+        transition: .2s;
+        outline: none;
+        min-width: 50vw;
+        right: 0;
+        margin-right: 0;
+        position: relative;
+    }
+    
+    .Buscador-img{
+        margin-top: .2rem;
+        width: 1.2rem;
+        height: 1.2rem;
+        transform: translate(-2rem);
+    }
+
+    .responsive-filters{
+        display:flex;
+        margin-bottom: 0;
     }
 }
 
