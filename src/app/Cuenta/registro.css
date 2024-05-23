@@ -175,7 +175,7 @@
 }
 
 .container-registroUs .datos{
-    background-color: var(--background-color-3);
+    background-color: var(--background-color-2);
     border: none;
     margin: 8px 0;
     padding: 10px 15px;
@@ -655,7 +655,7 @@ input[type="checkbox"]:checked::before {
         left: 0;
         width: 50%;
         z-index: 2;
-        background-color: #F1F1F1;
+        background-color: var(--background-color-2);
     }
     
     .container-registroUs.active .sign-in{
@@ -667,7 +667,7 @@ input[type="checkbox"]:checked::before {
         width: 50%;
         opacity: 0;
         z-index: 1;
-        background-color: #F1F1F1;
+        background-color: var(--background-color-2);
     }
     
     .container-registroUs.active .sign-up{
@@ -1028,7 +1028,6 @@ input[type="checkbox"]:checked::before {
     }
     
     .container-registroUs .datos{
-        background-color: #FFF;
         border: none;
         margin: 8px 0;
         padding: 10px 15px;
@@ -1368,6 +1367,7 @@ input[type="checkbox"]:checked::before {
         justify-content: center;
         position: relative;
         overflow: hidden;
+        background-color: var(--background-color-2);
         width: 100%;
         height: 80vh;
         margin-top: 5vh;
@@ -1383,20 +1383,24 @@ input[type="checkbox"]:checked::before {
         padding: 0 25px;
         height: 50%;
         width: 70vw;
-        background-color: blue;
         margin-left: 5vw;
         
     }
 
     #form-registro{
-        top: 10%;
+        margin-top: -35%;
         width: 100%;height: 50%;
         width: 70vw;
-        background-color: blue;
     }
 
     .container-registroUs.active .sign-in{
         transform: translateY(100%);
+    }
+
+    .container-registroUs #regis-title{
+        opacity: 0;
+        width: 88vw;
+        background-color: red;
     }
 
     .container-registroUs.active .sign-up{
@@ -1405,9 +1409,6 @@ input[type="checkbox"]:checked::before {
         z-index: 5;
         animation: move 0.6s;
     }
-
-    
-
 
     .toggle-container{
         position: absolute;
@@ -1440,5 +1441,67 @@ input[type="checkbox"]:checked::before {
 
     .container-registroUs.active .toggle{
         transform: translateX(50%);
+    }
+
+
+    .container-registroUs .title{
+        font-size: 20px;
+        text-align: center;
+        font-family: "Nunito", sans-serif;
+        font-weight: 800;
+    }
+    .container-registroUs #ini-title{
+        position: absolute;
+        top: 5%;
+        width: 60vw;
+    }
+
+    .container-registroUs #iniciarSesion-btn{
+        background-color: #6F6F6F;
+        color: #fff;
+        position: absolute;
+        font-size: 15px;
+        font-family: "Baloo Thambi 2", system-ui;
+        padding: 7.5px 45px;
+        border: 1px solid transparent;
+        border-radius: 15px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        width: 50vw;
+        top: 45%;
+        cursor: pointer;
+        
+    }
+
+    #form-inicar-sesion{
+        margin-top: 25%;
+        background-color: var(--background-color-2);
+    }
+
+    .checkbox-container {
+        display: flex;
+        margin-top: 110%; /* Ajusta el margen entre los campos de entrada y el checkbox */
+        width: 95vw;
+        left: -5vw;
+
+        position: absolute;
+    }
+
+    .checkbox-container input[type="checkbox"] {
+        margin-top: 4.5vw; /* Ajusta el margen entre el checkbox y el texto */
+    }
+
+    .container-registroUs #registrarse-btn{
+        background-color: #6F6F6F;
+        color: #fff;
+        font-size: 15px;
+        font-family: "Baloo Thambi 2", system-ui;
+        padding: 7.5px 45px;
+        border: 1px solid transparent;
+        border-radius: 15px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        margin-top: 15vw;
+        cursor: pointer;
     }
   }
