@@ -72,3 +72,119 @@ table {
     transition: .8s;
     display: table-cell;
 }
+
+.Detalles{
+    border: none;
+    width: 100%;
+    height: 2rem;
+    background: none;
+    cursor: pointer;
+  }
+  
+  .Detalles img{
+    height: 100%;
+  }
+
+  .Detalles span{
+    background-color: var(--background-color-3);
+    padding: 5px;
+    width: 100px;
+    height: 30px;
+    display: none;
+    color: var(--text-color);
+    border-radius: 1rem;
+  }
+
+  .Detalles:hover span{
+    display: block;
+  }
+  
+  ::-webkit-scrollbar {
+    width: 10px; /* Ancho de la barra de desplazamiento */
+}
+
+::-webkit-scrollbar-track {
+    background: var(--background-color); /* Color del fondo de la barra de desplazamiento */
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--background-color-6); /* Color de la barra de desplazamiento */
+    border-radius: 5px; /* Radio de la esquina de la barra de desplazamiento */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--background-color-6); /* Color de la barra de desplazamiento al pasar el mouse sobre ella */
+}
+
+.modal{
+    z-index: 100000;
+    position: fixed;
+    width: 90vw;
+    height: 80vh;
+    top: 12vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .modal-content{
+    background-color: #ffffffcb;
+    backdrop-filter: blur(5px); 
+    padding: 20px;
+    border-radius: 1rem;
+    width: 45vw;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    text-justify: justify;
+    border: 2px solid #f1f1f1;
+  }
+
+  .incidencia-abierta{
+    display: flex;
+    margin-top: 1rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .numero-incidencia{
+    width: 16vw;
+    display: block;
+  }
+
+  .Datos-incidencia{
+     background-color: #f1f1f1;
+     border-radius: 10px;
+    width: 25vw;
+    max-width: 25vw;
+     margin-left: 2vw;
+     justify-content: left;
+     padding: 15px;
+     box-sizing: border-box;
+  }
+
+  .boton-cerrar{
+    background: none;
+    border: none;
+    position: fixed;
+    margin-right: 0;
+    right: 1rem;
+    top: 1rem;
+    cursor: pointer;
+  }
+  
+  .boton-cerrar img{
+    width: 15px;
+  }
+
+  .modal h3{
+    color: #FF9F49;
+  }
+
+  .modal p{
+    color: #1E1E1E;
+  }
+
+  .negritas{
+    font-style: italic;
+  }
