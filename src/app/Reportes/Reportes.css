@@ -170,7 +170,7 @@ header {
 
 .fotografía {
     width: 100%;
-    height: 52vh;
+    height: 56vh;
     border-radius: 5vh;
     margin-bottom: 25px;
 }
@@ -463,7 +463,7 @@ header {
 }
 
 .filters-search{
-    width: 60vw;
+    width: 62vw;
     display: flex;
     height: auto;
     margin-bottom: 5vh;
@@ -530,4 +530,143 @@ header {
     border-radius: 1rem;
     border: none;
     outline: none;
+}
+
+.responsive-filters{
+    display:flex;
+}
+
+/*--------------------------------RESPONSIVOOOOO----------------------------*/
+@media(max-width:1200px){
+    .filter-estados{
+        width: 22vw;
+    }
+
+    .box2 {
+        break-inside: avoid;
+        /* Evita que los divs se rompan en medio de las columnas */
+        width: 100%;
+        border-radius: 6vh;
+        margin-bottom: 7%;
+        padding: 4%;
+    }
+
+    .columnm-left {
+        width: 50%;
+        height: 100%;
+    }
+
+    .fotografía {
+        width: 100%;
+        height: 54vh;
+        border-radius: 5vh;
+        margin-bottom: 25px;
+    }
+
+    .fotografía img {
+        border-radius: 3vh;
+        height: 100%;
+    }
+
+    .filters-search{
+        width: 80vw;
+    }
+}
+
+@media(max-width:800px){
+    .filter-estados{
+        width: 22vw;
+    }
+
+    .box2 {
+        break-inside: avoid;
+        /* Evita que los divs se rompan en medio de las columnas */
+        width: 100%;
+        border-radius: 6vh;
+        margin-bottom: 5%;
+        padding: 4%;
+    }
+
+    .columnm-left {
+        width: 50%;
+        height: 100%;
+    }
+
+    .fotografía {
+        width: 100%;
+        height: 55vh;
+        border-radius: 5vh;
+        margin-bottom: 25px;
+    }
+
+    .filters-search{
+        width: 80vw;
+    }
+}
+
+@media(max-width:600px){
+    .filter-estados{
+        background-color: var(--background-color-2);
+        color: var(--text-color);
+        border-radius: 5rem;
+        padding: 5px;
+        width: 30vw;
+        outline: none;
+        border: 2px solid #00000000;
+        margin-right: 2vw;
+        margin-top: 10px;
+        margin-bottom: 2px;
+    }
+
+    .box2 {
+        break-inside: avoid;
+        /* Evita que los divs se rompan en medio de las columnas */
+        width: 100%;
+        border-radius: 6vh;
+        margin-bottom: 5%;
+        padding: 4%;
+    }
+
+    .columnm-left {
+        width: 50%;
+        height: 100%;
+    }
+
+    .fotografía {
+        width: 100%;
+        height: 55vh;
+        border-radius: 5vh;
+        margin-bottom: 25px;
+    }
+
+    .filters-search{
+        width: 60vw;
+        display: block;
+    padding-left: 6px;
+    
+    height: auto;
+        border-radius: 1rem;
+    }
+
+    .Buscador{
+        padding: 8px;
+        transition: .2s;
+        outline: none;
+        min-width: 50vw;
+        right: 0;
+        margin-right: 0;
+        position: relative;
+    }
+    
+    .Buscador-img{
+        margin-top: .2rem;
+        width: 1.2rem;
+        height: 1.2rem;
+        transform: translate(-2rem);
+    }
+
+    .responsive-filters{
+        display:flex;
+        margin-bottom: 0;
+    }
 }

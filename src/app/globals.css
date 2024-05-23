@@ -967,11 +967,20 @@ canvas {
   .container-inicio{
   cursor:default;
   }
+
+  .btn-dark{
+    top: 4rem;
+    right: 1rem;
+  }
+  .btn-dark img {
+    width: 35px;
+    width: 35px;
+  }
 }
 
 @media (max-width: 500px) {
   .btn-dark{
-    top: 5rem;
+    top: 4rem;
     right: 1.2rem;
   }
   .btn-dark img {
