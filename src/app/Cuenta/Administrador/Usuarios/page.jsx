@@ -10,16 +10,7 @@ function Page() {
     const [selectedIncidentDates, setSelectedIncidentDates] = useState({});
     const [descripcionIncidencia, setDescripcionIncidencia] = useState("");
     const [isModalOpen, setIsModalOpen] = useState(false);
-
-    function showDeleteHeader() {
-        const table = document.querySelector('.containerReportesAdmin table');
-        table.classList.add('show-header');
-    }
-
-    function hideDeleteHeader() {
-        const table = document.querySelector('.containerReportesAdmin table');
-        table.classList.remove('show-header');
-    }
+    const [currentUser, setCurrentUser] = useState(null);
 
     useEffect(() => {
         async function fetchData() {
@@ -69,6 +60,10 @@ function Page() {
 
                 await updateDoc(userRef, updates);
             });
+
+            // Reset description and close modal after adding the incident
+            setDescripcionIncidencia("");
+            closeModal();
         } catch (error) {
             console.error('Error updating incidencias: ', error);
         }
@@ -106,8 +101,14 @@ function Page() {
         }
     };
 
+    const openModal = (user) => {
+        setCurrentUser(user);
+        setIsModalOpen(true);
+    };
+
     const closeModal = () => {
         setIsModalOpen(false);
+        setCurrentUser(null);
         setSelectedIncidentDates({});
     };
 
@@ -133,9 +134,9 @@ function Page() {
                             <td>{user.estadoCuenta ? 'Activa' : 'Deshabilitada'}</td>
                             <td>{user.numRep ?? 0}</td>
                             <td>{user.incidencias ?? 0}</td>
-                            <td>
-                                <input type="text" value={descripcionIncidencia} onChange={(e) => setDescripcionIncidencia(e.target.value)} placeholder="Descripción" />
-                                <button onClick={() => incidencia(user.uid, descripcionIncidencia)}>Agregar incidencia</button>
+                            <td className='agregar-incidencia' onClick={() => openModal(user)}>
+                                    <img src="https://i.postimg.cc/59R2s3rn/agregar-documento.png" alt="" />
+                                    <span>Agregar incidencia</span>
                             </td>
                             <td className='eliminar'>
                                 <button className="Detalles" onClick={() => handleDetailsClick(user.uid)}>
@@ -151,40 +152,57 @@ function Page() {
             {isModalOpen && (
                 <div className="modal">
                     <div className="modal-content">
-                    <button className="boton-cerrar" onClick={closeModal}><img src="https://i.postimg.cc/C5pcdxv9/cancelar.png" /></button>
-                        {selectedIncidentDates.primera && (
+                        <button className="boton-cerrar" onClick={closeModal}><img src="https://i.postimg.cc/C5pcdxv9/cancelar.png" /></button>
+                        {currentUser ? (
                             <div className='incidencia-abierta'>
-                                <div className='numero-incidencia'>
-                                    <h3>PRIMERA INCIDENCIA</h3>
-                                <p><i>Fecha:</i> {selectedIncidentDates.primera.fecha}</p>
-                                    </div>
-                                <div className='Datos-incidencia'>
-                                <p><i>Descripción:</i> {selectedIncidentDates.primera.descripcion}</p>
-                                </div>
+                                <h2>¡Cuentanos lo que sucedió!</h2>
+                               <div className='inc-flex'>
+                               <input 
+                                className='des-incidencia'
+                                    type="text" 
+                                    value={descripcionIncidencia} 
+                                    onChange={(e) => setDescripcionIncidencia(e.target.value)} 
+                                    placeholder="Descripción" 
+                                />
+                                <button className='Btnagregar-incidencia' onClick={() => incidencia(currentUser.uid, descripcionIncidencia)}>Agregar incidencia</button>
+                               </div>
                             </div>
-                        )}
-                        {selectedIncidentDates.segunda && (
-                            <div className='incidencia-abierta'>
-                                <div className='numero-incidencia'>
-                                    <h3>SEGUNDA INCIDENCIA</h3>
-                                <p><i>Fecha:</i> {selectedIncidentDates.segunda.fecha}</p>
+                        ) : (
+                            <>
+                                {selectedIncidentDates.primera && (
+                                    <div className='incidencia-abierta'>
+                                        <div className='numero-incidencia'>
+                                            <h3>PRIMERA INCIDENCIA</h3>
+                                            <p><i>Fecha:</i> {selectedIncidentDates.primera.fecha}</p>
+                                        </div>
+                                        <div className='Datos-incidencia'>
+                                            <p><i>Descripción:</i> {selectedIncidentDates.primera.descripcion}</p>
+                                        </div>
                                     </div>
-                                <div className='Datos-incidencia'>
-                                
-                                <p><i>Descripción:</i> {selectedIncidentDates.segunda.descripcion}</p>
-                                </div>
-                            </div>
-                        )}
-                        {selectedIncidentDates.tercer && (
-                            <div className='incidencia-abierta'>
-                                <div className='numero-incidencia'>
-                                    <h3>TERCERA INCIDENCIA</h3>
-                                <p><i>Fecha:</i> {selectedIncidentDates.tercer.fecha}</p>
+                                )}
+                                {selectedIncidentDates.segunda && (
+                                    <div className='incidencia-abierta'>
+                                        <div className='numero-incidencia'>
+                                            <h3>SEGUNDA INCIDENCIA</h3>
+                                            <p><i>Fecha:</i> {selectedIncidentDates.segunda.fecha}</p>
+                                        </div>
+                                        <div className='Datos-incidencia'>
+                                            <p><i>Descripción:</i> {selectedIncidentDates.segunda.descripcion}</p>
+                                        </div>
                                     </div>
-                                <div className='Datos-incidencia'>
-                                <p><i>Descripción:</i> {selectedIncidentDates.tercer.descripcion}</p>
-                                </div>
-                            </div>
+                                )}
+                                {selectedIncidentDates.tercer && (
+                                    <div className='incidencia-abierta'>
+                                        <div className='numero-incidencia'>
+                                            <h3>TERCERA INCIDENCIA</h3>
+                                            <p><i>Fecha:</i> {selectedIncidentDates.tercer.fecha}</p>
+                                        </div>
+                                        <div className='Datos-incidencia'>
+                                            <p><i>Descripción:</i> {selectedIncidentDates.tercer.descripcion}</p>
+                                        </div>
+                                    </div>
+                                )}
+                            </>
                         )}
                     </div>
                 </div>
