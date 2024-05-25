@@ -832,10 +832,8 @@ const filterMarkers = (markersData) => {
   return (
     <div>
       <MapContainer
-        style={{
-          height: "72vh",
-          width: "59vw",
-        }}
+      className="mapcontainer"
+        
         center={[19.453986, -99.17505]}
         zoom={10.2}
         scrollWheelZoom={false}

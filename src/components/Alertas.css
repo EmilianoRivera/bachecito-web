@@ -1,0 +1,107 @@
+/* Alerta.css */
+
+.back {
+    backdrop-filter: blur(5px);
+    z-index: 100000;
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+  }
+  
+  .alerta {
+    top: 9vh;
+    left: 50%;
+    transform: translate(-50%, -100%) scale(0);
+    transform-origin: top center;
+    transition: transform 0.5s ease-out;
+    position: absolute;
+    background-color:var(--background-color);
+    padding: 20px;
+    border-radius: 1rem;
+    font-family: 'Verdana, Geneva, Tahoma, sans-serif';
+    justify-content: center;
+    align-items: center;
+    width: 50vw;
+    text-align: center;
+    text-justify: justify;
+  }
+  
+  .boton {
+    background-color: #ff9f49;
+    padding: 10px;
+    border: none;
+    border-radius: 1rem;
+    color: white;
+    width: 20vw;
+    cursor: pointer;
+  }
+  
+  .boton:hover {
+    background-color: #cc7a35;
+  }
+  
+  .saludo {
+    margin-bottom: 0;
+    color: #ff9f49;
+    font-size: 1.8rem;
+  }
+  
+  .texto {
+    width: 90%;
+    margin-left: 5%;
+    text-align: center;
+    text-justify: justify;
+    color: var(--text-color);
+  }
+
+  .alerta2 {
+    top: 9vh;
+    left: 50%;
+    transform: translate(-50%, -100%) scale(0);
+    transform-origin: top center;
+    transition: transform 0.5s ease-out;
+    position: absolute;
+    background-color:var(--background-color);
+    padding: 20px;
+    border-radius: 1rem;
+    font-family: 'Verdana, Geneva, Tahoma, sans-serif';
+    justify-content: center;
+    align-items: center;
+    width: 50vw;
+    text-align: center;
+    text-justify: justify;
+  }
+  
+  @media (max-width: 600px) {
+    .back{
+        top: 7vh;
+    }
+    .boton {
+      width: 40vw;
+    }
+    
+    .alerta {
+      top: 13vh;
+      width: 70vw;
+      padding: 25px;
+      box-sizing: border-box;
+    }
+
+    .alerta2 {
+      top: 13vh;
+      width: 70vw;
+      padding: 25px;
+      background-color:var(--background-color-2);
+      box-sizing: border-box;
+    }
+    
+    .saludo {
+      font-size: 1.6rem;
+    }
+    
+    .texto {
+      font-size: .97rem;
+      text-align: justify;
+    }
+  }
+  
