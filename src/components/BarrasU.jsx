@@ -91,13 +91,13 @@ const BarrasU = ({ estados, alcaldia, fechaFiltro, startDates, endDates }) => {
   }));
 
   return (
-    <div style={{ width: '100%', height: 300 }}> {/* Ajusta el alto aquí */}
+    <div style={{ width: '100%', height: '90%', marginLeft: '-2rem', marginTop: '1vh' }}> {/* Ajusta el alto aquí */}
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={finalData}>
-          <XAxis dataKey="alcaldia" />
+        <BarChart data={finalData} style={{fontFamily: 'sans-serif', fontSize: '13px',}}>
+          <XAxis dataKey="alcaldia" style={{fontFamily: 'sans-serif', fontSize: '13px',}}/>
           <YAxis />
           <CartesianGrid strokeDasharray="3 3" />
-          <Tooltip />
+          <Tooltip style={{fontFamily: 'sans-serif', fontSize: '13px',}} />
           <Bar dataKey="reportes" fill="#8884d8"> 
             {finalData.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={
