@@ -183,7 +183,7 @@ function Soporte() {
         }
 
         const uid = userData.uid;
-        const ticketsData = await fetch(`http://localhost:3000/api/Ticket/${uid}`);
+        const ticketsData = await fetch(`/api/Ticket/${uid}`);
         if (!ticketsData.ok) {
           throw new Error("Failed to fetch tickets data");
         }
@@ -354,7 +354,7 @@ function Soporte() {
     }
   };
 
-  const handleFileUpload = async () => {
+  const handleFileUpload = async (uid) => {
     const archivo = document.querySelector('input[type="file"]');
     const archivito = archivo.files[0];
 
@@ -366,7 +366,7 @@ function Soporte() {
     const storage = getStorage(app2);
     const randomId = Math.random().toString(36).substring(7);
     const imageName = `Ticket_${randomId}`;
-    const storageRef = ref(storage, `ImagenesTickets/${imageName}`);
+    const storageRef = ref(storage, `ImagenesTickets/${uid}/${imageName}`);
     await uploadBytes(storageRef, archivito);
     return getDownloadURL(storageRef);
   };
@@ -378,22 +378,19 @@ function Soporte() {
     const nombre = userData.nombre;
     const area = asignarTarea;
     const uid = userData.uid;
-      const url = await handleFileUpload();
-     
+    const url = await handleFileUpload(uid);
+    
     let res = prompt("¿Desea levantar el ticket? (SI/NO)");
     if (res.toUpperCase() === "SI") {
       try {
-        const ticketResponse = await fetch(
-          `http://localhost:3001/api/Ticket/${url}/${uid}/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${encodeURIComponent(
-            selectedRutaError
-          )}/${descripcionProblema}/${correoA}/${nombre}/${area}`,
-          {
+ 
+        const ticketResponse = await fetch(`/api/RegistrarTicket/${encodeURIComponent(url)}/${uid}/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${encodeURIComponent(selectedRutaError)}/${descripcionProblema}/${correoA}/${nombre}/${area}`,{
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
             body: JSON.stringify({
-              url,
+              url: encodeURIComponent(url),
               uid: uid,
               errorSeleccionado,
               sistemaOperativo,
@@ -406,7 +403,6 @@ function Soporte() {
             }),
           }
         );
-
         if (ticketResponse.ok) {
           console.log("Formulario enviado con éxito");
         } else {
@@ -431,7 +427,7 @@ function Soporte() {
           <div className="boxPF" id="boxPF">
             <div className="containerLetritasPF" id="containerLetritasPF">
               <svg className="svg-soporte">
-                <text text-anchor="middle" x="50%" y="50%">PREGUNTAS FRECUENTES</text>
+                <text textAnchor="middle" x="50%" y="50%">PREGUNTAS FRECUENTES</text>
               </svg>
             </div>
           </div>

@@ -14,12 +14,10 @@ import {
   getDocs,
   getDoc,
 } from "firebase/firestore";
-import Alerta from "@/components/Alerta2";
 import atendidoIcon from "../../../../imgs/fondoVerde.png";
 import enProcesoIcon from "../../../../imgs/fondoAmarillo.png";
 import sinAtenderIcon from "../../../../imgs/fondoRojo.png";
-import estrella from "../../../../imgs/estrella.png";
-import estrella2 from "../../../../imgs/estrella2.png";
+import Alerta from "@/components/Alerta3";
 export default function Perfil() {
   useAuthUser();
   const router = useRouter();
@@ -199,7 +197,7 @@ export default function Perfil() {
 
   return (
     <div className="container-perfil">
-      {/* <Alerta pageId="Pagina-Perfil"></Alerta> */}
+      <Alerta pageId="Perfil"></Alerta> 
       {isLogged && userData && (
         <div id="leftSide" style={{ display: showLeftSide ? "block" : "none" }}>
           <div className="profile-card">
@@ -308,13 +306,15 @@ export default function Perfil() {
                 <div className="guardar2">
  
                   {userData && userData.uid && userData.foliosGuardados && userData.foliosGuardados.includes(reporte.folio) ? (
-                    <img src="https://i.postimg.cc/W335wqws/estrella-2.png"
+                    <img src="https://i.postimg.cc/RVrPJ3rN/estrella-1.png"
+                    style={{ opacity: 1, transition: 'opacity 0.3s ease' }}
                       className="icon-star2" alt="Folio guardado" onClick={() => guardarFoliosEnDB(reporte.folio, userData)}/>
  
                   ) : (
                     <img
                       className="icon-star2"
-                      src={estrella.src}
+                      src="https://i.postimg.cc/52PmmT4T/estrella.png"
+                      style={{ opacity: 0.5, transition: 'opacity 0.3s ease' }}
                       alt="Guardar folio"
                       onClick={() => guardarFoliosEnDB(reporte.folio, userData)}
                     />

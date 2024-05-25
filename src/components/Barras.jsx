@@ -1,90 +1,176 @@
 import React, { useEffect, useRef, useState } from "react";
-import * as d3 from "d3";
+import {
+  BarChart,
+  Bar,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  Cell,
+} from "recharts";
+import moment from "moment";
+import 'moment/locale/es'; // Importar la configuración local en español
+moment.locale('es'); // Establecer el idioma a español
 
-export default function Barras({ width, height }) {
+async function fetchFiltroEstado(
+  estado,
+  alcaldia,
+  filtroFecha,
+  startDate,
+  endDate
+) {
+  try {
+    const nombreAlcaldia = alcaldia.replace(
+      /^[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+|[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+$/g,
+      ""
+    );
+    const parametros = {
+      estado: estado,
+      alcaldia: nombreAlcaldia,
+      filtroFecha: filtroFecha,
+      startDate: startDate,
+      endDate: endDate,
+    };
+
+    const response = await fetch(
+      `/api/filtros/${estado}/${nombreAlcaldia}/${filtroFecha}/${startDate}/${endDate}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(parametros),
+      }
+    );
+    if (!response.ok) {
+      throw new Error("Fallaron los filtros");
+    }
+    const resultadoFiltros = await response.json();
+    return resultadoFiltros;
+  } catch (error) {
+    console.error("Error a la hora de hacer la petición ", error);
+    return null;
+  }
+}
+
+  function buscarAlcaldias(ubicacion) {
+  const regexAlcaldiasCDMX =
+    /(Álvaro Obregón|Azcapotzalco|Benito Juárez|Coyoacán|Cuajimalpa de Morelos|Cuauhtémoc|Gustavo A. Madero|Iztacalco|Iztapalapa|La Magdalena Contreras|Miguel Hidalgo|Milpa Alta|Tlalpan|Tláhuac|Venustiano Carranza|Xochimilco)/gi;
+  const alcaldiasEnUbicacion = ubicacion.match(regexAlcaldiasCDMX);
+
+  if (alcaldiasEnUbicacion) {
+    const alcaldiasUnicas = new Set(alcaldiasEnUbicacion);
+    const alcaldiasString = Array.from(alcaldiasUnicas).join(", ");
+    return alcaldiasString;
+  } else {
+    return "No se encontraron alcaldías en la ubicación proporcionada.";
+  }
+}
+
+export default function Barras({
+  width ,
+  height ,
+  estados,
+  alcaldias,
+  startDates,
+  endDates,
+  filtroFechas = "Este mes", // Establecemos "Este mes" como filtro predeterminado
+}) {
   const svgRef = useRef();
-  const [dataAlcaldia, setAlcaldiaReporte] = useState([]);
-  const [totalReporte, setTotalReportes] = useState(0);
-  const [semanas, setSemanas] = useState(0);
-  const [fechaMayor, setfechaMayor] = useState();
-  const [fechaMenor, setfechaMenor] = useState();
+  const [datas, setData] = useState([]);
+
+  // Función para transformar y agrupar los datos por fecha y alcaldía
+  const transformData = (data) => {
+    const groupedData = data.reduce((acc, item) => {
+      const fecha = moment(item.fechaReporte, "D/M/YYYY").valueOf();
+      const contador = item.contador || 0;
+      const alcaldia = buscarAlcaldias(item.ubicacion);
+
+      if (!isNaN(fecha)) {
+        const key = `${fecha}-${alcaldia}`;
+        if (!acc[key]) {
+          acc[key] = { fecha, contador: 0, alcaldia };
+        }
+        acc[key].contador += contador;
+      }
+      return acc;
+    }, {});
+
+    return Object.values(groupedData).sort((a, b) => a.fecha - b.fecha);
+  };
 
   useEffect(() => {
     async function fetchData() {
       try {
-       //const response = await fetch("/api/g2");
-        const totalReportesResponse = await fetch("/api/reportesTotales");
-
-        if (/* !response.ok || */ !totalReportesResponse.ok) {
-          throw new Error("Failed to fetch data");
-        }
-
-        /* const { contAlcaldias, fechaMenor, fechaMayor, semanas } =
-          await response.json(); */
-        const totalReportes = await totalReportesResponse.json();
-
-        const dataArray = Object.entries(contAlcaldias).map(
-          ([alcaldia, reportes]) => ({
-            alcaldia,
-            reportes,
-          })
+        const res = await fetchFiltroEstado(
+          estados,
+          alcaldias,
+          filtroFechas,
+          startDates,
+          endDates
         );
-
-        dataArray.sort((a, b) => a.alcaldia.localeCompare(b.alcaldia));
-
-        setAlcaldiaReporte(dataArray);
-        setTotalReportes(totalReportes);
-        setSemanas(semanas);
-        setfechaMayor(fechaMayor);
-        setfechaMenor(fechaMenor);
+        if (res === null) {
+          throw new Error("Error al traer datos a barras");
+        }
+        setData(transformData(res));
       } catch (error) {
         console.log("Error fetching data: ", error);
       }
     }
     fetchData();
-  }, []);
-/* 
-  console.log("SEMANAS", semanas);
-  console.log("fechas", fechaMayor, " ", fechaMenor);
-  console.log(dataAlcaldia);
-  console.log("TOTAL DE REPORTES", totalReporte);
-   */
-  useEffect(() => {
-  const data = [1, 2, 3, 4];
+  }, [estados, alcaldias, filtroFechas, startDates, endDates]);
 
-    if (!data || !data.length) return;
+  return (
+    <ResponsiveContainer width="100%" height={height}>
+      <BarChart
+        margin={{ top: 20, right: 150, left: 50, bottom: 20 }}
+        data={datas} style={{fontFamily: 'sans-serif', fontSize: '13px',}}
+      >
+        <CartesianGrid stroke="#ccc" />
+        <XAxis
+          dataKey="fecha"
+          type="category"
+          domain={datas.map(entry => entry.fecha)} // Establecer el dominio basado en las fechas
+          tickFormatter={(date) => moment(date).format('DD MMM')} // Formatear las fechas en el eje x
+          angle={-45}
+          textAnchor="end"
+          interval={0}
+          style={{fontFamily: 'sans-serif', fontSize: '13px',}}
+        />
 
-    const svg = d3.select(svgRef.current);
-    const xScale = d3
-      .scaleBand()
-      .domain(data.map((d, i) => i)) // Los índices del array como dominio
-      .range([0, width]); // Rango de los valores en x
-
-    const yScale = d3
-      .scaleLinear()
-      .domain([0, d3.max(data)]) // Rango de los valores en y
-      .range([height, 0]);
-
-    // Agregamos los rectángulos
-    svg
-      .selectAll("rect")
-      .data(data)
-      .enter()
-      .append("rect")
-      .attr("x", (d, i) => xScale(i))
-      .attr("y", (d) => yScale(d))
-      .attr("width", xScale.bandwidth())
-      .attr("height", (d) => height - yScale(d))
-      .attr("fill", "steelblue");
-
-    // Agregamos los ejes
-    svg
-      .append("g")
-      .attr("transform", `translate(0, ${height})`)
-      .call(d3.axisBottom(xScale));
-
-    svg.append("g").call(d3.axisLeft(yScale));
-  }, [data, height, width]);
-
-  return <svg ref={svgRef} width={width} height={height}></svg>;
+        <YAxis />
+        <Tooltip
+          formatter={(value, name, props) => {
+            const { payload } = props;
+            return [`${value}`, `Alcaldía: ${payload.alcaldia}`];
+          }}
+          labelFormatter={(label) => moment(label).format("DD MMM YYYY")}
+          style={{fontFamily: 'sans-serif', fontSize: '13px',}}
+        />
+        <Bar dataKey="contador" fill="#8884d8" barSize={30} minPointSize={1}>
+          {datas.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill = {
+              index % 3 === 0 ? "#FF8A57" :
+              index % 3 === 1 ? "#FFB54E" :
+              index % 2 === 0 ? "#FFE75F" :
+              index % 3 === 0 ? "#D3FF7A" :
+              index % 5 === 0 ? "#90F49B" :
+              index % 7 === 0 ? "#2EC4B6" :
+              index % 11 === 0 ? "#49C3FB" :
+              index % 13 === 0 ? "#65A6FA" :
+              index % 17 === 0 ? "#5D9DD5" :
+              index % 19 === 0 ? "#65A6FA" :
+              index % 23 === 0 ? "#49C3FB" :
+              index % 29 === 0 ? "#2EC4B6" :
+              index % 31 === 0 ? "#90F49B" :
+              index % 37 === 0 ? "#D3FF7A" :
+              index % 41 === 0 ? "#FFE75F" :
+              "#FFB54E"
+            } />
+          ))}
+        </Bar>
+      </BarChart>
+    </ResponsiveContainer>
+  );
 }
