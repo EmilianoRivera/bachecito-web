@@ -354,7 +354,7 @@ function Soporte() {
     }
   };
 
-  const handleFileUpload = async () => {
+  const handleFileUpload = async (uid) => {
     const archivo = document.querySelector('input[type="file"]');
     const archivito = archivo.files[0];
 
@@ -366,7 +366,7 @@ function Soporte() {
     const storage = getStorage(app2);
     const randomId = Math.random().toString(36).substring(7);
     const imageName = `Ticket_${randomId}`;
-    const storageRef = ref(storage, `ImagenesTickets/${imageName}`);
+    const storageRef = ref(storage, `ImagenesTickets/${uid}/${imageName}`);
     await uploadBytes(storageRef, archivito);
     return getDownloadURL(storageRef);
   };
@@ -378,7 +378,7 @@ function Soporte() {
     const nombre = userData.nombre;
     const area = asignarTarea;
     const uid = userData.uid;
-    const url = await handleFileUpload();
+    const url = await handleFileUpload(uid);
     
     let res = prompt("¿Desea levantar el ticket? (SI/NO)");
     if (res.toUpperCase() === "SI") {
@@ -427,7 +427,7 @@ function Soporte() {
           <div className="boxPF" id="boxPF">
             <div className="containerLetritasPF" id="containerLetritasPF">
               <svg className="svg-soporte">
-                <text text-anchor="middle" x="50%" y="50%">PREGUNTAS FRECUENTES</text>
+                <text textAnchor="middle" x="50%" y="50%">PREGUNTAS FRECUENTES</text>
               </svg>
             </div>
           </div>

@@ -338,6 +338,7 @@ function Registro() {
       </div>
     );
   }
+
   return (
     <div className="body">
       {loading && <Preloader />}
@@ -430,9 +431,9 @@ function Registro() {
                 onChange={handleCheckBoxChange}
               />
               <p id="a-pri">
-                He leído y acepto la{" "}
+                He leído y acepto los{" "}
                 <a href="#" id="a-pol" onClick={handlePrivacyPolicyClick}>
-                  Política de Privacidad
+                  Términos y Condiciones
                 </a>
                 😉
               </p>
@@ -475,7 +476,7 @@ function Registro() {
               ¿Olvidaste tu contraseña? 😰
             </a>
             <a id="admin-ini" href="#" onClick={handleAdminLinkClick}>
-              Administrador 😰
+              Administrador 😎
             </a>
             <button id="iniciarSesion-btn">Iniciar Sesión</button>
           </form>

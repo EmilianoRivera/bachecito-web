@@ -725,7 +725,7 @@ const polygonOptions = {
   fillColor: '#FFB471', // Relleno
 };
 
-const Map = () => {
+const Map = ({ searchFolio, searchStatus }) => {
   const [markers, setMarkers] = useState([]);
   const [userLocation, setUserLocation] = useState(null);
 
@@ -737,7 +737,7 @@ const Map = () => {
           throw new Error("Failed to fetch data");
         }
         const data = await res.json();
-        
+
         // Convertir las ubicaciones de los reportes en coordenadas
         const markersData = await Promise.all(data.map(async (reporte) => {
           const coordenadas = await reverse(reporte.ubicacion, reporte.descripcion);
@@ -748,21 +748,35 @@ const Map = () => {
               fecha: reporte.fechaReporte,
               imagenURL: reporte.imagenURL,
               ubicacion: reporte.ubicacion,
-              estados: reporte.estado
+              estados: reporte.estado,
+              folio: reporte.folio
             };
           }
           return null;
         }));
-        
-        // Filtrar los marcadores válidos y establecer el estado
-        setMarkers(markersData.filter(marker => marker !== null));
-      } catch (error) {
-        console.log("Error fetching data: ", error);
-      }
-    }
 
-    fetchData();
-  }, []);
+        // Filtrar los marcadores según los filtros
+const filteredMarkers = filterMarkers(markersData);
+//console.log("Filtered Markers:", filteredMarkers);
+
+// Establecer los marcadores filtrados como estado
+setMarkers(filteredMarkers);
+   } catch (error) {
+     console.log("Error fetching data: ", error);
+   }
+ }
+
+ fetchData();
+}, [searchFolio, searchStatus]);
+const filterMarkers = (markersData) => {
+/*   console.log("searchStatus:", searchStatus);
+  console.log("searchFolio:", searchFolio); */
+  return markersData.filter(marker =>
+    (searchStatus === "" || marker.estados.toLowerCase() === searchStatus.toLowerCase()) &&
+    (searchFolio === ""|| ( marker.folio.startsWith(searchFolio)))
+  );
+};
+
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -818,10 +832,8 @@ const Map = () => {
   return (
     <div>
       <MapContainer
-        style={{
-          height: "85vh",
-          width: "59vw",
-        }}
+      className="mapcontainer"
+        
         center={[19.453986, -99.17505]}
         zoom={10.2}
         scrollWheelZoom={false}
@@ -839,16 +851,17 @@ const Map = () => {
         />
          <Polygon pathOptions={polygonOptions} positions={polygon} />
          {userLocation && userLocation.lat && userLocation.lng && (
-   <Circle
+ <Circle
    radius={radius}
-   fillColor="orange"
+   fillColor="#FF5733" // Color de relleno personalizado
    fillOpacity={0.5}
    center={[userLocation.lat, userLocation.lng]}
    pathOptions={{
-     color: "blue", // Color del borde
-     weight: 0.1  ,     // Grosor del borde
+     color: "#FF5733", // Color del borde personalizado
+     weight: 0.1,      // Grosor del borde
    }}
- />
+/>
+
 )}
 
 

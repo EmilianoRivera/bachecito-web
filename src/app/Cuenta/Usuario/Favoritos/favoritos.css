@@ -27,6 +27,7 @@
     margin-left: 3vw;
     margin-top: 5vh;
     background-color: var(--background-color-2);
+    position: relative;
 }
 
 
@@ -52,7 +53,7 @@
     margin-bottom: 0;
     padding: 0;
     top: 0;
-    margin-top: -4rem;
+    margin-top: -2rem;
     overflow-x: hidden;
 }
   
@@ -94,7 +95,6 @@
     overflow-y: auto; /* Agrega scroll vertical si el contenido es más largo que el área visible */
     width: 100%;
     overflow-x: hidden;
-    
 }
 
 .box2-favs{
@@ -310,3 +310,96 @@
 ::-webkit-scrollbar-thumb:hover {
     background: #c9c9c9; /* Color de la barra de desplazamiento al pasar el mouse sobre ella */
 }
+
+
+@media (max-width: 800px) {
+    .container-tipos-favs {
+        display: none; /* Ocultar las columnas en dispositivos móviles */
+    }
+
+    .column-favs {
+        display: none; /* Inicialmente ocultar todas las columnas en dispositivos móviles */
+    }
+
+    .column-favs.show {
+        display: block; /* Mostrar la columna seleccionada */
+        width: 100%; /* Asegurarse de que ocupe todo el ancho */
+    }
+}
+
+.menu-mobile {
+    display: none; /* Ocultar el menú en pantallas grandes */
+    margin: 20px;
+    margin-bottom: 4%;
+    padding: 0;
+    top: 0;
+    margin-top: 6rem;
+    overflow-x: hidden;
+}
+
+@media (max-width: 800px) {
+    .menu-mobile {
+        display: block; /* Mostrar el menú en dispositivos móviles */
+    }
+
+    #select-edo{
+        color: #FF9F49;
+        font-family: "Baloo Thambi 2", system-ui;
+        font-size: 15px;
+        font-weight: bold;
+        font-size: 20px;
+        
+    }
+
+    #column-select {
+        width: 100%;
+        padding: 10px;
+        font-size: 1.15rem;
+        border-radius: 10px;
+        border: 2px solid #949494;
+        font-family: "Baloo Thambi 2", system-ui;
+        transition: .5s;
+    }
+
+    #column-select:hover{
+        border: 2px solid #FF9F49;
+    }
+
+    .reportes-boxes-favs{
+        flex: 1;
+        overflow-y: auto; /* Agrega scroll vertical si el contenido es más largo que el área visible */
+        width: 100%;
+        overflow-x: hidden;
+    }
+
+    .container-reportes-favs {
+        margin-bottom: 10%;
+    }
+
+    .column-favs{
+        margin-bottom: 50%;
+    }
+}
+
+
+.estado-favs {
+    padding: 0.2rem 1rem;
+    border-radius: 1rem;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+  }
+  
+  .estado-sin-atender {
+    background-color: #FF5136;
+  }
+  
+  .estado-en-atencion {
+    background-color: #FFC63D;
+    color: black;
+  }
+  
+  .estado-atendidos {
+    background-color: #A4DF77;
+  }
+
