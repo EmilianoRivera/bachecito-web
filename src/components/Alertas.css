@@ -18,7 +18,7 @@
     background-color:var(--background-color);
     padding: 20px;
     border-radius: 1rem;
-    font-family: 'Verdana, Geneva, Tahoma, sans-serif';
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     justify-content: center;
     align-items: center;
     width: 50vw;
@@ -33,6 +33,7 @@
     border-radius: 1rem;
     color: white;
     width: 20vw;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     cursor: pointer;
   }
   
@@ -42,6 +43,7 @@
   
   .saludo {
     margin-bottom: 0;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
     color: #ff9f49;
     font-size: 1.8rem;
   }
@@ -49,6 +51,7 @@
   .texto {
     width: 90%;
     margin-left: 5%;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     text-align: center;
     text-justify: justify;
     color: var(--text-color);
@@ -64,7 +67,7 @@
     background-color:var(--background-color);
     padding: 20px;
     border-radius: 1rem;
-    font-family: 'Verdana, Geneva, Tahoma, sans-serif';
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     justify-content: center;
     align-items: center;
     width: 50vw;
@@ -102,6 +105,24 @@
     .texto {
       font-size: .97rem;
       text-align: justify;
+    }
+  }
+
+  @media (min-width: 1700px) {
+    .back{
+        top: 9vh;
+    }
+    
+    .alerta {
+      top: 17vh;
+      width: 40vw;
+      padding: 25px;
+      box-sizing: border-box;
+    }
+
+    .alerta2 {
+      top: 17vh;
+      width: 40vw;
     }
   }
   
