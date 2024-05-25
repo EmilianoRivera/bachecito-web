@@ -593,6 +593,42 @@ header {
 }
 
 /*--------------------------------RESPONSIVOOOOO----------------------------*/
+@media(min-width:1700px){
+    .filter-estados{
+        width: 20vw;
+    }
+
+    .box2 {
+        break-inside: avoid;
+        /* Evita que los divs se rompan en medio de las columnas */
+        width: 100%;
+        border-radius: 6vh;
+        margin-bottom: 7%;
+        padding: 5%;
+    }
+
+    .columnm-left {
+        width: 50%;
+        height: 100%;
+    }
+
+    .fotografía {
+        width: 100%;
+        height: 40vh;
+        border-radius: 5vh;
+        margin-bottom: 25px;
+    }
+
+    .fotografía img {
+        border-radius: 3vh;
+        height: 100%;
+    }
+
+    .filters-search{
+        width: 78vw;
+    }
+}
+
 @media(max-width:1200px){
     .filter-estados{
         width: 20vw;
