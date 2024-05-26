@@ -40,6 +40,26 @@ function Favoritos() {
     fetchUserData();
   }, [isLogged]);
 
+  const [starImages, setStarImages] = useState({}); // Estado para almacenar la imagen de cada reporte
+
+  const cambiarImagen = (reporte) => {
+    // Copiar el estado actual de las imágenes
+    const newStarImages = { ...starImages };
+    // Cambiar la imagen solo para el reporte seleccionado
+    newStarImages[reporte.folio] = "https://i.postimg.cc/52PmmT4T/estrella.png";
+    // Actualizar el estado
+    setStarImages(newStarImages);
+    // Después de un cierto tiempo, volver a la imagen original
+    setTimeout(() => {
+      newStarImages[reporte.folio] = "https://i.postimg.cc/W335wqws/estrella-2.png";
+      setStarImages(newStarImages);
+    }, 1000); // Cambiar después de 1 segundo (1000 milisegundos)
+  };
+
+  const getStarImage = (reporte) => {
+    // Devolver la imagen correspondiente al reporte, si está definida en el estado, de lo contrario, la imagen predeterminada
+    return starImages[reporte.folio] || "https://i.postimg.cc/W335wqws/estrella-2.png";
+  };
   const eliminarFolio = async (folio) => {
     try {
       if (userData && userData.uid) {
@@ -175,11 +195,11 @@ function Favoritos() {
         <div className="column-favs-right">
           <div className="column-favs-right-superior">
             <div className={`estado-favs ${getEstadoClass(report.estado)}`} id={`estado-${selectedColumn}`}>
-              {/* Aquí se elimina el texto */}
             </div>
-            <div className="guardar-favs">
+            <div className="guardar-favs" onClick={() => cambiarImagen(report)}> 
               <img
-                src="https://i.postimg.cc/W335wqws/estrella-2.png"
+                src={getStarImage(report)} 
+                style={{ transition: 'opacity 0.3s ease' }}
                 className="icon-favs-star" onClick={() => eliminarFolio(report.folio)}
               />
             </div>
