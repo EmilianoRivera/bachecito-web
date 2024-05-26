@@ -5,6 +5,9 @@ import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import styles from './reportes.css';
 
+import Router from 'next/router';
+import Preloader from "@/components/preloader2";
+
 // Importa el componente del mapa de manera dinámica
 const DynamicMap = dynamic(() => import("@/components/MapR"), {
     ssr: false,
@@ -12,6 +15,23 @@ const DynamicMap = dynamic(() => import("@/components/MapR"), {
 
 
 function ReportBachePage() {
+    const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const handleRouteChangeStart = () => setLoading(true);
+    const handleRouteChangeComplete = () => setLoading(false);
+
+    Router.events.on('routeChangeStart', handleRouteChangeStart);
+    Router.events.on('routeChangeComplete', handleRouteChangeComplete);
+    Router.events.on('routeChangeError', handleRouteChangeComplete);
+
+    // Limpieza de los eventos al desmontar el componente
+    return () => {
+      Router.events.off('routeChangeStart', handleRouteChangeStart);
+      Router.events.off('routeChangeComplete', handleRouteChangeComplete);
+      Router.events.off('routeChangeError', handleRouteChangeComplete);
+    };
+  }, []);
+
     const router = useRouter();
     const [formData, setFormData] = useState({
         nombre: '',
@@ -102,6 +122,8 @@ function ReportBachePage() {
     };
 
     return (
+        <>
+        {loading && <Preloader />}
         <div className="container-reportar">
             <div className='izquierda-reportar'>
 
@@ -150,6 +172,8 @@ function ReportBachePage() {
                 <div> <DynamicMap setSelectedLocation={setSelectedLocation} /></div>
             </div>
         </div>
+        </>
+        
     );
 }
 

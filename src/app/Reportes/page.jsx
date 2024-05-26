@@ -2,12 +2,32 @@
 "use client"
 import { useEffect, useState } from "react";
 import { useRouter } from 'next/navigation';
-import ReportesComponente  from "@/components/Reportes2";
+import ReportesComponente from "@/components/Reportes2";
 import React from 'react';
 import './Reportes.css';
-{/*OTRA COSA, AQUI LA LOGICA DE DESPLEGAR LOS REPORTES, ESTA EN OTRO ARCHIVO, LO HICE COMPONENTE PARA REUZARLO EN VARIAS PARTES, EL COMPONENTE SE LLAMA ReportesComponente */}
+
+import Router from 'next/router';
+import Preloader from "@/components/preloader2";
+{/*OTRA COSA, AQUI LA LOGICA DE DESPLEGAR LOS REPORTES, ESTA EN OTRO ARCHIVO, LO HICE COMPONENTE PARA REUZARLO EN VARIAS PARTES, EL COMPONENTE SE LLAMA ReportesComponente */ }
 export default function Reportes() {
-    
+    const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const handleRouteChangeStart = () => setLoading(true);
+    const handleRouteChangeComplete = () => setLoading(false);
+
+    Router.events.on('routeChangeStart', handleRouteChangeStart);
+    Router.events.on('routeChangeComplete', handleRouteChangeComplete);
+    Router.events.on('routeChangeError', handleRouteChangeComplete);
+
+    // Limpieza de los eventos al desmontar el componente
+    return () => {
+      Router.events.off('routeChangeStart', handleRouteChangeStart);
+      Router.events.off('routeChangeComplete', handleRouteChangeComplete);
+      Router.events.off('routeChangeError', handleRouteChangeComplete);
+    };
+  }, []);
+
     const router = useRouter();
     useEffect(() => {
         const mouse = newV2();
@@ -88,33 +108,37 @@ export default function Reportes() {
         };
     }, [router]);
     return (
-        <div className="main-containerReportes">
-            <div className="box1" id="box1">
-                <div className="containerReportes" id="containerReportes">
-                    <header>
-                        <h1>Baches Reportados</h1>
-                        <span aria-hidden="true" className="copy copy-1">Baches Reportados</span>
-                        <span aria-hidden="true" className="copy copy-2">Baches Reportados</span>
-                        <span aria-hidden="true" className="copy copy-3">Baches Reportados</span>
-                        <span aria-hidden="true" className="copy copy-4">Baches Reportados</span>
-                    </header>
+        <>
+            {loading && <Preloader />}
+            <div className="main-containerReportes">
+                <div className="box1" id="box1">
+                    <div className="containerReportes" id="containerReportes">
+                        <header>
+                            <h1>Baches Reportados</h1>
+                            <span aria-hidden="true" className="copy copy-1">Baches Reportados</span>
+                            <span aria-hidden="true" className="copy copy-2">Baches Reportados</span>
+                            <span aria-hidden="true" className="copy copy-3">Baches Reportados</span>
+                            <span aria-hidden="true" className="copy copy-4">Baches Reportados</span>
+                        </header>
+                    </div>
                 </div>
-            </div>
-            <div className="box1" id="box1">
-                <h2>Bienvenido al área de reportes 🐜</h2>
-                <p>
-                    Aquí podrás visualizar los reportes hechos por los usuarios de Bachecito 26 móvil;
-                    también puedes guardar los baches reportados por estos mismos con el icono de la
-                    estrellita ⭐ para después verlos en la lista de seguimiento del apartado “Baches
-                    Guardados” una vez que inicies sesión. ¡Únete a la lista realizando reportes desde tu teléfono!
-                </p>
-            </div>
-            <div>
+                <div className="box1" id="box1">
+                    <h2>Bienvenido al área de reportes 🐜</h2>
+                    <p>
+                        Aquí podrás visualizar los reportes hechos por los usuarios de Bachecito 26 móvil;
+                        también puedes guardar los baches reportados por estos mismos con el icono de la
+                        estrellita ⭐ para después verlos en la lista de seguimiento del apartado “Baches
+                        Guardados” una vez que inicies sesión. ¡Únete a la lista realizando reportes desde tu teléfono!
+                    </p>
+                </div>
+                <div>
 
-            <ReportesComponente />
-            
+                    <ReportesComponente />
+
+                </div>
+
             </div>
-            
-        </div>
+        </>
+
     );
 }

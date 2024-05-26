@@ -854,7 +854,7 @@ const filterMarkers = (markersData) => {
  <Circle
    radius={radius}
    fillColor="#FF5733" // Color de relleno personalizado
-   fillOpacity={0.5}
+   fillOpacity={0.7}
    center={[userLocation.lat, userLocation.lng]}
    pathOptions={{
      color: "#FF5733", // Color del borde personalizado
