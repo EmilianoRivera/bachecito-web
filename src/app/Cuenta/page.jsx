@@ -1,8 +1,11 @@
 "use client";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { auth, db } from "../../../firebase";
 import { useRouter } from "next/navigation";
-import Preloader from "@/components/preloader1";
+import Preloader2 from "@/components/preloader1";
+
+import Router from 'next/router';
+import Preloader from "@/components/preloader2";
 
 import {
   createUserWithEmailAndPassword,
@@ -23,6 +26,25 @@ import AuthContext from "../../../context/AuthContext";
 
 
 function Registro() {
+  const [loading2, setLoading2] = useState(true);
+  useEffect(() => {
+    const handleComplete = () => setLoading2(false);
+
+    Router.events.on('routeChangeStart', () => setLoading2(true));
+    Router.events.on('routeChangeComplete', handleComplete);
+    Router.events.on('routeChangeError', handleComplete);
+
+    // For the initial load
+    handleComplete();
+
+    return () => {
+      Router.events.off('routeChangeStart', () => setLoading2(true));
+      Router.events.off('routeChangeComplete', handleComplete);
+      Router.events.off('routeChangeError', handleComplete);
+    };
+  }, []);
+  
+  
   //elementos del router
   const { push } = useRouter();
   const router = useRouter();
@@ -340,8 +362,10 @@ function Registro() {
   }
 
   return (
+    <>
+    {loading2 && <Preloader />}
     <div className="body">
-      {loading && <Preloader />}
+      {loading && <Preloader2 />}
       <div className={`container-registroUs ${active ? "active" : ""}`} id="container-registroUs">
         <div className="form-container sign-up">
           <form id="form-registro" onSubmit={handleSignUp}>
@@ -520,6 +544,8 @@ function Registro() {
         )}
       </div>
     </div>
+    </>
+    
   );
 }
 

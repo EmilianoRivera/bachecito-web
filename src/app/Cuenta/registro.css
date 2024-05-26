@@ -94,7 +94,7 @@
     margin: 15px 0 10px;
     position: absolute; 
     left: 10%;
-    top: 55.5%;
+    top: 58%;
 }
 
 .container-registroUs #olvi-contra:hover{
@@ -105,8 +105,8 @@
 
 .container-registroUs #admin-ini{
     margin-top: 60%;
-    margin-left: 60%;
-    margin-top: 10px;
+    margin-left: -65%;
+    margin-top: 0px;
     
 }
 
