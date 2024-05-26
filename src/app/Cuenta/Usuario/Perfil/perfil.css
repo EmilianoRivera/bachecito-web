@@ -232,10 +232,6 @@
 }
 
 
-
-
-
-
 .profile-card {
   width: 25.6vw;
   min-width: 300px;
@@ -402,6 +398,46 @@
     font-size: 1.1rem;
     color: #FF7A3E;
     margin-top: -10px;
+  }
+
+  .nombre,
+  .fecha-nac,
+  .email {
+    background-color: var(--background-color-4);
+    padding: 10px;
+    margin: 8px 0;
+    border-radius: 10px;
+    font-size: 11px;
+    color: var(--text-color);
+  }
+
+  .name-fields .field {
+    background-color: var(--background-color-4);
+    border-radius: 10px;
+    padding: 10px;
+    font-size: 11px;
+    color: var(--text-color);
+    margin: 0 5px;
+    width: 50%;
+  }
+
+  .cerrar-sesion-btn,
+  .desactivar-cuenta-btn {
+    padding: 6px 14px;
+    border-radius: 50px;
+    font-weight: bold;
+    font-size: 12px;
+    cursor: pointer;
+  }
+
+  .profile-card {
+    width: 25.6vw;
+    min-width: 300px;
+    background-color: var(--background-color-2);
+    border-radius: 30px;
+    overflow: hidden;
+    text-align: center;
+    font-family: Arial, sans-serif;
   }
 }
 
