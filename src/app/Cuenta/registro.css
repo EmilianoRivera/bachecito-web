@@ -25,6 +25,113 @@
 
 
 
+
+.privacy-policy {
+    position: absolute;
+    width: 100%;
+    height: 89vh;
+    top: 11vh;
+    background-color: var(--background-color-8);
+    backdrop-filter: blur(4px);
+    display: flex;
+    align-items: center; /* Centra verticalmente */
+    justify-content: center; /* Centra horizontalmente */
+    z-index: 100;
+  }
+
+.terminos{
+    width: 50vw;
+    background-color: var(--background-color-2);
+    display: block;
+    box-sizing: border-box;
+    padding: 1vw;
+    border-radius: 2rem;
+    text-align: center;
+    justify-content: center;
+    text-justify: justify;
+    max-height: 70vh;
+    height: 70vh;
+    font-family: "Nunito", sans-serif;
+}
+
+.blablabla h1{
+    text-align: center;
+color: #FF9F49;
+}
+
+.blablabla h2{
+    color: #FFC537;
+}
+
+.blablabla a{
+    color: #FFC537;
+}
+
+.blablabla{
+    width: 100%;
+    margin-top: 8%;
+    max-height: 85%;
+    padding: 2vw;
+    box-sizing: border-box;
+    overflow-y: auto;
+    text-justify: justify;
+    text-align: justify;
+    color: var(--text-color);
+}
+
+
+::-webkit-scrollbar {
+    width: 5px;
+    /* Ancho de la barra de desplazamiento */
+  }
+  
+  
+  /* Estilo para el riel de la barra de desplazamiento */
+  ::-webkit-scrollbar-track {
+    background-color: var(--background-color-2);
+    /* Color del fondo del riel */
+  }
+  
+  
+  /* Estilo para el pulgar (scrollbar) */
+  ::-webkit-scrollbar-thumb {
+    background-color: var(--background-color-4);
+    /* Color del pulgar */
+    border-radius: 6px;
+    /* Borde redondeado del pulgar */
+    transition: .5s;
+  }
+  
+  
+  /* Cambia el color del pulgar cuando el mouse está sobre él */
+  ::-webkit-scrollbar-thumb:hover {
+    transition: 1s;
+    background-color: #FF9F49;
+  }
+
+  .privacy-policy button {
+    background-color: #ff9f49;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    width: 30%;
+    margin-left: 35%;
+    margin-top: 10px;
+    box-sizing: border-box;
+  }
+
+  .terminos img{
+    position: fixed;
+    width: 12vw;
+    top: -2vw;
+    left: 44vw;
+  }
+  
+
+
 @media screen and (min-width: 1025px) {
 
 .container-registroUs{
@@ -423,42 +530,9 @@ input[type="checkbox"]:checked::before {
     width: 100%;
 }
 
-.privacy-policy {
-    position: fixed;
-    margin-top: 50%;
-    top: 0;
-    left: 0;
-    width: 50%;
-    height: 50%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center; /* Centra verticalmente */
-    justify-content: center; /* Centra horizontalmente */
-    z-index: 100;
-  }
-
-  .privacy-policy-content {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    max-width: 80%;
-    max-height: 80%;
-    overflow-y: auto;
-  }
-
-  .privacy-policy button {
-    background-color: #ff9f49;
-    color: #fff;
-    border: none;
-    padding: 10px 20px;
-    border-radius: 5px;
-    cursor: pointer;
-    margin-top: 10px;
-  }
 
 }
-  
+
 
 @media screen and (max-width: 768px) {
     
@@ -868,37 +942,6 @@ input[type="checkbox"]:checked::before {
         left: 17.5%;
     }
     
-    .privacy-policy {
-        position: fixed;
-        top: 0;
-        left: 0;
-        width: 50%;
-        height: 50%;
-        background-color: rgba(0, 0, 0, 0.5);
-        display: flex;
-        align-items: center; /* Centra verticalmente */
-        justify-content: center; /* Centra horizontalmente */
-      }
-    
-      .privacy-policy-content {
-        background-color: #fff;
-        padding: 20px;
-        border-radius: 10px;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-        max-width: 80%;
-        max-height: 80%;
-        overflow-y: auto;
-      }
-    
-      .privacy-policy button {
-        background-color: #ff9f49;
-        color: #fff;
-        border: none;
-        padding: 10px 20px;
-        border-radius: 5px;
-        cursor: pointer;
-        margin-top: 10px;
-      }
   }
 
 
@@ -1300,29 +1343,20 @@ input[type="checkbox"]:checked::before {
     width: 100%;
 }
 
-.privacy-policy {
-    position: fixed;
-    margin-top: 50%;
-    top: 0;
-    left: 0;
-    width: 50%;
-    height: 50%;
-    background-color: rgba(0, 0, 0, 0.5);
-    display: flex;
-    align-items: center; /* Centra verticalmente */
-    justify-content: center; /* Centra horizontalmente */
-    z-index: 100;
-  }
-
-  .privacy-policy-content {
-    background-color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
-    max-width: 80%;
-    max-height: 80%;
-    overflow-y: auto;
-  }
+.terminos{
+    width: 67vw;
+    background-color: var(--background-color-2);
+    display: block;
+    box-sizing: border-box;
+    padding: 1vw;
+    border-radius: 2rem;
+    text-align: center;
+    justify-content: center;
+    text-justify: justify;
+    max-height: 70vh;
+    height: 70vh;
+    font-family: "Nunito", sans-serif;
+}
 
   .privacy-policy button {
     background-color: #ff9f49;
@@ -1331,8 +1365,20 @@ input[type="checkbox"]:checked::before {
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
+    font-size: 18px;
+    width: 30%;
+    margin-left: 35%;
     margin-top: 10px;
+    box-sizing: border-box;
   }
+
+  .terminos img{
+    position: fixed;
+    width: 14vw;
+    top: -2vw;
+    left: 43vw;
+  }
+
   }
 
 
@@ -1494,10 +1540,83 @@ input[type="checkbox"]:checked::before {
     .checkbox-container input[type="checkbox"] {
         margin-top: 1.3rem; /* Ajusta el margen entre el checkbox y el texto */
     }
+
+    
+
+.terminos{
+    width: 75vw;
+    background-color: var(--background-color-2);
+    display: block;
+    box-sizing: border-box;
+    padding: 3vw;
+    border-radius: 2rem;
+    text-align: center;
+    justify-content: center;
+    text-justify: justify;
+    max-height: 70vh;
+    height: 70vh;
+    font-family: "Nunito", sans-serif;
+}
+
+.blablabla{
+    width: 100%;
+    margin-top: 8%;
+    max-height: 85%;
+    padding: 3vw;
+    box-sizing: border-box;
+    overflow-y: auto;
+    text-justify: justify;
+    text-align: justify;
+    color: var(--text-color);
+}
+
+
+  .privacy-policy button {
+    background-color: #ff9f49;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 18px;
+    width: 30%;
+    margin-left: 35%;
+    margin-top: 10px;
+    box-sizing: border-box;
+  }
+
+  .terminos img{
+    position: fixed;
+    width: 18vw;
+    top: 0vw;
+    left: 41vw;
+  }
     
   }
 
   @media (max-width: 500px){
+    .privacy-policy {
+        position: absolute;
+        width: 100%;
+        height: 90vh;
+        top: 9vh;
+        background-color: var(--background-color-8);
+        backdrop-filter: blur(4px);
+        display: flex;
+        align-items: center; /* Centra verticalmente */
+        justify-content: center; /* Centra horizontalmente */
+        z-index: 100;
+      }
+
+      .terminos{
+        margin-top: -3vh;
+    }
+
+      .terminos img{
+        position: fixed;
+        width: 26vw;
+        left: 37vw;
+      }
     .container-registroUs{
         border-radius: 30px;
         box-shadow: 0 5px 15px rgba(0, 0, 0, 0.35);
