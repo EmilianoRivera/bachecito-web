@@ -275,7 +275,7 @@
 .scrollable-section-favs {
     overflow-y: auto; /* Agrega scroll vertical si el contenido es más largo que el área visible */
     height: calc(100vh - 100px); /* Ajusta la altura para que ocupe el resto de la ventana después de los títulos */
-    padding-top: 100px; /* Asegura que el contenido no se oculte debajo de los títulos fijos */
+    padding-top: 10%; /* Asegura que el contenido no se oculte debajo de los títulos fijos */
     transition: opacity 2s ease;
     margin-top: 0;
     overflow-x: hidden;
@@ -311,8 +311,87 @@
     background: #c9c9c9; /* Color de la barra de desplazamiento al pasar el mouse sobre ella */
 }
 
+@media (max-width: 1150px){
+    .fotografía-favs{
+        height: 42vh;
+        width: 100%;
+        margin-right: 10px;
+    }
+
+    .fotografía-favs img{
+        height: 100%;
+        width: 100%;
+        background-position: center;
+    }
+
+    .box-ubi-favs{
+        font-size: 13px;
+    }
+
+    .box-des-favs{
+        font-size: 13px;
+    }
+}
+
+@media (max-width: 970px){
+    .box2-favs{
+        display: block; 
+        border-radius: 4vh;       
+    }
+
+    .column-favs-left{
+        width: 100%;
+        margin-bottom: 0;
+        display: flex;
+    }
+
+    .fotografía-favs{
+        height: 20vh;
+        width: 120%;
+        margin-right: 10px;
+    }
+
+    .fotografía-favs img{
+        height: 100%;
+        width: 100%;
+        background-position: center;
+    }
+
+    .column-favs-left-inferior{
+        display: block;
+        margin-bottom: 0;
+    }
+
+    .contador-favs{
+        display: flex;
+    }
+
+    .icon-favs{
+        margin-left: 20px;
+        margin-right: 10px;
+
+    }
+
+    .column-favs-right{
+        width: 100%;
+        margin-left: -.5%;
+    }
+
+    .column-favs-right-superior{
+        margin-top: -15%;
+    }
+
+    .ubicacion-favs{
+        margin-bottom: 0;
+    }
+
+    .descripcion-favs{
+        margin-top: -10%;
+    }
+}
 
 @media (max-width: 800px) {
+    
     .container-tipos-favs {
         display: none; /* Ocultar las columnas en dispositivos móviles */
     }
@@ -323,9 +402,10 @@
 
     .column-favs.show {
         display: block; /* Mostrar la columna seleccionada */
-        width: 100%; /* Asegurarse de que ocupe todo el ancho */
+        width: 100%; 
     }
 }
+
 
 .menu-mobile {
     display: none; /* Ocultar el menú en pantallas grandes */
@@ -339,7 +419,12 @@
 
 @media (max-width: 800px) {
     .menu-mobile {
-        display: block; /* Mostrar el menú en dispositivos móviles */
+        display: block; /* Ocultar el menú en pantallas grandes */
+        margin: 20px;
+        box-sizing: border-box;
+        padding: 0;
+        top: 0;
+        overflow-x: hidden;
     }
 
     #select-edo{
@@ -359,6 +444,8 @@
         border: 2px solid #949494;
         font-family: "Baloo Thambi 2", system-ui;
         transition: .5s;
+        color: var(--text-color);
+        background-color: var(--background-color-2);
     }
 
     #column-select:hover{
@@ -378,6 +465,94 @@
 
     .column-favs{
         margin-bottom: 50%;
+    }
+
+    .box2-favs{
+        break-inside: avoid; /* Evita que los divs se rompan en medio de las columnas */
+        width: 100%;
+        padding: 6%;
+        border-radius: 6vh;
+        margin-bottom: 10%;
+        background-color: var(--background-color-2);
+        display: flex;
+        box-sizing: border-box;
+    }
+
+    .column-favs-left{
+        width: 45%;
+        height: 100%;
+        display: block;
+    }
+    
+    .fotografía-favs{
+        width: 100%;
+        height: 40vh;
+        border-radius: 1rem;
+        margin-bottom: 15px;
+    }
+
+    .fotografía-favs img{
+        height: 100%;
+        width: 100%;
+        background-position: center;
+    }
+    
+    .column-favs-left-inferior{
+        height: 30px;
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .contador-favs{
+        margin-left: 10%;
+        margin-top: 15%;
+        width: 20%;
+        display:inline-block;
+        align-items: center;
+        justify-content: center;
+        color:#949494;
+        font-weight:900;
+    }
+
+    .icon-favs{
+        margin-left: 0;
+        margin-right: 0;
+
+    }
+
+    .icon-favs{
+        justify-content: center;
+        align-items: center;
+        align-content: center;
+        display: flex;
+        height: 70%;
+        width: 100%;
+    }
+
+    .column-favs-right{
+        width: 50%;
+        margin-left: 5%;
+        padding: 0;
+        height: auto;
+        position: relative;
+        
+    }
+    
+    .column-favs-right-superior{
+        width: 100%;
+        display: flex;
+        height: 40px;
+        margin-top: 0;
+        position: absolute;
+    }
+
+    .ubicacion-favs{
+        width: 100%;
+        height: 30%;
+        display: block;
+        margin-bottom: 30%;
     }
 }
 
@@ -403,3 +578,93 @@
     background-color: #A4DF77;
   }
 
+@media(max-width: 600px){
+    .titles {
+        width: 93%;
+        padding:1.5rem;
+        box-sizing: border-box;
+        height: auto;
+        border-radius: 4vh;
+        margin-left: 3vw;
+        background-color: var(--background-color-2);
+        position: relative;
+    }
+
+    #title-main{
+        color: #FFC63D;
+        font-family: "Baloo Thambi 2", system-ui;
+        font-weight: 600;
+        margin-left: 2.5vw;
+        font-size: 22px;
+    }
+
+    #textito{
+        color: var(--text-color);
+        font-family: "Baloo Thambi 2", system-ui;
+        font-weight: 500;
+        margin-top: -10px;
+        margin-left: 2.5vw;
+        font-size: 18px;
+    }
+
+    .body-favoritos{
+        margin-left: 5vw;
+        margin-right: 5vw;
+        margin-left: 1.5vw;
+        background-color: red;
+        height: 100vh;
+        width: 95vw;
+        background-color: var(--background-color);
+        overflow-x: hidden;
+        overflow-y: hidden;
+        font-family: 'Inter UI', sans-serif;
+        scroll-behavior: smooth;
+    }
+
+    .menu-mobile {
+        display: block; /* Ocultar el menú en pantallas grandes */
+        margin: 20px;
+        box-sizing: border-box;
+        padding: 0;
+        top: 0;
+        overflow-x: hidden;
+    }
+
+    #column-select {
+        width: 100%;
+        padding: 10px;
+        font-size: 1.15rem;
+        border-radius: 10px;
+        border: 2px solid #949494;
+        font-family: "Baloo Thambi 2", system-ui;
+        transition: .5s;
+        color: var(--text-color);
+        background-color: var(--background-color-2);
+    }
+
+    #column-select:hover{
+        border: 2px solid #FF9F49;
+    }
+
+    .ubicacion-favs{
+        width: 100%;
+        height: 40%;
+        display: block;
+        margin-bottom: 40%;
+    }
+    .ubicacion-favs{
+        width: 100%;
+        height: auto;
+        display: block;
+        margin-bottom: 0;
+    }
+
+    .descripcion-favs{
+        margin-top: -20%;
+        margin-bottom: 20%;
+    }
+
+    .fotografía-favs {
+        height: 33vh;
+    }
+}
