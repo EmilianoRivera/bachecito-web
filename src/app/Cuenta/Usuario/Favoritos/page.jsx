@@ -3,8 +3,30 @@ import React, { useRef, useEffect, useState } from 'react';
 import "../Favoritos/favoritos.css";
 import ReportesComponente from "@/components/Favoritos";
 
+import Router from 'next/router';
+import Preloader from "@/components/preloader2";
+
 function Favoritos() {
   const [showTitles, setShowTitles] = useState(true);
+
+
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const handleRouteChangeStart = () => setLoading(true);
+    const handleRouteChangeComplete = () => setLoading(false);
+
+    Router.events.on('routeChangeStart', handleRouteChangeStart);
+    Router.events.on('routeChangeComplete', handleRouteChangeComplete);
+    Router.events.on('routeChangeError', handleRouteChangeComplete);
+
+    // Limpieza de los eventos al desmontar el componente
+    return () => {
+      Router.events.off('routeChangeStart', handleRouteChangeStart);
+      Router.events.off('routeChangeComplete', handleRouteChangeComplete);
+      Router.events.off('routeChangeError', handleRouteChangeComplete);
+    };
+  }, []);
+
 
   useEffect(() => {
     const handleScroll = () => {
@@ -27,6 +49,8 @@ function Favoritos() {
 
 
   return (
+    <>
+    {loading && <Preloader />}
     <div className='body-favoritos'>
       {showTitles && (
         <div className={`titles ${showTitles ? 'show' : 'hide'}`}>
@@ -41,6 +65,8 @@ function Favoritos() {
       
       <ReportesComponente />
     </div>
+    </>
+    
   );
 }
 
