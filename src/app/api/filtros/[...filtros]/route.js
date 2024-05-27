@@ -136,7 +136,16 @@ export async function POST(request, { params }) {
     
    // console.log("DEL POST",estado, " ", endDate, " ", fechaFiltro, " ", alcaldia, " ", startDate)
     const fechaActual = obtenerFechaActual();
-    if (
+    if (estado ==="Todos" && alcaldia === "Todas" && fechaFiltro === "Todos los tiempos") {
+      const refRep = collection(db, "reportes")
+      const getReportes = await getDocs(refRep)
+      let reportes = []
+      getReportes.forEach((doc) => {
+        const rep = doc.data()
+        reportes.push(rep)
+      })
+      return NextResponse.json(reportes)
+    }  else if (
       estado === "Todos" ||
       alcaldia === "Todas" ||
       fechaFiltro === "Todos los tiempos"
@@ -152,7 +161,8 @@ export async function POST(request, { params }) {
       );
       console.log(filtradoGeneral.length)
       return NextResponse.json(filtradoGeneral);
-    } else {
+    } 
+    else {
       const filtradoEspecifico = await filtroEspecifico(
         fechaFiltro,
         fechaActual,

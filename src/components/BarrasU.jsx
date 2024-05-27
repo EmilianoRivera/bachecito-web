@@ -1,150 +1,128 @@
-"use client"
-import React, { useEffect, useRef, useState } from "react";
-import * as d3 from "d3";
+import React, { useEffect, useState } from "react";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, Cell } from "recharts";
 
-export default function Circular({ width, height, estados }) {
-  //AQUI ESTAN LOS ESTADOS Y EL HOOK DE USEREF, QUE HACE REFERENCIA AL ELEMENTO SVG QUE ESTA EN EL HTML
-  const svgRef = useRef();
-  const tooltipRef = useRef();
-  const [rep, setRep] = useState([]);
-  const [totalRep, setTotalRep] = useState(0);
-  const [selectedSegment, setSelectedSegment] = useState(null);
-  const [alcEstRep, setAlcEstRep] = useState();
+// Función para extraer las alcaldías de la ubicación
+function buscarAlcaldias(ubicacion) {
+  const regexAlcaldiasCDMX =
+    /(Álvaro Obregón|Azcapotzalco|Benito Juárez|Coyoacán|Cuajimalpa de Morelos|Cuauhtémoc|Gustavo A. Madero|Iztacalco|Iztapalapa|La Magdalena Contreras|Miguel Hidalgo|Milpa Alta|Tlalpan|Tláhuac|Venustiano Carranza|Xochimilco)/gi;
+  const alcaldiasEnUbicacion = ubicacion.match(regexAlcaldiasCDMX);
 
-  const color = d3.scaleOrdinal()
-    .domain(rep.map(d => d.label))
-    .range(["#FF8A57", "#FFB54E", "#FFE75F", "#D3FF7A", "#90F49B", "#2EC4B6", "#49C3FB", "#65A6FA", "#5D9DD5", "#65A6FA", "#49C3FB", "#2EC4B6", "#90F49B", "#D3FF7A", "#FFE75F", "#FFB54E"]);
-  //SE ENCARGA DE HACER LAS PETICIONES A LOS ENDPOINTS PARA TRAER LA INFORMACIÓN QUE SE VA A GRAFICAR, EN EL SVG ES DONDE SE PINTAN LAS GRAFICAS
+  if (alcaldiasEnUbicacion) {
+    const alcaldiasUnicas = new Set(alcaldiasEnUbicacion);
+    const alcaldiasArray = Array.from(alcaldiasUnicas);
+    return alcaldiasArray;
+  } else {
+    return [];
+  }
+}
+
+async function fetchFiltroEstado(estado, alcaldia, filtroFecha, startDate, endDate) {
+  try {
+    const nombreAlcaldia = alcaldia.replace(
+      /^[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+|[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+$/g,
+      ""
+    );
+    const parametros = {
+      estado: estado,
+      alcaldia: nombreAlcaldia,
+      filtroFecha: filtroFecha,
+      startDate: startDate,
+      endDate: endDate,
+    };
+
+    const response = await fetch(
+      `/api/filtros/${estado}/${nombreAlcaldia}/${filtroFecha}/${startDate}/${endDate}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(parametros),
+      }
+    );
+    if (!response.ok) {
+      throw new Error("Fallaron los filtros");
+    }
+    const resultadoFiltros = await response.json();
+    return resultadoFiltros;
+  } catch (error) {
+    console.error("Error a la hora de hacer la petición ", error);
+    return null;
+  }
+}
+
+const BarrasU = ({ estados, alcaldia, fechaFiltro, startDates, endDates }) => {
+  const [datos, setDatos] = useState([]);
+
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch("/api/g1"); //G1 ES GRAFICA 1 , OSEA LA CIRCULAR
-        const totalRep = await fetch("/api/reportesTotales"); // TRAE EL NUMERO DE REPORTES TOTALES QUE SE HICIERON
-        const estadoReporteAlcaldia = await fetch("/api/EstadoRAlcaldia"); //TRAE POR ALCALDIA EL NUMERO DE REPORTES QUE ESTA EN ESTADO: SIN ATENDER, EN ATENCION Y ATENDIDO
-        if (!response.ok || !totalRep.ok || !estadoReporteAlcaldia.ok) {
-          throw new Error("Failed to fetch data");
+        const res = await fetchFiltroEstado(estados, alcaldia, fechaFiltro, startDates, endDates);
+        if (res === null) {
+          throw new Error("Error al traer datos a barras");
         }
-        const data = await response.json();
-        const data2 = await totalRep.json();
-        const data3 = await estadoReporteAlcaldia.json();
-        // Convertir el objeto en un array de objetos
-        const dataArray = Object.entries(data).map(([label, value]) => ({
-          label,
-          value,
-        }));
-
-        setRep(dataArray);
-        setTotalRep(data2);
-        setAlcEstRep(data3);
-      
+        setDatos(res);
       } catch (error) {
-        console.error("Error fetching data: ", error);
+        console.log("Error fetching data: ", error);
       }
     }
-
     fetchData();
-  }, []);
-  //FUNCION QUE SE ENCARGA DE ACTUALIZAR LA GRAFICA CON BASE AL ESTADO
-  function nuevaGraficaCircular(alcEstRep) {
+  }, [estados, alcaldia, fechaFiltro, startDates, endDates]);
 
-    console.log("LLEGO")
-  }
-  //HOOK QUE SE ENCARGA DE CREAR LA GRAFICA CON BASE AL PORCETAJE QUE HAY DE REPORTES POR ALCALDIA, ESTA APARECE PRIMERO, SI HAY UN CAMBIA DE ESTADO YA APARECE LA GRAFICA DE LA FUNCION nuevaGraficaCircular
-  useEffect(() => {
-    if (estados === "Sin Estado") {
-      const svg = d3.select(svgRef.current);
-      const margin = { top: 20, right: 20, bottom: 30, left: 30 };
-      const innerWidth = width - margin.left - margin.right;
-      const innerHeight = height - margin.top - margin.bottom;
-  
-      const xScale = d3
-        .scaleBand()
-        .domain(rep.map((d) => d.label))
-        .range([0, innerWidth])
-        .padding(0.1);
-  
-      const maxYValue = d3.max(rep, (d) => d.value);
-      const roundedMaxYValue = Math.ceil(maxYValue); // Redondea hacia arriba el valor máximo
-  
-      const yScale = d3
-        .scaleLinear()
-        .domain([0, roundedMaxYValue]) // Ajusta el dominio para que vaya de 0 al valor máximo redondeado hacia arriba
-        .range([innerHeight, 0]);
-  
-      const g = svg
-        .append("g")
-        .attr("transform", `translate(${margin.left},${margin.top})`);
-  
-      g.selectAll("rect")
-        .data(rep)
-        .enter()
-        .append("rect")
-        .attr("x", (d) => xScale(d.label))
-        .attr("y", (d) => yScale(d.value))
-        .attr("width", xScale.bandwidth())
-        .attr("height", (d) => innerHeight - yScale(d.value))
-        .attr("fill", (d) => color(d.label));
-  
-      g.append("g")
-        .attr("transform", `translate(0,${innerHeight})`)
-        .call(d3.axisBottom(xScale))
-        .selectAll("text")
-        .style("text-anchor", "end")
-        .attr("dx", "-.8em")
-        .attr("dy", ".15em")
-        .attr("transform", "rotate(-65)");
-  
-      g.append("g").call(d3.axisLeft(yScale).ticks(roundedMaxYValue)); // Utiliza ticks igual al valor máximo redondeado
-  
-      // Texto del eje y
-      svg
-        .append("text")
-        .attr("transform", "rotate(-90)")
-        .attr("y", margin.left / 2)
-        .attr("x", -height / 2)
-        .attr("dy", "1em")
-        .style("text-anchor", "middle")
-  
-    } else {
-      console.log("NUEVA GRAFICA 3");
+  // Transformar los datos para que coincidan con la estructura requerida por Recharts
+  const formattedData = datos.map((item) => ({
+    alcaldia: buscarAlcaldias(item.ubicacion).join(", "), // Obtener las alcaldías
+    reportes: 1, // Cada objeto en los datos representa un reporte, por lo que siempre es 1
+  }));
+
+  // Agrupar los datos por alcaldía y contar el número de reportes
+  const groupedData = formattedData.reduce((acc, curr) => {
+    if (!acc[curr.alcaldia]) {
+      acc[curr.alcaldia] = 0;
     }
-  }, [rep, height, width]);
-  
-  
-  
+    acc[curr.alcaldia] += curr.reportes;
+    return acc;
+  }, {});
 
-  //ESTE USEEFFECT SE ENCARGA DE OCULTAR LOS ELEMENTOS, Y REVISAR QUE SI CAMBIA ALGO EN EL FILTRO DEL ESTADO, SE EJECUTE LA FUNCION QUE CAMBIA LA GRAFICA
-  useEffect(() => {
-    if (!selectedSegment) {
-      d3.select(tooltipRef.current).style("visibility", "hidden");
-    } else  {
-      d3.select(tooltipRef.current).style("visibility", "visible");
-      d3.select(tooltipRef.current)
-        .select(".tooltip-label")
-        .style("font-family", "Helvetica, sans-serif")
-        .text(selectedSegment.data.label.toUpperCase());
-      const percentage = (
-        ((selectedSegment.endAngle - selectedSegment.startAngle) /
-          (2 * Math.PI)) *
-        100
-      ).toFixed(2);
-      d3.select(tooltipRef.current)
-        .select(".tooltip-value")
-        .text(`${percentage}%`);
-    } 
-  }, [selectedSegment]);
+  // Convertir los datos agrupados en un array
+  const finalData = Object.keys(groupedData).map((alcaldia) => ({
+    alcaldia,
+    reportes: groupedData[alcaldia],
+  }));
 
   return (
-    <div style={{ position: "relative", width, height, color:"#606060" }}>
-      <svg ref={svgRef} width={width} height={height}></svg>
-      <div
-        ref={tooltipRef}
-        className="tooltip"
-        style={{ position: "absolute", top: 10, right: 10 }}
-      >
-        <div className="tooltip-label"></div>
-        <div className="tooltip-value"></div>
-      </div>
+    <div style={{ width: '100%', height: '90%', marginLeft: '-2rem', marginTop: '1vh' }}> {/* Ajusta el alto aquí */}
+      <ResponsiveContainer width="100%" height="100%">
+        <BarChart data={finalData} style={{fontFamily: 'sans-serif', fontSize: '13px',}}>
+          <XAxis dataKey="alcaldia" style={{fontFamily: 'sans-serif', fontSize: '13px',}}/>
+          <YAxis />
+          <CartesianGrid strokeDasharray="3 3" />
+          <Tooltip style={{fontFamily: 'sans-serif', fontSize: '13px',}} />
+          <Bar dataKey="reportes" fill="#8884d8"> 
+            {finalData.map((entry, index) => (
+              <Cell key={`cell-${index}`} fill={
+                index % 3 === 0 ? "#FF8A57" :
+                index % 3 === 1 ? "#FFB54E" :
+                index % 2 === 0 ? "#FFE75F" :
+                index % 5 === 0 ? "#90F49B" :
+                index % 7 === 0 ? "#2EC4B6" :
+                index % 11 === 0 ? "#49C3FB" :
+                index % 13 === 0 ? "#65A6FA" :
+                index % 17 === 0 ? "#5D9DD5" :
+                index % 19 === 0 ? "#65A6FA" :
+                index % 23 === 0 ? "#49C3FB" :
+                index % 29 === 0 ? "#2EC4B6" :
+                index % 31 === 0 ? "#90F49B" :
+                index % 37 === 0 ? "#D3FF7A" :
+                index % 41 === 0 ? "#FFE75F" :
+                "#FFB54E"
+              } />
+            ))}
+          </Bar>
+        </BarChart>
+      </ResponsiveContainer>
     </div>
   );
-}
+};
+
+export default BarrasU;

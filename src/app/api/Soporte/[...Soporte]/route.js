@@ -3,7 +3,7 @@ import { db, collection, addDoc, getDocs } from "../../../../../firebase";
 //import nodemailer from "nodemailer";
 import { Resend } from 'resend';
 
-const resend = new Resend(process.env.NEXT_PUBLIC_RESEND_API_KEY);
+const resend = new Resend(process.env.NEXT_PUBLIC_SOPORTE_RESEND_API_KEY);
 
 
 async function folioTicket(errorSeleccionado, rutaError) {
@@ -83,20 +83,7 @@ export async function POST(req, { params }) {
     const urlsitaD = decodeURIComponent(url);
     const folio = await folioTicket(errorSeleccionado, rutaError);
     const priori = prioridad(errorSeleccionado);
-    // Validar los datos si es necesario
-    console.log(
-      errorSeleccionado,
-      " ",
-      sistemaOperativo,
-      " ",
-      navegador,
-      " ",
-      rutitaD,
-      " ",
-      descripcionProblema,
-      " ",
-      urlsitaD, " ", priori, " ", folio
-    ); 
+  
     console.log(resend)
     resend.emails.send({
       from: 'onboarding@resend.dev',
@@ -121,10 +108,8 @@ export async function POST(req, { params }) {
         correoA,
         area
       });
-
-  console.log(docRef)
-    // Enviar una respuesta de éxito
-    return NextResponse.json(docRef );
+ 
+    return NextResponse.json("ESTATUS 200");
   } catch (error) {
     console.error("Error al obtener reportes:", error);
     return NextResponse.error("Error al obtener reportes", { status: 500 });

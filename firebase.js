@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getAuth } from 'firebase/auth';
-import { getFirestore, collection, getDocs, doc, deleteDoc, updateDoc, query, where, addDoc} from 'firebase/firestore';
+import { getFirestore, collection, getDocs, doc, deleteDoc, updateDoc, query, where, addDoc, writeBatch} from 'firebase/firestore';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -30,4 +30,4 @@ const db = getFirestore(app);
 const app2 = initializeApp(firebaseConfig2, "SoporteB26");
 const auth2 = getAuth(app2);
 const db2 = getFirestore(app2);
-export { app, app2, auth, db,db2, collection, getDocs,doc , deleteDoc, updateDoc, query, where, addDoc};
+export { app, app2, auth, db,db2, collection, getDocs,doc , deleteDoc, updateDoc, query, where, addDoc, writeBatch};

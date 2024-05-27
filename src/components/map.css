@@ -2,3 +2,24 @@
     border-radius: 2rem;
     transition: none !important;
   }
+
+  .mapcontainer{
+    height: 72vh;
+          width: 59vw;
+  }
+
+  @media(max-width: 800px){
+    .mapcontainer{
+      width: 95vw;
+    height: 80vh;
+
+    }
+  }
+
+  @media(max-width: 500px){
+    .mapcontainer{
+      width: 95vw;
+    height: 53vh;
+
+    }
+  }
