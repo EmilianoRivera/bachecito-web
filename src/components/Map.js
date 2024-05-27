@@ -832,10 +832,8 @@ const filterMarkers = (markersData) => {
   return (
     <div>
       <MapContainer
-        style={{
-          height: "85vh",
-          width: "59vw",
-        }}
+      className="mapcontainer"
+        
         center={[19.453986, -99.17505]}
         zoom={10.2}
         scrollWheelZoom={false}
@@ -856,7 +854,7 @@ const filterMarkers = (markersData) => {
  <Circle
    radius={radius}
    fillColor="#FF5733" // Color de relleno personalizado
-   fillOpacity={0.5}
+   fillOpacity={0.7}
    center={[userLocation.lat, userLocation.lng]}
    pathOptions={{
      color: "#FF5733", // Color del borde personalizado

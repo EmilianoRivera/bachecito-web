@@ -109,6 +109,16 @@ function Navbar() {
                   />
                   <span className="hover-text">Reportes</span>
                 </Link>
+                <Link
+                  href="/Cuenta/Administrador/Usuarios"
+                  className="opc-admin"
+                >
+                  <img
+                    src="https://i.postimg.cc/mrpNVWSr/usuarios-alt.png"
+                    alt="usuarios"
+                  />
+                  <span className="hover-text">Usuarios</span>
+                </Link>
                 <Link href="/Cuenta/Administrador/Mapa" className="opc-admin">
                   <img
                     src="https://i.postimg.cc/QMrvSSyY/marcador-de-mapa-1.png"

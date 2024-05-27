@@ -1,154 +1,180 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import { auth, app } from "../../../../../firebase";
+import React, { useState, useEffect } from 'react';
+import { auth } from "../../../../../firebase";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
-import styles from "./reportes.css";
-import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import styles from './reportes.css';
+
+import Router from 'next/router';
+import Preloader from "@/components/preloader2";
 
 // Importa el componente del mapa de manera dinámica
 const DynamicMap = dynamic(() => import("@/components/MapR"), {
-  ssr: false,
+    ssr: false,
 });
 
-function Reportar() {
-  const router = useRouter();
 
-  const [userData, setUserData] = useState({});
-  const [desc, setDesc] = useState("Sin descripción");
-  const [ubicacion, setUbicacion] = useState("Sin ubicación");
-
+function ReportBachePage() {
+    const [loading, setLoading] = useState(false);
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      const unsubscribe = auth.onAuthStateChanged((user) => {
-        if (user) {
-          const uid = user.uid;
-          fetchData(uid);
-        } else {
-          router.push("/login");
+    const handleRouteChangeStart = () => setLoading(true);
+    const handleRouteChangeComplete = () => setLoading(false);
+
+    Router.events.on('routeChangeStart', handleRouteChangeStart);
+    Router.events.on('routeChangeComplete', handleRouteChangeComplete);
+    Router.events.on('routeChangeError', handleRouteChangeComplete);
+
+    // Limpieza de los eventos al desmontar el componente
+    return () => {
+      Router.events.off('routeChangeStart', handleRouteChangeStart);
+      Router.events.off('routeChangeComplete', handleRouteChangeComplete);
+      Router.events.off('routeChangeError', handleRouteChangeComplete);
+    };
+  }, []);
+
+    const router = useRouter();
+    const [formData, setFormData] = useState({
+        nombre: '',
+        ubicacion: '', // Elimina esto si no quieres inicializar la ubicación en vacío
+        descripcion: '',
+        archivo: null,
+    });
+
+    const [userData, setUserData] = useState({});
+    const [selectedLocation, setSelectedLocation] = useState(null);
+
+
+    const [imagenFondo, setImagenFondo] = useState('');
+
+    const handleChange2 = (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                setImagenFondo(reader.result);
+            };
+            reader.readAsDataURL(file);
         }
-      });
-      return () => unsubscribe();
-    }
+    };
 
-    async function fetchData(uid) {
-      try {
-        const userResponse = await fetch(`/api/Usuario/${uid}`);
-        if (!userResponse.ok) {
-          throw new Error("Failed to fetch user data");
+    useEffect(() => {
+        if (typeof window !== "undefined") {
+            const unsubscribe = auth.onAuthStateChanged((user) => {
+                if (user) {
+                    const uid = user.uid;
+                    fetchData(uid);
+                } else {
+                    router.push("/login");
+                }
+            });
+            return () => unsubscribe();
         }
-        const userData = await userResponse.json();
-        setUserData(userData);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    }
-  }, [router]);
 
-  const handleDescripcion = (e) => {
-    const descs = e.target.value;
-    setDesc(descs);
-  };
+        async function fetchData(uid) {
+            try {
+                const userResponse = await fetch(`/api/Usuario/${uid}`);
+                if (!userResponse.ok) {
+                    throw new Error("Failed to fetch user data");
+                }
+                const userData = await userResponse.json();
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const uid = userData.uid;
-    const nombre = userData.nombre;
-    const apellidoPaterno = userData.apellidoPaterno;
-    const imagenURL = await handleFileUpload(uid);
-    const descripcion = desc;
-    const ubi = ubicacion;
+                setUserData(userData);
+                setFormData((prevFormData) => ({
+                    ...prevFormData,
+                    nombre: userData.nombre,
+                    ubicacion: userData.ubicacion,
+                }));
+            } catch (error) {
+                console.error("Error fetching data:", error);
+            }
+        }
+    }, [router]);
 
-    const res = await fetch(
-      `/api/MandarR/${uid}/${nombre}/${apellidoPaterno}/${encodeURIComponent(
-        imagenURL
-      )}/${descripcion}/${ubi}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          uid: uid,
-          nombre,
-          apellidoPaterno,
-          imagenURL: encodeURIComponent(imagenURL),
-          descripcion,
-          ubi,
-        }),
-      }
+    const handleChange = (e) => {
+        const { name, value, files } = e.target;
+        setFormData((prevFormData) => ({
+            ...prevFormData,
+            [name]: files ? files[0] : value,
+        }));
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        const data = new FormData();
+        data.append('nombre', formData.nombre);
+        data.append('ubicacion', selectedLocation); // Usa la ubicación seleccionada del mapa
+        data.append('descripcion', formData.descripcion);
+        if (formData.archivo) {
+            data.append('archivo', formData.archivo);
+        }
+
+        fetch('/api/report-bache', {
+            method: 'POST',
+            body: data,
+        })
+            .then((response) => response.json())
+            .then((result) => {
+                console.log('Success:', result);
+            })
+            .catch((error) => {
+                console.error('Error:', error);
+            });
+    };
+
+    return (
+        <>
+        {loading && <Preloader />}
+        <div className="container-reportar">
+            <div className='izquierda-reportar'>
+
+                <form onSubmit={handleSubmit}>
+                    <div className='nombress'>
+                        <label htmlFor="nombre">REPORTE HECHO POR</label>
+                        <p className='nombres-blanco'>{userData.nombre} {userData.apellidoPaterno} {userData.apellidoMaterno}</p>
+                    </div>
+                    <div className='ubicacionn'>
+                        <label htmlFor="ubicacion">UBICACIÓN</label>
+                        <p className='ubicacion-blanco'>{selectedLocation}</p> {/* Muestra la ubicación seleccionada */}
+                    </div>
+
+                    <div className='flexForm'>
+                        <div className='descripcionnn'>
+                            <label htmlFor="descripcion">DESCRIPCIÓN</label>
+                            <textarea
+                                id="descripcion"
+                                name="descripcion"
+                                value={formData.descripcion}
+                                onChange={handleChange}
+                                required
+                            />
+                        </div>
+                        <div className='fotografiaaa'>
+                            <label htmlFor="archivo">FOTOGRAFÍA</label>
+                            <input  style={{ backgroundImage: `url(${imagenFondo})` }}
+                                type="file"
+                                id="archivo"
+                                name="archivo"
+                                onChange={handleChange2}
+                            />
+                        </div>
+                        <button className='submiiit' type="submit">¡REPORTAR!</button>
+                    </div>
+                </form>
+            </div>
+
+            <div className='derecha-reportar'>
+                <div className='intro-reportar'>
+                    <p>
+                        ¡Mueve el marcador para obtener automáticamente la ubicación del bachecito a reportar!
+                    </p>
+                </div>
+                {/* Pasa la función setSelectedLocation al componente del mapa */}
+                <div> <DynamicMap setSelectedLocation={setSelectedLocation} /></div>
+            </div>
+        </div>
+        </>
+        
     );
-
-    if (!res.ok) {
-      console.error(
-        "Hubo un error en la petición:",
-        res.status,
-        res.statusText
-      );
-      return;
-    }
-
-    try {
-      const data = await res.json();
-      console.log("Respuesta de la API:", data);
-    } catch (error) {
-      console.error("Error al analizar la respuesta JSON:", error);
-    }
-    // Aquí puedes agregar la lógica para enviar los datos al servidor
-  };
-
-  const handleFileUpload = async (uid) => {
-    const archivo = document.querySelector('input[type="file"]');
-    const archivito = archivo.files[0];
-
-    if (!archivito) {
-      console.error("No se ha seleccionado ningún archivo");
-      return;
-    }
-
-    const storage = getStorage(app);
-    const randomId = Math.random().toString(36).substring(7);
-    const imageName = `Ticket_${randomId}`;
-    const storageRef = ref(storage, `ImagenesBaches/${uid}/${imageName}`);
-    await uploadBytes(storageRef, archivito);
-    return getDownloadURL(storageRef);
-  };
-
-  return (
-    <div>
-      <h1>Reportar Bache</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="nombre">Reporte Hecho Por:</label>
-          <p>
-            {userData.nombre} {userData.apellidoPaterno}
-          </p>
-        </div>
-        <div>
-          <label htmlFor="ubicacion">Ubicación:</label>
-          <p>{ubicacion}</p> {/* Muestra la ubicación seleccionada */}
-        </div>
-        <div>
-          <label htmlFor="descripcion">Descripción:</label>
-          <textarea
-            id="descripcion"
-            name="descripcion"
-            placeholder={desc}
-            onChange={handleDescripcion}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="archivo">Subir archivo:</label>
-          <input type="file" id="archivo" name="archivo" />
-        </div>
-        <button type="submit">Enviar</button>
-      </form>
-      <div>
-        <DynamicMap setSelectedLocation={setUbicacion} />
-      </div>
-    </div>
-  );
 }
 
-export default Reportar;
+export default ReportBachePage;

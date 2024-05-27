@@ -17,7 +17,29 @@ import {
 import atendidoIcon from "../../../../imgs/fondoVerde.png";
 import enProcesoIcon from "../../../../imgs/fondoAmarillo.png";
 import sinAtenderIcon from "../../../../imgs/fondoRojo.png";
+import Alerta from "@/components/Alerta3";
+
+import Router from 'next/router';
+import Preloader from "@/components/preloader2";
+
 export default function Perfil() {
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const handleRouteChangeStart = () => setLoading(true);
+    const handleRouteChangeComplete = () => setLoading(false);
+
+    Router.events.on('routeChangeStart', handleRouteChangeStart);
+    Router.events.on('routeChangeComplete', handleRouteChangeComplete);
+    Router.events.on('routeChangeError', handleRouteChangeComplete);
+
+    // Limpieza de los eventos al desmontar el componente
+    return () => {
+      Router.events.off('routeChangeStart', handleRouteChangeStart);
+      Router.events.off('routeChangeComplete', handleRouteChangeComplete);
+      Router.events.off('routeChangeError', handleRouteChangeComplete);
+    };
+  }, []);
+
   useAuthUser();
   const router = useRouter();
   const { isLogged } = useContext(AuthContext);
@@ -195,8 +217,10 @@ export default function Perfil() {
   };
 
   return (
+    <>
+    {loading && <Preloader />}
     <div className="container-perfil">
-      {/* <Alerta pageId="Pagina-Perfil"></Alerta> */}
+      <Alerta pageId="Perfil"></Alerta> 
       {isLogged && userData && (
         <div id="leftSide" style={{ display: showLeftSide ? "block" : "none" }}>
           <div className="profile-card">
@@ -352,5 +376,7 @@ export default function Perfil() {
       </div>
       {isLogged && !userData && <p>Cargando datos del usuario...</p>}
     </div>
+    </>
+    
   );
 }

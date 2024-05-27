@@ -259,11 +259,11 @@
       margin-top: 21vh;
       width:4rem;
       border-radius: 5rem;
-      margin-left: 93vw;
+      margin-left: 93.5vw;
       background-color: var(--background-color-2);
       min-height: 50vh;
-      height: 62vh;
-      padding-top: 3vh;
+      height: 71vh;
+      padding-top: 1vh;
       padding-bottom: 5vh;
   }
 
