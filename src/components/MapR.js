@@ -4,11 +4,11 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "./map.css"
 import "../app/Cuenta/Usuario/Estadisticas/style.css"
-import MarkerIcon from "../../node_modules/leaflet/dist/images/marker-icon.png";
-import "leaflet/dist/images/layers.png";
+//import MarkerIcon from "../../node_modules/leaflet/dist/images/marker-icon.png";
+/* import "leaflet/dist/images/layers.png";
 import "leaflet/dist/images/layers-2x.png";
 import "leaflet/dist/images/marker-icon-2x.png";
-import "leaflet/dist/images/marker-shadow.png";
+import "leaflet/dist/images/marker-shadow.png"; */
 import { useEffect, useState } from "react";
 const polygon = [
   [19.592749, -99.12369],
@@ -721,123 +721,104 @@ const polygonOptions = {
   color: '#ff9f49', // Borde
   fillColor: '#FFB471', // Relleno
 };
+const Map = ({ setSelectedLocation }) => {
+  const [userLocation, setUserLocation] = useState(null);
+  const [markerPosition, setMarkerPosition] = useState(null);
 
-const Map = () => {
-    const [userLocation, setUserLocation] = useState(null);
-    const [markerPosition, setMarkerPosition] = useState(null);
-  
-    useEffect(() => {
+  useEffect(() => {
       if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(
-          (position) => {
-            const { latitude, longitude } = position.coords;
-            setUserLocation({ lat: latitude, lng: longitude });
-            setMarkerPosition({ lat: latitude, lng: longitude });
-          },
-          (error) => {
-            console.error("Error getting user location:", error);
-          }
-        );
+          navigator.geolocation.getCurrentPosition(
+              async (position) => {
+                  const { latitude, longitude } = position.coords;
+                  setUserLocation({ lat: latitude, lng: longitude });
+                  setMarkerPosition({ lat: latitude, lng: longitude });
+                  const location = await reverseGeocode(`${latitude},${longitude}`);
+                  setSelectedLocation(location); // Pasa la dirección al componente padre
+              },
+              (error) => {
+                  console.error("Error getting user location:", error);
+              }
+          );
       } else {
-        console.error("Geolocation is not supported by this browser.");
+          console.error("Geolocation is not supported by this browser.");
       }
-    }, []);
-        
-    useEffect(() => {
-        if (navigator.geolocation) {
-            navigator.geolocation.getCurrentPosition(
-                (position) => {
-                    const { latitude, longitude } = position.coords;
-                    console.log("Ubicación del usuario obtenida:", latitude, longitude); // Agrega este console log
-                    setUserLocation({ lat: latitude, lng: longitude });
-                    setMarkerPosition({ lat: latitude, lng: longitude });
-                },
-                (error) => {
-                    console.error("Error getting user location:", error);
-                }
-            );
-        } else {
-            console.error("Geolocation is not supported by this browser.");
-        }
-    }, []);
-    
-    async function reverse(coordinates) {
+  }, []);
+
+  async function reverseGeocode(coordinates) {
       try {
-        const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
-        const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinates}&key=${apiKey}`);
-        const data = await response.json();
-  
-        if (data.status !== 'OK' || data.results.length === 0) {
-          console.error(`No se encontraron resultados para las coordenadas: ${coordinates}`);
-          return null;
-        }
-  
-        const address = data.results[0].formatted_address;
-        return address;
+          const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
+          const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?latlng=${coordinates}&key=${apiKey}`);
+          const data = await response.json();
+
+          if (data.status !== 'OK' || data.results.length === 0) {
+              console.error(`No se encontraron resultados para las coordenadas: ${coordinates}`);
+              return null;
+          }
+
+          const address = data.results[0].formatted_address;
+          return address;
       } catch (error) {
-        console.error(`Error al obtener la ubicación para las coordenadas ${coordinates}:`, error);
-        return null;
+          console.error(`Error al obtener la ubicación para las coordenadas ${coordinates}:`, error);
+          return null;
       }
-    }
-  
-    const radius = 800;
-  
-    return (
-      <div>
-        <MapContainer
-          style={{
-            height: "85vh",
-            width: "59vw",
-          }}
-          center={[19.453986, -99.17505]}
-          zoom={10.2}
-          scrollWheelZoom={false}
-          maxBounds={[
-            [19.0, -99.5],
-            [19.6, -98.8],
-          ]}
-          id="map"
-        >
-          <TileLayer
-            url="https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=Pyxxe8P2qOBkCkRdy5jX	"
-            attribution="Map data &copy; <a href='https://www.openstreetmap.org/'>OpenStreetMap</a> contributors, 
-            <a href='https://creativecommons.org/licenses/by-sa/2.0/'>CC-BY-SA</a>, 
-            Imagery © <a href='https://www.maptiler.com/'>MapTiler</a>"
-          />
-          <Polygon pathOptions={polygonOptions} positions={polygon} />
-          {userLocation && userLocation.lat && userLocation.lng && (
-            <Circle
-              radius={radius}
-              fillColor="#FF5733" // Color de relleno personalizado
-              fillOpacity={0.5}
-              center={[userLocation.lat, userLocation.lng]}
-              pathOptions={{
-                color: "#FF5733", // Color del borde personalizado
-                weight: 0.1,      // Grosor del borde
-              }}
-            />
-          )}
-  
-          {markerPosition && (
-       <Marker
-       icon={MarkerIcon}
-       position={markerPosition}
-       draggable={true}
-       eventHandlers={{
-         dragend: async (event) => {
-           const latlng = event.target.getLatLng();
-           console.log("Nuevas coordenadas del marcador:", latlng.lat, latlng.lng);
-           setMarkerPosition({ lat: latlng.lat, lng: latlng.lng });
-           const location = await reverse(`${latlng.lat},${latlng.lng}`);
-           console.log("Ubicación obtenida:", location);
-         }
-       }}
-     />
-     
-          )}
-        </MapContainer>
-      </div>
-    );
+  }
+
+  const handleMarkerDragEnd = async (event) => {
+      const latlng = event.target.getLatLng();
+      setMarkerPosition({ lat: latlng.lat, lng: latlng.lng });
+      const location = await reverseGeocode(`${latlng.lat},${latlng.lng}`);
+      setSelectedLocation(location); // Pasa la dirección al componente padre
   };
-  
-  export default Map;
+
+  const radius = 800;
+
+  return (
+      <div>
+          <MapContainer
+              style={{
+                  height: "85vh",
+                  width: "59vw",
+              }}
+              center={[19.453986, -99.17505]}
+              zoom={10.2}
+              scrollWheelZoom={false}
+              maxBounds={[
+                  [19.0, -99.5],
+                  [19.6, -98.8],
+              ]}
+              id="map"
+          >
+              <TileLayer
+                  url="https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=Pyxxe8P2qOBkCkRdy5jX"
+                  attribution="Map data &copy; <a href='https://www.openstreetmap.org/'>OpenStreetMap</a> contributors, 
+                  <a href='https://creativecommons.org/licenses/by-sa/2.0/'>CC-BY-SA</a>, 
+                  Imagery © <a href='https://www.maptiler.com/'>MapTiler</a>"
+              />
+                 <Polygon pathOptions={polygonOptions} positions={polygon} />
+              {userLocation && (
+                  <Circle
+                      radius={radius}
+                      fillColor="#FF5733"
+                      fillOpacity={0.5}
+                      center={[userLocation.lat, userLocation.lng]}
+                      pathOptions={{
+                          color: "#FF5733",
+                          weight: 0.1,
+                      }}
+                  />
+              )}
+              {markerPosition && (
+                  <Marker
+                      position={markerPosition}
+                      draggable={true}
+                      eventHandlers={{
+                          dragend: handleMarkerDragEnd,
+                      }}
+                  />
+              )}
+          </MapContainer>
+      </div>
+  );
+};
+
+export default Map;

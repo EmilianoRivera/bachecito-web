@@ -11,6 +11,7 @@ import {
 } from "recharts";
 import moment from "moment";
 import 'moment/locale/es'; // Importar la configuración local en español
+import { RxFace } from "react-icons/rx";
 moment.locale('es'); // Establecer el idioma a español
 
 const alcaldias = [
