@@ -147,7 +147,7 @@ function ReportBachePage() {
                     </p>
                 </div>
                 {/* Pasa la función setSelectedLocation al componente del mapa */}
-                <div> <DynamicMap setSelectedLocation={setSelectedLocation} /></div>
+                <div> <DynamicMap/></div>
             </div>
         </div>
     );
