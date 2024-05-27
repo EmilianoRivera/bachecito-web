@@ -82,8 +82,8 @@ function formatearDatos(result) {
 }
 
 export default function Circular({
-  width = 400, // Define default width
-  height = 400, // Define default height
+  width, // Define default width
+  height, // Define default height
   estados,
   alcaldias,
   startDates,
@@ -122,25 +122,24 @@ export default function Circular({
     value: rep[key],
   }));
 
-  const COLORS = data.map((_, index) =>
-    index % 3 === 0 ? "#FF8A57" :
-    index % 3 === 1 ? "#FFB54E" :
-    index % 2 === 0 ? "#FFE75F" :
-    index % 3 === 0 ? "#D3FF7A" :
-    index % 5 === 0 ? "#90F49B" :
-    index % 7 === 0 ? "#2EC4B6" :
-    index % 11 === 0 ? "#49C3FB" :
-    index % 13 === 0 ? "#65A6FA" :
-    index % 17 === 0 ? "#5D9DD5" :
-    index % 19 === 0 ? "#65A6FA" :
-    index % 23 === 0 ? "#49C3FB" :
-    index % 29 === 0 ? "#2EC4B6" :
-    index % 31 === 0 ? "#90F49B" :
-    index % 37 === 0 ? "#D3FF7A" :
-    index % 41 === 0 ? "#FFE75F" :
-    "#FFB54E"
-  );
-
+  const COLORS = [
+    "#FF8A57",
+    "#FFB54E",
+    "#FFE75F",
+    "#D3FF7A",
+    "#90F49B",
+    "#2EC4B6",
+    "#49C3FB",
+    "#65A6FA",
+    "#5D9DD5",
+    "#65A6FA",
+    "#49C3FB",
+    "#2EC4B6",
+    "#90F49B",
+    "#D3FF7A",
+    "#FFE75F",
+    "#FFB54E",
+  ];
   return (
     <div>
       {data.length > 0 ? (
@@ -149,12 +148,13 @@ export default function Circular({
             data={data}
             cx="50%"
             cy="50%"
-            outerRadius={80}
+            outerRadius={150}
+            innerRadius={60}
             fill="#8884d8"
             dataKey="value"
           >
             {data.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index]} />
+              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
             ))}
           </Pie>
           <Tooltip

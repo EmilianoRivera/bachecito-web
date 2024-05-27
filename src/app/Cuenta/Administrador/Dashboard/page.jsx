@@ -145,8 +145,8 @@ function Dashboard() {
             </h3>
             <div className="circular">
               <Circular
-                width={250}
-                height={250}
+                width={300}
+                height={400}
                 estados={estado}
                 alcaldias={alcaldias}
                 startDates={startDate}
