@@ -2,7 +2,7 @@
 import React, { useState, useRef, useEffect, useContext } from "react";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useAuthUser } from "../../../../../hooks/UseAuthUser";
-import { auth, db , app2, app} from "../../../../../firebase";
+import { auth, db, app2, app } from "../../../../../firebase";
 import { useRouter } from "next/navigation";
 import AuthContext from "../../../../../context/AuthContext";
 import "./Soporte.css";
@@ -272,9 +272,9 @@ function Soporte() {
   }
 
   const openModal = (folio) => {
- 
+
     const ticketEncontrados = ticket.find(ticket => ticket.folio === folio);
-    if (ticketEncontrados) { 
+    if (ticketEncontrados) {
       console.log("Ticket encontrado:", ticketEncontrados);
       setTicketEncontrado(ticketEncontrados)
     } else {
@@ -304,7 +304,7 @@ function Soporte() {
   const closeModal = () => {
     setShowModal(false);
   };
-  
+
   const handleError = (e) => {
     const selectedErr = e.target.value;
     setErrorSeleccionado(selectedErr);
@@ -354,7 +354,7 @@ function Soporte() {
     }
   };
 
-  const handleFileUpload = async () => {
+  const handleFileUpload = async (uid) => {
     const archivo = document.querySelector('input[type="file"]');
     const archivito = archivo.files[0];
 
@@ -366,7 +366,7 @@ function Soporte() {
     const storage = getStorage(app2);
     const randomId = Math.random().toString(36).substring(7);
     const imageName = `Ticket_${randomId}`;
-    const storageRef = ref(storage, `ImagenesTickets/${imageName}`);
+    const storageRef = ref(storage, `ImagenesTickets/${uid}/${imageName}`);
     await uploadBytes(storageRef, archivito);
     return getDownloadURL(storageRef);
   };
@@ -378,30 +378,30 @@ function Soporte() {
     const nombre = userData.nombre;
     const area = asignarTarea;
     const uid = userData.uid;
-    const url = await handleFileUpload();
-    
+    const url = await handleFileUpload(uid);
+
     let res = prompt("¿Desea levantar el ticket? (SI/NO)");
     if (res.toUpperCase() === "SI") {
       try {
- 
-        const ticketResponse = await fetch(`/api/RegistrarTicket/${encodeURIComponent(url)}/${uid}/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${encodeURIComponent(selectedRutaError)}/${descripcionProblema}/${correoA}/${nombre}/${area}`,{
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              url: encodeURIComponent(url),
-              uid: uid,
-              errorSeleccionado,
-              sistemaOperativo,
-              navegador,
-              selectedRutaError: encodeURIComponent(selectedRutaError),
-              descripcionProblema,
-              correoA,
-              nombre,
-              area,
-            }),
-          }
+
+        const ticketResponse = await fetch(`/api/RegistrarTicket/${encodeURIComponent(url)}/${uid}/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${encodeURIComponent(selectedRutaError)}/${descripcionProblema}/${correoA}/${nombre}/${area}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            url: encodeURIComponent(url),
+            uid: uid,
+            errorSeleccionado,
+            sistemaOperativo,
+            navegador,
+            selectedRutaError: encodeURIComponent(selectedRutaError),
+            descripcionProblema,
+            correoA,
+            nombre,
+            area,
+          }),
+        }
         );
         if (ticketResponse.ok) {
           console.log("Formulario enviado con éxito");
@@ -427,7 +427,7 @@ function Soporte() {
           <div className="boxPF" id="boxPF">
             <div className="containerLetritasPF" id="containerLetritasPF">
               <svg className="svg-soporte">
-                <text text-anchor="middle" x="50%" y="50%">PREGUNTAS FRECUENTES</text>
+                <text textAnchor="middle" x="50%" y="50%">PREGUNTAS FRECUENTES</text>
               </svg>
             </div>
           </div>
@@ -824,61 +824,61 @@ function Soporte() {
 
         <br /> <br />
 
-          <div className="">
-              <table>
-                <thead>
-                  <tr className="sticky-top">
-                    <th>Nombre</th>
-                    <th>Correo</th>
-                    <th>Area Encargada</th>
-                    <th>Descripcion del Problema</th>
-                    <th>Estado del Ticket</th>
-                    <th>Fecha De Envio</th>
-                    <th>Fecha De Resolución</th>
+        <div className="container_table">
+          <table className="ticket-table">
+            <thead>
+              <tr className="sticky-top">
+                <th>Nombre</th>
+                <th>Correo</th>
+                <th>Area Encargada</th>
+                <th>Descripcion del Problema</th>
+                <th>Estado del Ticket</th>
+                <th>Fecha De Envio</th>
+                <th>Fecha De Resolución</th>
 
-                  </tr>
-                </thead>
-                <tbody>
-                {ticket.map((ticket, index) => (
-                  <tr key={index}>
-                    <td>{ticket.nombre}</td>
-                    <td>{ticket.correoA}</td>
-                    <td>{ticket.area}</td>
-                    <td>{ticket.descripcionProblema}</td>
-                    <td>{ticket.estado}</td>
-                    <td>{formatTimestamp(ticket.fechaDeEnvio)}</td>
-                    <td>{formatTimestamp(ticket.fechaResuelto)}</td>
-                    <td><button onClick={() => openModal(ticket.folio)}>Detalles</button></td>
-  
-                  </tr>
-                ))}
-                </tbody>
-             
-              </table>
-              {showModal && (
-                 <div className="modal">
-                 <div className="modal-content">
-                   <span className="close" onClick={closeModal}>
-                     &times;
-                   </span>
-                   <p>Detalles del ticket</p>
-       <p><button onClick = {closeModal}>Cerrar</button></p>
-                    <p>Prioridad: {ticketEncontrado.priori}</p>
-                    <p>Estado: {ticketEncontrado.estado}</p>
-                   <p>Fecha Asignado: {formatTimestamp(ticketEncontrado.fechaAsignado)}</p>
-                   <p>Fecha De Envio: {formatTimestamp(ticketEncontrado.fechaDeEnvio)}</p>
-                   <p>Fecha De Resuelto: {formatTimestamp(ticketEncontrado.fechaResuleto)}</p>
-                   <p>Folio: {ticketEncontrado.folio}</p>
-                   <p>Area: {ticketEncontrado.area}</p>
-                   <p>Navegador: {ticketEncontrado.navegador}</p>
-                   <p>Sistema Operativo: {ticketEncontrado.sistemaOperativo}</p>
-                   <p>Tipo de error: {ticketEncontrado.errorSeleccionado}</p>
-                   <p>Ruta: {ticketEncontrado.rutitaD}</p>
-                 </div>
-               </div>
-              )}
+              </tr>
+            </thead>
+            <tbody>
+              {ticket.map((ticket, index) => (
+                <tr key={index}>
+                  <td>{ticket.nombre}</td>
+                  <td>{ticket.correoA}</td>
+                  <td>{ticket.area}</td>
+                  <td>{ticket.descripcionProblema}</td>
+                  <td>{ticket.estado}</td>
+                  <td>{formatTimestamp(ticket.fechaDeEnvio)}</td>
+                  <td>{formatTimestamp(ticket.fechaResuelto)}</td>
+                  <td><button className="detallitos" onClick={() => openModal(ticket.folio)}>Detalles</button></td>
 
+                </tr>
+              ))}
+            </tbody>
+
+          </table>
+          {showModal && (
+            <div className="modal">
+              <div className="modal-content">
+                <span className="close" onClick={closeModal}>
+                  &times;
+                </span>
+                <p id="titulin_" >Detalles del ticket 📑</p>
+                <p>Prioridad: {ticketEncontrado.priori}</p>
+                <p>Estado: {ticketEncontrado.estado}</p>
+                <p>Fecha Asignado: {formatTimestamp(ticketEncontrado.fechaAsignado)}</p>
+                <p>Fecha De Envio: {formatTimestamp(ticketEncontrado.fechaDeEnvio)}</p>
+                <p>Fecha De Resuelto: {formatTimestamp(ticketEncontrado.fechaResuleto)}</p>
+                <p>Folio: {ticketEncontrado.folio}</p>
+                <p>Area: {ticketEncontrado.area}</p>
+                <p>Navegador: {ticketEncontrado.navegador}</p>
+                <p>Sistema Operativo: {ticketEncontrado.sistemaOperativo}</p>
+                <p>Tipo de error: {ticketEncontrado.errorSeleccionado}</p>
+                <p>Ruta: {ticketEncontrado.rutitaD}</p>
+                <p><button className="detallitos" onClick={closeModal}>Cerrar</button></p>
+              </div>
             </div>
+          )}
+
+        </div>
       </div>
     </div>
   );

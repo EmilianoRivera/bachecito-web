@@ -28,24 +28,24 @@ function CRep() {
   }, []);
 
   return (
-    <div className="totalReportes">
-    <div className="encabezado">
+    <div className="totalReportes-estadisticas">
+    <div className="encabezado-estadisticas">
      
       <h1>REPORTES TOTALES:</h1>
-      <div className="contador">   {totalRep}  </div>
+      <div className="contador-estadisticas">   {totalRep}  </div>
     </div>
-    <div className="estados">
+    <div className="estados-estadisticas">
       <div className="in-red">
         <div className="red"><span className="tooltip">Sin atender</span></div>
-        <div className="cont-reportes">  {repEstado.sinAtender}  </div>
+        <div className="cont-reportes-estadisticas">  {repEstado.sinAtender}  </div>
       </div>
       <div className="in-yellow">
         <div className="yellow"><span className="tooltip">En atención</span></div>
-        <div className="cont-reportes">  {repEstado.enAtencion} </div>
+        <div className="cont-reportes-estadisticas">  {repEstado.enAtencion} </div>
       </div>
       <div className="in-green">
         <div className="green"><span className="tooltip">Atendido</span></div>
-        <div className="cont-reportes">  {repEstado.atendido} </div>
+        <div className="cont-reportes-estadisticas">  {repEstado.atendido} </div>
       </div>
     </div>
   </div>
