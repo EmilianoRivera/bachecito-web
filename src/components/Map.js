@@ -769,8 +769,8 @@ setMarkers(filteredMarkers);
  fetchData();
 }, [searchFolio, searchStatus]);
 const filterMarkers = (markersData) => {
-/*   console.log("searchStatus:", searchStatus);
-  console.log("searchFolio:", searchFolio); */
+  console.log("searchStatus:", searchStatus);
+  console.log("searchFolio:", searchFolio);
   return markersData.filter(marker =>
     (searchStatus === "" || marker.estados.toLowerCase() === searchStatus.toLowerCase()) &&
     (searchFolio === ""|| ( marker.folio.startsWith(searchFolio)))

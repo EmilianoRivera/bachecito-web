@@ -87,10 +87,6 @@ function buscarAlcaldias(ubicacion) {
   }
 }
 
-function totalEseDia (fecha) {
-
-  
-}
 export default function Barras({
   width,
   height,
@@ -108,8 +104,7 @@ export default function Barras({
   const transformData = (data) => {
     const groupedData = data.reduce((acc, item) => {
       const fecha = moment(item.fechaReporte, "D/M/YYYY").valueOf();
-     // const contador = item.contador || 0;
-     const contador = totalEseDia(fecha)
+      const contador = item.contador || 0;
       const alcaldia = buscarAlcaldias(item.ubicacion);
 
       if (!isNaN(fecha)) {

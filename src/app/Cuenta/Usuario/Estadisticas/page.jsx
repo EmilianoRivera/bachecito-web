@@ -105,7 +105,7 @@ export default function Estadisticas() {
           value={searchFolio}
           onChange={handleAlcaldiaChange}
         >
-          <option value="">Todas las alcaldías</option>
+          <option value="Todas">Todas</option>
           <option value="001">🐴 Álvaro Obregón</option>
           <option value="002">🐜 Azcapotzalco</option>
           <option value="003">🐷 Benito Juárez</option>
@@ -130,7 +130,7 @@ export default function Estadisticas() {
           onChange={(e) => setSearchStatus(e.target.value)}
           className="filter-estados-estadisticas"
         >
-          <option value="">Todos los estados</option>
+          <option value="Todos">Todos</option>
           <option value="Sin atender">Sin atender</option>
           <option value="En atención">En atención</option>
           <option value="Atendido">Atendido</option>
