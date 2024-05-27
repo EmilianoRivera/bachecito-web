@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import {obtenerFechaActual, formatearFecha} from "../../../../scripts/funcionesFiltro"
-import { db, collection, addDoc, query,doc, getDocs, } from "../../../../../firebase";
+import { db, collection, addDoc, query,doc, getDocs, writeBatch, where } from "../../../../../firebase";
 
 import { getDoc } from "firebase/firestore";
 // Función para obtener el folio por alcaldía
@@ -24,7 +24,6 @@ import { getDoc } from "firebase/firestore";
             break; // Una vez encontrada la alcaldía, salir del bucle
           }
         }
-  console.log("ALCALDIA ENCONTRADA",folioAlcaldiaEncontrada)
         // Verificar si se encontró la alcaldía
         if (alcaldiaEncontrada) {
           // Consultar todos los reportes
@@ -55,6 +54,34 @@ import { getDoc } from "firebase/firestore";
       throw error;
     }
   };
+
+  const contadorFunc = async (direccion) => {
+    try {
+  
+    
+      // Consultar todos los reportes que tienen la misma ubicación que la dirección proporcionada
+      const reportesQuery = query(collection(db, 'reportes'), where("ubicacion", "==", direccion));
+      const reportesSnap = await getDocs(reportesQuery);
+      
+      // Calcular el número actual de reportes en esa ubicación
+      const cantidadReportes = reportesSnap.docs.length;
+  
+      // Actualizar el contador en todos los reportes con la misma dirección
+      const batch = writeBatch(db);
+      reportesSnap.forEach((doc) => {
+        const reporte = doc.data();
+        const nuevoContador = reporte.contador + 1;
+        batch.update(doc.ref, { contador: nuevoContador });
+      });
+      await batch.commit();
+   return cantidadReportes
+  
+    } catch (error) {
+      console.error('Error al enviar el reporte:', error);
+     
+    }
+  }
+
 export async function POST(request, { params }) {
   try {
     const [uidUsuario, nombre, apellidoPaterno, url, descripcion, ubicacion] =
@@ -63,16 +90,12 @@ export async function POST(request, { params }) {
  /*
  AUTOMATIZAR FOLIO,  , Y CONTADOR */
     const folio = await obtenerFolioPorDireccion(ubicacion);
-    const contador = 4
+    const cantidadReportes =await contadorFunc(ubicacion)
     const fechaActual = obtenerFechaActual()
-    const fechaReporte = formatearFecha(fechaActual)
- console.log("ESTE ES EL FOLIO: ",folio)
-
-
-
+    const fechaReporte = formatearFecha(fechaActual)    
     const docRef = await addDoc(collection(db, "reportes"), {
       apellidoPaterno,
-      contador: contador,
+      contador: cantidadReportes + 1,
       descripcion,
       eliminado: false,
       estado: "Sin atender",
