@@ -50,7 +50,7 @@ export default function Estadisticas() {
 
   const handleFechaChange = (e) => {
     const selectedValue = e.target.value;
-    console.log("Fecha seleccionada:", selectedValue);
+  //  console.log("Fecha seleccionada:", selectedValue);
     setFiltroFecha(selectedValue);
   };
   const handleAlcaldiaChange = (e) => {

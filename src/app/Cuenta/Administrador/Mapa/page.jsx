@@ -52,7 +52,7 @@ export default function MapAdmin() {
   const [alcaldia, setAlcaldia] = useState("Todas")
 
   const handleAlcaldiaChange = (e) => {
-    console.log("Alcaldía seleccionada:", e.target.value);
+   // console.log("Alcaldía seleccionada:", e.target.value);
     const alcaldia = e.target.value
     setAlcaldia(alcaldia)
   };
@@ -64,7 +64,7 @@ export default function MapAdmin() {
 
   const handleFechaChange = (e) => {
     const selectedValue = e.target.value;
-    console.log("Fecha seleccionada:", selectedValue);
+    //console.log("Fecha seleccionada:", selectedValue);
     setFiltroFecha(selectedValue);
   };
 

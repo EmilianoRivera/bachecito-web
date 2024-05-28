@@ -166,7 +166,7 @@ function Soporte() {
 
         setUserData(userDatas);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.error("Error al traer la info:", error);
       }
     }
 
@@ -178,21 +178,19 @@ function Soporte() {
     async function fetchTickets() {
       try {
         if (!userData || !userData.uid) {
-          console.error("UserData is not available or invalid");
+          console.error("Los datos del usuario no estan accesibles");
           return;
         }
 
         const uid = userData.uid;
         const ticketsData = await fetch(`/api/Ticket/${uid}`);
         if (!ticketsData.ok) {
-          throw new Error("Failed to fetch tickets data");
+          throw new Error("Error al traer los datos");
         }
-        console.log("first");
         const tickets = await ticketsData.json();
-        console.log("VA POR AQUI", tickets);
         setTickets(tickets);
       } catch (error) {
-        console.error("Error fetching tickets:", error);
+        console.error("Error al traer los tickets:", error);
       }
     }
 
@@ -308,29 +306,29 @@ function Soporte() {
   const handleError = (e) => {
     const selectedErr = e.target.value;
     setErrorSeleccionado(selectedErr);
-    console.log(selectedErr);
+    //console.log(selectedErr);
   };
 
   const handleSO = (e) => {
     const selectedSO = e.target.value;
     setSistemaOperativo(selectedSO);
-    console.log(selectedSO);
+    //console.log(selectedSO);
   };
 
   const handleAsignarTarea = (e) => {
     const asignar = e.target.value;
     setAsignarTarea(asignar);
-    console.log(asignar);
+    //console.log(asignar);
   };
   const handleNavegador = (e) => {
     const selectedNavegador = e.target.value;
     setNavegador(selectedNavegador);
-    console.log(selectedNavegador);
+    //console.log(selectedNavegador);
   };
 
   const handleRutaError = (e) => {
     const ruta = e.target.value;
-    console.log(e.target.value);
+  // console.log(e.target.value);
     setSelectedRutaError(ruta);
   };
 
@@ -345,7 +343,7 @@ function Soporte() {
 
   const handleDescripcionProblema = (e) => {
     setDescripcionProblema(e.target.value);
-    console.log(descripcionProblema);
+    //console.log(descripcionProblema);
     // Ajustar la altura del textarea
     if (textareaRef.current) {
       textareaRef.current.style.height = "auto";
