@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useEffect, useContext } from "react";
 import "./preloader1.css";
-function Preloader() {
+function Preloader2() {
     return (
         <div class="container-preloader">
             <h1>Lo estamos preparando...</h1>
@@ -235,4 +235,4 @@ function Preloader() {
         </div>
     );
 }
-export default Preloader;
+export default Preloader2;

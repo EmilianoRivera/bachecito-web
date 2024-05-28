@@ -47,22 +47,29 @@ export default function MapAdmin() {
 
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-  const [filtroFecha, setFiltroFecha] = useState("");
+  const [filtroFecha, setFiltroFecha] = useState("Todos los tiempos");
+  const [estado, setEstado] = useState("Todos")
+  const [alcaldia, setAlcaldia] = useState("Todas")
 
   const handleAlcaldiaChange = (e) => {
-    console.log("Alcaldía seleccionada:", e.target.value);
+   // console.log("Alcaldía seleccionada:", e.target.value);
+    const alcaldia = e.target.value
+    setAlcaldia(alcaldia)
   };
 
   const handleEstadoChange = (e) => {
-    setEstado(e.target.value);
+    const estado = e.target.value
+    setEstado(estado);
   };
 
   const handleFechaChange = (e) => {
     const selectedValue = e.target.value;
-    console.log("Fecha seleccionada:", selectedValue);
+    //console.log("Fecha seleccionada:", selectedValue);
     setFiltroFecha(selectedValue);
   };
 
+
+  
   return (
     <div className="container-mapa-admin">
       <div className="filtros2">

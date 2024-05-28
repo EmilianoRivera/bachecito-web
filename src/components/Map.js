@@ -725,7 +725,7 @@ const polygonOptions = {
   fillColor: '#FFB471', // Relleno
 };
 
-const Map = () => {
+const Map = ({ searchFolio, searchStatus }) => {
   const [markers, setMarkers] = useState([]);
   const [userLocation, setUserLocation] = useState(null);
 
@@ -737,7 +737,7 @@ const Map = () => {
           throw new Error("Failed to fetch data");
         }
         const data = await res.json();
-        
+
         // Convertir las ubicaciones de los reportes en coordenadas
         const markersData = await Promise.all(data.map(async (reporte) => {
           const coordenadas = await reverse(reporte.ubicacion, reporte.descripcion);
@@ -748,21 +748,38 @@ const Map = () => {
               fecha: reporte.fechaReporte,
               imagenURL: reporte.imagenURL,
               ubicacion: reporte.ubicacion,
-              estados: reporte.estado
+              estados: reporte.estado,
+              folio: reporte.folio
             };
           }
           return null;
         }));
-        
-        // Filtrar los marcadores válidos y establecer el estado
-        setMarkers(markersData.filter(marker => marker !== null));
+
+        // Filtrar los marcadores según los filtros
+        const filteredMarkers = filterMarkers(markersData);
+        // Establecer los marcadores filtrados como estado
+        setMarkers(filteredMarkers);
       } catch (error) {
         console.log("Error fetching data: ", error);
       }
     }
 
     fetchData();
-  }, []);
+  }, [searchFolio, searchStatus]);
+
+  const filterMarkers = (markersData) => {
+    console.log("searchStatus:", searchStatus);
+    console.log("searchFolio:", searchFolio);
+
+    if (searchStatus === "Todos" && searchFolio === "Todos los folios") {
+      return markersData;
+    }
+
+    return markersData.filter(marker => 
+      (searchStatus === "Todos" || marker.estados.toLowerCase() === searchStatus.toLowerCase()) &&
+      (searchFolio === "Todos los folios" || marker.folio.startsWith(searchFolio))
+    );
+  };
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -781,6 +798,7 @@ const Map = () => {
       console.error("Geolocation is not supported by this browser.");
     }
   }, []);
+
   function getIconUrl(estado) {
     switch (estado) {
       case "Atendido":
@@ -793,6 +811,7 @@ const Map = () => {
         return MarkerIcon.src; // Icono por defecto si el estado no coincide con ninguno de los casos anteriores
     }
   }
+
   async function reverse(ubi, descripcion) {
     try {
       const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
@@ -814,14 +833,12 @@ const Map = () => {
     }
   }
 
- const radius=800;
+  const radius = 800;
+
   return (
     <div>
       <MapContainer
-        style={{
-          height: "85vh",
-          width: "59vw",
-        }}
+        className="mapcontainer"
         center={[19.453986, -99.17505]}
         zoom={10.2}
         scrollWheelZoom={false}
@@ -832,26 +849,24 @@ const Map = () => {
         id="map"
       >
         <TileLayer
-          url="https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=Pyxxe8P2qOBkCkRdy5jX	"
+          url="https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=Pyxxe8P2qOBkCkRdy5jX"
           attribution="Map data &copy; <a href='https://www.openstreetmap.org/'>OpenStreetMap</a> contributors, 
           <a href='https://creativecommons.org/licenses/by-sa/2.0/'>CC-BY-SA</a>, 
           Imagery © <a href='https://www.maptiler.com/'>MapTiler</a>"
         />
-         <Polygon pathOptions={polygonOptions} positions={polygon} />
-         {userLocation && userLocation.lat && userLocation.lng && (
-   <Circle
-   radius={radius}
-   fillColor="orange"
-   fillOpacity={0.5}
-   center={[userLocation.lat, userLocation.lng]}
-   pathOptions={{
-     color: "blue", // Color del borde
-     weight: 0.1  ,     // Grosor del borde
-   }}
- />
-)}
-
-
+        <Polygon pathOptions={polygonOptions} positions={polygon} />
+        {userLocation && userLocation.lat && userLocation.lng && (
+          <Circle
+            radius={radius}
+            fillColor="#FF5733"
+            fillOpacity={0.7}
+            center={[userLocation.lat, userLocation.lng]}
+            pathOptions={{
+              color: "#FF5733",
+              weight: 0.1,
+            }}
+          />
+        )}
         {markers.map((marker, index) => (
           <Marker
             key={index}
@@ -864,8 +879,7 @@ const Map = () => {
               })
             }
           >
-
-            <Popup id="popup">  
+            <Popup id="popup">
               <div className="reportito-popup">
                 <img src={marker.imagenURL} alt="Foto del reporte" style={{ maxWidth: '95px', borderRadius:'1rem', }} />
                 <p className="fecha-popup">Fecha: {marker.fecha}</p>
@@ -873,7 +887,6 @@ const Map = () => {
                 <p className="descripcion-popup">Descripción: {marker.descripcion}</p>
               </div>
             </Popup>
-
           </Marker>
         ))}
       </MapContainer>

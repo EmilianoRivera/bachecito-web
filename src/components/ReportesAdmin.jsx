@@ -12,7 +12,7 @@ export default function ReportesAdmin() {
     const [isEstadoAlertVisible, setIsEstadoAlertVisible] = useState(false);
     const [alertaEstadoData, setAlertaEstadoData] = useState({ folio: null, estadoActual: null });
     const [alcaldiaSeleccionada, setAlcaldiaSeleccionada] = useState("Todas");
-
+    const [searchLocation, setSearchLocation] = useState("");
     function showDeleteHeader() {
         const table = document.querySelector('.containerReportesAdmin table');
         table.classList.add('show-header');
@@ -26,16 +26,16 @@ export default function ReportesAdmin() {
     const [estadoOriginal, setEstadoOriginal] = useState(null);
     const showEstadoAlert = (folio, estado) => {
         // Configura los datos de la alerta de cambio de estado
-    setAlertaEstadoData({ folio: folio, estadoActual: estado });
-    setIsEstadoAlertVisible(true);
+        setAlertaEstadoData({ folio: folio, estadoActual: estado });
+        setIsEstadoAlertVisible(true);
 
-    // Guarda el estado original del reporte antes de abrir la alerta
-    const rows = document.querySelectorAll('.containerReportesAdmin .Reportes');
-    const reporteOriginal = [...rows].find(row => row.querySelector('.folio').textContent === folio);
-    if (reporteOriginal) {
-        const estadoOriginal = reporteOriginal.querySelector('.estado').textContent;
-        setEstadoOriginal(estadoOriginal);
-    }
+        // Guarda el estado original del reporte antes de abrir la alerta
+        const rows = document.querySelectorAll('.containerReportesAdmin .Reportes');
+        const reporteOriginal = [...rows].find(row => row.querySelector('.folio').textContent === folio);
+        if (reporteOriginal) {
+            const estadoOriginal = reporteOriginal.querySelector('.estado').textContent;
+            setEstadoOriginal(estadoOriginal);
+        }
     };
 
     const closeEstadoAlert = () => {
@@ -47,7 +47,7 @@ export default function ReportesAdmin() {
     const cancelEstadoAlert = () => {
         // Oculta la alerta de cambio de estado
         setIsEstadoAlertVisible(false);
-    
+
         // Revertir los cambios realizados desde que se abrió la alerta
         const { folio, estadoActual } = alertaEstadoData;
         const rows = document.querySelectorAll('.containerReportesAdmin .Reportes');
@@ -73,7 +73,7 @@ export default function ReportesAdmin() {
                     // Actualizar el documento para establecer eliminado: true
                     await updateDoc(doc.ref, { estado: nuevoEstado });
                     // Después de actualizar el estado, llamar a fetchFiltroEstado para obtener datos actualizados
-                await fetchFiltroEstado();
+                    await fetchFiltroEstado();
 
                     console.log(`Se marcó como eliminado el reporte con folio ${folio}`);
                 }
@@ -119,7 +119,7 @@ export default function ReportesAdmin() {
                     // Actualizar el documento para establecer eliminado: true
                     await updateDoc(doc.ref, { eliminado: true });
 
-                    console.log(`Se marcó como eliminado el reporte con folio ${folio}`);
+                 //   console.log(`Se marcó como eliminado el reporte con folio ${folio}`);
 
                     // Eliminar la fila de la tabla HTML
                     const rows = document.querySelectorAll('.containerReportesAdmin .Reportes');
@@ -241,10 +241,10 @@ export default function ReportesAdmin() {
                 throw new Error("Fallo a la petición de /api/filtros/estado/${estado}");
             }
             const estadosReportes = await datosNuevos.json();
-            console.log(estadosReportes);
+          //  console.log(estadosReportes);
 
         } catch (error) {
-            console.error("Error a la hora de hacer la petición a /api/filtros/estado/${estado}: ", error);
+            console.error("Error a la hora de hacer la petición: ", error);
         }
     }
 
@@ -259,77 +259,86 @@ export default function ReportesAdmin() {
             filtrarReportesPorEstado(estado);
         }
     }, [estado, rep]); // Agregamos 'estado' como una dependencia para que se ejecute cuando cambie
-    
+
     const filtrarReportesPorEstado = (estadoSeleccionado) => {
         const reportesFiltrados = rep.filter(reporte => reporte.estado === estadoSeleccionado);
         setReportesFiltrados(reportesFiltrados);
     };
-    
+
     const handleEstadoChange = (e) => {
         const estadoSeleccionado = e.target.value;
         setEstado(estadoSeleccionado)
     };
 
+
+    const filtrarReportesPorUbi = (ubi) => {
+        const ubicacionLowerCase = ubi.toLowerCase();
+        const reportesFiltrados = rep.filter(reporte => reporte.ubicacion.toLowerCase().includes(ubicacionLowerCase));
+        setReportesFiltrados(reportesFiltrados);
+    };
+    useEffect(() => {
+        filtrarReportesPorUbi(searchLocation);
+    }, [searchLocation, rep]);
     /**setEstado(e.target.value);
         console.log("Estado") */
 
     const obtenerAlcaldiaPorFolio = (folio) => {
-    // Obtener los primeros tres dígitos del folio
-    const primerosTresDigitos = folio.substring(0, 3);
-    
-    // Mapear los primeros tres dígitos a la alcaldía correspondiente
-    switch (primerosTresDigitos) {
-        case '001':
-            return '🐴 Álvaro Obregón';
-        case '002':
-            return '🐜 Azcapotzalco ';
-        case '003':
-            return '🐷 Benito Juárez';
-        case '004':
-            return '🐺 Coyoacán';
-        case '005':
-            return '🌳 Cuajimalpa de Morelos';
-        case '006':
-            return '🦅 Cuauhtémoc';
-        case '007':
-            return '🌿 Gustavo A. Madero ';
-        case '008':
-            return '🏠 Iztacalco';
-        case '009':
-            return '🐭 Iztapalapa';
-        case '010':
-            return '🏔 La Magdalena Contreras';
-        case '011':
-            return '🦗 Miguel Hidalgo';
-        case '012':
-            return '🌾 Milpa Alta';
-        case '013':
-            return '🌋 Tláhuac';
-        case '014':
-            return '🦶 Tlalpan';
-        case '015':
-            return '🌻 Venustiano Carranza';
-        case '016':
-            return '🐠 Xochimilco';
-        default:
-            return 'No se encontró la alcaldía';
+        // Obtener los primeros tres dígitos del folio
+        const primerosTresDigitos = folio.substring(0, 3);
 
-    }
-    
-};
+        // Mapear los primeros tres dígitos a la alcaldía correspondiente
+        switch (primerosTresDigitos) {
+            case '001':
+                return '🐴 Álvaro Obregón';
+            case '002':
+                return '🐜 Azcapotzalco ';
+            case '003':
+                return '🐷 Benito Juárez';
+            case '004':
+                return '🐺 Coyoacán';
+            case '005':
+                return '🌳 Cuajimalpa de Morelos';
+            case '006':
+                return '🦅 Cuauhtémoc';
+            case '007':
+                return '🌿 Gustavo A. Madero ';
+            case '008':
+                return '🏠 Iztacalco';
+            case '009':
+                return '🐭 Iztapalapa';
+            case '010':
+                return '🏔 La Magdalena Contreras';
+            case '011':
+                return '🦗 Miguel Hidalgo';
+            case '012':
+                return '🌾 Milpa Alta';
+            case '013':
+                return '🌋 Tláhuac';
+            case '014':
+                return '🦶 Tlalpan';
+            case '015':
+                return '🌻 Venustiano Carranza';
+            case '016':
+                return '🐠 Xochimilco';
+            default:
+                return 'No se encontró la alcaldía';
 
-useEffect(() => {
-    filtrarReportesPorAlcaldia(alcaldiaSeleccionada);
-}, [alcaldiaSeleccionada, rep]); 
+        }
 
-const filtrarReportesPorAlcaldia = (alcaldiaSeleccionada) => {
-    if (alcaldiaSeleccionada === "Todas") {
-        setReportesFiltrados(rep);
-    } else {
-        const reportesFiltrados = rep.filter(reporte => obtenerAlcaldiaPorFolio(reporte.folio) === alcaldiaSeleccionada);
-        setReportesFiltrados(reportesFiltrados);
-    }
-};
+    };
+
+    useEffect(() => {
+        filtrarReportesPorAlcaldia(alcaldiaSeleccionada);
+    }, [alcaldiaSeleccionada, rep]);
+
+    const filtrarReportesPorAlcaldia = (alcaldiaSeleccionada) => {
+        if (alcaldiaSeleccionada === "Todas") {
+            setReportesFiltrados(rep);
+        } else {
+            const reportesFiltrados = rep.filter(reporte => obtenerAlcaldiaPorFolio(reporte.folio) === alcaldiaSeleccionada);
+            setReportesFiltrados(reportesFiltrados);
+        }
+    };
 
 
     return (
@@ -402,14 +411,28 @@ const filtrarReportesPorAlcaldia = (alcaldiaSeleccionada) => {
                                 <option value="Atendido">Atendido</option>
                             </select>
                         )}
+                    </div>
+                    <div>
+
 
                     </div>
                 </div>
+
+                <input
+                    className="Buscador"
+                    type="text"
+                    placeholder="Buscar ubicación..."
+                    value={searchLocation}
+                    onChange={(e) => setSearchLocation(e.target.value)}
+                />
+                <img className="Buscador-img" src="https://i.postimg.cc/k5QNBFHC/busqueda-1.png" alt="" />
+
 
                 <div className="papelera">
                     <Link href="/Cuenta/Administrador/Papelera" className="papelera-option"><img src="https://i.postimg.cc/02gZVXL3/basura.png" alt="soporte" />PAPELERA</Link>
                 </div>
             </div>
+            
             <table>
                 <thead>
                     <tr className='sticky-top'>

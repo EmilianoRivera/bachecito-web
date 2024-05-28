@@ -34,7 +34,7 @@
     color: #FF9F49;
 }
 
-.boxPF{
+.boxPF {
     padding-top: 2vw;
     padding-bottom: 2vw;
     padding-left: 5vw;
@@ -45,23 +45,24 @@
     position: relative;
 }
 
-#boxPF{
+#boxPF {
     background-color: var(--background-color-2);
 }
 
 .containerLetritasPF {
-display: flex;
-align-items: center;
-justify-content: center;
-justify-items: center;
-height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-items: center;
+    height: 10vh;
 }
-.svg-soporte{
-  font: 3.5rem Arial;
-  font-weight: 900;
-  width: 100%;
-  height: 20vh;
-  margin-top: 4%;
+
+.svg-soporte {
+    font: 3.5rem Arial;
+    font-weight: 900;
+    width: 100%;
+    height: 20vh;
+    margin-top: 4%;
 }
 
 .svg-soporte text {
@@ -71,27 +72,31 @@ height: 10vh;
     stroke-width: 0;
     stroke-dasharray: 100% 0;
     animation: stroke-offset 4s ease-out;
-  }
+}
 
-  @keyframes stroke-offset {
+@keyframes stroke-offset {
     0% {
-      fill-opacity: 0;
-      stroke-width: 0;
-      stroke-dasharray: 0% 100%;
+        fill-opacity: 0;
+        stroke-width: 0;
+        stroke-dasharray: 0% 100%;
     }
+
     25% {
-      stroke-width: 2px;
+        stroke-width: 2px;
     }
+
     50% {
-      fill-opacity: 0;
+        fill-opacity: 0;
     }
+
     75% {
-      stroke-width: 2px;
+        stroke-width: 2px;
     }
+
     100% {
-      stroke-width: 0;
+        stroke-width: 0;
     }
-  }
+}
 
 
 .containerPF .container_preguntaFrecuente {
@@ -202,7 +207,7 @@ height: 10vh;
     text-align: right;
 }
 
-.container_FormularioSoporte .containerFR form table .columna_soporte_2{
+.container_FormularioSoporte .containerFR form table .columna_soporte_2 {
     align-items: start;
     justify-content: left;
 }
@@ -294,7 +299,7 @@ select::-ms-expand {
 }
 
 .container_FormularioSoporte .containerFR input::placeholder {
-    color:var(--text-color-3);
+    color: var(--text-color-3);
     /* Color del placeholder predeterminado */
     transition: color 0.5s ease;
     /* Transición suave */
@@ -359,25 +364,121 @@ select::-ms-expand {
     width: 50%;
 }
 
-
 .container_FormularioSoporte .containerFR form button:hover {
     background-color: #FF9F49;
     color: #fff;
 }
 
+.container_table .ticket-table{
+    width: 100%;
+    font-family: "Baloo Thambi 2", system-ui;
+    /* Ahora la tabla ocupará todo el ancho del contenedor */
+}
+
+.container_table .ticket-table th {
+    padding: 8px;
+    background-color: #D1D1D1;
+    border-radius: 13px;
+    color: #1E1E1E;
+}
+
+.container_table .ticket-table td {
+    padding: 8px;
+    border-radius: 13px;
+}
+
+.container_table .ticket-table tr:nth-child(even) {
+    background-color: #f2f2f2;
+    border-radius: 13px
+}
+
+
+/*MODAL*/
+
+.modal {
+    display: block;
+    /* Mostrar el modal */
+    position: fixed;
+    /* Posición fija */
+    z-index: 100;
+    /* Z-index alto para estar encima del resto del contenido */
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    /* Fondo semitransparente */
+    overflow: auto;
+    /* Permitir desplazamiento si el contenido es demasiado grande */
+    font-family: "Baloo Thambi 2", system-ui;
+
+}
+
+/* Contenido del modal */
+.modal-content {
+    background-color: white;
+    margin: 10% auto;
+    /* Centrar vertical y horizontalmente */
+    padding: 20px;
+    border: 1px solid #888;
+    width: 80%;
+    max-width: 600px;
+    /* Ancho máximo del contenido */
+    position: relative;
+    border-radius: 8px;
+}
+
+/* Botón para cerrar el modal */
+.close {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    font-size: 20px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.modal .modal-content p {
+    font-weight: bold;
+    color: #949494;
+}
+
+#titulin_ {
+    color: #FF9F49;
+    font-weight: bold;
+    font-size: 20px
+}
+
+.detallitos {
+    padding: 10px 20px;
+    background-color: #FF9F49; /* Color de fondo */
+    color: white; /* Color del texto */
+    border: none; /* Sin borde */
+    border-radius: 10px; /* Borde redondeado */
+    cursor: pointer; /* Cursor al pasar sobre el botón */
+    transition: .5s;
+    font-family: "Baloo Thambi 2", system-ui;
+  
+  }
+
 ::-webkit-scrollbar {
-    width: 10px; /* Ancho de la barra de desplazamiento */
+    width: 10px;
+    /* Ancho de la barra de desplazamiento */
 }
 
 ::-webkit-scrollbar-track {
-    background: none; /* Color del fondo de la barra de desplazamiento */
+    background: none;
+    /* Color del fondo de la barra de desplazamiento */
 }
 
 ::-webkit-scrollbar-thumb {
-    background: var(--background-color-6); /* Color de la barra de desplazamiento */
-    border-radius: 5px; /* Radio de la esquina de la barra de desplazamiento */
+    background: var(--background-color-6);
+    /* Color de la barra de desplazamiento */
+    border-radius: 5px;
+    /* Radio de la esquina de la barra de desplazamiento */
 }
 
 ::-webkit-scrollbar-thumb:hover {
-    background: var(--background-color-2); /* Color de la barra de desplazamiento al pasar el mouse sobre ella */
+    background: var(--background-color-2);
+    /* Color de la barra de desplazamiento al pasar el mouse sobre ella */
 }

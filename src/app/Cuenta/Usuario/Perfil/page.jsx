@@ -14,13 +14,32 @@ import {
   getDocs,
   getDoc,
 } from "firebase/firestore";
-import Alerta from "@/components/Alerta2";
 import atendidoIcon from "../../../../imgs/fondoVerde.png";
 import enProcesoIcon from "../../../../imgs/fondoAmarillo.png";
 import sinAtenderIcon from "../../../../imgs/fondoRojo.png";
-import estrella from "../../../../imgs/estrella.png";
-import estrella2 from "../../../../imgs/estrella2.png";
+import Alerta from "@/components/Alerta3";
+
+import Router from 'next/router';
+import Preloader from "@/components/preloader2";
+
 export default function Perfil() {
+  const [loading, setLoading] = useState(false);
+  useEffect(() => {
+    const handleRouteChangeStart = () => setLoading(true);
+    const handleRouteChangeComplete = () => setLoading(false);
+
+    Router.events.on('routeChangeStart', handleRouteChangeStart);
+    Router.events.on('routeChangeComplete', handleRouteChangeComplete);
+    Router.events.on('routeChangeError', handleRouteChangeComplete);
+
+    // Limpieza de los eventos al desmontar el componente
+    return () => {
+      Router.events.off('routeChangeStart', handleRouteChangeStart);
+      Router.events.off('routeChangeComplete', handleRouteChangeComplete);
+      Router.events.off('routeChangeError', handleRouteChangeComplete);
+    };
+  }, []);
+
   useAuthUser();
   const router = useRouter();
   const { isLogged } = useContext(AuthContext);
@@ -106,7 +125,7 @@ export default function Perfil() {
                 foliosGuardados: nuevosFoliosGuardados,
               });
 
-              console.log("Folio eliminado de la base de datos del usuario.");
+              console.log("Folio eliminado  del usuario.");
             } else {
               // Agregar el nuevo folio al array de folios guardados
               const nuevosFoliosGuardados = [
@@ -119,23 +138,23 @@ export default function Perfil() {
                 foliosGuardados: nuevosFoliosGuardados,
               });
 
-              console.log("Folio guardado en la base de datos del usuario.");
+              console.log("Folio guardado  del usuario.");
             }
           } else {
             console.error(
-              "El documento del usuario no existe en la base de datos."
+              "El documento del usuario no existe."
             );
           }
         } else {
           console.error(
-            "No se encontró ningún documento de usuario que contenga el UID proporcionado."
+            "No se encontró ningún documento de usuario."
           );
         }
       } else {
         console.error("No se proporcionaron datos de usuario válidos.");
       }
     } catch (error) {
-      console.error("Error al guardar el folio en la base de datos:", error);
+      console.error("Error al guardar el folio:", error);
     }
   };
 
@@ -198,8 +217,10 @@ export default function Perfil() {
   };
 
   return (
+    <>
+    {loading && <Preloader />}
     <div className="container-perfil">
-      {/* <Alerta pageId="Pagina-Perfil"></Alerta> */}
+      <Alerta pageId="Perfil"></Alerta> 
       {isLogged && userData && (
         <div id="leftSide" style={{ display: showLeftSide ? "block" : "none" }}>
           <div className="profile-card">
@@ -308,13 +329,15 @@ export default function Perfil() {
                 <div className="guardar2">
  
                   {userData && userData.uid && userData.foliosGuardados && userData.foliosGuardados.includes(reporte.folio) ? (
-                    <img src="https://i.postimg.cc/W335wqws/estrella-2.png"
+                    <img src="https://i.postimg.cc/RVrPJ3rN/estrella-1.png"
+                    style={{ opacity: 1, transition: 'opacity 0.3s ease' }}
                       className="icon-star2" alt="Folio guardado" onClick={() => guardarFoliosEnDB(reporte.folio, userData)}/>
  
                   ) : (
                     <img
                       className="icon-star2"
-                      src={estrella.src}
+                      src="https://i.postimg.cc/52PmmT4T/estrella.png"
+                      style={{ opacity: 0.5, transition: 'opacity 0.3s ease' }}
                       alt="Guardar folio"
                       onClick={() => guardarFoliosEnDB(reporte.folio, userData)}
                     />
@@ -353,5 +376,7 @@ export default function Perfil() {
       </div>
       {isLogged && !userData && <p>Cargando datos del usuario...</p>}
     </div>
+    </>
+    
   );
 }
