@@ -145,7 +145,7 @@ export async function POST(request, { params }) {
         const rep = doc.data()
         reportes.push(rep)
       })
-      console.log("POAR AQUI",reportes)
+   //   console.log("POAR AQUI",reportes)
       return NextResponse.json(reportes)
     }  else if (
       estado === "Todos" ||
@@ -161,7 +161,7 @@ export async function POST(request, { params }) {
         startDate,
         endDate
       );
-      console.log(filtradoGeneral.length)
+  //    console.log(filtradoGeneral.length)
       return NextResponse.json(filtradoGeneral);
     } 
     else {
@@ -173,7 +173,7 @@ export async function POST(request, { params }) {
         startDate,
         endDate
       );
-      console.log(filtradoEspecifico.length)
+     // console.log(filtradoEspecifico.length)
  
       return NextResponse.json(filtradoEspecifico);
     }

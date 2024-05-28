@@ -10,6 +10,7 @@ import {
   Cell,
 } from "recharts";
 import moment from "moment";
+import {obtenerFechaActual, formatearFecha} from "../scripts/funcionesFiltro"
 import 'moment/locale/es'; // Importar la configuración local en español
 moment.locale('es'); // Establecer el idioma a español
 
@@ -33,9 +34,9 @@ const COLORS = [
 ];
 
 async function fetchFiltroEstado(
-  estado,
-  alcaldia,
-  filtroFecha,
+  estado="Todos",
+  alcaldia ="Todas",
+  filtroFecha ="Todos los tiempos",
   startDate,
   endDate
 ) {
@@ -86,7 +87,18 @@ function buscarAlcaldias(ubicacion) {
     return "No se encontraron alcaldías en la ubicación proporcionada.";
   }
 }
+function funcCont(data, fechaReporte, alcaldia) {
+  // Filtrar los reportes que tengan la misma fecha y alcaldía
+  const reportesMismoDiaYAlcaldia = data.filter(
+    (item) =>
+      moment(item.fechaReporte, "D/M/YYYY").format("YYYY-MM-DD") ===
+        moment(fechaReporte, "D/M/YYYY").format("YYYY-MM-DD") &&
+      buscarAlcaldias(item.ubicacion) === alcaldia
+  );
 
+  // Contar la cantidad de reportes
+  return reportesMismoDiaYAlcaldia.length;
+}
 export default function Barras({
   width,
   height,
@@ -94,7 +106,7 @@ export default function Barras({
   alcaldias,
   startDates,
   endDates,
-  filtroFechas = "Este mes", // Establecemos "Este mes" como filtro predeterminado
+  filtroFechas = "Este mes", 
 }) {
   const svgRef = useRef();
   const [datas, setData] = useState([]);
@@ -106,21 +118,21 @@ export default function Barras({
       const fecha = moment(item.fechaReporte, "D/M/YYYY").valueOf();
       const contador = item.contador || 0;
       const alcaldia = buscarAlcaldias(item.ubicacion);
-
+      const cont = funcCont(data, item.fechaReporte, alcaldia);
+      console.log(cont);
       if (!isNaN(fecha)) {
         const key = `${fecha}-${alcaldia}`; // Unique key for each combination of date and alcaldia
         if (!acc[key]) {
-          acc[key] = { fecha, contador: contador, alcaldia };
+          acc[key] = { fecha, contador: cont, alcaldia };
         } else {
-          acc[key].contador += contador;
+          acc[key].cont += cont;
         }
       }
       return acc;
     }, {});
-
+  
     return Object.values(groupedData).sort((a, b) => a.fecha - b.fecha);
   };
-
   useEffect(() => {
     async function fetchData() {
       setLoading(true);

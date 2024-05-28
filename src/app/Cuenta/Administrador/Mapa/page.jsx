@@ -47,9 +47,9 @@ export default function MapAdmin() {
 
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
-  const [filtroFecha, setFiltroFecha] = useState("");
-  const [estado, setEstado] = useState("Sin estado")
-  const [alcaldia, setAlcaldia] = useState("Sin alcaldia")
+  const [filtroFecha, setFiltroFecha] = useState("Todos los tiempos");
+  const [estado, setEstado] = useState("Todos")
+  const [alcaldia, setAlcaldia] = useState("Todas")
 
   const handleAlcaldiaChange = (e) => {
     console.log("Alcaldía seleccionada:", e.target.value);
