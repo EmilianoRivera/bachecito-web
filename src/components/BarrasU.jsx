@@ -54,7 +54,7 @@ async function fetchFiltroEstado(estado, alcaldia, filtroFecha, startDate, endDa
 
 const BarrasU = ({ estados, alcaldia, fechaFiltro, startDates, endDates }) => {
   const [datos, setDatos] = useState([]);
-
+console.log(estados)
   useEffect(() => {
     async function fetchData() {
       try {

@@ -18,12 +18,12 @@ const DynamicMap = dynamic(() => import("@/components/Map"), {
 });
 
 export default function Estadisticas() {
-  const [estado, setEstado] = useState("Todos");
+  //const [estado, setEstado] = useState("Todos");
   const [filtroFecha, setFiltroFecha] = useState("Todos los tiempos");
   const [alcaldia, setSelectedAlcaldia] = useState("Todas");
 
-  const [searchStatus, setSearchStatus] = useState("");
-  const [searchFolio, setSearchFolio] = useState("");
+  const [searchStatus, setSearchStatus] = useState("Todos");
+  const [searchFolio, setSearchFolio] = useState("Todos los folios");
   const [isFechaSelectVisible, setIsFechaSelectVisible] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
@@ -54,9 +54,10 @@ export default function Estadisticas() {
     setFiltroFecha(selectedValue);
   };
   const handleAlcaldiaChange = (e) => {
-    setSearchFolio(e.target.value);
+    const selectedFolio = e.target.value;
     const selectedOption = e.target.options[e.target.selectedIndex];
-    const selectedAlcaldia = selectedOption.text;
+    const selectedAlcaldia = selectedOption.text.replace(/^[^\w]+/, "").trim();
+    setSearchFolio(selectedFolio);
     setSelectedAlcaldia(selectedAlcaldia);
   };
   useEffect(() => {
@@ -142,7 +143,7 @@ export default function Estadisticas() {
       <BarrasU
         width={250}
         height={200}
-        estados={estado}
+        estados={searchStatus}
         alcaldia={alcaldia}
         fechaFiltro={filtroFecha}
         startDates={startDate}
