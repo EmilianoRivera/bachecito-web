@@ -725,7 +725,7 @@ const polygonOptions = {
   fillColor: '#FFB471', // Relleno
 };
 
-const Map = ({ searchFolio, searchStatus }) => {
+const Map = ({ searchFolio, searchStatus, alcaldia }) => {
   const [markers, setMarkers] = useState([]);
   const [userLocation, setUserLocation] = useState(null);
 
@@ -765,13 +765,13 @@ const Map = ({ searchFolio, searchStatus }) => {
     }
 
     fetchData();
-  }, [searchFolio, searchStatus]);
+  }, [searchFolio, searchStatus, alcaldia]);
 
   const filterMarkers = (markersData) => {
     console.log("searchStatus:", searchStatus);
     console.log("searchFolio:", searchFolio);
-
-    if (searchStatus === "Todos" && searchFolio === "Todos los folios") {
+console.log("Alcaldia: ", alcaldia)
+    if (searchStatus === "Todos" && searchFolio === "Todos los folios" || alcaldia ==="Todas") {
       return markersData;
     }
 
