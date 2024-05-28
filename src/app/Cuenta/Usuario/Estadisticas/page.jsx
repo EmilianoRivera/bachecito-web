@@ -159,7 +159,7 @@ export default function Estadisticas() {
     <div className="mapa">
       {/* Renderiza el mapa solo si está inicializado */}
       {mapInitialized && (
-        <DynamicMap searchFolio={searchFolio} searchStatus={searchStatus} />
+        <DynamicMap searchFolio={searchFolio} searchStatus={searchStatus} alcaldia={alcaldia} />
       )}
     </div>
   </div>
