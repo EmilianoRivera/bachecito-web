@@ -1,10 +1,30 @@
 //aqui es la Landing Page
 "use client";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import "./globals.css";
 
+import Router from 'next/router';
+import Preloader from "@/components/preloader2";
 
 function HomePage() {
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const handleRouteChangeStart = () => setLoading(true);
+    const handleRouteChangeComplete = () => setLoading(false);
+
+    Router.events.on('routeChangeStart', handleRouteChangeStart);
+    Router.events.on('routeChangeComplete', handleRouteChangeComplete);
+    Router.events.on('routeChangeError', handleRouteChangeComplete);
+
+    // Limpieza de los eventos al desmontar el componente
+    return () => {
+      Router.events.off('routeChangeStart', handleRouteChangeStart);
+      Router.events.off('routeChangeComplete', handleRouteChangeComplete);
+      Router.events.off('routeChangeError', handleRouteChangeComplete);
+    };
+  }, []);
+
   const handleClick = (event) => {
     event.preventDefault(); // Evita el comportamiento predeterminado del enlace
 
@@ -278,6 +298,8 @@ function HomePage() {
   }, []);
 
   return (
+    <>
+    {loading && <Preloader />}
     <div className="container-inicio">
       <div className="text-inicio1">
         <h2>¡HEY!</h2>
@@ -469,6 +491,8 @@ function HomePage() {
         </div>
       </div>
     </div>
+    </>
+    
   );
 }
 

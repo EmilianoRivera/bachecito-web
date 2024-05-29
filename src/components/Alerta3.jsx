@@ -37,12 +37,11 @@ const Alerta = ({ pageId }) => {
 
   return (
     <div className='back'>
-      <div id="alerta" className='alerta'>
-        <h1 className='saludo'>¡Alto! Mantente al tanto 🖐</h1>
+      <div id="alerta" className='alerta2'>
+        <h1 className='saludo'>¡Hola! 🏠</h1>
         <p className='texto'>
-          Los reportes que ves aquí son realizados mayormente dentro de la app móvil
-          de Bachecito 26, sin embargo ahora puedes realizar reportes desde el sistema web
-          desde el apartado de estadísticas, ¡Pasa a darte una vuelta!
+        Bienvenido a la sección de Perfil, aquí podrás ver tu historial de reportes realizados 
+            dentro de la CDMX por medio de la aplicación móvil y/o el sistema web de Bachecito 26, así como tus datos de registro
         </p>
         <button className='boton' onClick={manejarNoMostrar}>No volver a mostrar</button>
       </div>

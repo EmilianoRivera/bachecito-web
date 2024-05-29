@@ -1,8 +1,11 @@
 "use client";
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { auth, db } from "../../../firebase";
 import { useRouter } from "next/navigation";
-import Preloader from "@/components/preloader1";
+import Preloader2 from "@/components/preloader1";
+
+import Router from 'next/router';
+import Preloader from "@/components/preloader2";
 
 import {
   createUserWithEmailAndPassword,
@@ -20,9 +23,29 @@ import {
 } from "firebase/firestore";
 import "./registro.css";
 import AuthContext from "../../../context/AuthContext";
+import { events } from "dc";
 
 
 function Registro() {
+  const [loading2, setLoading2] = useState(true);
+  useEffect(() => {
+    const handleComplete = () => setLoading2(false);
+
+    Router.events.on('routeChangeStart', () => setLoading2(true));
+    Router.events.on('routeChangeComplete', handleComplete);
+    Router.events.on('routeChangeError', handleComplete);
+
+    // For the initial load
+    handleComplete();
+
+    return () => {
+      Router.events.off('routeChangeStart', () => setLoading2(true));
+      Router.events.off('routeChangeComplete', handleComplete);
+      Router.events.off('routeChangeError', handleComplete);
+    };
+  }, []);
+  
+  
   //elementos del router
   const { push } = useRouter();
   const router = useRouter();
@@ -168,8 +191,6 @@ function Registro() {
       );
       return; // No se envía el formulario si el checkbox no está marcado
     }
-
-    // Aquí puedes enviar el formulario
   };
 
   //VALIDACIÓN Correo--------------------------------------------------------------------------------------------------------------------
@@ -241,6 +262,10 @@ function Registro() {
   const handleSignUp = async (event) => {
     try {
       event.preventDefault();
+      if (!checkBoxChecked) {
+        alert("Debes aceptar la política de privacidad y los términos y condiciones.");
+        return;
+      }
       const userCredential = await createUserWithEmailAndPassword(
         auth,
         email,
@@ -250,7 +275,7 @@ function Registro() {
 
       // Correo de verificación
       sendEmailVerification(user);
-      alert("ola se envio correo");
+      alert("Bienvenido a Bachecito 26, se envio un correo de verificación (:");
       const uid = user.uid;
       const usuariosCollection = collection(db, "usuarios");
       const nuevoUsuario = {
@@ -326,7 +351,11 @@ function Registro() {
       setLoading(false); // Oculta el preloader una vez completada la operación
     }
   };
-  if (isLogged) {
+  const RecuperarPassword = async (event)=>
+    {
+
+    }
+  if (isLogged) { 
     return (
       <div className="body2">
         <div className="alerta-logueado">
@@ -340,8 +369,10 @@ function Registro() {
   }
 
   return (
+    <>
+    {loading2 && <Preloader />}
     <div className="body">
-      {loading && <Preloader />}
+      {loading && <Preloader2 />}
       <div className={`container-registroUs ${active ? "active" : ""}`} id="container-registroUs">
         <div className="form-container sign-up">
           <form id="form-registro" onSubmit={handleSignUp}>
@@ -428,12 +459,13 @@ function Registro() {
                 type="checkbox"
                 id="checkbox-pri"
                 name="aceptar"
+                checked={checkBoxChecked}
                 onChange={handleCheckBoxChange}
               />
               <p id="a-pri">
-                He leído y acepto la{" "}
+                He leído y acepto los{" "}
                 <a href="#" id="a-pol" onClick={handlePrivacyPolicyClick}>
-                  Política de Privacidad
+                  Términos y Condiciones
                 </a>
                 😉
               </p>
@@ -472,11 +504,11 @@ function Registro() {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            <a id="olvi-contra" href="#">
+            <a id="olvi-contra" onClick={RecuperarPassword()}>
               ¿Olvidaste tu contraseña? 😰
             </a>
             <a id="admin-ini" href="#" onClick={handleAdminLinkClick}>
-              Administrador 😰
+              Administrador 😎
             </a>
             <button id="iniciarSesion-btn">Iniciar Sesión</button>
           </form>
@@ -520,9 +552,9 @@ function Registro() {
         )}
       </div>
     </div>
+    </>
+    
   );
 }
 
 export default Registro;
-/* pipii no se hacer comits/ */
-

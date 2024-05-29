@@ -1,156 +1,149 @@
-"use client";
-import React, { useState, useEffect } from 'react';
-import { auth } from "../../../../../firebase";
-import { useRouter } from "next/navigation";
-import dynamic from "next/dynamic";
-import styles from './reportes.css';
 
-// Importa el componente del mapa de manera dinámica
-const DynamicMap = dynamic(() => import("@/components/MapR"), {
-    ssr: false,
-});
+"use client"
+import { useEffect, useState } from "react";
+import { useRouter } from 'next/navigation';
+import ReportesComponente from "@/components/Reportes";
+import React from 'react';
+import './reportes.css';
+import RutaProtegida from "@/components/RutaProtegida";
+import Alerta from "@/components/Alerta2";
 
+import Router from 'next/router';
+import Preloader from "@/components/preloader2";
 
-function ReportBachePage() {
-    const router = useRouter();
-    const [formData, setFormData] = useState({
-        nombre: '',
-        ubicacion: '', // Elimina esto si no quieres inicializar la ubicación en vacío
-        descripcion: '',
-        archivo: null,
-    });
+{/*OTRA COSA, AQUI LA LOGICA DE DESPLEGAR LOS REPORTES, ESTA EN OTRO ARCHIVO, LO HICE COMPONENTE PARA REUZARLO EN VARIAS PARTES, EL COMPONENTE SE LLAMA ReportesComponente */ }
+export default function Reportes() {
+    const [loading, setLoading] = useState(false);
 
-    const [userData, setUserData] = useState({});
-    const [selectedLocation, setSelectedLocation] = useState(null);
+  useEffect(() => {
+    const handleRouteChangeStart = () => setLoading(true);
+    const handleRouteChangeComplete = () => setLoading(false);
 
+    Router.events.on('routeChangeStart', handleRouteChangeStart);
+    Router.events.on('routeChangeComplete', handleRouteChangeComplete);
+    Router.events.on('routeChangeError', handleRouteChangeComplete);
 
-    const [imagenFondo, setImagenFondo] = useState('');
-
-    const handleChange2 = (event) => {
-        const file = event.target.files[0];
-        if (file) {
-            const reader = new FileReader();
-            reader.onload = () => {
-                setImagenFondo(reader.result);
-            };
-            reader.readAsDataURL(file);
-        }
+    // Limpieza de los eventos al desmontar el componente
+    return () => {
+      Router.events.off('routeChangeStart', handleRouteChangeStart);
+      Router.events.off('routeChangeComplete', handleRouteChangeComplete);
+      Router.events.off('routeChangeError', handleRouteChangeComplete);
     };
+  }, []);
 
+    const router = useRouter();
     useEffect(() => {
-        if (typeof window !== "undefined") {
-            const unsubscribe = auth.onAuthStateChanged((user) => {
-                if (user) {
-                    const uid = user.uid;
-                    fetchData(uid);
-                } else {
-                    router.push("/login");
-                }
-            });
-            return () => unsubscribe();
+        const mouse = newV2();
+        const center = newV2();
+        const distanceFromCenter = newV2();
+        const distanceLerped = newV2();
+        let simulateMouseMovement = true;
+
+        const perspective = 500;
+        const translateZ = -22;
+        const rotate = 1.5;
+        const skew = 3;
+
+        const containerReportes = document.getElementById("containerReportes");
+        const copies = document.getElementsByClassName("copy");
+
+        function updateCenter() {
+            const rect = containerReportes.getBoundingClientRect();
+            center.x = rect.left + rect.width / 2;
+            center.y = rect.top + rect.height / 2;
         }
 
-        async function fetchData(uid) {
-            try {
-                const userResponse = await fetch(`/api/Usuario/${uid}`);
-                if (!userResponse.ok) {
-                    throw new Error("Failed to fetch user data");
-                }
-                const userData = await userResponse.json();
+        function trackMousePosition(event) {
+            simulateMouseMovement = false;
+            mouse.x = event.clientX;
+            mouse.y = event.clientY;
+            distanceFromCenter.x = center.x - mouse.x;
+            distanceFromCenter.y = center.y - mouse.y;
+        }
 
-                setUserData(userData);
-                setFormData((prevFormData) => ({
-                    ...prevFormData,
-                    nombre: userData.nombre,
-                    ubicacion: userData.ubicacion,
-                }));
-            } catch (error) {
-                console.error("Error fetching data:", error);
+        function fakeMousePosition(t) {
+            distanceFromCenter.x = Math.sin(t / 500) * window.innerWidth * 0.5;
+            distanceFromCenter.y = Math.cos(t / 500) * window.innerWidth * 0.2;
+        }
+
+        function updateTextPosition(t) {
+            if (simulateMouseMovement) fakeMousePosition(t);
+
+            lerpV2(distanceLerped, distanceFromCenter);
+
+            for (var i = 1; i < copies.length + 1; i++) {
+                const copy = copies[i - 1];
+                copy.style.transform = makeTransformString(
+                    i * distanceLerped.y * 0.05,
+                    i * translateZ,
+                    i * rotate * (distanceLerped.x * 0.003),
+                    i * skew * (distanceLerped.x * 0.003)
+                );
             }
+
+            requestAnimationFrame(updateTextPosition);
         }
+
+        function makeTransformString(y, z, rotate, skew) {
+            return `perspective(${perspective}px) translate3d(0px, ${y}px, ${z}px) rotate(${rotate}deg) skew(${skew}deg)`;
+        }
+
+        function lerpV2(position, targetPosition) {
+            position.x += (targetPosition.x - position.x) * 0.2;
+            position.y += (targetPosition.y - position.y) * 0.2;
+        }
+
+        function newV2(x = 0, y = 0) {
+            return {
+                x: x,
+                y: y
+            };
+        }
+
+        updateCenter();
+        document.addEventListener("mousemove", trackMousePosition);
+        window.addEventListener("resize", updateCenter);
+        requestAnimationFrame(updateTextPosition);
+
+        return () => {
+            document.removeEventListener("mousemove", trackMousePosition);
+            window.removeEventListener("resize", updateCenter);
+        };
     }, [router]);
 
-    const handleChange = (e) => {
-        const { name, value, files } = e.target;
-        setFormData((prevFormData) => ({
-            ...prevFormData,
-            [name]: files ? files[0] : value,
-        }));
-    };
-
-    const handleSubmit = (e) => {
-        e.preventDefault();
-        const data = new FormData();
-        data.append('nombre', formData.nombre);
-        data.append('ubicacion', selectedLocation); // Usa la ubicación seleccionada del mapa
-        data.append('descripcion', formData.descripcion);
-        if (formData.archivo) {
-            data.append('archivo', formData.archivo);
-        }
-
-        fetch('/api/report-bache', {
-            method: 'POST',
-            body: data,
-        })
-            .then((response) => response.json())
-            .then((result) => {
-                console.log('Success:', result);
-            })
-            .catch((error) => {
-                console.error('Error:', error);
-            });
-    };
-
     return (
-        <div className="container-reportar">
-            <div className='izquierda-reportar'>
-
-                <form onSubmit={handleSubmit}>
-                    <div className='nombress'>
-                        <label htmlFor="nombre">REPORTE HECHO POR</label>
-                        <p className='nombres-blanco'>{userData.nombre} {userData.apellidoPaterno} {userData.apellidoMaterno}</p>
+        <>
+            {loading && <Preloader />}
+            <div className="main-containerReportes">
+                <Alerta pageId="reportes"></Alerta>
+                <div className="box1" id="box1">
+                    <div className="containerReportes" id="containerReportes">
+                        <header>
+                            <h1>Baches Reportados</h1>
+                            <span aria-hidden="true" className="copy copy-1">Baches Reportados</span>
+                            <span aria-hidden="true" className="copy copy-2">Baches Reportados</span>
+                            <span aria-hidden="true" className="copy copy-3">Baches Reportados</span>
+                            <span aria-hidden="true" className="copy copy-4">Baches Reportados</span>
+                        </header>
                     </div>
-                    <div className='ubicacionn'>
-                        <label htmlFor="ubicacion">UBICACIÓN</label>
-                        <p className='ubicacion-blanco'>{selectedLocation}</p> {/* Muestra la ubicación seleccionada */}
-                    </div>
-
-                    <div className='flexForm'>
-                        <div className='descripcionnn'>
-                            <label htmlFor="descripcion">DESCRIPCIÓN</label>
-                            <textarea
-                                id="descripcion"
-                                name="descripcion"
-                                value={formData.descripcion}
-                                onChange={handleChange}
-                                required
-                            />
-                        </div>
-                        <div className='fotografiaaa'>
-                            <label htmlFor="archivo">FOTOGRAFÍA</label>
-                            <input  style={{ backgroundImage: `url(${imagenFondo})` }}
-                                type="file"
-                                id="archivo"
-                                name="archivo"
-                                onChange={handleChange2}
-                            />
-                        </div>
-                        <button className='submiiit' type="submit">¡REPORTAR!</button>
-                    </div>
-                </form>
-            </div>
-
-            <div className='derecha-reportar'>
-                <div className='intro-reportar'>
+                </div>
+                <div className="box1" id="box1">
+                    <h2>Bienvenido al área de reportes 🐜</h2>
                     <p>
-                        ¡Mueve el marcador para obtener automáticamente la ubicación del bachecito a reportar!
+                        Aquí podrás visualizar los reportes hechos por los usuarios de la aplicación Móvil de Bachecito 26;
+                        también puedes guardar los baches reportados por estos mismos con el ícono de la
+                        estrellita ⭐ para después verlos en la lista de seguimiento del apartado “Baches
+                        Guardados”.
                     </p>
                 </div>
-                {/* Pasa la función setSelectedLocation al componente del mapa */}
-                <div> <DynamicMap/></div>
+                <div>
+
+                    <ReportesComponente />
+                </div>
+
             </div>
-        </div>
+        </>
+
+
     );
 }
-
-export default ReportBachePage;

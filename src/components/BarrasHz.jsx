@@ -12,6 +12,7 @@ import {
 import moment from "moment";
 import 'moment/locale/es'; // Importar la configuración local en español
 moment.locale('es'); // Establecer el idioma a español
+import "@/components/txt-graficas.css";
 
 const alcaldias = [
   "Álvaro Obregón", "Azcapotzalco", "Benito Juárez", "Coyoacán",
@@ -21,12 +22,12 @@ const alcaldias = [
 ];
 
 export default function BarrasHz({
-  width,
-  height,
-  estados,
-  startDates,
-  endDates,
-  filtroFechas,
+  width = 400, // Valor predeterminado para la anchura
+  height = 400, // Valor predeterminado para la altura
+  estados = "Todos",
+  startDates = null,
+  endDates = null,
+  filtroFechas = "Todos los tiempos",
 }) {
   const [alcEstRep, setAlcEstRep] = useState(null);
 
@@ -82,13 +83,14 @@ export default function BarrasHz({
   }
   
   return (
-    <ResponsiveContainer width="100%" height={height}>
+    <ResponsiveContainer width="99%" height={height} >
       <BarChart
         width={width}
         height={height}
         data={transformData(alcEstRep)}
         layout="vertical"
-        margin={{ top: 20, right: 30, left: 20, bottom: 5 }}
+        margin={{ top: 20, right: 30, left: 30, bottom: 5 }}
+        style={{fontFamily: 'sans-serif', fontSize: '13px',}}
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis type="number" />

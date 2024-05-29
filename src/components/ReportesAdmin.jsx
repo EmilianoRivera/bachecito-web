@@ -119,7 +119,7 @@ export default function ReportesAdmin() {
                     // Actualizar el documento para establecer eliminado: true
                     await updateDoc(doc.ref, { eliminado: true });
 
-                    console.log(`Se marcó como eliminado el reporte con folio ${folio}`);
+                 //   console.log(`Se marcó como eliminado el reporte con folio ${folio}`);
 
                     // Eliminar la fila de la tabla HTML
                     const rows = document.querySelectorAll('.containerReportesAdmin .Reportes');
@@ -241,10 +241,10 @@ export default function ReportesAdmin() {
                 throw new Error("Fallo a la petición de /api/filtros/estado/${estado}");
             }
             const estadosReportes = await datosNuevos.json();
-            console.log(estadosReportes);
+          //  console.log(estadosReportes);
 
         } catch (error) {
-            console.error("Error a la hora de hacer la petición a /api/filtros/estado/${estado}: ", error);
+            console.error("Error a la hora de hacer la petición: ", error);
         }
     }
 
@@ -432,6 +432,7 @@ export default function ReportesAdmin() {
                     <Link href="/Cuenta/Administrador/Papelera" className="papelera-option"><img src="https://i.postimg.cc/02gZVXL3/basura.png" alt="soporte" />PAPELERA</Link>
                 </div>
             </div>
+            
             <table>
                 <thead>
                     <tr className='sticky-top'>

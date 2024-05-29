@@ -144,15 +144,15 @@ function Dashboard() {
               ALCALDIAS CON <br /> MAS REPORTES
             </h3>
             <div className="circular">
-              <Circular
-                width={250}
-                height={250}
-                estados={estado}
-                alcaldias={alcaldias}
-                startDates={startDate}
-                endDates={endDate}
-                filtroFechas={filtroFecha}
-              />
+            <Circular
+  width={300}
+  height={400}
+  estados={estado}
+  alcaldias={alcaldias}
+  startDates={startDate}
+  endDates={endDate}
+  filtroFechas={filtroFecha}
+/>
             </div>
           </div>
         </div>
@@ -161,15 +161,15 @@ function Dashboard() {
           <div className="grafica-barras">
             <h3>REPORTES POR ALCALDIA</h3>
             <div className="barras">
-              <Barras
-                width={680}
-                height={350}
-                estados={estado}
-                alcaldias={alcaldias}
-                startDates={startDate}
-                endDates={endDate}
-                filtroFechas={filtroFecha}
-              />
+            <Barras
+  width={680}
+  height={350}
+  estados={estado}
+  alcaldias={alcaldias}
+  startDates={startDate}
+  endDates={endDate}
+  filtroFechas={filtroFecha}
+/>
             </div>
           </div>
         </div>
@@ -178,14 +178,14 @@ function Dashboard() {
       <div className="grafica-barras-hz">
         <h3>REPORTES SEGÚN SU ESTADO DE ATENCIÓN POR ALCALDIA</h3>
         <BarrasHz
-          width={500}
-          height={1000}
-          estados={estado}
-          alcaldias={alcaldias}
-          startDates={startDate}
-          endDates={endDate}
-          filtroFechas={filtroFecha}
-        />
+  width={500}
+  height={1000}
+  estados={estado}
+  alcaldias={alcaldias}
+  startDates={startDate}
+  endDates={endDate}
+  filtroFechas={filtroFecha}
+/>
       </div>
     </div>
   );
