@@ -190,7 +190,30 @@ function ReportesComponente() {
 
 
         {filteredReports.length === 0 ? (
-          <div className="alert alert-warning">No se encontraron resultados</div>
+          <div className="alert alert-warning">
+            <div><h2>No se encontraron resultados </h2></div>
+            <div className="completo">
+              <div className="ghost">
+                <div className="face">
+                  <div className="eyes">
+                    <span></span><span></span>
+                  </div>
+                  <div className="mouth"></div>
+                </div>
+
+                <div className="hands">
+                  <span></span><span></span>
+                </div>
+
+                <div className="feet">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              </div>
+            </div>
+          </div>
         ) : (
           filteredReports.map((report, index) => (
             <div className="box2" id="box2" key={index}>
