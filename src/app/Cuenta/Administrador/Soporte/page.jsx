@@ -183,8 +183,9 @@ function Soporte() {
         }
 
         const uid = userData.uid;
-        const ticketsData = await fetch(`/api/Ticket/${uid}`);
-        if (!ticketsData.ok) {
+        const baseURL = process.env.NEXT_PUBLIC_RUTA_TICKET
+        const ticketsData = await fetch(`${baseURL}/${uid}`);
+        if (!ticketsData.ok) {  
           throw new Error("Error al traer los datos");
         }
         const tickets = await ticketsData.json();
@@ -273,7 +274,7 @@ function Soporte() {
 
     const ticketEncontrados = ticket.find(ticket => ticket.folio === folio);
     if (ticketEncontrados) {
-      console.log("Ticket encontrado:", ticketEncontrados);
+   //   console.log("Ticket encontrado:", ticketEncontrados);
       setTicketEncontrado(ticketEncontrados)
     } else {
       console.log("No se encontró ningún ticket con el folio:", folio);
@@ -364,7 +365,7 @@ function Soporte() {
     const storage = getStorage(app2);
     const randomId = Math.random().toString(36).substring(7);
     const imageName = `Ticket_${randomId}`;
-    const storageRef = ref(storage, `ImagenesTickets/${uid}/${imageName}`);
+    const storageRef = ref(storage, `ImagenesTickets/${imageName}`);
     await uploadBytes(storageRef, archivito);
     return getDownloadURL(storageRef);
   };
@@ -381,8 +382,8 @@ function Soporte() {
     let res = prompt("¿Desea levantar el ticket? (SI/NO)");
     if (res.toUpperCase() === "SI") {
       try {
-
-        const ticketResponse = await fetch(`/api/RegistrarTicket/${encodeURIComponent(url)}/${uid}/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${encodeURIComponent(selectedRutaError)}/${descripcionProblema}/${correoA}/${nombre}/${area}`, {
+        const baseURL =process.env.NEXT_PUBLIC_RUTA_REGISTRAR_TICKET
+        const ticketResponse = await fetch(`${baseURL}/${encodeURIComponent(url)}/${uid}/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${encodeURIComponent(selectedRutaError)}/${descripcionProblema}/${correoA}/${nombre}/${area}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
