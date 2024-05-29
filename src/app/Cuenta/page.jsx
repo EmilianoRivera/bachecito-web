@@ -34,7 +34,6 @@ function Registro() {
     Router.events.on('routeChangeComplete', handleComplete);
     Router.events.on('routeChangeError', handleComplete);
 
-    // For the initial load
     handleComplete();
 
     return () => {
@@ -43,7 +42,6 @@ function Registro() {
       Router.events.off('routeChangeError', handleComplete);
     };
   }, []);
-  
   
   //elementos del router
   const { push } = useRouter();
@@ -147,6 +145,7 @@ function Registro() {
   //VALIDACIÓN Fecha de nacimiento--------------------------------------------------------------------------------------------------------------------
   const [fechaNacimiento, setFechaNacimiento] = useState(""); // Estado para la fecha de nacimiento
   const [edadValida, setEdadValida] = useState(true); // Estado para la validación de edad
+  const [checkBoxChecked, setCheckBoxChecked] = useState(false);
 
   const handleFechaNacimientoChange = (event) => {
     const fecha = event.target.value;
@@ -172,26 +171,38 @@ function Registro() {
     }
   };
 
-  // Agrega una función de manejo para el cambio de estado del checkbox
   const handleCheckBoxChange = () => {
     setCheckBoxChecked(!checkBoxChecked);
   };
 
   const handleSubmit = (event) => {
-    //  event.preventDefault(); // Evitar el envío automático del formulario
+    event.preventDefault();
+    let missingFields = [];
+
+    if (!nombre) missingFields.push("Nombre");
+    if (!appat) missingFields.push("Apellido Paterno");
+    if (!apmat) missingFields.push("Apellido Materno");
+    if (!fechaNacimiento) missingFields.push("Fecha de Nacimiento");
+    if (!email) missingFields.push("Correo Electrónico");
+    if (!password) missingFields.push("Contraseña");
+    if (!checkBoxChecked) missingFields.push("Aceptar Términos y Condiciones");
+
+    if (missingFields.length > 0) {
+      alert("Faltan los siguientes campos por llenar: " + missingFields.join(", "));
+      return;
+    }
 
     if (!edadValida) {
-
-      return; // No se envía el formulario si la edad no es válida
+      alert("La edad debe estar entre 18 y 70 años.");
+      return;
     }
+
     if (!checkBoxChecked) {
-      alert(
-        "Debes aceptar la política de privacidad y los términos y condiciones."
-      );
-      return; // No se envía el formulario si el checkbox no está marcado
+      alert("Debes aceptar la política de privacidad y los términos y condiciones.");
+      return;
     }
 
-    // Aquí puedes enviar el formulario
+    handleSignUp(event);
   };
 
   //VALIDACIÓN Correo--------------------------------------------------------------------------------------------------------------------
@@ -259,20 +270,13 @@ function Registro() {
   };
 
   //VALIDACIÓN Checkbox--------------------------------------------------------------------------------------------------------------------
-  const [checkBoxChecked, setCheckBoxChecked] = useState(false);
   const handleSignUp = async (event) => {
     try {
       event.preventDefault();
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
-
-      // Correo de verificación
       sendEmailVerification(user);
-      alert("ola se envio correo");
+      alert("Se envió el correo de verificación.");
       const uid = user.uid;
       const usuariosCollection = collection(db, "usuarios");
       const nuevoUsuario = {
@@ -284,7 +288,6 @@ function Registro() {
         correo: email,
         estadoCuenta: true,
       };
-
       addDoc(usuariosCollection, nuevoUsuario);
       push("/Cuenta/Usuario/Perfil");
     } catch (error) {
@@ -295,14 +298,9 @@ function Registro() {
 
   const handleSignIn = async (event) => {
     event.preventDefault();
-
     try {
-      setLoading(true); // Muestra el preloader
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      setLoading(true);
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       if (user && !user.emailVerified) {
         alert("Por favor, verifica tu correo electrónico para iniciar sesión.");
@@ -318,19 +316,15 @@ function Registro() {
           const data = doc.data();
           estadoCuenta = data.estadoCuenta;
         });
+
         if (estadoCuenta === false) {
-          const confirm = window.confirm(
-            "Tu cuenta ha sido desactivada. ¿Deseas restablecerla?"
-          );
+          const confirm = window.confirm("Tu cuenta ha sido desactivada. ¿Deseas restablecerla?");
           if (confirm) {
             querySnapshot.forEach(async (doc) => {
-              await updateDoc(doc.ref, {
-                estadoCuenta: true,
-              });
+              await updateDoc(doc.ref, { estadoCuenta: true });
             });
             alert("Cuenta restablecida correctamente");
             push("/Cuenta/Usuario/Perfil");
-
           } else {
             signOut(auth);
             alert("Inicio de sesión cancelado");
@@ -338,14 +332,13 @@ function Registro() {
         } else {
           alert("Inicio de sesión exitoso");
           push("/Cuenta/Usuario/Perfil");
-
         }
       }
     } catch (error) {
       setError(error.message);
       alert("Correo o contraseña incorrectos");
     } finally {
-      setLoading(false); // Oculta el preloader una vez completada la operación
+      setLoading(false);
     }
   };
   if (isLogged) {
@@ -368,7 +361,7 @@ function Registro() {
       {loading && <Preloader2 />}
       <div className={`container-registroUs ${active ? "active" : ""}`} id="container-registroUs">
         <div className="form-container sign-up">
-          <form id="form-registro" onSubmit={handleSignUp}>
+          <form id="form-registro" onSubmit={handleSubmit}>
             <h1 className="title" id="regis-title">
               ¡QUE FELICIDAD QUE TE NOS UNAS!
             </h1>
@@ -379,6 +372,8 @@ function Registro() {
               onBlur={handleNameBlur}
               onKeyDown={handleNameKeyDown}
               minLength={3}
+              name="nombre"
+              id="nombre"
               onPaste={handlePaste}
               autoComplete={generateRandomString()}
               value={nombre}
@@ -389,6 +384,7 @@ function Registro() {
               <input
                 type="text"
                 className="datos"
+                name="appat"
                 id="appat"
                 onBlur={handleAPBlur}
                 onKeyDown={handleAPKeyDown}
@@ -404,6 +400,7 @@ function Registro() {
                 type="text"
                 className="datos"
                 id="apmat"
+                name="apmat"
                 onBlur={handleAPBlur}
                 onKeyDown={handleAPKeyDown}
                 minLength={4}
@@ -418,6 +415,8 @@ function Registro() {
             <input
               type="date"
               className="datos"
+              name="fechaNacimiento"
+              id="fechaNacimiento"
               placeholder="Fecha de Nacimiento"
               onChange={handleFechaNacimientoChange}
               value={fechaNacimiento}
@@ -426,6 +425,8 @@ function Registro() {
             <input
               type="email"
               className="datos"
+              name="email"
+              id="email"
               placeholder="Correo Electrónico"
               onBlur={handleMailBlur}
               onKeyDown={handleMailKeyDown}
@@ -439,6 +440,8 @@ function Registro() {
             <input
               type="password"
               className="datos"
+              name="password"
+              id="password"
               placeholder="Contraseña"
               onBlur={handlePassBlur}
               onKeyDown={handlePassKeyDown}
@@ -450,19 +453,21 @@ function Registro() {
             <div className="checkbox-container">
               <input
                 type="checkbox"
-                id="checkbox-pri"
                 name="aceptar"
-                onChange={handleCheckBoxChange}
+                id="checkBox"
+                    checked={checkBoxChecked}
+                    onChange={handleCheckBoxChange}
+                    required
               />
               <p id="a-pri">
                 He leído y acepto los{" "}
-                <a href="#" id="a-pol" onClick={handlePrivacyPolicyClick}>
+                <a id="a-pol" onClick={handlePrivacyPolicyClick} htmlFor="checkBox">
                   Términos y Condiciones
                 </a>
                 😉
               </p>
             </div>
-            <button id="registrarse-btn">Registrarse</button>
+            <button type="submit" className="btn" id="registrarse-btn">Registrarse</button>
           </form>
         </div>
         <div className="form-container sign-in">
@@ -481,6 +486,8 @@ function Registro() {
               autoComplete={generateRandomString()}
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              name="email"
+              id="email"
               required
             />
             <input
@@ -490,6 +497,8 @@ function Registro() {
               onBlur={handlePassBlur}
               onKeyDown={handlePassKeyDown}
               minLength={8}
+              name="password"
+              id="password"
               onPaste={handlePaste}
               autoComplete={generateRandomString()}
               value={password}
@@ -499,10 +508,10 @@ function Registro() {
             <a id="olvi-contra" href="#">
               ¿Olvidaste tu contraseña? 😰
             </a>
-            <a id="admin-ini" href="#" onClick={handleAdminLinkClick}>
+            <a id="admin-ini" onClick={handleAdminLinkClick}>
               Administrador 😎
             </a>
-            <button id="iniciarSesion-btn">Iniciar Sesión</button>
+            <button type="submit" className="btn" id="iniciarSesion-btn">Iniciar Sesión</button>
           </form>
         </div>
         <div className="toggle-container">
@@ -533,16 +542,133 @@ function Registro() {
           </div>
         </div>
 
-        {/* Pantalla de política de privacidad */}
-        {showPrivacyPolicy && (
+        
+      </div>
+      
+      {showPrivacyPolicy && (
           <div className="privacy-policy">
+            <div className="terminos">
             <img src="https://i.postimg.cc/dQNGNhx8/logo-bachecito26.png"></img>
-            <h1>BACHECITO 26</h1>
-            <h1>AVISO DE PRIVACIDAD</h1>
-            <button onClick={() => setShowPrivacyPolicy(false)}>Volver</button>
+              <div className="blablabla">
+              <h1>BACHECITO 26</h1>
+              <h2><i>AVISO DE PRIVACIDAD</i></h2>
+              <p>Este aviso de privacidad describe cómo Bachecito 26 recopila, utiliza y protege la información personal de sus usuarios, así como las reglas y políticas que deben seguirse al utilizar nuestra aplicación, de acuerdo con las leyes de protección de datos vigentes en México.</p>
+    <p>Con la entrada en vigor de la Ley General de Protección de Datos Personales en Posesión de Sujetos Obligados (en lo sucesivo, "Ley General") y los Lineamientos Generales de Protección de Datos Personales para el Sector Público (en lo sucesivo, "Lineamientos Generales"), existe la obligación de atender las disposiciones que dichos ordenamientos establecen, entre ellas el cumplimiento del principio de información, el cual se materializa a través de la puesta a disposición del Aviso de Privacidad.</p>
+    <p>Este Aviso de Privacidad se emite de conformidad con la Ley de Protección de Datos Personales en Posesión de Sujetos Obligados de la Ciudad de México (en adelante, "la Ley") y tiene como objetivo informarle sobre el tratamiento de sus datos personales por parte de GEMMA, con domicilio en Mar Mediterráneo 227, Popotla, 11400 Ciudad de México, CDMX.</p>
+
+    <h3>Datos Personales Recopilados:</h3>
+    <p>En el proceso de registro y uso de la aplicación móvil o sistema web, recopilamos los siguientes datos personales:</p>
+    <ul>
+        <li>Nombre incluyendo apellidos paterno y materno.</li>
+        <li>Dirección de correo electrónico.</li>
+        <li>Ubicación geográfica (para informar sobre baches en su área).</li>
+        <li>Información de reportes de baches (ubicación, descripción, fotos, etc.).</li>
+    </ul>
+
+    <h3>Finalidad del Tratamiento de Datos:</h3>
+    <p>Los datos personales que recopilamos serán utilizados para los siguientes fines:</p>
+    <ul>
+        <li>Permitir el acceso y el uso de nuestra aplicación móvil y sistema web.</li>
+        <li>Facilitar la comunicación entre GEMMA y el usuario.</li>
+        <li>Procesar y gestionar los reportes de baches realizados a través de la aplicación móvil y/o el sistema web.</li>
+        <li>Dar seguimiento a los reportes de baches realizados por usted y los demás usuarios de Bachecito 26 (móvil y web).</li>
+    </ul>
+
+    <h3>Transferencia de Datos:</h3>
+    <p>Sus datos personales no serán transferidos, compartidos ni vendidos a terceros sin su consentimiento expreso, a menos que así lo requiera la ley o una autoridad competente. La confidencialidad es nuestra prioridad y nos comprometemos a proteger sus datos personales de acuerdo con las regulaciones vigentes y a informarle en caso de cualquier excepción a esta norma.</p>
+
+    <h3>Integridad de los Datos:</h3>
+    <p>Conforme a la Ley de Protección de Datos Personales en México, garantizamos la integridad de sus datos recabados para proteger la confidencialidad y veracidad de la información dentro de Bachecito 26. Para proteger estos datos, el usuario podrá eliminarlos pero estos sólo serán desactivados del sistema web o aplicación móvil según sea el caso. Después de un periodo de 6 años, los datos podrán ser eliminados permanentemente del sistema, coincidiendo con el cambio de gobierno presidencial cada sexenio.</p>
+    <p>Si el usuario desea eliminar permanentemente sus datos del sistema, deberá ejercer sus derechos ARCO poniéndose en contacto con nosotros y seguir el siguiente procedimiento:</p>
+    <p>Enviar un correo electrónico a <a href="mailto:somos.gemma01@gmail.com">somos.gemma01@gmail.com</a> con el asunto BAJA DEFINITIVA DE BACHECITO 26.</p>
+    <p>Incluir en el cuerpo del correo la siguiente información:</p>
+    <ul>
+        <li>Nombre completo.</li>
+        <li>Tipo de usuario (administrador o final).</li>
+        <li>Correo electrónico registrado en el sistema web o aplicación móvil.</li>
+        <li>Descripción de su solicitud fundamentada en los derechos ARCO.</li>
+    </ul>
+
+    <h3>Medidas de Seguridad:</h3>
+    <p>Hemos implementado medidas de seguridad técnicas y organizativas adecuadas para proteger sus datos personales contra el acceso no autorizado, la divulgación, la alteración y la destrucción.</p>
+
+    <h3>Fundamento legal:</h3>
+    <p>Integral: Artículos 26, 27, 28 y 57 Ley General de Protección de Datos Personales en Posesión de Sujetos Obligados, Artículos 28, 30, 31, 32, 33, 35, 36, 37, 38, 40, 41 y 42 de los Lineamientos Generales de Protección de Datos Personales para el Sector Público.</p>
+    <p>Artículos 11, 14, 15, 16 y 19 de los Lineamientos que establecen los parámetros, modalidades y procedimientos de portabilidad de datos personales (en lo sucesivo Lineamientos de Portabilidad).</p>
+
+    <h3>Derechos ARCO:</h3>
+    <p>De acuerdo con la Ley, usted tiene derecho a:</p>
+    <ul>
+        <li>Acceder a sus datos personales.</li>
+        <li>Rectificar sus datos en caso de ser inexactos o incompletos.</li>
+        <li>Cancelar sus datos cuando considere que no son necesarios para los fines establecidos en este Aviso de Privacidad.</li>
+        <li>Oponerse al tratamiento de sus datos para fines específicos.</li>
+    </ul>
+    <p>Para ejercer cualquiera de los derechos ARCO, puede ponerse en contacto con nosotros a través de <a href="mailto:somos.gemma01@gmail.com">somos.gemma01@gmail.com</a> proporcionando la siguiente información:</p>
+    <ul>
+        <li>Nombre completo.</li>
+        <li>Correo electrónico de contacto.</li>
+        <li>Descripción de su solicitud.</li>
+    </ul>
+
+    <h3>Negativa del consentimiento:</h3>
+    <p>Con el propósito de llevar a cabo estas finalidades y posibles transferencias, requerimos de su consentimiento. Si usted está en desacuerdo con los términos y condiciones de privacidad expresados en este aviso y opta por no otorgar su consentimiento para que sus datos sean recopilados o utilizados de la manera establecida anteriormente, se le sugiere no utilizar los servicios proporcionados dentro de Bachecito 26. Al no dar su consentimiento se comprende que existe la posibilidad de que no pueda acceder a ciertas funciones de la aplicación móvil y del sistema web.</p>
+    <p>En caso de que no desee que sus datos personales sean procesados con dichos fines o transferidos después de haber aceptado el aviso de privacidad, es decir, que cambie de opinión sobre el manejo de sus datos, le brindamos la oportunidad de expresar su negativa al momento en que se le proporcione el formulario correspondiente.</p>
+
+    <h3>Cambios en el Aviso de Privacidad:</h3>
+    <p>Nos reservamos el derecho de realizar cambios o actualizaciones a este Aviso de Privacidad para cumplir con cambios en la legislación o para reflejar las actualizaciones en nuestras prácticas de manejo de datos. La versión más reciente estará disponible dentro de nuestra aplicación.</p>
+    <p>Al registrarse y utilizar nuestra aplicación móvil y/o sistema web, usted acepta los términos y condiciones establecidos en este Aviso de Privacidad.</p>
+    <p>Si tiene alguna pregunta o inquietud sobre este Aviso de Privacidad o el manejo de sus datos personales, no dude en ponerse en contacto con nosotros.</p>
+    <p>No se le contactará por ningún otro medio que no sean los contactos oficiales de la empresa desarrolladora de Bachecito 26 mostrados a continuación o en su defecto, expuestos en el sitio oficial de Bachecito 26, por lo que en caso de necesitar atención de parte de la empresa GEMMA es su debida responsabilidad contactarnos por los medios oficiales proporcionados. En caso de incumplir con esta petición y de proporcionar sus datos a terceros, impostores o contactos no oficiales (incluyendo las redes sociales de Bachecito 26) GEMMA se deslinda de cualquier responsabilidad por el uso inadecuado de sus datos.</p>
+    <p>Fecha de última actualización: 21/05/2024</p>
+    <br/>
+    <br/>
+
+    <h2><i>TÉRMINOS Y CONDICIONES:</i></h2>
+    <p>Por favor, lea atentamente los siguientes términos y condiciones antes de utilizar nuestra aplicación móvil y/o sistema web. Al acceder y utilizar la aplicación o sistema, usted acepta cumplir con estos términos y condiciones así como dar autorización al manejo y almacenamiento de sus datos personales solicitados para el funcionamiento de la aplicación.</p>
+    <p>En caso de incumplir con alguno de los términos y condiciones expuestos a continuación, GEMMA está obligado a aplicar la sanción o castigo correspondiente a la falta dada de acuerdo a su gravedad.</p>
+
+    <h3>1. Uso Aceptable:</h3>
+    <p>Usted se compromete a utilizar la aplicación de manera responsable y de acuerdo con todas las leyes y regulaciones aplicables, por lo que no está permitido utilizar la aplicación con fines ilegales o fraudulentos. En caso de infringir este acuerdo usted renuncia a la privacidad de sus datos personales, por lo que sus datos proporcionados podrán ser compartidos con las autoridades pertinentes según corresponda y su cuenta será baneada permanentemente del sistema.</p>
+
+    <h3>2. Registro de Usuario:</h3>
+    <p>Para utilizar ciertas funciones de la aplicación, debe crear una cuenta y proporcionar información precisa y actualizada. Es su responsabilidad mantener la confidencialidad de su contraseña y cuenta.</p>
+
+    <h3>3. Reportes de Baches:</h3>
+    <p>(Original) Usted acepta que los reportes de baches que presente a través de la aplicación deben ser verídicos. La aplicación se utiliza para fines de reporte y seguimiento de baches en vías secundarias de la alcaldía Azcapotzalco. (Modificado) La aplicación se utiliza para fines de reporte y seguimiento de baches en vías de la Ciudad de México y es ajeno a cualquier otro uso establecido dentro de este acuerdo.</p>
+    <p>Usted acepta que los datos proporcionados para efectuar los reportes de baches que presente a través de la aplicación móvil y/o del sistema web deben ser verídicos. Usted se compromete a subir imágenes de baches únicamente y de añadir una descripción que carezca de contenido explícito, con fines políticos o religiosos y de información personal que pueda comprometer su integridad. Usted tiene derecho a omitir el campo de descripción. En caso de infringir esta normativa su cuenta dentro del sistema será desactivada.</p>
+
+    <h3>4. Propiedad Intelectual:</h3>
+    <p>Todos los derechos de propiedad intelectual relacionados con la aplicación, incluyendo software, diseño y contenido, son propiedad de GEMMA.</p>
+
+    <h3>5. Privacidad y Protección de Datos:</h3>
+    <p>Sus datos personales se manejan de acuerdo con nuestro Aviso de Privacidad, el cual puede revisar en la aplicación móvil y sistema web. Usted acepta recibir notificaciones y comunicaciones relacionadas con su cuenta y el uso de la aplicación en caso de ser necesarios.</p>
+
+    <h3>6. Limitación de Responsabilidad:</h3>
+    <p>La aplicación se proporciona "tal cual" y GEMMA no garantiza su funcionamiento ininterrumpido o libre de errores. GEMMA no será responsable por daños directos o indirectos derivados del uso de la aplicación.</p>
+
+    <h3>7. Cambios en los Términos y Condiciones:</h3>
+    <p>Nos reservamos el derecho de modificar estos términos y condiciones en cualquier momento. Se le notificará sobre cualquier cambio importante realizado.</p>
+
+    <h3>8. Terminación de Cuenta:</h3>
+    <p>Podemos suspender o dar de baja su cuenta en caso de incumplimiento de estos términos y condiciones así como por cualquier otra razón a nuestra discreción.</p>
+
+    <h3>9. Precaución con el uso de la aplicación:</h3>
+    <p>GEMMA se deslinda de cualquier tipo de accidente que el usuario pueda sufrir durante el uso de Bachecito 26, es completa responsabilidad del usuario tomar las precauciones necesarias al utilizar el teléfono celular en las vías transitadas por cualquier tipo de transporte.</p>
+
+    <h3>10. Ley Aplicable:</h3>
+    <p>Estos términos y condiciones se rigen por las leyes de la Ciudad de México y cualquier disputa se resolverá en los tribunales de la Ciudad de México. Si tiene alguna pregunta o inquietud con respecto a estos términos y condiciones, comuníquese con nosotros a través de <a href="mailto:somos.gemma01@gmail.com">somos.gemma01@gmail.com</a>.</p>
+    <p>Fecha de última actualización: 21/05/2024</p>
+    <p>GEMMA<br/>
+    Mar Mediterráneo 227, Popotla, 11400 Ciudad de México, CDMX.<br/>
+    <a href="mailto:somos.gemma01@gmail.com">somos.gemma01@gmail.com</a><br/>
+    55 8412 8938</p>
+    <br/>
+              <button onClick={() => setShowPrivacyPolicy(false)}>Volver</button>
+              </div>
+            </div>
           </div>
         )}
-      </div>
     </div>
     </>
     
