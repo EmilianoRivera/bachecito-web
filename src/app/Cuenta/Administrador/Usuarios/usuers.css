@@ -267,3 +267,31 @@ table {
     color: #FF9F49;
     transition: .3s;
   }
+
+
+  .desactivar-cuenta{
+    cursor: pointer;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+  }
+  
+  .desactivar-cuenta img{
+    height: 2rem;
+    margin-right: 10px;
+  }
+
+  .desactivar-cuenta span{
+    background-color: var(--background-color-3);
+    padding: 5px;
+    width: 80px;
+    height: 30px;
+    display: none;
+    color: var(--text-color);
+    border-radius: 1rem;
+    font-size: 13px;
+  }
+
+  .desactivar-cuenta:hover span{
+    display: block;
+  }

@@ -156,7 +156,6 @@ function Page() {
                         <th>#Incidencias</th>
                         <th>Acciones</th>
                         <th className="eliminar-header"></th>
-                        <th className="eliminar-header">a</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -168,18 +167,17 @@ function Page() {
                             <td>{user.inhabilitada ? 'Inhabilitado' : 'Habilitado'}</td>
                             <td>{user.numRep}</td>
                             <td>{user.incidencias}</td>
-                                {user.incidencias === 3 && user.inhabilitada ===false ? (
-                    <td className='agregar-incidencia' onClick={() => inhabilitarCuenta(user.uid)}>
-                        <img src="https://i.postimg.cc/59R2s3rn/agregar-documento.png" alt="Agregar documento" />
+                            
+                                {user.incidencias === 3  ? (
+                    <td className='desactivar-cuenta' onClick={() => inhabilitarCuenta(user.uid)}>
+                        <img src="https://i.postimg.cc/4xrhj7Wb/eliminar-documento-2.png" alt="Agregar documento" />
                         <span>Inhabilitar cuenta</span>
                     </td>
             ) : (
-                user.incidencias < 3 && (
                     <td className='agregar-incidencia' onClick={() => openModal(user)}>
                         <img src="https://i.postimg.cc/59R2s3rn/agregar-documento.png" alt="Agregar documento" />
                         <span>Agregar incidencia</span>
                     </td>
-                )
             )}
                             <td className='eliminar'>
                                 <button className="Detalles" onClick={() => handleDetailsClick(user.uid)}>
