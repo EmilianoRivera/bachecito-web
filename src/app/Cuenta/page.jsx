@@ -538,24 +538,7 @@ function Registro() {
             </a>
             <button type="submit" className="btn" id="iniciarSesion-btn">Iniciar Sesión</button>
           </form>
-          {modalVisible && (
-        <div className="modal">
-          <div className="modal-content">
-            <span className="close" onClick={() => setModalVisible(false)}>&times;</span>
-            <h2>Recuperar Contraseña</h2>
-            <form onSubmit={Recuperar}>
-              <input
-                type="email"
-                placeholder="Introduce tu correo electrónico"
-                value={recoveryEmail}
-                onChange={(e) => setRecoveryEmail(e.target.value)}
-                required
-              />
-              <button type="submit">Enviar</button>
-            </form>
-          </div>
-        </div>
-      )}
+          
         </div>
         <div className="toggle-container">
           <div className="toggle">
@@ -587,7 +570,32 @@ function Registro() {
 
         
       </div>
-      
+      {modalVisible && (
+        <div className="modal2">
+          <div className="modal-content2">
+            <span className="close2" onClick={() => setModalVisible(false)}>&times;</span>
+            <h2>Recuperar Contraseña</h2>
+            <form onSubmit={Recuperar}>
+              <input
+                 type="email"
+                 className="datos"
+                 name="email"
+                 id="email"
+                 onBlur={handleMailBlur}
+                 onKeyDown={handleMailKeyDown}
+                 minLength={10}
+                 onPaste={handlePaste}
+                 autoComplete={generateRandomString()}
+                placeholder="Introduce tu correo electrónico"
+                value={recoveryEmail}
+                onChange={(e) => setRecoveryEmail(e.target.value)}
+                required
+              />
+              <button className="enviar" type="submit">Enviar</button>
+            </form>
+          </div>
+        </div>
+      )}
       {showPrivacyPolicy && (
           <div className="privacy-policy">
             <div className="terminos">
@@ -603,6 +611,7 @@ function Registro() {
     <p>En el proceso de registro y uso de la aplicación móvil o sistema web, recopilamos los siguientes datos personales:</p>
     <ul>
         <li>Nombre incluyendo apellidos paterno y materno.</li>
+        <li>Fecha de Nacimiento.</li>
         <li>Dirección de correo electrónico.</li>
         <li>Ubicación geográfica (para informar sobre baches en su área).</li>
         <li>Información de reportes de baches (ubicación, descripción, fotos, etc.).</li>
