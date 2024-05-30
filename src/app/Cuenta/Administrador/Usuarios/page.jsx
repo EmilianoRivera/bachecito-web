@@ -181,7 +181,6 @@ function Page() {
             )}
                             <td className='eliminar'>
                                 <button className="Detalles" onClick={() => handleDetailsClick(user.uid)}>
-                                    <img src="https://i.postimg.cc/SsXLv1Zf/informacion-del-circulo-de-archivos.png" alt="" />
                                     <span>Detalles de incidencias</span>
                                 </button>
                             </td>
@@ -198,6 +197,11 @@ function Page() {
                             <div className='incidencia-abierta'>
                                 <h2>¡Cuentanos lo que sucedió!</h2>
                                <div className='inc-flex'>
+                               <select className='gravedad' onChange={handleEstadoChange}>
+                                <option value="Alta">Alta</option>
+                                <option value="Media">Media</option>
+                                <option value="Baja">Baja</option>
+                            </select>
                                <input 
                                 className='des-incidencia'
                                     type="text" 
@@ -205,11 +209,7 @@ function Page() {
                                     onChange={(e) => setDescripcionIncidencia(e.target.value)} 
                                     placeholder="Descripción" 
                                 />
-                                  <select onChange={handleEstadoChange}>
-                                <option value="Alta">Alta</option>
-                                <option value="Media">Media</option>
-                                <option value="Baja">Baja</option>
-                            </select>
+                                  
                                 <button className='Btnagregar-incidencia' onClick={() => incidencia(currentUser.uid, descripcionIncidencia, estado)}>Agregar incidencia</button>
                                </div>
                             </div>
