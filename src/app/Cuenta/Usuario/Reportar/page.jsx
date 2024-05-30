@@ -1,149 +1,214 @@
-
-"use client"
-import { useEffect, useState } from "react";
-import { useRouter } from 'next/navigation';
-import ReportesComponente from "@/components/Reportes";
-import React from 'react';
-import './reportes.css';
-import RutaProtegida from "@/components/RutaProtegida";
-import Alerta from "@/components/Alerta2";
-
-import Router from 'next/router';
+"use client";
+import React, { useState, useEffect } from "react";
+import { auth, app } from "../../../../../firebase";
+import { useRouter } from "next/navigation";
+import dynamic from "next/dynamic";
+import styles from "./reportes.css";
+import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import Preloader from "@/components/preloader2";
+import Router from "next/router";
 
-{/*OTRA COSA, AQUI LA LOGICA DE DESPLEGAR LOS REPORTES, ESTA EN OTRO ARCHIVO, LO HICE COMPONENTE PARA REUZARLO EN VARIAS PARTES, EL COMPONENTE SE LLAMA ReportesComponente */ }
-export default function Reportes() {
-    const [loading, setLoading] = useState(false);
+// Importa el componente del mapa de manera dinámica
+const DynamicMap = dynamic(() => import("@/components/MapR"), {
+  ssr: false,
+});
 
+function Reportar() {
+  const router = useRouter();
+
+  const [userData, setUserData] = useState({});
+  const [desc, setDesc] = useState("Sin descripción");
+  const [ubicacion, setUbicacion] = useState("Sin ubicación");
+
+  const [loading, setLoading] = useState(false);
   useEffect(() => {
     const handleRouteChangeStart = () => setLoading(true);
     const handleRouteChangeComplete = () => setLoading(false);
 
-    Router.events.on('routeChangeStart', handleRouteChangeStart);
-    Router.events.on('routeChangeComplete', handleRouteChangeComplete);
-    Router.events.on('routeChangeError', handleRouteChangeComplete);
+    Router.events.on("routeChangeStart", handleRouteChangeStart);
+    Router.events.on("routeChangeComplete", handleRouteChangeComplete);
+    Router.events.on("routeChangeError", handleRouteChangeComplete);
 
     // Limpieza de los eventos al desmontar el componente
     return () => {
-      Router.events.off('routeChangeStart', handleRouteChangeStart);
-      Router.events.off('routeChangeComplete', handleRouteChangeComplete);
-      Router.events.off('routeChangeError', handleRouteChangeComplete);
+      Router.events.off("routeChangeStart", handleRouteChangeStart);
+      Router.events.off("routeChangeComplete", handleRouteChangeComplete);
+      Router.events.off("routeChangeError", handleRouteChangeComplete);
     };
   }, []);
+ 
+  const [imagenFondo, setImagenFondo] = useState("");
 
-    const router = useRouter();
-    useEffect(() => {
-        const mouse = newV2();
-        const center = newV2();
-        const distanceFromCenter = newV2();
-        const distanceLerped = newV2();
-        let simulateMouseMovement = true;
+  const handleChange2 = (event) => {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImagenFondo(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
 
-        const perspective = 500;
-        const translateZ = -22;
-        const rotate = 1.5;
-        const skew = 3;
-
-        const containerReportes = document.getElementById("containerReportes");
-        const copies = document.getElementsByClassName("copy");
-
-        function updateCenter() {
-            const rect = containerReportes.getBoundingClientRect();
-            center.x = rect.left + rect.width / 2;
-            center.y = rect.top + rect.height / 2;
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const unsubscribe = auth.onAuthStateChanged((user) => {
+        if (user) {
+          const uid = user.uid;
+          fetchData(uid);
+        } else {
+          router.push("/login");
         }
+      });
+      return () => unsubscribe();
+    }
 
-        function trackMousePosition(event) {
-            simulateMouseMovement = false;
-            mouse.x = event.clientX;
-            mouse.y = event.clientY;
-            distanceFromCenter.x = center.x - mouse.x;
-            distanceFromCenter.y = center.y - mouse.y;
+    async function fetchData(uid) {
+      try {
+        const userResponse = await fetch(`/api/Usuario/${uid}`);
+        if (!userResponse.ok) {
+          throw new Error("Failed to fetch user data");
         }
+        const userData = await userResponse.json();
 
-        function fakeMousePosition(t) {
-            distanceFromCenter.x = Math.sin(t / 500) * window.innerWidth * 0.5;
-            distanceFromCenter.y = Math.cos(t / 500) * window.innerWidth * 0.2;
-        }
+        setUserData(userData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    }
+  }, [router]);
 
-        function updateTextPosition(t) {
-            if (simulateMouseMovement) fakeMousePosition(t);
+  const handleDescripcion = (e) => {
+    const descs = e.target.value;
+    setDesc(descs);
+  };
 
-            lerpV2(distanceLerped, distanceFromCenter);
-
-            for (var i = 1; i < copies.length + 1; i++) {
-                const copy = copies[i - 1];
-                copy.style.transform = makeTransformString(
-                    i * distanceLerped.y * 0.05,
-                    i * translateZ,
-                    i * rotate * (distanceLerped.x * 0.003),
-                    i * skew * (distanceLerped.x * 0.003)
-                );
-            }
-
-            requestAnimationFrame(updateTextPosition);
-        }
-
-        function makeTransformString(y, z, rotate, skew) {
-            return `perspective(${perspective}px) translate3d(0px, ${y}px, ${z}px) rotate(${rotate}deg) skew(${skew}deg)`;
-        }
-
-        function lerpV2(position, targetPosition) {
-            position.x += (targetPosition.x - position.x) * 0.2;
-            position.y += (targetPosition.y - position.y) * 0.2;
-        }
-
-        function newV2(x = 0, y = 0) {
-            return {
-                x: x,
-                y: y
-            };
-        }
-
-        updateCenter();
-        document.addEventListener("mousemove", trackMousePosition);
-        window.addEventListener("resize", updateCenter);
-        requestAnimationFrame(updateTextPosition);
-
-        return () => {
-            document.removeEventListener("mousemove", trackMousePosition);
-            window.removeEventListener("resize", updateCenter);
-        };
-    }, [router]);
-
-    return (
-        <>
-            {loading && <Preloader />}
-            <div className="main-containerReportes">
-                <Alerta pageId="reportes"></Alerta>
-                <div className="box1" id="box1">
-                    <div className="containerReportes" id="containerReportes">
-                        <header>
-                            <h1>Baches Reportados</h1>
-                            <span aria-hidden="true" className="copy copy-1">Baches Reportados</span>
-                            <span aria-hidden="true" className="copy copy-2">Baches Reportados</span>
-                            <span aria-hidden="true" className="copy copy-3">Baches Reportados</span>
-                            <span aria-hidden="true" className="copy copy-4">Baches Reportados</span>
-                        </header>
-                    </div>
-                </div>
-                <div className="box1" id="box1">
-                    <h2>Bienvenido al área de reportes 🐜</h2>
-                    <p>
-                        Aquí podrás visualizar los reportes hechos por los usuarios de la aplicación Móvil de Bachecito 26;
-                        también puedes guardar los baches reportados por estos mismos con el ícono de la
-                        estrellita ⭐ para después verlos en la lista de seguimiento del apartado “Baches
-                        Guardados”.
-                    </p>
-                </div>
-                <div>
-
-                    <ReportesComponente />
-                </div>
-
-            </div>
-        </>
-
-
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const uid = userData.uid;
+    const nombre = userData.nombre;
+    const apellidoPaterno = userData.apellidoPaterno;
+    const imagenURL = await handleFileUpload(uid);
+    const descripcion = desc;
+    const ubi = ubicacion;
+   // console.log(uid, " ", nombre, " ", apellidoPaterno, " " , " ", descripcion, " ", ubi)
+    const res = await fetch(
+      `/api/MandarR/${uid}/${nombre}/${apellidoPaterno}/${encodeURIComponent(
+        imagenURL
+      )}/${descripcion}/${ubi}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          uid: uid,
+          nombre,
+          apellidoPaterno,
+          imagenURL: encodeURIComponent(imagenURL),
+          descripcion,
+          ubi,
+        }),
+      }
     );
+
+    if (!res.ok) {
+      console.error(
+        "Hubo un error en la petición:",
+        res.status,
+        res.statusText
+      );
+      return;
+    }
+
+    try {
+      const data = await res.json();
+      //console.log("Respuesta de la API:", data);
+    } catch (error) {
+      console.error("Error al analizar la respuesta:", error);
+    }
+    // Aquí puedes agregar la lógica para enviar los datos al servidor
+  };
+
+  const handleFileUpload = async (uid) => {
+    const archivo = document.querySelector('input[type="file"]');
+    const archivito = archivo.files[0];
+
+    if (!archivito) {
+      console.error("No se ha seleccionado ningún archivo");
+      return;
+    }
+
+    const storage = getStorage(app);
+    const randomId = Math.random().toString(36).substring(7);
+    const imageName = `Ticket_${randomId}`;
+    const storageRef = ref(storage, `ImagenesBaches/${uid}/${imageName}`);
+    await uploadBytes(storageRef, archivito);
+    return getDownloadURL(storageRef);
+  };
+
+  return (
+    <>
+      {loading && <Preloader />}
+      <div className="container-reportar">
+        <div className="izquierda-reportar">
+          <form onSubmit={handleSubmit}>
+            <div className="nombress">
+              <label htmlFor="nombre">REPORTE HECHO POR</label>
+              <p className="nombres-blanco">
+                {userData.nombre} {userData.apellidoPaterno}{" "}
+                {userData.apellidoMaterno}
+              </p>
+            </div>
+            <div className="ubicacionn">
+              <label htmlFor="ubicacion">UBICACIÓN</label>
+              <p className="ubicacion-blanco">{ubicacion}</p>
+            </div>
+
+            <div className="flexForm">
+              <div className="descripcionnn">
+                <label htmlFor="descripcion">DESCRIPCIÓN</label>
+                <textarea
+                  id="descripcion"
+                  name="descripcion"
+                  placeholder={desc}
+                  onChange={handleDescripcion}
+                  required
+                />
+              </div>
+              <div className="fotografiaaa">
+                <label htmlFor="archivo">FOTOGRAFÍA</label>
+                <input
+                  style={{ backgroundImage: `url(${imagenFondo})` }}
+                  type="file"
+                  id="archivo"
+                  name="archivo"
+                  onChange={handleChange2}
+                />
+              </div>
+              <button className="submiiit" type="submit">
+                ¡REPORTAR!
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div className="derecha-reportar">
+          <div className="intro-reportar">
+            <p>
+              ¡Mueve el marcador para obtener automáticamente la ubicación del
+              bachecito a reportar!
+            </p>
+          </div>
+          {/* Pasa la función setSelectedLocation al componente del mapa */}
+          <div>
+            {" "}
+            <DynamicMap setSelectedLocation={setUbicacion} />
+          </div>
+        </div>
+      </div>
+    </>
+  );
 }
+
+export default Reportar;
