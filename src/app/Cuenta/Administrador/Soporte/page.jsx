@@ -158,6 +158,8 @@ function Soporte() {
 
     async function fetchData(uid) {
       try {
+        const cifradoCorreo = await Cifrado(userData.correo)
+        console.log(cifradoCorreo)
         const baseURL= process.env.NEXT_PUBLIC_RUTA_U
         const userResponse = await fetch(`${baseURL}/${uid}`);
         if (!userResponse.ok) {
@@ -182,6 +184,7 @@ function Soporte() {
           console.error("Los datos del usuario no estan accesibles");
           return;
         }
+
 
         const uid = userData.uid;
         const baseURL = process.env.NEXT_PUBLIC_RUTA_T
@@ -270,6 +273,8 @@ function Soporte() {
       return "Aun no Resuelto";
     }
   }
+
+
 
   const openModal = (folio) => {
 
@@ -374,7 +379,7 @@ function Soporte() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-   // const cifradoCorreo = Cifrado(userData.correo)
+  
     const correoA = userData.correo;
     const nombre = userData.nombre;
     const area = asignarTarea;

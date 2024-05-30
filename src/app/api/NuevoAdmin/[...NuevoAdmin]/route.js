@@ -9,20 +9,22 @@ import {
   } from "firebase/auth";
 export async function POST(request, {params}) {
   try {
-    const [nombre, appat, apmat, fechaNacimiento, email, password ] = params.RegistroU
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-    const user = userCredential.user;
-    sendEmailVerification(user);
-    const uid = user.uid;
+    const [username, appat, apmat, fechaNacimiento, correo, password ] = params.NuevoAdmin
+    const userCredential = await createUserWithEmailAndPassword(auth, correo, password);
+    const admin = userCredential.user;
+    sendEmailVerification(admin);
+    const uid = admin.uid;
     const usuariosCollection = collection(db, "usuarios");
+    console.log(username, " ", appat, " ", apmat, " ", fechaNacimiento, " ", correo, " ", password)
     const nuevoUsuario = {
       uid: uid,
-      nombre: nombre,
+      nombre: username,
       apellidoPaterno: appat,
       apellidoMaterno: apmat,
       fechaNacimiento: fechaNacimiento,
-      correo: email.toLowerCase(),
+      correo: correo,
       estadoCuenta: true,
+      rol:"admin"
     };
     addDoc(usuariosCollection, nuevoUsuario);
 
