@@ -24,7 +24,7 @@ import {
 } from "firebase/firestore";
 import "./registro.css";
 import AuthContext from "../../../context/AuthContext";
-import { events } from "dc";
+import { dataTable, events } from "dc";
 
 
 function Registro() {
@@ -281,23 +281,29 @@ function Registro() {
         alert("Debes aceptar la política de privacidad y los términos y condiciones.");
         return;
       }
+      const parametros = {
+      nombre: nombre,
+      appat: appat,
+      apmat: apmat,
+      fechaNacimiento: fechaNacimiento,
+      email: email,
+      password: password
+    };
+      const baseURL = process.env.NEXT_PUBLIC_RUTA_REGISTROU
+      const res = await fetch(`${baseURL}/${nombre}/${appat}/${apmat}/${fechaNacimiento}/${email}/${password}`,{
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(parametros),
+      })
+      if(!res.ok ){
+        throw new Error("Failed to fetch user data");
+      }
+      const data = await res.json()
 
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-      sendEmailVerification(user);
+      console.log(data)
       alert("Bienvenido a Bachecito 26, se envio un correo de verificación (:");
-      const uid = user.uid;
-      const usuariosCollection = collection(db, "usuarios");
-      const nuevoUsuario = {
-        uid: uid,
-        nombre: nombre,
-        apellidoPaterno: appat,
-        apellidoMaterno: apmat,
-        fechaNacimiento: fechaNacimiento,
-        correo: email,
-        estadoCuenta: true,
-      };
-      addDoc(usuariosCollection, nuevoUsuario);
       push("/Cuenta/Usuario/Perfil");
     } catch (error) {
       console.error("Error al crear la cuenta: ", error);
@@ -350,6 +356,8 @@ function Registro() {
       setLoading(false);
     }
   };
+
+
   const Recuperar = (e) => {
     e.preventDefault();
     const auth = getAuth();

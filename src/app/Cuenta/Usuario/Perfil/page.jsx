@@ -67,7 +67,6 @@ export default function Perfil() {
       try {
         const baseURL= process.env.NEXT_PUBLIC_RUTA_U
         const baseURLR = process.env.NEXT_PUBLIC_RUTA_RP
-        console.log(baseURL, " ", baseURLR)
         const userResponse = await fetch(`${baseURL}/${uid}`);
         const reportesResponse = await fetch(`${baseURLR}/${uid}`);
         if (!userResponse.ok || !reportesResponse.ok) {
