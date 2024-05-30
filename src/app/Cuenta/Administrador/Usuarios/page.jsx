@@ -156,7 +156,6 @@ function Page() {
                         <th>#Incidencias</th>
                         <th>Acciones</th>
                         <th className="eliminar-header"></th>
-                        <th className="eliminar-header">a</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -168,22 +167,20 @@ function Page() {
                             <td>{user.inhabilitada ? 'Inhabilitado' : 'Habilitado'}</td>
                             <td>{user.numRep}</td>
                             <td>{user.incidencias}</td>
-                                {user.incidencias === 3 && user.inhabilitada ===false ? (
-                    <td className='agregar-incidencia' onClick={() => inhabilitarCuenta(user.uid)}>
-                        <img src="https://i.postimg.cc/59R2s3rn/agregar-documento.png" alt="Agregar documento" />
+                            
+                                {user.incidencias === 3  ? (
+                    <td className='desactivar-cuenta' onClick={() => inhabilitarCuenta(user.uid)}>
+                        <img src="https://i.postimg.cc/4xrhj7Wb/eliminar-documento-2.png" alt="Agregar documento" />
                         <span>Inhabilitar cuenta</span>
                     </td>
             ) : (
-                user.incidencias < 3 && (
                     <td className='agregar-incidencia' onClick={() => openModal(user)}>
                         <img src="https://i.postimg.cc/59R2s3rn/agregar-documento.png" alt="Agregar documento" />
                         <span>Agregar incidencia</span>
                     </td>
-                )
             )}
                             <td className='eliminar'>
                                 <button className="Detalles" onClick={() => handleDetailsClick(user.uid)}>
-                                    <img src="https://i.postimg.cc/SsXLv1Zf/informacion-del-circulo-de-archivos.png" alt="" />
                                     <span>Detalles de incidencias</span>
                                 </button>
                             </td>
@@ -200,6 +197,11 @@ function Page() {
                             <div className='incidencia-abierta'>
                                 <h2>¡Cuentanos lo que sucedió!</h2>
                                <div className='inc-flex'>
+                               <select className='gravedad' onChange={handleEstadoChange}>
+                                <option value="Alta">Alta</option>
+                                <option value="Media">Media</option>
+                                <option value="Baja">Baja</option>
+                            </select>
                                <input 
                                 className='des-incidencia'
                                     type="text" 
@@ -207,11 +209,7 @@ function Page() {
                                     onChange={(e) => setDescripcionIncidencia(e.target.value)} 
                                     placeholder="Descripción" 
                                 />
-                                  <select onChange={handleEstadoChange}>
-                                <option value="Alta">Alta</option>
-                                <option value="Media">Media</option>
-                                <option value="Baja">Baja</option>
-                            </select>
+                                  
                                 <button className='Btnagregar-incidencia' onClick={() => incidencia(currentUser.uid, descripcionIncidencia, estado)}>Agregar incidencia</button>
                                </div>
                             </div>
@@ -222,36 +220,42 @@ function Page() {
                                         <div className='numero-incidencia'>
                                             <h3>PRIMERA INCIDENCIA</h3>
                                             <p><i>Fecha:</i> {selectedIncidentDates.primera.fecha}</p>
-                                            <p><i>Gravedad:</i> {selectedIncidentDates.primera.prioridad}</p>
                                         </div>
-                                        <div className='Datos-incidencia'>
-                                            <p><i>Descripción:</i> {selectedIncidentDates.primera.descripcion}</p>
+                                        <div className='Datos-incidencia2'>
+                                        <p><i>Gravedad:</i> {selectedIncidentDates.primera.prioridad}</p>
+                                            <div className='Datos-incidencia'>
+                                            <p ><i>Descripción:</i> {selectedIncidentDates.primera.descripcion}</p>
+                                            </div>
                                         </div>
                                     </div>
                                 )}
                                 {selectedIncidentDates.segunda && (
                                     <div className='incidencia-abierta'>
-                                        <div className='numero-incidencia'>
-                                            <h3>SEGUNDA INCIDENCIA</h3>
-                                            <p><i>Fecha:</i> {selectedIncidentDates.segunda.fecha}</p>
-                                            <p><i>Gravedad:</i> {selectedIncidentDates.segunda.prioridad}</p>
-                                        </div>
+                                    <div className='numero-incidencia'>
+                                        <h3>SEGUNDA INCIDENCIA</h3>
+                                        <p><i>Fecha:</i> {selectedIncidentDates.segunda.fecha}</p>
+                                    </div>
+                                    <div className='Datos-incidencia2'>
+                                    <p><i>Gravedad:</i> {selectedIncidentDates.segunda.prioridad}</p>
                                         <div className='Datos-incidencia'>
-                                            <p><i>Descripción:</i> {selectedIncidentDates.segunda.descripcion}</p>
+                                        <p ><i>Descripción:</i> {selectedIncidentDates.segunda.descripcion}</p>
                                         </div>
                                     </div>
+                                </div>
                                 )}
                                 {selectedIncidentDates.tercer && (
                                     <div className='incidencia-abierta'>
-                                        <div className='numero-incidencia'>
-                                            <h3>TERCERA INCIDENCIA</h3>
-                                            <p><i>Fecha:</i> {selectedIncidentDates.tercer.fecha}</p>
-                                            <p><i>Gravedad:</i> {selectedIncidentDates.tercer.prioridad}</p>
-                                        </div>
+                                    <div className='numero-incidencia'>
+                                        <h3>TERCERA INCIDENCIA</h3>
+                                        <p><i>Fecha:</i> {selectedIncidentDates.tercer.fecha}</p>
+                                    </div>
+                                    <div className='Datos-incidencia2'>
+                                    <p><i>Gravedad:</i> {selectedIncidentDates.tercer.prioridad}</p>
                                         <div className='Datos-incidencia'>
-                                            <p><i>Descripción:</i> {selectedIncidentDates.tercer.descripcion}</p>
+                                        <p ><i>Descripción:</i> {selectedIncidentDates.tercer.descripcion}</p>
                                         </div>
                                     </div>
+                                </div>
                                 )}
                             </>
                         )}
