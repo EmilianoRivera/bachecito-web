@@ -21,9 +21,9 @@ async function fetchFiltroEstado(
       startDate: startDate,
       endDate: endDate,
     };
-
+const baseURL = process.env.NEXT_PUBLIC_RUTA_F
     const response = await fetch(
-      `/api/filtros/${estado}/${alcaldia}/${filtroFecha}/${startDate}/${endDate}`,
+      `${baseURL}/${estado}/${alcaldia}/${filtroFecha}/${startDate}/${endDate}`,
       {
         method: "POST",
         headers: {

@@ -7,6 +7,7 @@ import styles from "./reportes.css";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import Preloader from "@/components/preloader2";
 import Router from "next/router";
+import { prodErrorMap } from "firebase/auth";
 
 // Importa el componente del mapa de manera dinámica
 const DynamicMap = dynamic(() => import("@/components/MapR"), {
@@ -65,7 +66,8 @@ function Reportar() {
 
     async function fetchData(uid) {
       try {
-        const userResponse = await fetch(`/api/Usuario/${uid}`);
+        const baseURL = process.env.NEXT_PUBLIC_RUTA_U
+        const userResponse = await fetch(`${baseURL}/${uid}`);
         if (!userResponse.ok) {
           throw new Error("Failed to fetch user data");
         }
@@ -92,8 +94,9 @@ function Reportar() {
     const descripcion = desc;
     const ubi = ubicacion;
    // console.log(uid, " ", nombre, " ", apellidoPaterno, " " , " ", descripcion, " ", ubi)
+   const baseURL= process.env.NEXT_PUBLIC_RUTA_MR
     const res = await fetch(
-      `/api/MandarR/${uid}/${nombre}/${apellidoPaterno}/${encodeURIComponent(
+      `${baseURL}/${uid}/${nombre}/${apellidoPaterno}/${encodeURIComponent(
         imagenURL
       )}/${descripcion}/${ubi}`,
       {
@@ -142,7 +145,7 @@ function Reportar() {
     const storage = getStorage(app);
     const randomId = Math.random().toString(36).substring(7);
     const imageName = `Ticket_${randomId}`;
-    const storageRef = ref(storage, `ImagenesBaches/${uid}/${imageName}`);
+    const storageRef = ref(storage, `ImagenesBaches/${imageName}`);
     await uploadBytes(storageRef, archivito);
     return getDownloadURL(storageRef);
   };

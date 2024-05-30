@@ -65,7 +65,8 @@ function ReportesComponente() {
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await fetch("/api/Reportes");
+                const baseURL = process.env.NEXT_PUBLIC_RUTA_R
+                const response = await fetch(`${baseURL}`);
                 if (!response.ok) {
                     throw new Error("Failed to fetch data");
                 }

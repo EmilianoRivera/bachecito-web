@@ -65,8 +65,11 @@ export default function Perfil() {
 
     async function fetchData(uid) {
       try {
-        const userResponse = await fetch(`/api/Usuario/${uid}`);
-        const reportesResponse = await fetch(`/api/ReportesPerfil/${uid}`);
+        const baseURL= process.env.NEXT_PUBLIC_RUTA_U
+        const baseURLR = process.env.NEXT_PUBLIC_RUTA_RP
+        console.log(baseURL, " ", baseURLR)
+        const userResponse = await fetch(`${baseURL}/${uid}`);
+        const reportesResponse = await fetch(`${baseURLR}/${uid}`);
         if (!userResponse.ok || !reportesResponse.ok) {
           throw new Error("Failed to fetch user data");
         }

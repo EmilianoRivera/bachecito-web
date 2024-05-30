@@ -29,7 +29,7 @@ async function fetchFiltroEstado(estado, alcaldia, filtroFecha, startDate, endDa
       startDate: startDate,
       endDate: endDate,
     };
-
+const baseURL = process.env.NEXT_PUBLIC_RUTA_F
     const response = await fetch(
       `/api/filtros/${estado}/${nombreAlcaldia}/${filtroFecha}/${startDate}/${endDate}`,
       {

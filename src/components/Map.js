@@ -732,7 +732,8 @@ const Map = ({ searchFolio, searchStatus, alcaldia }) => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await fetch("/api/Reportes");
+        const baseURL = process.env.NEXT_PUBLIC_RUTA_R
+        const res = await fetch(`${baseURL}`);
         if (!res.ok) {
           throw new Error("Failed to fetch data");
         }
