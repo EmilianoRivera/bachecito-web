@@ -721,7 +721,7 @@ const polygon = [
 ];
 const customMarkerIcon = L.icon({
   //SE TIENE QUE IMPORTAR LA IMAGEN  CON URL DE NAVEGADOR, NO PUEDE SER UNA IMAGEN EN LOCAL
-  iconUrl: "https://cdn-icons-png.flaticon.com/512/5737/5737612.png",
+  iconUrl: "https://i.postimg.cc/wvLVKd62/marcador.png",
   iconSize: [32, 32], 
   iconAnchor: [16, 32],  
   popupAnchor: [0, -32],
@@ -793,7 +793,7 @@ const Map = ({ setSelectedLocation }) => {
     <div>
       <MapContainer 
         style={{
-          height: "85vh",
+          height: "75vh",
           width: "59vw",
         }}
         center={[19.453986, -99.17505]}
