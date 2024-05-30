@@ -301,6 +301,12 @@ function HomePage() {
     <>
     {loading && <Preloader />}
     <div className="container-inicio">
+    <div className='banner'>
+      <div className='card-page'>
+        {/**<span style="--i:0;"></span> */}
+        <img src="" alt="" />
+      </div>
+    </div>
       <div className="text-inicio1">
         <h2>¡HEY!</h2>
         <p>Parece que nos encontraste 👀</p>
