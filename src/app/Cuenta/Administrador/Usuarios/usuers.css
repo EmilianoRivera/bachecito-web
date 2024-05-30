@@ -142,7 +142,7 @@ table {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 20px;
+    margin-top: -15px;
   }
 
   .inc-flex{
@@ -181,13 +181,22 @@ table {
   .Datos-incidencia{
      background-color: var(--background-color-10);
      border-radius: 10px;
-    width: 25vw;
-    max-width: 25vw;
-     margin-left: 2vw;
      justify-content: left;
      padding: 15px;
      box-sizing: border-box;
   }
+
+  .Datos-incidencia2{
+    border-radius: 10px;
+     margin-left: 2vw;
+     width: 25vw;
+   max-width: 25vw;
+    justify-content: left;
+    padding: 15px;
+    box-sizing: border-box;
+    display: block;
+ }
+
 
   .boton-cerrar{
     background: none;

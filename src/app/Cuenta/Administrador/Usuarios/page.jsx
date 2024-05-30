@@ -220,36 +220,42 @@ function Page() {
                                         <div className='numero-incidencia'>
                                             <h3>PRIMERA INCIDENCIA</h3>
                                             <p><i>Fecha:</i> {selectedIncidentDates.primera.fecha}</p>
-                                            <p><i>Gravedad:</i> {selectedIncidentDates.primera.prioridad}</p>
                                         </div>
-                                        <div className='Datos-incidencia'>
-                                            <p><i>Descripción:</i> {selectedIncidentDates.primera.descripcion}</p>
+                                        <div className='Datos-incidencia2'>
+                                        <p><i>Gravedad:</i> {selectedIncidentDates.primera.prioridad}</p>
+                                            <div className='Datos-incidencia'>
+                                            <p ><i>Descripción:</i> {selectedIncidentDates.primera.descripcion}</p>
+                                            </div>
                                         </div>
                                     </div>
                                 )}
                                 {selectedIncidentDates.segunda && (
                                     <div className='incidencia-abierta'>
-                                        <div className='numero-incidencia'>
-                                            <h3>SEGUNDA INCIDENCIA</h3>
-                                            <p><i>Fecha:</i> {selectedIncidentDates.segunda.fecha}</p>
-                                            <p><i>Gravedad:</i> {selectedIncidentDates.segunda.prioridad}</p>
-                                        </div>
+                                    <div className='numero-incidencia'>
+                                        <h3>SEGUNDA INCIDENCIA</h3>
+                                        <p><i>Fecha:</i> {selectedIncidentDates.segunda.fecha}</p>
+                                    </div>
+                                    <div className='Datos-incidencia2'>
+                                    <p><i>Gravedad:</i> {selectedIncidentDates.segunda.prioridad}</p>
                                         <div className='Datos-incidencia'>
-                                            <p><i>Descripción:</i> {selectedIncidentDates.segunda.descripcion}</p>
+                                        <p ><i>Descripción:</i> {selectedIncidentDates.segunda.descripcion}</p>
                                         </div>
                                     </div>
+                                </div>
                                 )}
                                 {selectedIncidentDates.tercer && (
                                     <div className='incidencia-abierta'>
-                                        <div className='numero-incidencia'>
-                                            <h3>TERCERA INCIDENCIA</h3>
-                                            <p><i>Fecha:</i> {selectedIncidentDates.tercer.fecha}</p>
-                                            <p><i>Gravedad:</i> {selectedIncidentDates.tercer.prioridad}</p>
-                                        </div>
+                                    <div className='numero-incidencia'>
+                                        <h3>TERCERA INCIDENCIA</h3>
+                                        <p><i>Fecha:</i> {selectedIncidentDates.tercer.fecha}</p>
+                                    </div>
+                                    <div className='Datos-incidencia2'>
+                                    <p><i>Gravedad:</i> {selectedIncidentDates.tercer.prioridad}</p>
                                         <div className='Datos-incidencia'>
-                                            <p><i>Descripción:</i> {selectedIncidentDates.tercer.descripcion}</p>
+                                        <p ><i>Descripción:</i> {selectedIncidentDates.tercer.descripcion}</p>
                                         </div>
                                     </div>
+                                </div>
                                 )}
                             </>
                         )}
