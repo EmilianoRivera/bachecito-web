@@ -12,6 +12,7 @@ import {
   sendEmailVerification,
   signInWithEmailAndPassword,
   signOut,
+  sendPasswordResetEmail, getAuth
 } from "firebase/auth";
 import {
   updateDoc,
@@ -23,6 +24,7 @@ import {
 } from "firebase/firestore";
 import "./registro.css";
 import AuthContext from "../../../context/AuthContext";
+import { events } from "dc";
 
 
 function Registro() {
@@ -52,6 +54,8 @@ function Registro() {
   const [active, setActive] = useState(false);
   const [showPrivacyPolicy, setShowPrivacyPolicy] = useState(false);
   const [canSubmit, setCanSubmit] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [recoveryEmail, setRecoveryEmail] = useState('');
 
   const handleAdminLinkClick = (event) => {
     event.preventDefault();
@@ -273,10 +277,15 @@ function Registro() {
   const handleSignUp = async (event) => {
     try {
       event.preventDefault();
+      if (!checkBoxChecked) {
+        alert("Debes aceptar la política de privacidad y los términos y condiciones.");
+        return;
+      }
+
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
       sendEmailVerification(user);
-      alert("Se envió el correo de verificación.");
+      alert("Bienvenido a Bachecito 26, se envio un correo de verificación (:");
       const uid = user.uid;
       const usuariosCollection = collection(db, "usuarios");
       const nuevoUsuario = {
@@ -341,7 +350,19 @@ function Registro() {
       setLoading(false);
     }
   };
-  if (isLogged) {
+  const Recuperar = (e) => {
+    e.preventDefault();
+    const auth = getAuth();
+    sendPasswordResetEmail(auth, recoveryEmail)
+      .then(() => {
+        alert(`Correo de recuperación enviado a: ${recoveryEmail}`);
+        setModalVisible(false);
+      })
+      .catch((error) => {
+        console.error("Error al enviar el correo de recuperación: ", error);
+      });
+  };
+  if (isLogged) { 
     return (
       <div className="body2">
         <div className="alerta-logueado">
@@ -505,7 +526,7 @@ function Registro() {
               onChange={(e) => setPassword(e.target.value)}
               required
             />
-            <a id="olvi-contra" href="#">
+            <a id="olvi-contra" onClick={() => setModalVisible(true)}>
               ¿Olvidaste tu contraseña? 😰
             </a>
             <a id="admin-ini" onClick={handleAdminLinkClick}>
@@ -513,6 +534,24 @@ function Registro() {
             </a>
             <button type="submit" className="btn" id="iniciarSesion-btn">Iniciar Sesión</button>
           </form>
+          {modalVisible && (
+        <div className="modal">
+          <div className="modal-content">
+            <span className="close" onClick={() => setModalVisible(false)}>&times;</span>
+            <h2>Recuperar Contraseña</h2>
+            <form onSubmit={Recuperar}>
+              <input
+                type="email"
+                placeholder="Introduce tu correo electrónico"
+                value={recoveryEmail}
+                onChange={(e) => setRecoveryEmail(e.target.value)}
+                required
+              />
+              <button type="submit">Enviar</button>
+            </form>
+          </div>
+        </div>
+      )}
         </div>
         <div className="toggle-container">
           <div className="toggle">
@@ -676,5 +715,3 @@ function Registro() {
 }
 
 export default Registro;
-/* pipii no se hacer comits/ */
-
