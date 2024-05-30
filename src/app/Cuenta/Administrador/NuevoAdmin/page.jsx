@@ -22,7 +22,9 @@ export default function NuevoAdmin() {
                 apmat: apmat,
                 fechaNacimiento: fechaNacimiento,
                 correo: correo,
-                password: password
+                password: password,
+                estadoCuenta: true,
+                rol: "admin",
             }
             const baseURL = process.env.NEXT_PUBLIC_RUTA_NA
             const res = await fetch(`${baseURL}/${username}/${appat}/${apmat}/${fechaNacimiento}/${correo}/${password}`, {

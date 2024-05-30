@@ -24,7 +24,9 @@ export async function POST(request, {params}) {
       fechaNacimiento: fechaNacimiento,
       correo: correo,
       estadoCuenta: true,
-      rol:"admin"
+      //password: password,
+      rol:"admin",
+      fechaCreacion: new Date(),
     };
     addDoc(usuariosCollection, nuevoUsuario);
 

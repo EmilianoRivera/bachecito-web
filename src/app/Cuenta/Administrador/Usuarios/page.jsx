@@ -11,6 +11,12 @@ function Page() {
     const [descripcionIncidencia, setDescripcionIncidencia] = useState("");
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [currentUser, setCurrentUser] = useState(null);
+    const [estado, setEstado] = useState("Alta");
+
+    const handleEstadoChange = (e) => {
+        const estadoSeleccionado = e.target.value;
+        setEstado(estadoSeleccionado)
+    };
 
     useEffect(() => {
         async function fetchData() {
@@ -31,7 +37,7 @@ function Page() {
         fetchData();
     }, []);
 
-    const incidencia = async (uid, descripcion) => {
+    const incidencia = async (uid, descripcion, prioridad) => {
         try {
             const userQuery = query(
                 collection(db, 'usuarios'),
@@ -51,12 +57,15 @@ function Page() {
                 if (newIncidenciasCount === 1) {
                     updates.Primerincidencia = Timestamp.fromDate(new Date());
                     updates.descripcionPrimerIncidencia = descripcion;
+                    updates.prioridadPrimerI= prioridad;
                 } else if (newIncidenciasCount === 2) {
                     updates.SegundaIncidencia = Timestamp.fromDate(new Date());
                     updates.descripcionSegundaIncidencia = descripcion;
+                    updates.prioridadSegundaI= prioridad;
                 } else if (newIncidenciasCount === 3) {
                     updates.TercerIncidencia = Timestamp.fromDate(new Date());
                     updates.descripcionTercerIncidencia = descripcion;
+                    updates.prioridadTercerI= prioridad;
                 }
 
                 await updateDoc(userRef, updates);
@@ -70,6 +79,25 @@ function Page() {
         }
     };
 
+    const inhabilitarCuenta = async (uid) => {
+        try {
+            const userQuery = query(
+                collection(db, 'usuarios'),
+                where('uid', '==', uid)
+            );
+            const userDocs = await getDocs(userQuery);
+
+            userDocs.forEach(async (document) => {
+                const userRef = doc(db, 'usuarios', document.id);
+                await updateDoc(userRef, { inhabilitada: true});
+            });
+
+            // Fetch users again to refresh the data
+            fetchData();
+        } catch (error) {
+            console.error('Error disabling account: ', error);
+        }
+    };
     const handleDetailsClick = async (uid) => {
         try {
             const userQuery = query(
@@ -83,15 +111,18 @@ function Page() {
                 setSelectedIncidentDates({
                     primera: {
                         fecha: userData.Primerincidencia ? new Date(userData.Primerincidencia.seconds * 1000).toLocaleString() : 'No hay incidencias',
-                        descripcion: userData.descripcionPrimerIncidencia || 'No hay descripción'
+                        descripcion: userData.descripcionPrimerIncidencia || 'No hay descripción',
+                        prioridad: userData.prioridadPrimerI || 'No se asignó nivel de gravedad'
                     },
                     segunda: {
                         fecha: userData.SegundaIncidencia ? new Date(userData.SegundaIncidencia.seconds * 1000).toLocaleString() : 'No hay segunda incidencia',
-                        descripcion: userData.descripcionSegundaIncidencia || 'No hay descripción'
+                        descripcion: userData.descripcionSegundaIncidencia || 'No hay descripción',
+                        prioridad: userData.prioridadSegundaI || 'No se asignó nivel de gravedad'
                     },
                     tercer: {
                         fecha: userData.TercerIncidencia ? new Date(userData.TercerIncidencia.seconds * 1000).toLocaleString() : 'No hay tercera incidencia',
-                        descripcion: userData.descripcionTercerIncidencia || 'No hay descripción'
+                        descripcion: userData.descripcionTercerIncidencia || 'No hay descripción',
+                        prioridad: userData.prioridadTercerI || 'No se asignó nivel de gravedad'
                     }
                 });
             });
@@ -121,6 +152,7 @@ function Page() {
                         <th>Nombre</th>
                         <th>Email</th>
                         <th>Estado de la cuenta</th>
+                        <th>Acceso al sistema</th>
                         <th>#Reportes</th>
                         <th>#Incidencias</th>
                         <th>Acciones</th>
@@ -133,15 +165,23 @@ function Page() {
                             <td>{user.nombre} {user.apellidoPaterno}</td>
                             <td>{user.correo}</td>
                             <td>{user.estadoCuenta ? 'Activa' : 'Deshabilitada'}</td>
-                            <td>{user.numRep ?? 0}</td>
-                            <td>{user.incidencias ?? 0}</td>
-                            <td className='agregar-incidencia' onClick={() => openModal(user)}>
-                                    <img src="https://i.postimg.cc/59R2s3rn/agregar-documento.png" alt="" />
-                                    <span>Agregar incidencia</span>
-                            </td>
+                            <td>{user.inhabilitada ? 'Inhabilitado' : 'Habilitado'}</td>
+                            <td>{user.numRep}</td>
+                            <td>{user.incidencias}</td>
+                            
+                                {user.incidencias === 3  ? (
+                    <td className='desactivar-cuenta' onClick={() => inhabilitarCuenta(user.uid)}>
+                        <img src="https://i.postimg.cc/4xrhj7Wb/eliminar-documento-2.png" alt="Agregar documento" />
+                        <span>Inhabilitar cuenta</span>
+                    </td>
+            ) : (
+                    <td className='agregar-incidencia' onClick={() => openModal(user)}>
+                        <img src="https://i.postimg.cc/59R2s3rn/agregar-documento.png" alt="Agregar documento" />
+                        <span>Agregar incidencia</span>
+                    </td>
+            )}
                             <td className='eliminar'>
                                 <button className="Detalles" onClick={() => handleDetailsClick(user.uid)}>
-                                    <img src="https://i.postimg.cc/SsXLv1Zf/informacion-del-circulo-de-archivos.png" alt="" />
                                     <span>Detalles de incidencias</span>
                                 </button>
                             </td>
@@ -158,6 +198,11 @@ function Page() {
                             <div className='incidencia-abierta'>
                                 <h2>¡Cuentanos lo que sucedió!</h2>
                                <div className='inc-flex'>
+                               <select className='gravedad' onChange={handleEstadoChange}>
+                                <option value="Alta">Alta</option>
+                                <option value="Media">Media</option>
+                                <option value="Baja">Baja</option>
+                            </select>
                                <input 
                                 className='des-incidencia'
                                     type="text" 
@@ -165,7 +210,8 @@ function Page() {
                                     onChange={(e) => setDescripcionIncidencia(e.target.value)} 
                                     placeholder="Descripción" 
                                 />
-                                <button className='Btnagregar-incidencia' onClick={() => incidencia(currentUser.uid, descripcionIncidencia)}>Agregar incidencia</button>
+                                  
+                                <button className='Btnagregar-incidencia' onClick={() => incidencia(currentUser.uid, descripcionIncidencia, estado)}>Agregar incidencia</button>
                                </div>
                             </div>
                         ) : (
@@ -176,32 +222,41 @@ function Page() {
                                             <h3>PRIMERA INCIDENCIA</h3>
                                             <p><i>Fecha:</i> {selectedIncidentDates.primera.fecha}</p>
                                         </div>
-                                        <div className='Datos-incidencia'>
-                                            <p><i>Descripción:</i> {selectedIncidentDates.primera.descripcion}</p>
+                                        <div className='Datos-incidencia2'>
+                                        <p><i>Gravedad:</i> {selectedIncidentDates.primera.prioridad}</p>
+                                            <div className='Datos-incidencia'>
+                                            <p ><i>Descripción:</i> {selectedIncidentDates.primera.descripcion}</p>
+                                            </div>
                                         </div>
                                     </div>
                                 )}
                                 {selectedIncidentDates.segunda && (
                                     <div className='incidencia-abierta'>
-                                        <div className='numero-incidencia'>
-                                            <h3>SEGUNDA INCIDENCIA</h3>
-                                            <p><i>Fecha:</i> {selectedIncidentDates.segunda.fecha}</p>
-                                        </div>
+                                    <div className='numero-incidencia'>
+                                        <h3>SEGUNDA INCIDENCIA</h3>
+                                        <p><i>Fecha:</i> {selectedIncidentDates.segunda.fecha}</p>
+                                    </div>
+                                    <div className='Datos-incidencia2'>
+                                    <p><i>Gravedad:</i> {selectedIncidentDates.segunda.prioridad}</p>
                                         <div className='Datos-incidencia'>
-                                            <p><i>Descripción:</i> {selectedIncidentDates.segunda.descripcion}</p>
+                                        <p ><i>Descripción:</i> {selectedIncidentDates.segunda.descripcion}</p>
                                         </div>
                                     </div>
+                                </div>
                                 )}
                                 {selectedIncidentDates.tercer && (
                                     <div className='incidencia-abierta'>
-                                        <div className='numero-incidencia'>
-                                            <h3>TERCERA INCIDENCIA</h3>
-                                            <p><i>Fecha:</i> {selectedIncidentDates.tercer.fecha}</p>
-                                        </div>
+                                    <div className='numero-incidencia'>
+                                        <h3>TERCERA INCIDENCIA</h3>
+                                        <p><i>Fecha:</i> {selectedIncidentDates.tercer.fecha}</p>
+                                    </div>
+                                    <div className='Datos-incidencia2'>
+                                    <p><i>Gravedad:</i> {selectedIncidentDates.tercer.prioridad}</p>
                                         <div className='Datos-incidencia'>
-                                            <p><i>Descripción:</i> {selectedIncidentDates.tercer.descripcion}</p>
+                                        <p ><i>Descripción:</i> {selectedIncidentDates.tercer.descripcion}</p>
                                         </div>
                                     </div>
+                                </div>
                                 )}
                             </>
                         )}
