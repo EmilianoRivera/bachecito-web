@@ -44,6 +44,7 @@ async function fetchFiltroEstado(estado, alcaldia, filtroFecha, startDate, endDa
       throw new Error("Fallaron los filtros");
     }
     const resultadoFiltros = await response.json();
+    //console.log(resultadoFiltros)
     return resultadoFiltros;
   } catch (error) {
     console.error("Error a la hora de hacer la petición ", error);
@@ -53,7 +54,7 @@ async function fetchFiltroEstado(estado, alcaldia, filtroFecha, startDate, endDa
 
 const BarrasU = ({ estados, alcaldia, fechaFiltro, startDates, endDates }) => {
   const [datos, setDatos] = useState([]);
-
+console.log(estados)
   useEffect(() => {
     async function fetchData() {
       try {
@@ -90,15 +91,19 @@ const BarrasU = ({ estados, alcaldia, fechaFiltro, startDates, endDates }) => {
     reportes: groupedData[alcaldia],
   }));
 
+  if (finalData.length === 0) {
+    return <div>No hay datos</div>;
+  }
+
   return (
     <div style={{ width: '100%', height: '90%', marginLeft: '-2rem', marginTop: '1vh' }}> {/* Ajusta el alto aquí */}
       <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={finalData} style={{fontFamily: 'sans-serif', fontSize: '13px',}}>
-          <XAxis dataKey="alcaldia" style={{fontFamily: 'sans-serif', fontSize: '13px',}}/>
+        <BarChart data={finalData} style={{ fontFamily: 'sans-serif', fontSize: '13px' }}>
+          <XAxis dataKey="alcaldia" style={{ fontFamily: 'sans-serif', fontSize: '13px' }} />
           <YAxis />
           <CartesianGrid strokeDasharray="3 3" />
-          <Tooltip style={{fontFamily: 'sans-serif', fontSize: '13px',}} />
-          <Bar dataKey="reportes" fill="#8884d8"> 
+          <Tooltip style={{ fontFamily: 'sans-serif', fontSize: '13px' }} />
+          <Bar dataKey="reportes" fill="#8884d8" barSize={finalData.length === 1 ? 40 : 40} animationBegin={200} animationDuration={1000}>
             {finalData.map((entry, index) => (
               <Cell key={`cell-${index}`} fill={
                 index % 3 === 0 ? "#FF8A57" :

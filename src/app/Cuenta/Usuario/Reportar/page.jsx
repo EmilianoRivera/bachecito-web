@@ -91,7 +91,7 @@ function Reportar() {
     const imagenURL = await handleFileUpload(uid);
     const descripcion = desc;
     const ubi = ubicacion;
-    console.log(uid, " ", nombre, " ", apellidoPaterno, " " , " ", descripcion, " ", ubi)
+   // console.log(uid, " ", nombre, " ", apellidoPaterno, " " , " ", descripcion, " ", ubi)
     const res = await fetch(
       `/api/MandarR/${uid}/${nombre}/${apellidoPaterno}/${encodeURIComponent(
         imagenURL
@@ -123,9 +123,9 @@ function Reportar() {
 
     try {
       const data = await res.json();
-      console.log("Respuesta de la API:", data);
+      //console.log("Respuesta de la API:", data);
     } catch (error) {
-      console.error("Error al analizar la respuesta JSON:", error);
+      console.error("Error al analizar la respuesta:", error);
     }
     // Aquí puedes agregar la lógica para enviar los datos al servidor
   };

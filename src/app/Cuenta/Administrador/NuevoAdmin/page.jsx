@@ -42,27 +42,27 @@ export default function NuevoAdmin() {
 
     const handleUsername = (e) => {
         setUsername(e.target.value);
-        console.log(username)
+      //  console.log(username)
     };
     const handleAppat = (e) => {
         setAppat(e.target.value);
-        console.log(appat)
+      //  console.log(appat)
     };
     const handlePass = (e) => {
         setPassword(e.target.value)
-        console.log(password)
+      //  console.log(password)
     }
     const handleApmat = (e) => {
         setApmat(e.target.value);
-        console.log(apmat)
+      //  console.log(apmat)
     };
     const handleFechaNacimiento = (e) => {
         setFechaNacimiento(e.target.value);
-        console.log(fechaNacimiento)
+     //   console.log(fechaNacimiento)
     };
     const handleCorreo = (e) => {
         setCorreo(e.target.value);
-        console.log(correo)
+       // console.log(correo)
     };
 
     const handleSubmit = (e) => {

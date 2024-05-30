@@ -11,7 +11,6 @@ import {
 } from "recharts";
 import moment from "moment";
 import 'moment/locale/es'; // Importar la configuración local en español
-import { RxFace } from "react-icons/rx";
 moment.locale('es'); // Establecer el idioma a español
 import "@/components/txt-graficas.css";
 
@@ -23,12 +22,12 @@ const alcaldias = [
 ];
 
 export default function BarrasHz({
-  width,
-  height,
-  estados,
-  startDates,
-  endDates,
-  filtroFechas,
+  width = 400, // Valor predeterminado para la anchura
+  height = 400, // Valor predeterminado para la altura
+  estados = "Todos",
+  startDates = null,
+  endDates = null,
+  filtroFechas = "Todos los tiempos",
 }) {
   const [alcEstRep, setAlcEstRep] = useState(null);
 

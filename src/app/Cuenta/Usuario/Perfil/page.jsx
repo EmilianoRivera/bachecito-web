@@ -125,7 +125,7 @@ export default function Perfil() {
                 foliosGuardados: nuevosFoliosGuardados,
               });
 
-              console.log("Folio eliminado de la base de datos del usuario.");
+              console.log("Folio eliminado  del usuario.");
             } else {
               // Agregar el nuevo folio al array de folios guardados
               const nuevosFoliosGuardados = [
@@ -138,23 +138,23 @@ export default function Perfil() {
                 foliosGuardados: nuevosFoliosGuardados,
               });
 
-              console.log("Folio guardado en la base de datos del usuario.");
+              console.log("Folio guardado  del usuario.");
             }
           } else {
             console.error(
-              "El documento del usuario no existe en la base de datos."
+              "El documento del usuario no existe."
             );
           }
         } else {
           console.error(
-            "No se encontró ningún documento de usuario que contenga el UID proporcionado."
+            "No se encontró ningún documento de usuario."
           );
         }
       } else {
         console.error("No se proporcionaron datos de usuario válidos.");
       }
     } catch (error) {
-      console.error("Error al guardar el folio en la base de datos:", error);
+      console.error("Error al guardar el folio:", error);
     }
   };
 

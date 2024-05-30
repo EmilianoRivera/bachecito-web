@@ -18,12 +18,12 @@ const DynamicMap = dynamic(() => import("@/components/Map"), {
 });
 
 export default function Estadisticas() {
-  const [estado, setEstado] = useState("Todos");
+  //const [estado, setEstado] = useState("Todos");
   const [filtroFecha, setFiltroFecha] = useState("Todos los tiempos");
   const [alcaldia, setSelectedAlcaldia] = useState("Todas");
 
-  const [searchStatus, setSearchStatus] = useState("");
-  const [searchFolio, setSearchFolio] = useState("");
+  const [searchStatus, setSearchStatus] = useState("Todos");
+  const [searchFolio, setSearchFolio] = useState("Todos los folios");
   const [isFechaSelectVisible, setIsFechaSelectVisible] = useState(false);
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
@@ -50,13 +50,14 @@ export default function Estadisticas() {
 
   const handleFechaChange = (e) => {
     const selectedValue = e.target.value;
-    console.log("Fecha seleccionada:", selectedValue);
+  //  console.log("Fecha seleccionada:", selectedValue);
     setFiltroFecha(selectedValue);
   };
   const handleAlcaldiaChange = (e) => {
-    setSearchFolio(e.target.value);
+    const selectedFolio = e.target.value;
     const selectedOption = e.target.options[e.target.selectedIndex];
-    const selectedAlcaldia = selectedOption.text;
+    const selectedAlcaldia = selectedOption.text.replace(/^[^\w]+/, "").trim();
+    setSearchFolio(selectedFolio);
     setSelectedAlcaldia(selectedAlcaldia);
   };
   useEffect(() => {
@@ -105,7 +106,7 @@ export default function Estadisticas() {
           value={searchFolio}
           onChange={handleAlcaldiaChange}
         >
-          <option value="">Todas las alcaldías</option>
+          <option value="Todas">Todas</option>
           <option value="001">🐴 Álvaro Obregón</option>
           <option value="002">🐜 Azcapotzalco</option>
           <option value="003">🐷 Benito Juárez</option>
@@ -130,7 +131,7 @@ export default function Estadisticas() {
           onChange={(e) => setSearchStatus(e.target.value)}
           className="filter-estados-estadisticas"
         >
-          <option value="">Todos los estados</option>
+          <option value="Todos">Todos</option>
           <option value="Sin atender">Sin atender</option>
           <option value="En atención">En atención</option>
           <option value="Atendido">Atendido</option>
@@ -142,7 +143,7 @@ export default function Estadisticas() {
       <BarrasU
         width={250}
         height={200}
-        estados={estado}
+        estados={searchStatus}
         alcaldia={alcaldia}
         fechaFiltro={filtroFecha}
         startDates={startDate}
@@ -158,7 +159,7 @@ export default function Estadisticas() {
     <div className="mapa">
       {/* Renderiza el mapa solo si está inicializado */}
       {mapInitialized && (
-        <DynamicMap searchFolio={searchFolio} searchStatus={searchStatus} />
+        <DynamicMap searchFolio={searchFolio} searchStatus={searchStatus} alcaldia={alcaldia} />
       )}
     </div>
   </div>
