@@ -31,6 +31,7 @@ export default function NuevoAdmin() {
                 correo: correo,
                 estadoCuenta: true,
                 rol: "admin",
+                fechaCreacion: new Date(),
             }
             addDoc(usuariosCollection, nuevoUsuario)
             alert("Se guardó el usuario")

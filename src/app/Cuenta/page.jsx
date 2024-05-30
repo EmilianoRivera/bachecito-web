@@ -24,7 +24,7 @@ import {
 } from "firebase/firestore";
 import "./registro.css";
 import AuthContext from "../../../context/AuthContext";
-import { events } from "dc";
+import { events, numberDisplay } from "dc";
 
 
 function Registro() {
@@ -295,7 +295,11 @@ function Registro() {
         apellidoMaterno: apmat,
         fechaNacimiento: fechaNacimiento,
         correo: email,
+        rol: "usuario",
         estadoCuenta: true,
+        fechaCreacion: new Date(),
+        incidencias:0,
+        numbRep:0
       };
       addDoc(usuariosCollection, nuevoUsuario);
       push("/Cuenta/Usuario/Perfil");
