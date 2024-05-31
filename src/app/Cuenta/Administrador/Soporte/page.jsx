@@ -818,7 +818,7 @@ function Soporte() {
 
         <br /> <br />
 
-        <div className="container_table">
+        <div className="container_table_">
           <table className="ticket-table">
             <thead>
               <tr className="sticky-top">
@@ -878,3 +878,5 @@ function Soporte() {
   );
 }
 export default Soporte;
+
+
