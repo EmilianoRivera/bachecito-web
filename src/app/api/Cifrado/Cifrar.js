@@ -39,3 +39,5 @@ export async function Cifrado(estado) {
 Cifrado('Mi mensaje secreto').then(result => {
     console.log('Resultado del cifrado:', result);
 });
+
+

@@ -160,6 +160,8 @@ function Soporte() {
       try {
         const cifradoCorreo = await Cifrado(userData.correo)
         console.log(cifradoCorreo)
+       /*  const descrifrado = await Descifrado(cifradoCorreo.encryptedData, cifradoCorreo.iv, cifradoCorreo.key)
+        console.log(descrifrado) */
         const baseURL= process.env.NEXT_PUBLIC_RUTA_U
         const userResponse = await fetch(`${baseURL}/${uid}`);
         if (!userResponse.ok) {

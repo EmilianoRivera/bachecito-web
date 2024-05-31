@@ -126,6 +126,8 @@ function Reportar() {
 
     try {
       const data = await res.json();
+      alert("Se ha enviado su reporte con exito")
+      router.push("/Cuenta/Usuario/Perfil")
       //console.log("Respuesta de la API:", data);
     } catch (error) {
       console.error("Error al analizar la respuesta:", error);
