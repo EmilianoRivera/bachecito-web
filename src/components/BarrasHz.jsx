@@ -22,19 +22,20 @@ const alcaldias = [
 ];
 
 export default function BarrasHz({
-  width,
-  height,
-  estados,
-  startDates,
-  endDates,
-  filtroFechas,
+  width = 400, // Valor predeterminado para la anchura
+  height = 400, // Valor predeterminado para la altura
+  estados = "Todos",
+  startDates = null,
+  endDates = null,
+  filtroFechas = "Todos los tiempos",
 }) {
   const [alcEstRep, setAlcEstRep] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch("/api/EstadoRAlcaldia"); 
+        const baseURL = process.env.NEXT_PUBLIC_RUTA_EA
+        const response = await fetch(`${baseURL}`); 
         if (!response.ok) {
           throw new Error("Error al obtener los datos");
         }

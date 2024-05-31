@@ -119,7 +119,7 @@ export default function ReportesAdmin() {
                     // Actualizar el documento para establecer eliminado: true
                     await updateDoc(doc.ref, { eliminado: true });
 
-                    console.log(`Se marcó como eliminado el reporte con folio ${folio}`);
+                 //   console.log(`Se marcó como eliminado el reporte con folio ${folio}`);
 
                     // Eliminar la fila de la tabla HTML
                     const rows = document.querySelectorAll('.containerReportesAdmin .Reportes');
@@ -181,7 +181,8 @@ export default function ReportesAdmin() {
     };
     useEffect(() => {
         async function fetchData() {
-            const res = await fetch("/api/Reportes");
+            const baseURL = process.env.NEXT_PUBLIC_RUTA_R
+            const res = await fetch(`${baseURL}`);
             const data = await res.json(); // Espera a que se resuelva la promesa
             setReportes(data);
         }
@@ -230,7 +231,8 @@ export default function ReportesAdmin() {
             };
 
             // Realizar la solicitud POST con el objeto de parámetros en el cuerpo
-            const datosNuevos = await fetch(`/api/filtrosReportes/${estado}/${nombreAlcaldia}/${filtroFecha}/${startDate}/${endDate}`, {
+            const baseURL= process.env.NEXT_PUBLIC_RUTA_RF
+            const datosNuevos = await fetch(`${baseURL}/${estado}/${nombreAlcaldia}/${filtroFecha}/${startDate}/${endDate}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json' // Indicar que el cuerpo es JSON
@@ -241,10 +243,10 @@ export default function ReportesAdmin() {
                 throw new Error("Fallo a la petición de /api/filtros/estado/${estado}");
             }
             const estadosReportes = await datosNuevos.json();
-            console.log(estadosReportes);
+          //  console.log(estadosReportes);
 
         } catch (error) {
-            console.error("Error a la hora de hacer la petición a /api/filtros/estado/${estado}: ", error);
+            console.error("Error a la hora de hacer la petición: ", error);
         }
     }
 

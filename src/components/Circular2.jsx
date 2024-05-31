@@ -1,89 +1,38 @@
 import React, { useEffect, useState } from "react";
-import * as d3 from "d3";
-import "./Circular2.css";
-
-function PieChart({ data }) {
-  const [chartData, setChartData] = useState([]);
-
-  useEffect(() => {
-    // Convertir los datos en un array de objetos con etiqueta y valor
-    const formattedData = Object.entries(data).map(([label, value]) => ({
-      label,
-      value,
-    }));
-    setChartData(formattedData);
-  }, [data]);
-
-  useEffect(() => {
-    // Crear la gráfica de anillo
-    const width = 200;
-    const height = 200;
-    const radius = Math.min(width, height) / 2;
-    const innerRadius = radius * 0.45; // Definir el radio interior
-
-    // Definir el esquema de colores personalizado
-    const color = d3.scaleOrdinal()
-      .domain(chartData.map(d => d.label))
-      .range(["#FF5136", "#FFC63D", "#A4DF77"]); // Naranja, Verde, Rojo
-
-    // Limpia cualquier contenido existente en el elemento con id "pie-chart" para que no se repita la grafica 2 veces al importarla
-    d3.select("#pie-chart").selectAll("*").remove();
-
-    // Crear un nuevo SVG en el elemento "pie-chart"
-    const svg = d3.select("#pie-chart")
-      .append("svg")
-      .attr("width", width)
-      .attr("height", height)
-      .append("g")
-      .attr("transform", `translate(${width / 2}, ${height / 2})`);
-
-    const arc = d3.arc()
-      .innerRadius(innerRadius) // Usar el radio interior
-      .outerRadius(radius); // Usar el radio exterior
-
-    const pie = d3.pie()
-      .value(d => d.value);
-
-    const arcs = svg.selectAll("arc")
-      .data(pie(chartData))
-      .enter()
-      .append("g")
-      .attr("class", "arc");
-
-    arcs.append("path")
-      .attr("d", arc)
-      .attr("fill", d => color(d.data.label));
-
-    arcs.append("text")
-      .attr("transform", d => `translate(${arc.centroid(d)})`)
-      .attr("text-anchor", "middle")
-      .text(d => `${d.data.label}: ${d3.format(".1%")(d.data.value / d3.sum(chartData, d => d.value))}`);
-  }, [chartData]);
-
-  return <div id="pie-chart"></div>;
-}
-
-
+import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
+import "./Circular2.css"
+ 
+const COLORS = ["#FF5136", "#FFC63D", "#A4DF77"];
 
 function CRep() {
   const [totalRep, setTotalRep] = useState(0);
   const [repEstado, setRepEstado] = useState({});
+  const [chartData, setChartData] = useState([]);
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const reportesTot = await fetch("/api/reportesTotales");
-        const reportesEst = await fetch("/api/reportesEstado");
+        const baseURLT = process.env.NEXT_PUBLIC_RUTA_REPT
+        const baseURLE = process.env.NEXT_PUBLIC_RUTA_RE
+        const reportesTot = await fetch(`${baseURLT}`);
+        const reportesEst = await fetch(`${baseURLE}`);
 
-        if (!reportesTot.ok && !reportesEst.ok) {
+        if (!reportesTot.ok || !reportesEst.ok) {
           throw new Error("Failed to fetch data");
         }
 
-        const data = await reportesTot.json();
-        const data2 = await reportesEst.json();
+        const totalData = await reportesTot.json();
+        const estadoData = await reportesEst.json();
 
-        setTotalRep(data);
-        setRepEstado(data2);
+        setTotalRep(totalData);
+        setRepEstado(estadoData);
+
+        const formattedData = Object.entries(estadoData).map(([key, value]) => {
+        
+          return { name: `${key}  `, value };
+        });
+
+        setChartData(formattedData);
       } catch (error) {
         console.log("Error fetching data: ", error);
       }
@@ -111,7 +60,27 @@ function CRep() {
           <div className='cont-reportes'>{repEstado.atendido}</div>
         </div>
       </div>
-      <PieChart data={repEstado} />
+       <div className="pie-chart-container">
+       <PieChart width={400} height={250}>
+        <Pie
+          data={chartData}
+          cx="50%"
+          cy="50%"
+          labelLine={false}
+          outerRadius={80}
+          innerRadius={30}
+          fill="#8884d8"
+          dataKey="value"
+        >
+          {chartData.map((entry, index) => (
+            <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+          ))}
+        </Pie>
+        <Tooltip />
+        <Legend />
+      </PieChart>
+      </div>
+     
     </div>
   );
 }

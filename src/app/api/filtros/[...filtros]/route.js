@@ -134,8 +134,9 @@ export async function POST(request, { params }) {
   try {
     const [estado,alcaldia,fechaFiltro,startDate,endDate, ] = params.filtros; 
     
-   // console.log("DEL POST",estado, " ", endDate, " ", fechaFiltro, " ", alcaldia, " ", startDate)
+ // console.log("DEL POST",estado, " ", endDate, " ", fechaFiltro, " ", alcaldia, " ", startDate)
     const fechaActual = obtenerFechaActual();
+   // console.log(fechaFiltro === "Todos los tiempos")
     if (estado ==="Todos" && alcaldia === "Todas" && fechaFiltro === "Todos los tiempos") {
       const refRep = collection(db, "reportes")
       const getReportes = await getDocs(refRep)
@@ -144,6 +145,7 @@ export async function POST(request, { params }) {
         const rep = doc.data()
         reportes.push(rep)
       })
+   //   console.log("POAR AQUI",reportes)
       return NextResponse.json(reportes)
     }  else if (
       estado === "Todos" ||
@@ -159,7 +161,7 @@ export async function POST(request, { params }) {
         startDate,
         endDate
       );
-      console.log(filtradoGeneral.length)
+  //    console.log(filtradoGeneral.length)
       return NextResponse.json(filtradoGeneral);
     } 
     else {
@@ -171,7 +173,7 @@ export async function POST(request, { params }) {
         startDate,
         endDate
       );
-      console.log(filtradoEspecifico.length)
+     // console.log(filtradoEspecifico.length)
  
       return NextResponse.json(filtradoEspecifico);
     }
