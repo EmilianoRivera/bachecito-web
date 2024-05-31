@@ -21,7 +21,8 @@ function Page() {
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await fetch('/api/Usuarios');
+                const baseURL= process.env.NEXT_PUBLIC_RUTA_US
+                const response = await fetch(`${baseURL}`);
                 if (!response.ok) {
                     throw new Error('Failed to fetch data');
                 }

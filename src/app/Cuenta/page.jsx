@@ -21,10 +21,12 @@ import {
   where,
   getDocs,
   addDoc,
+  doc,
 } from "firebase/firestore";
 import "./registro.css";
 import AuthContext from "../../../context/AuthContext";
-import { events, numberDisplay } from "dc";
+import { dataTable, events , numberDisplay } from "dc";
+
 
 
 function Registro() {
@@ -281,27 +283,30 @@ function Registro() {
         alert("Debes aceptar la política de privacidad y los términos y condiciones.");
         return;
       }
+      const parametros = {
+      nombre: nombre,
+      appat: appat,
+      apmat: apmat,
+      fechaNacimiento: fechaNacimiento,
+      email: email,
+      password: password
+    };
+      const baseURL = process.env.NEXT_PUBLIC_RUTA_REGISTROU
+      const res = await fetch(`${baseURL}/${nombre}/${appat}/${apmat}/${fechaNacimiento}/${email}/${password}`,{
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(parametros),
+      })
+      if(!res.ok ){
+        throw new Error("Failed to fetch user data");
+      }
+      const data = await res.json()
 
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-      sendEmailVerification(user);
+      console.log(data)
       alert("Bienvenido a Bachecito 26, se envio un correo de verificación (:");
-      const uid = user.uid;
-      const usuariosCollection = collection(db, "usuarios");
-      const nuevoUsuario = {
-        uid: uid,
-        nombre: nombre,
-        apellidoPaterno: appat,
-        apellidoMaterno: apmat,
-        fechaNacimiento: fechaNacimiento,
-        correo: email,
-        rol: "usuario",
-        estadoCuenta: true,
-        fechaCreacion: new Date(),
-        incidencias:0,
-        numbRep:0
-      };
-      addDoc(usuariosCollection, nuevoUsuario);
+
       push("/Cuenta/Usuario/Perfil");
     } catch (error) {
       console.error("Error al crear la cuenta: ", error);
@@ -311,49 +316,60 @@ function Registro() {
 
   const handleSignIn = async (event) => {
     event.preventDefault();
+    setLoading(true);
+    //console.log("SignIn iniciado"); // Log para saber que la función ha sido llamada
+  
     try {
-      setLoading(true);
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-      if (user && !user.emailVerified) {
-        alert("Por favor, verifica tu correo electrónico para iniciar sesión.");
-        signOut(auth);
-      } else {
-        const reportesRef = collection(db, "usuarios");
-        const q = query(reportesRef, where("uid", "==", user.uid));
-        const querySnapshot = await getDocs(q);
-
-        let estadoCuenta;
-
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          estadoCuenta = data.estadoCuenta;
-        });
-
-        if (estadoCuenta === false) {
-          const confirm = window.confirm("Tu cuenta ha sido desactivada. ¿Deseas restablecerla?");
-          if (confirm) {
-            querySnapshot.forEach(async (doc) => {
-              await updateDoc(doc.ref, { estadoCuenta: true });
-            });
-            alert("Cuenta restablecida correctamente");
-            push("/Cuenta/Usuario/Perfil");
-          } else {
-            signOut(auth);
-            alert("Inicio de sesión cancelado");
-          }
-        } else {
+      // Consulta para verificar el estado de la cuenta
+      const reportesRef = collection(db, "usuarios");
+      const q = query(reportesRef, where("correo", "==", email));
+      const querySnapshot = await getDocs(q);
+  
+      let estadoCuenta;
+      let userDoc;
+  
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+        estadoCuenta = data.estadoCuenta;
+        userDoc = doc;
+      });
+  
+     // console.log("Estado de la cuenta:", estadoCuenta); // Log para ver el estado de la cuenta
+  
+      if (estadoCuenta === false) {
+        const confirm = window.confirm("Tu cuenta ha sido desactivada. ¿Deseas restablecerla?");
+        if (confirm) {
+          await updateDoc(userDoc.ref, { estadoCuenta: true });
+          alert("Cuenta restablecida correctamente");
+  
+          // Si la cuenta está activa, proceder con el inicio de sesión
+          const userCredential = await signInWithEmailAndPassword(auth, email, password);
+          const user = userCredential.user;
           alert("Inicio de sesión exitoso");
           push("/Cuenta/Usuario/Perfil");
+        } else {
+          alert("Inicio de sesión cancelado");
+          return; // Salir de la función para no proceder con el inicio de sesión
         }
+      } else if (estadoCuenta === true) {
+        // Si la cuenta ya está activa, proceder con el inicio de sesión
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+        alert("Inicio de sesión exitoso");
+        push("/Cuenta/Usuario/Perfil");
+      } else {
+        alert("La cuenta no existe o no tiene estado válido.");
       }
     } catch (error) {
+      console.error("Error en el inicio de sesión:", error); // Log para ver cualquier error capturado
       setError(error.message);
       alert("Correo o contraseña incorrectos");
     } finally {
       setLoading(false);
+   //   console.log("SignIn FINALIZAD0"); // Log para saber que la función ha finalizado
     }
   };
+
   const Recuperar = (e) => {
     e.preventDefault();
     const auth = getAuth();

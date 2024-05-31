@@ -6,7 +6,7 @@ import { auth, db, app2, app } from "../../../../../firebase";
 import { useRouter } from "next/navigation";
 import AuthContext from "../../../../../context/AuthContext";
 import "./Soporte.css";
-
+import { Cifrado } from "../../../api/Cifrado/Cifrar";
 function Soporte() {
   useAuthUser();
   //const [fecha, setFecha] = useState('');
@@ -158,7 +158,10 @@ function Soporte() {
 
     async function fetchData(uid) {
       try {
-        const userResponse = await fetch(`/api/Usuario/${uid}`);
+        const cifradoCorreo = await Cifrado(userData.correo)
+        console.log(cifradoCorreo)
+        const baseURL= process.env.NEXT_PUBLIC_RUTA_U
+        const userResponse = await fetch(`${baseURL}/${uid}`);
         if (!userResponse.ok) {
           throw new Error("Failed to fetch user data");
         }
@@ -182,9 +185,11 @@ function Soporte() {
           return;
         }
 
+
         const uid = userData.uid;
-        const ticketsData = await fetch(`/api/Ticket/${uid}`);
-        if (!ticketsData.ok) {
+        const baseURL = process.env.NEXT_PUBLIC_RUTA_T
+        const ticketsData = await fetch(`${baseURL}/${uid}`);
+        if (!ticketsData.ok) {  
           throw new Error("Error al traer los datos");
         }
         const tickets = await ticketsData.json();
@@ -269,11 +274,13 @@ function Soporte() {
     }
   }
 
+
+
   const openModal = (folio) => {
 
     const ticketEncontrados = ticket.find(ticket => ticket.folio === folio);
     if (ticketEncontrados) {
-      console.log("Ticket encontrado:", ticketEncontrados);
+   //   console.log("Ticket encontrado:", ticketEncontrados);
       setTicketEncontrado(ticketEncontrados)
     } else {
       console.log("No se encontró ningún ticket con el folio:", folio);
@@ -364,7 +371,7 @@ function Soporte() {
     const storage = getStorage(app2);
     const randomId = Math.random().toString(36).substring(7);
     const imageName = `Ticket_${randomId}`;
-    const storageRef = ref(storage, `ImagenesTickets/${uid}/${imageName}`);
+    const storageRef = ref(storage, `ImagenesTickets/${imageName}`);
     await uploadBytes(storageRef, archivito);
     return getDownloadURL(storageRef);
   };
@@ -372,6 +379,7 @@ function Soporte() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+  
     const correoA = userData.correo;
     const nombre = userData.nombre;
     const area = asignarTarea;
@@ -381,8 +389,8 @@ function Soporte() {
     let res = prompt("¿Desea levantar el ticket? (SI/NO)");
     if (res.toUpperCase() === "SI") {
       try {
-
-        const ticketResponse = await fetch(`/api/RegistrarTicket/${encodeURIComponent(url)}/${uid}/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${encodeURIComponent(selectedRutaError)}/${descripcionProblema}/${correoA}/${nombre}/${area}`, {
+        const baseURL =process.env.NEXT_PUBLIC_RUTA_RT
+        const ticketResponse = await fetch(`${baseURL}/${encodeURIComponent(url)}/${uid}/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${encodeURIComponent(selectedRutaError)}/${descripcionProblema}/${correoA}/${nombre}/${area}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",

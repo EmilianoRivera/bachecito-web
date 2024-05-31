@@ -23,7 +23,8 @@ export default function ReportesAdmin() {
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await fetch("/api/ReportesEliminados");
+                const baseURL= process.env.NEXT_PUBLIC_REL
+                const response = await fetch(`${baseURL}`);
                 if (!response.ok) {
                     throw new Error("Failed to fetch data");
                 }
