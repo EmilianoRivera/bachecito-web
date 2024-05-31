@@ -221,6 +221,7 @@ function ReportesComponente() {
                 <div className="columnm-left">
                   <div className="fotografía">
                     <img src={report.imagenURL} alt={""} style={{ width: '100%', maxHeight: '100%' }} />
+                    <p className="no-foto2">No se pudo cargar la imagen</p>
                   </div>
 
                   <div className="column-left-inferior">

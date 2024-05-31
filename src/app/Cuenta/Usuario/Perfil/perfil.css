@@ -2,6 +2,16 @@
   transition: .3s ease-in;
 }
 
+.no-foto2{
+  position: absolute;
+  color: var(--text-color);
+  font-size: 12px;
+  text-align: center;
+  width: 90px;
+  top: 16vh;
+  margin-left: 30px;
+}
+
 .container-perfil {
   display: flex;
   height: 88vh;
@@ -68,7 +78,7 @@
   position: fixed;
   width: 100%;
   margin-top: -11vh;
-  z-index: 50;
+  z-index: 500;
   background-color: var(--background-color);
 }
 
@@ -82,8 +92,11 @@
 .fotografía2 {
   width: 100%;
   height: 43vh;
-  border-radius: 5vh;
+  border-radius: 3vh;
   margin-bottom: 25px;
+  z-index: 100;
+  position: relative;
+  background-color: var(--background-color-6);
 }
 
 
@@ -106,7 +119,7 @@
   display: flex;
   color: var(--text-color);
   font-weight: 400;
-  font-size: large;
+  font-size: 16px;
   padding-top: 9px;
 }
 
@@ -201,7 +214,7 @@
   color: var(--text-color);
   padding: 15px;
   margin-top: -15px;
-  font-size: 1rem;
+  font-size: 14px;
 }
 
 
@@ -217,7 +230,7 @@
   margin-top: -15px;
   background-color: var(--background-color-4);
   border-radius: 3vh;
-  font-size: 1rem;
+  font-size: 14px;
   padding: 15px;
   color: var(--text-color);
 }
@@ -831,6 +844,16 @@ font-weight: bolder;
   left:370px;
 }
 
+.fotografía2{
+  width: 95%;
+  display: flex;
+}
+.fotografía2 img{
+width: 100%;
+z-index: 1;
+position: relative;
+}
+
 @media (max-width: 1300px) {
   /* Por ejemplo, cuando la pantalla es más estrecha que 800px */
   .encabezado-historial {
@@ -854,7 +877,7 @@ font-weight: bolder;
     width: 100%;
     height: 33vh;
     margin-top: 10vh;
-    border-radius: 5vh;
+    border-radius: 3vh;
 }
 .fotografía2 img{
   width: 100%;

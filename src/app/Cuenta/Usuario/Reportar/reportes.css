@@ -180,7 +180,6 @@
 .submiiit:hover{
   position: absolute;
   left: 1.5vw;
-  bottom: 5px;
   width: 15vw;
   transition: .3s;
   padding: 10px;
