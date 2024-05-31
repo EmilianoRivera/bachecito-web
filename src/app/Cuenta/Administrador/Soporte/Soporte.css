@@ -369,25 +369,25 @@ select::-ms-expand {
     color: #fff;
 }
 
-.container_table .ticket-table{
+.container_table_ .ticket-table {
     width: 100%;
     font-family: "Baloo Thambi 2", system-ui;
     /* Ahora la tabla ocupará todo el ancho del contenedor */
 }
 
-.container_table .ticket-table th {
+.container_table_ .ticket-table th {
     padding: 8px;
     background-color: #D1D1D1;
     border-radius: 13px;
     color: #1E1E1E;
 }
 
-.container_table .ticket-table td {
+.container_table_ .ticket-table td {
     padding: 8px;
     border-radius: 13px;
 }
 
-.container_table .ticket-table tr:nth-child(even) {
+.container_table_ .ticket-table tr:nth-child(even) {
     background-color: #f2f2f2;
     border-radius: 13px
 }
@@ -451,15 +451,26 @@ select::-ms-expand {
 
 .detallitos {
     padding: 10px 20px;
-    background-color: #FF9F49; /* Color de fondo */
-    color: white; /* Color del texto */
-    border: none; /* Sin borde */
-    border-radius: 10px; /* Borde redondeado */
-    cursor: pointer; /* Cursor al pasar sobre el botón */
+    background-color: #FF9F49;
+    /* Color de fondo */
+    color: white;
+    /* Color del texto */
+    border: none;
+    /* Sin borde */
+    border-radius: 10px;
+    /* Borde redondeado */
+    cursor: pointer;
+    /* Cursor al pasar sobre el botón */
     transition: .5s;
     font-family: "Baloo Thambi 2", system-ui;
-  
-  }
+}
+
+
+@media (max-width: 800px){
+
+    
+    
+}
 
 ::-webkit-scrollbar {
     width: 10px;
@@ -482,3 +493,5 @@ select::-ms-expand {
     background: var(--background-color-2);
     /* Color de la barra de desplazamiento al pasar el mouse sobre ella */
 }
+
+
