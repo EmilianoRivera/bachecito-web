@@ -18,6 +18,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  margin-top: -6vh;
 }
 
 .intro-reportar{
@@ -166,7 +167,7 @@
 .submiiit{
   position: absolute;
   left: 1.5vw;
-  bottom: 5px;
+  bottom: 4vh;
   width: 15vw;
   padding: 10px;
   background-color: var(--background-color);
@@ -179,7 +180,6 @@
 .submiiit:hover{
   position: absolute;
   left: 1.5vw;
-  bottom: 5px;
   width: 15vw;
   transition: .3s;
   padding: 10px;

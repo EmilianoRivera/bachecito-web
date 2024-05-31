@@ -355,6 +355,7 @@ export default function Perfil() {
                   alt=""
                   style={{ maxWidth: "100%", maxHeight: "100%", borderRadius:"1rem", }}
                 />
+                <p className="no-foto2">No se pudo cargar la imagen</p>
               </div>
               <div className="column-left-inferior2">
                 <div className="fecha2">{reporte.fechaReporte}</div>
