@@ -8,8 +8,10 @@ function CRep() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const reportesTot = await fetch("/api/reportesTotales");
-        const reportesEst = await fetch("/api/reportesEstado");
+        const baseURLT = process.env.NEXT_PUBLIC_RUTA_REPT
+        const baseURLE = process.env.NEXT_PUBLIC_RUTA_RE
+        const reportesTot = await fetch(`${baseURLT}`);
+        const reportesEst = await fetch(`${baseURLE}`);
 
         if (!reportesTot.ok && !reportesEst.ok) {
           throw new Error("Failed to fetch data");

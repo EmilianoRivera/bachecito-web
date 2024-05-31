@@ -4,6 +4,7 @@ import {auth, db} from "../../../../../firebase";
 import {createUserWithEmailAndPassword, sendEmailVerification}from "firebase/auth";
 import { addDoc, collection } from 'firebase/firestore';
 import "./NuevoAdmin.css";
+import { APP_PATHS_MANIFEST } from 'next/dist/shared/lib/constants';
 
 export default function NuevoAdmin() {
     const [username, setUsername] = useState('');
@@ -15,26 +16,30 @@ export default function NuevoAdmin() {
     const registroAdmin = async(e) => {
         try {
             e.preventDefault();
-            const adminCredential = await createUserWithEmailAndPassword(auth, correo, password)
-            const admin = adminCredential.user
-            sendEmailVerification(admin)
-            alert("Se envió correo")
-            const uid = admin.uid
-            
-            const usuariosCollection = collection(db, "usuarios")   //collection(db, "tickets")
-            const nuevoUsuario = {
-                uid: uid, 
-                nombre: username,
-                apellidoPaterno: appat,
-                apellidoMaterno: apmat,
+            const parametros = {
+                username: username,
+                appat: appat,
+                apmat: apmat,
                 fechaNacimiento: fechaNacimiento,
                 correo: correo,
+                password: password,
                 estadoCuenta: true,
                 rol: "admin",
-                fechaCreacion: new Date(),
             }
-            addDoc(usuariosCollection, nuevoUsuario)
-            alert("Se guardó el usuario")
+            const baseURL = process.env.NEXT_PUBLIC_RUTA_NA
+            const res = await fetch(`${baseURL}/${username}/${appat}/${apmat}/${fechaNacimiento}/${correo}/${password}`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(parametros),
+            })
+            if(!res.ok) {
+                throw new Error("Error al crear a nuevo admin")
+            }
+            const data = await res.json()
+            alert("Se envió correo: ", data)
+     
         } catch (error) {
             console.error("error al crear la cuenta: ", error)
             alert(error.mesagge)

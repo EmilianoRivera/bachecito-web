@@ -13,7 +13,7 @@ import moment from "moment";
 import {obtenerFechaActual, formatearFecha} from "../scripts/funcionesFiltro"
 import 'moment/locale/es'; // Importar la configuración local en español
 moment.locale('es'); // Establecer el idioma a español
-
+import { Cifrado } from "../app/api/Cifrado/Cifrar";
 const COLORS = [
   "#FF8A57",
   "#FFB54E",
@@ -45,6 +45,8 @@ async function fetchFiltroEstado(
       /^[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+|[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+$/g,
       ""
     );
+    const cifradoEstado = Cifrado(estado)
+    console.log(cifradoEstado)
     const parametros = {
       estado: estado,
       alcaldia: nombreAlcaldia,
@@ -52,9 +54,9 @@ async function fetchFiltroEstado(
       startDate: startDate,
       endDate: endDate,
     };
-
+    const baseURL = process.env.NEXT_PUBLIC_RUTA_F
     const response = await fetch(
-      `/api/filtros/${estado}/${nombreAlcaldia}/${filtroFecha}/${startDate}/${endDate}`,
+      `${baseURL}/${estado}/${nombreAlcaldia}/${filtroFecha}/${startDate}/${endDate}`,
       {
         method: "POST",
         headers: {

@@ -181,7 +181,8 @@ export default function ReportesAdmin() {
     };
     useEffect(() => {
         async function fetchData() {
-            const res = await fetch("/api/Reportes");
+            const baseURL = process.env.NEXT_PUBLIC_RUTA_R
+            const res = await fetch(`${baseURL}`);
             const data = await res.json(); // Espera a que se resuelva la promesa
             setReportes(data);
         }
@@ -230,7 +231,8 @@ export default function ReportesAdmin() {
             };
 
             // Realizar la solicitud POST con el objeto de parámetros en el cuerpo
-            const datosNuevos = await fetch(`/api/filtrosReportes/${estado}/${nombreAlcaldia}/${filtroFecha}/${startDate}/${endDate}`, {
+            const baseURL= process.env.NEXT_PUBLIC_RUTA_RF
+            const datosNuevos = await fetch(`${baseURL}/${estado}/${nombreAlcaldia}/${filtroFecha}/${startDate}/${endDate}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json' // Indicar que el cuerpo es JSON
