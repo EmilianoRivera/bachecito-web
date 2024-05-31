@@ -26,7 +26,7 @@ export async function POST(request, {params}) {
       estadoCuenta: true,
       fechaCreacion: new Date(),
       incidencias:0,
-      numbRep:0
+      numRep:0
     };
     addDoc(usuariosCollection, nuevoUsuario);
 
