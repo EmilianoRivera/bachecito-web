@@ -773,6 +773,8 @@ const DEFAULT_LONGITUDE = -99.1750683; // batiz
     const location = await reverseGeocode(`${latlng.lat},${latlng.lng}`);
     setSelectedLocation(location); // Pasa la dirección al componente padre
     }else{
+      setMarkerPosition({ lat: DEFAULT_LATITUDE, lng: DEFAULT_LONGITUDE });
+      setSelectedLocation("Mar Mediterráneo 227, Popotla, Miguel Hidalgo, 11320 Ciudad de México, CDMX");
       alert("Detectamos una ubicación fuera de la CDMX, por favor intenta de nuevo");
     }
   };
@@ -790,17 +792,45 @@ const DEFAULT_LONGITUDE = -99.1750683; // batiz
       alert("No se encontraron ubicaciones válidas.");
       return;
     }
-
   
-    const { geometry } = places[0];
+    // Definir límites de la Ciudad de México
+    const cdmxBounds = {
+      north: 19.593686, // Latitud máxima (norte)
+      south: 19.188838, // Latitud mínima (sur)
+      west: -99.326787, // Longitud mínima (oeste)
+      east: -98.960547, // Longitud máxima (este)
+    };
+  
+    // Filtrar lugares dentro de los límites de la Ciudad de México
+    const cdmxPlaces = places.filter(place => {
+      const lat = place.geometry.location.lat();
+      const lng = place.geometry.location.lng();
+      return (
+        lat >= cdmxBounds.south &&
+        lat <= cdmxBounds.north &&
+        lng >= cdmxBounds.west &&
+        lng <= cdmxBounds.east
+      );
+    });
+  
+    if (cdmxPlaces.length === 0) {
+      alert("No se encontraron ubicaciones dentro de la Ciudad de México, recuerda que solo se permiten ubicaciones dentro de la CDMX.");
+      return;
+    }
+  
+    // Tomar el primer lugar dentro de los límites de la Ciudad de México
+    const { geometry } = cdmxPlaces[0];
     const latlng = {
       lat: geometry.location.lat(),
       lng: geometry.location.lng()
     };
+  
+    // Establecer la posición del marcador y obtener la ubicación inversa
     setMarkerPosition(latlng);
     const location = await reverseGeocode(`${latlng.lat},${latlng.lng}`);
     setSelectedLocation(location);
   };
+  
   
 
   const mapStyles = {
@@ -835,10 +865,10 @@ const DEFAULT_LONGITUDE = -99.1750683; // batiz
           onLoad={handleOnLoad}
           onPlacesChanged={handlePlacesChanged}
           bounds={{
-            north: 19.64511,
-            south: 19.15005,
-            west: -99.35885,
-            east: -98.96489,
+            north: 19.592769,
+            south: 19.189365,
+            west:  -99.326444,
+            east:  -98.960977,
           }}
         >
           <input
