@@ -16,7 +16,6 @@ export async function GET(request, {params}) {
     ticketsSnapshot.forEach((doc) => {
       const ticket = doc.data();
       const ticketEncrypted = enc(ticket)
-      console.log("-----------",ticketEncrypted)
       tickets.push(ticketEncrypted);
     });
 

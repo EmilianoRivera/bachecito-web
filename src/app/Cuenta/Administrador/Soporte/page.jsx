@@ -168,7 +168,6 @@ function Soporte() {
     
         const encryptedUserDatas = await userResponse.json();
         const userDatas = desc(encryptedUserDatas);
-        console.log(encryptedUserDatas)
         setUserData(userDatas);
       } catch (error) {
         console.error("Error al traer la info:", error);
@@ -198,7 +197,6 @@ function Soporte() {
         // Asegúrate de que encryptedTickets es un array de strings
         const tickets = encryptedTickets.map(ticket => desc(ticket));
         
-        console.log(tickets);
         setTickets(tickets);
       } catch (error) {
         console.error("Error al traer los tickets:", error);
@@ -361,7 +359,8 @@ function Soporte() {
     }
   };
 
-  const handleFileUpload = async (uid) => {
+  const handleFileUpload = async ( ) => {
+
     const archivo = document.querySelector('input[type="file"]');
     const archivito = archivo.files[0];
 
@@ -382,45 +381,50 @@ function Soporte() {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const correoA = userData.correo;
-    const nombre = userData.nombre;
-    const area = asignarTarea;
-    const uid = userData.uid;
-    const url = await handleFileUpload(uid);
+    const correoA = enc(userData.correo);
+    const nombre = enc(userData.nombre);
+    const area = enc(asignarTarea);
+    const Uid = enc(userData.uid);
+    const url = await handleFileUpload();
+    const descProm = enc(descripcionProblema)
+    const selectedRuta = enc(selectedRutaError)
+    const errorSelec = enc(errorSeleccionado)
 
+//    console.log("MI ERROR ",errorSelec)
     let res = prompt("¿Desea levantar el ticket? (SI/NO)");
     if (res.toUpperCase() === "SI") {
       try {
         const baseURL = process.env.NEXT_PUBLIC_RUTA_RT;
+        const parametros = {
+          url: encodeURIComponent(url),
+          Uid: encodeURIComponent(Uid),
+          errorSeleccionado: encodeURIComponent(errorSelec),
+          sistemaOperativo,
+          navegador,
+          selectedRutaError: encodeURIComponent(selectedRuta),
+          descripcionProblema: encodeURIComponent(descProm),
+          correoA:encodeURIComponent(correoA),
+          nombre:encodeURIComponent(nombre),
+          area: encodeURIComponent(area),
+        }
         const ticketResponse = await fetch(
           `${baseURL}/${encodeURIComponent(
             url
-          )}/${uid}/${errorSeleccionado}/${sistemaOperativo}/${navegador}/${encodeURIComponent(
-            selectedRutaError
-          )}/${descripcionProblema}/${correoA}/${nombre}/${area}`,
+          )}/${encodeURIComponent(Uid)}/${encodeURIComponent(errorSelec)}/${sistemaOperativo}/${navegador}/${encodeURIComponent(
+            selectedRuta
+          )}/${encodeURIComponent(descProm)}/${encodeURIComponent(correoA)}/${encodeURIComponent(nombre)}/${encodeURIComponent(area)}`,
           {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
             },
-            body: JSON.stringify({
-              url: encodeURIComponent(url),
-              uid: uid,
-              errorSeleccionado,
-              sistemaOperativo,
-              navegador,
-              selectedRutaError: encodeURIComponent(selectedRutaError),
-              descripcionProblema,
-              correoA,
-              nombre,
-              area,
-            }),
+            body: JSON.stringify(parametros),
           }
         );
         if (ticketResponse.ok) {
           console.log("Formulario enviado con éxito");
           alert("Formulario enviado con exito");
-          window.location.reload();
+         // window.location.reload();
         } else {
           console.error(
             "Error al enviar el formulario:",
