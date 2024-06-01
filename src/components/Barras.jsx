@@ -13,7 +13,7 @@ import moment from "moment";
 import {obtenerFechaActual, formatearFecha} from "../scripts/funcionesFiltro"
 import 'moment/locale/es'; // Importar la configuración local en español
 moment.locale('es'); // Establecer el idioma a español
-import { Cifrado } from "../app/api/Cifrado/Cifrar";
+import { Cifrado } from "../scripts/Cifrado/Cifrar";
 const COLORS = [
   "#FF8A57",
   "#FFB54E",
@@ -121,7 +121,7 @@ export default function Barras({
       const contador = item.contador || 0;
       const alcaldia = buscarAlcaldias(item.ubicacion);
       const cont = funcCont(data, item.fechaReporte, alcaldia);
-      console.log(cont);
+      //console.log(cont);
       if (!isNaN(fecha)) {
         const key = `${fecha}-${alcaldia}`; // Unique key for each combination of date and alcaldia
         if (!acc[key]) {
