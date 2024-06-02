@@ -2,7 +2,7 @@
 import dynamic from "next/dynamic";
 import Circular from "@/components/Circular2";
 import "./Mapa.css";
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
@@ -19,27 +19,6 @@ export default function MapAdmin() {
     setIsGraphicsVisible(!isGraphicsVisible);
   };
 
-  //Filtros
-  const alcaldiasCDMX = [
-    "Todas",
-    "🐴 Álvaro Obregón ",
-    "🐜 Azcapotzalco ",
-    "🐷 Benito Juárez",
-    "🐺 Coyoacán",
-    "🌳 Cuajimalpa de Morelos",
-    "🦅 Cuauhtémoc",
-    "🌿 Gustavo A. Madero ",
-    "🏠 Iztacalco",
-    "🐭 Iztapalapa",
-    "🏔 La Magdalena Contreras",
-    "🦗 Miguel Hidalgo",
-    "🌾 Milpa Alta",
-    "🌋 Tláhuac",
-    "🦶 Tlalpan",
-    "🌻 Venustiano Carranza",
-    "🐠 Xochimilco",
-  ];
-
   // Estados para manejar la visibilidad de los select
   const [isFechaSelectVisible, setIsFechaSelectVisible] = useState(false);
   const [isAlcaldiaSelectVisible, setIsAlcaldiaSelectVisible] = useState(false);
@@ -48,26 +27,29 @@ export default function MapAdmin() {
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   const [filtroFecha, setFiltroFecha] = useState("Todos los tiempos");
-  const [estado, setEstado] = useState("Todos")
-  const [alcaldia, setAlcaldia] = useState("Todas")
-
+  const [alcaldia,  setSelectedAlcaldia] = useState("Todas")
+  const [mapInitialized, setMapInitialized] = useState(false); // Definición de mapInitialized
+  const [searchStatus, setSearchStatus] = useState("Todos");
+  const [searchFolio, setSearchFolio] = useState("Todos los folios");
+  
   const handleAlcaldiaChange = (e) => {
-   // console.log("Alcaldía seleccionada:", e.target.value);
-    const alcaldia = e.target.value
-    setAlcaldia(alcaldia)
+    const selectedFolio = e.target.value;
+    const selectedOption = e.target.options[e.target.selectedIndex];
+    const selectedAlcaldia = selectedOption.text.replace(/^[^\w]+/, "").trim();
+    setSearchFolio(selectedFolio);
+    setSelectedAlcaldia(selectedAlcaldia);
   };
+  useEffect(() => {
+    // Marca el mapa como inicializado
+    setMapInitialized(true);
+  }, [searchFolio, searchStatus]);
 
-  const handleEstadoChange = (e) => {
-    const estado = e.target.value
-    setEstado(estado);
-  };
 
   const handleFechaChange = (e) => {
     const selectedValue = e.target.value;
     //console.log("Fecha seleccionada:", selectedValue);
     setFiltroFecha(selectedValue);
   };
-
 
   
   return (
@@ -115,12 +97,28 @@ export default function MapAdmin() {
             Alcaldía
           </label>
           {isAlcaldiaSelectVisible && (
-            <select onChange={handleAlcaldiaChange}>
-              {alcaldiasCDMX.map((alcaldia) => (
-                <option key={alcaldia} value={alcaldia}>
-                  {alcaldia}
-                </option>
-              ))}
+              <select
+              className="filter-estados-estadisticas"
+              value={searchFolio}
+              onChange={handleAlcaldiaChange}
+            >
+              <option value="Todas">Todas</option>
+              <option value="001">🐴 Álvaro Obregón</option>
+              <option value="002">🐜 Azcapotzalco</option>
+              <option value="003">🐷 Benito Juárez</option>
+              <option value="004">🐺 Coyoacán</option>
+              <option value="005">🌳 Cuajimalpa de Morelos</option>
+              <option value="006">🦅 Cuauhtémoc</option>
+              <option value="007">🌿 Gustavo A. Madero</option>
+              <option value="008">🏠 Iztacalco</option>
+              <option value="009">🐭 Iztapalapa</option>
+              <option value="010">🏔 La Magdalena Contreras</option>
+              <option value="011">🦗 Miguel Hidalgo</option>
+              <option value="012">🌾 Milpa Alta</option>
+              <option value="013">🌋 Tláhuac</option>
+              <option value="014">🦶 Tlalpan</option>
+              <option value="015">🌻 Venustiano Carranza</option>
+              <option value="016">🐠 Xochimilco</option>
             </select>
           )}
         </div>
@@ -134,7 +132,7 @@ export default function MapAdmin() {
             Estado
           </label>
           {isEstadoSelectVisible && (
-            <select onChange={handleEstadoChange}>
+            <select  onChange={(e) => setSearchStatus(e.target.value)}>
               <option value="Sin Estado">Todos</option>
               <option value="Sin Estado">Sin Estado</option>
               <option value="Sin atender">Sin atender</option>
@@ -147,7 +145,9 @@ export default function MapAdmin() {
       <button className="btn-ocultar" onClick={handleToggleGraphics}>
         {isGraphicsVisible ? "Ocultar gráficos" : "Mostrar gráficos"}
       </button>
-      <DynamicMap />
+      {mapInitialized && (
+         <DynamicMap searchFolio={searchFolio} searchStatus={searchStatus} alcaldia={alcaldia} />
+      )}
       {/* Solo muestra el div si isGraphicsVisible es true */}
       {isGraphicsVisible && (
         <div className="container-graphics">
