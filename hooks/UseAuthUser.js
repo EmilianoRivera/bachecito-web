@@ -21,7 +21,6 @@ export const useAuthUser = () => {
       onAuthStateChanged(auth, async (user) => {
         let userLogged = user === null ? false : true;
   
-  console.log("EXAMINAMOS QUE ES USERLOGGED: ", userLogged)
         if (!userLogged) {
           if (pathname === "/Cuenta/Administrador") {
             push(pathname)
@@ -44,7 +43,6 @@ export const useAuthUser = () => {
             let admin;
             if(userData.rol === "admin"){
               admin = userData.rol
-              console.log("EVALUAMOS EL ADMIN: ", admin)
               setIsAdmin(admin);
             } 
             

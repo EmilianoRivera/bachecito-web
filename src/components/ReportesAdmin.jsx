@@ -101,7 +101,7 @@ export default function ReportesAdmin() {
                 }
                 const dataEnc = await response.json();
                 const data = dataEnc.map(rep => desc(rep))
-                console.log("ACA ESTA MI DATAAAA",data)
+              
                 setRep(data);
             } catch (error) {
                 console.log("Error fetching data: ", error);
@@ -219,9 +219,7 @@ export default function ReportesAdmin() {
 
     const handleFechaChange = (e) => {
         const selectedValue = e.target.value;
-        console.log("Fecha seleccionada:", selectedValue);
         setFiltroFecha(selectedValue);
-        console.log("Fecha")
     };
 
     const nombreAlcaldia = alcaldias.replace(/^[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+|[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+$/g, "");
