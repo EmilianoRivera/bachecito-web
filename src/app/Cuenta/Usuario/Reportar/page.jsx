@@ -7,6 +7,7 @@ import styles from "./reportes.css";
 import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import Preloader from "@/components/preloader2";
 import Router from "next/router";
+import { desc, enc } from "@/scripts/Cifrado/Cifrar";
 import { prodErrorMap } from "firebase/auth";
 
 // Importa el componente del mapa de manera dinámica
@@ -18,7 +19,7 @@ function Reportar() {
   const router = useRouter();
 
   const [userData, setUserData] = useState({});
-  const [desc, setDesc] = useState("Sin descripción");
+  const [des, setDesc] = useState("Sin descripción");
   const [ubicacion, setUbicacion] = useState("Sin ubicación");
 
   const [loading, setLoading] = useState(false);
@@ -66,14 +67,17 @@ function Reportar() {
 
     async function fetchData(uid) {
       try {
+
+        const Uid = enc(uid)
+
         const baseURL = process.env.NEXT_PUBLIC_RUTA_U
-        const userResponse = await fetch(`${baseURL}/${uid}`);
+        const userResponse = await fetch(`${baseURL}/${encodeURIComponent(Uid)}`);
         if (!userResponse.ok) {
           throw new Error("Failed to fetch user data");
         }
         const userData = await userResponse.json();
-
-        setUserData(userData);
+        const dataDesc = desc(userData)
+        setUserData(dataDesc);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -91,7 +95,7 @@ function Reportar() {
     const nombre = userData.nombre;
     const apellidoPaterno = userData.apellidoPaterno;
     const imagenURL = await handleFileUpload(uid);
-    const descripcion = desc;
+    const descripcion = des;
     const ubi = ubicacion;
    // console.log(uid, " ", nombre, " ", apellidoPaterno, " " , " ", descripcion, " ", ubi)
    const baseURL= process.env.NEXT_PUBLIC_RUTA_MR
@@ -176,7 +180,7 @@ function Reportar() {
                 <textarea
                   id="descripcion"
                   name="descripcion"
-                  placeholder={desc}
+                  placeholder={des}
                   onChange={handleDescripcion}
                   required
                 />
