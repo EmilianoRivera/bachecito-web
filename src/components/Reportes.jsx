@@ -122,12 +122,15 @@ function ReportesComponente() {
       console.error("Error al guardar/eliminar el folio en la base de datos:", error);
     }
 
-    setUserData((prevUserData) => ({
-      ...prevUserData,
-      foliosGuardados: prevUserData.foliosGuardados.includes(folio)
-        ? prevUserData.foliosGuardados.filter((f) => f !== folio)
-        : [...(prevUserData.foliosGuardados || []), folio],
-    }));
+    setUserData((prevUserData) => {
+      const foliosGuardados = prevUserData.foliosGuardados || [];
+      return {
+        ...prevUserData,
+        foliosGuardados: foliosGuardados.includes(folio)
+          ? foliosGuardados.filter((f) => f !== folio)
+          : [...foliosGuardados, folio],
+      };
+    });
   };
   const filteredReports = rep.filter((report) =>
     //report.descripcion.toLowerCase().includes(searchTerm.toLowerCase()) &&
