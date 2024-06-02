@@ -91,16 +91,17 @@ function Reportar() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const uid = userData.uid;
+    const uid = enc(userData.uid);
     const nombre = userData.nombre;
     const apellidoPaterno = userData.apellidoPaterno;
-    const imagenURL = await handleFileUpload(uid);
+    const imagenURL = await handleFileUpload();
+    console.log("MI IMAGEN",imagenURL)
     const descripcion = des;
     const ubi = ubicacion;
    // console.log(uid, " ", nombre, " ", apellidoPaterno, " " , " ", descripcion, " ", ubi)
    const baseURL= process.env.NEXT_PUBLIC_RUTA_MR
     const res = await fetch(
-      `${baseURL}/${uid}/${nombre}/${apellidoPaterno}/${encodeURIComponent(
+      `${baseURL}/${encodeURIComponent(uid)}/${nombre}/${apellidoPaterno}/${encodeURIComponent(
         imagenURL
       )}/${descripcion}/${ubi}`,
       {
@@ -109,7 +110,7 @@ function Reportar() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          uid: uid,
+          uid:encodeURIComponent(uid),
           nombre,
           apellidoPaterno,
           imagenURL: encodeURIComponent(imagenURL),
@@ -139,7 +140,7 @@ function Reportar() {
     // Aquí puedes agregar la lógica para enviar los datos al servidor
   };
 
-  const handleFileUpload = async (uid) => {
+  const handleFileUpload = async () => {
     const archivo = document.querySelector('input[type="file"]');
     const archivito = archivo.files[0];
 

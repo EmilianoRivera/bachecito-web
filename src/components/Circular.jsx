@@ -30,12 +30,10 @@ async function fetchFiltroEstado(estado, alcaldias, filtroFecha, startDate, endD
 
     const resultado = await response.json();
     if (!Array.isArray(resultado)) {
-      console.log(typeof resultado);
       console.log("La respuesta del servidor no es un array");
     }
 
     const data = resultado.map((rep) => desc(rep));
-    console.log(data);
     return data;
   } catch (error) {
     console.error("Error a la hora de hacer la petición ", error);

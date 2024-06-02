@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, Cell } from "recharts";
 import { desc } from "@/scripts/Cifrado/Cifrar";
+
 // Función para extraer las alcaldías de la ubicación
 function buscarAlcaldias(ubicacion) {
   const regexAlcaldiasCDMX =
@@ -29,7 +30,7 @@ async function fetchFiltroEstado(estado, alcaldia, filtroFecha, startDate, endDa
       startDate: startDate,
       endDate: endDate,
     };
-const baseURL = process.env.NEXT_PUBLIC_RUTA_F
+    const baseURL = process.env.NEXT_PUBLIC_RUTA_F;
     const response = await fetch(
       `${baseURL}/${estado}/${nombreAlcaldia}/${filtroFecha}/${startDate}/${endDate}`,
       {
@@ -44,9 +45,7 @@ const baseURL = process.env.NEXT_PUBLIC_RUTA_F
       throw new Error("Fallaron los filtros");
     }
     const resultadoFiltros = await response.json();
-    //console.log(resultadoFiltros)
-    const data = resultadoFiltros.map(rep => desc(rep))
-
+    const data = resultadoFiltros.map(rep => desc(rep));
     return data;
   } catch (error) {
     console.error("Error a la hora de hacer la petición ", error);
@@ -56,7 +55,7 @@ const baseURL = process.env.NEXT_PUBLIC_RUTA_F
 
 const BarrasU = ({ estados, alcaldia, fechaFiltro, startDates, endDates }) => {
   const [datos, setDatos] = useState([]);
-console.log(estados)
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -78,6 +77,7 @@ console.log(estados)
     reportes: 1, // Cada objeto en los datos representa un reporte, por lo que siempre es 1
   }));
 
+
   // Agrupar los datos por alcaldía y contar el número de reportes
   const groupedData = formattedData.reduce((acc, curr) => {
     if (!acc[curr.alcaldia]) {
@@ -87,18 +87,20 @@ console.log(estados)
     return acc;
   }, {});
 
+
   // Convertir los datos agrupados en un array
   const finalData = Object.keys(groupedData).map((alcaldia) => ({
     alcaldia,
     reportes: groupedData[alcaldia],
   }));
 
+
   if (finalData.length === 0) {
     return <div>No hay datos</div>;
   }
 
   return (
-    <div style={{ width: '100%', height: '90%', marginLeft: '-2rem', marginTop: '1vh' }}> {/* Ajusta el alto aquí */}
+    <div style={{ width: '100%', height: '90%', marginLeft: '-2rem', marginTop: '1vh' }}>
       <ResponsiveContainer width="100%" height="100%">
         <BarChart data={finalData} style={{ fontFamily: 'sans-serif', fontSize: '13px' }}>
           <XAxis dataKey="alcaldia" style={{ fontFamily: 'sans-serif', fontSize: '13px' }} />

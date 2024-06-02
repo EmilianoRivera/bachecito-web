@@ -41,14 +41,12 @@ export default function BarrasHz({
         const data = await response.json();
 
         const dataDesc = desc(data.cifrado)
-        console.log(dataDesc)
 
         setAlcEstRep(dataDesc);
       } catch (error) {
         console.log("Error fetching data: ", error);
       }
     }
-console.log("AYUDAAAA")
 
     fetchData();
   }, []);
