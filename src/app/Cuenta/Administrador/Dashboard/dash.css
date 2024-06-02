@@ -129,6 +129,8 @@
   .grafica-circular,
   .grafica-barras-hz {
     margin-top: 15px;
+    font-family: 'Poppins', sans-serif;
+
   }
   
   .grafica-circular,
@@ -317,7 +319,7 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  display: flex;
+  display: block;
 }
 
 .grafica-circular h3{
@@ -328,10 +330,17 @@
   font-weight: 600;
 }
 
+.circular{
+  display: flex;
+  
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
 /*Grafica barras*/
 .grafica-barras{
   width: 50vw;
-  height: 69vh;
+  height: 88vh;
 }
 
 .grafica-barras h3{

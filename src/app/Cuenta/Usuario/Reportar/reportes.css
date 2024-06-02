@@ -195,3 +195,22 @@
     height: 400px;
   }
   
+  @media(max-width:1100px){
+    .izquierda-reportar{
+      width: 50vw;
+      margin-right: 1.3vw;
+      margin-left: 1vw;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: -6vh;
+    }
+
+    .derecha-reportar{
+      width: 30vw;
+      background-color: red;
+    }
+  }
+
+  /*marca, modelo, numero de serie, color, dueño*/

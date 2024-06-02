@@ -162,9 +162,9 @@ function Dashboard() {
           <div className="grafica-barras">
             <h3>REPORTES POR ALCALDIA</h3>
             <div className="barras">
-              <Barras
-                width={680}
-                height={400}
+              <Barras 
+                width={1000}
+                height={420}
                 estados={estado}
                 alcaldias={alcaldias}
                 startDates={startDate}
@@ -180,7 +180,7 @@ function Dashboard() {
         <h3>REPORTES SEGÚN SU ESTADO DE ATENCIÓN POR ALCALDIA</h3>
         <BarrasHz
           width={500}
-          height={1000}
+          height={700}
           estados={estado}
           alcaldias={alcaldias}
           startDates={startDate}
@@ -189,10 +189,10 @@ function Dashboard() {
         />
 
       </div>
-      <div className="grafica-barras-hz">
+      <div className="grafica-barras-hz" >
         <h3>CUENTAS DE USUARIOS POR DIA</h3>
         <LineChart
- 
+          
         />
 
       </div>

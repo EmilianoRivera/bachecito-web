@@ -163,7 +163,7 @@ export default function Barras({
     <>
       <ResponsiveContainer width="100%" height={height}>
         <BarChart
-          margin={{ top: 20, right: 150, left: 50, bottom: 70 }} // Ajustar margen inferior
+          margin={{ top: 20, right: 30, left: -20, bottom: 70 }} // Ajustar margen inferior
           data={datas}
           style={{ fontFamily: 'sans-serif', fontSize: '13px' }}
         >

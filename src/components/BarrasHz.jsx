@@ -95,16 +95,16 @@ console.log("AYUDAAAA")
         height={height}
         data={transformData(alcEstRep)}
         layout="vertical"
-        margin={{ top: 20, right: 30, left: 30, bottom: 5 }}
+        margin={{ right: 30, left: 30,}}
         style={{fontFamily: 'sans-serif', fontSize: '13px',}}
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis type="number" />
         <YAxis dataKey="alcaldia" type="category" />
         <Tooltip />
-        <Bar dataKey="atendido" stackId="a" fill="#52c41a" />
-        <Bar dataKey="enAtencion" stackId="a" fill="#faad14" />
-        <Bar dataKey="sinAtender" stackId="a" fill="#f5222d" />
+        <Bar dataKey="atendido" stackId="a" fill="#A4DF77" />
+        <Bar dataKey="enAtencion" stackId="a" fill="#FFC63D" />
+        <Bar dataKey="sinAtender" stackId="a" fill="#FF674F" />
       </BarChart>
     </ResponsiveContainer>
   );
