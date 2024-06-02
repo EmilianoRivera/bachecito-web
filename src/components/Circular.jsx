@@ -2,17 +2,9 @@
 import React, { useEffect, useState } from "react";
 import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
 import { enc, desc } from "@/scripts/Cifrado/Cifrar";
-async function fetchFiltroEstado(
-  estado,
-  alcaldias,
-  filtroFecha,
-  startDate,
-  endDate
-) {
-  const alcaldia = alcaldias.replace(
-    /^[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+|[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+$/g,
-    ""
-  );
+
+async function fetchFiltroEstado(estado, alcaldias, filtroFecha, startDate, endDate) {
+  const alcaldia = alcaldias.replace(/^[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+|[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+$/g, "");
   try {
     const parametros = {
       estado: estado,
@@ -37,14 +29,13 @@ async function fetchFiltroEstado(
     }
 
     const resultado = await response.json();
-    // Verificar si la respuesta es un array
     if (!Array.isArray(resultado)) {
-      console.log(typeof resultado)
-     console.log("La respuesta del servidor no es un array");
+      console.log(typeof resultado);
+      console.log("La respuesta del servidor no es un array");
     }
- 
+
     const data = resultado.map((rep) => desc(rep));
-    console.log(data)
+    console.log(data);
     return data;
   } catch (error) {
     console.error("Error a la hora de hacer la petición ", error);
@@ -127,7 +118,7 @@ export default function Circular({
   }, [estados, alcaldias, startDates, endDates, filtroFechas]);
 
   const data = Object.keys(rep).map((key) => ({
-    name: key,
+    name: key.charAt(0).toUpperCase() + key.slice(1), // Capitalize first letter
     value: rep[key],
   }));
 
@@ -149,6 +140,7 @@ export default function Circular({
     "#FFE75F",
     "#FFB54E",
   ];
+
   return (
     <div>
       {data.length > 0 ? (
@@ -163,20 +155,21 @@ export default function Circular({
             dataKey="value"
           >
             {data.map((entry, index) => (
-              <Cell
-                key={`cell-${index}`}
-                fill={COLORS[index % COLORS.length]}
-              />
+              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
             ))}
           </Pie>
           <Tooltip
-            formatter={(value, name) => [`${value} reportes`, name]}
+            formatter={(value, name) => [`${value} reportes`, `Alcaldía: ${name}`]}
             labelFormatter={(name) => `Alcaldía: ${name}`}
+            style={{ fontFamily: 'sans-serif', fontSize: '13px' }} // Tipografía y tamaño de fuente
           />
-          <Legend />
+          <Legend
+            formatter={(value) => value.charAt(0).toUpperCase() + value.slice(1)}
+            style={{ fontFamily: 'sans-serif', fontSize: '13px' }} // Tipografía y tamaño de fuente
+          />
         </PieChart>
       ) : (
-        <div>Cargando datos...</div>
+        <div style={{ fontFamily: 'sans-serif', fontSize: '13px' }}>Cargando datos...</div>
       )}
     </div>
   );

@@ -12,6 +12,7 @@ import "leaflet/dist/images/marker-shadow.png";
 import atendidoIcon from '../imgs/BanderaVerdeConFondo.png';
 import enProcesoIcon from '../imgs/BanderaAmarillaConFondo.png';
 import sinAtenderIcon from '../imgs/BanderaRojaConFondo.png';
+import { desc } from "@/scripts/Cifrado/Cifrar";
 import { useEffect, useState } from "react";
 const polygon = [
   [19.592749, -99.12369],
@@ -732,14 +733,15 @@ const Map = ({ searchFolio, searchStatus, alcaldia }) => {
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await fetch("/api/Reportes");
+        const baseURL = process.env.NEXT_PUBLIC_RUTA_R
+        const res = await fetch(`${baseURL}`);
         if (!res.ok) {
           throw new Error("Failed to fetch data");
         }
         const data = await res.json();
-
+        const dataDesc = data.map(rep => desc(rep))
         // Convertir las ubicaciones de los reportes en coordenadas
-        const markersData = await Promise.all(data.map(async (reporte) => {
+        const markersData = await Promise.all(dataDesc.map(async (reporte) => {
           const coordenadas = await reverse(reporte.ubicacion, reporte.descripcion);
           if (coordenadas) {
             return {
@@ -755,8 +757,11 @@ const Map = ({ searchFolio, searchStatus, alcaldia }) => {
           return null;
         }));
 
+        // Filtrar valores nulos de markersData
+        const validMarkersData = markersData.filter(marker => marker !== null);
+
         // Filtrar los marcadores según los filtros
-        const filteredMarkers = filterMarkers(markersData);
+        const filteredMarkers = filterMarkers(validMarkersData);
         // Establecer los marcadores filtrados como estado
         setMarkers(filteredMarkers);
       } catch (error) {
@@ -770,7 +775,7 @@ const Map = ({ searchFolio, searchStatus, alcaldia }) => {
   const filterMarkers = (markersData) => {
     console.log("searchStatus:", searchStatus);
     console.log("searchFolio:", searchFolio);
-console.log("Alcaldia: ", alcaldia)
+    console.log("Alcaldia: ", alcaldia)
     if (searchStatus === "Todos" && searchFolio === "Todos los folios" || alcaldia ==="Todas") {
       return markersData;
     }
