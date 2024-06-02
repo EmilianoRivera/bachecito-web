@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
-
+import { enc, desc } from "@/scripts/Cifrado/Cifrar";
 async function fetchFiltroEstado(
   estado,
   alcaldias,
@@ -21,7 +21,7 @@ async function fetchFiltroEstado(
       startDate: startDate,
       endDate: endDate,
     };
-const baseURL = process.env.NEXT_PUBLIC_RUTA_F
+    const baseURL = process.env.NEXT_PUBLIC_RUTA_F;
     const response = await fetch(
       `${baseURL}/${estado}/${alcaldia}/${filtroFecha}/${startDate}/${endDate}`,
       {
@@ -35,8 +35,17 @@ const baseURL = process.env.NEXT_PUBLIC_RUTA_F
     if (!response.ok) {
       throw new Error("Fallaron los filtros");
     }
-    const resultadoFiltros = await response.json();
-    return resultadoFiltros;
+
+    const resultado = await response.json();
+    // Verificar si la respuesta es un array
+    if (!Array.isArray(resultado)) {
+      console.log(typeof resultado)
+     console.log("La respuesta del servidor no es un array");
+    }
+ 
+    const data = resultado.map((rep) => desc(rep));
+    console.log(data)
+    return data;
   } catch (error) {
     console.error("Error a la hora de hacer la petición ", error);
     return null;
@@ -154,7 +163,10 @@ export default function Circular({
             dataKey="value"
           >
             {data.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              <Cell
+                key={`cell-${index}`}
+                fill={COLORS[index % COLORS.length]}
+              />
             ))}
           </Pie>
           <Tooltip

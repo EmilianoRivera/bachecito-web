@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, CartesianGrid, ResponsiveContainer, Cell } from "recharts";
-
+import { desc } from "@/scripts/Cifrado/Cifrar";
 // Función para extraer las alcaldías de la ubicación
 function buscarAlcaldias(ubicacion) {
   const regexAlcaldiasCDMX =
@@ -31,7 +31,7 @@ async function fetchFiltroEstado(estado, alcaldia, filtroFecha, startDate, endDa
     };
 const baseURL = process.env.NEXT_PUBLIC_RUTA_F
     const response = await fetch(
-      `/api/filtros/${estado}/${nombreAlcaldia}/${filtroFecha}/${startDate}/${endDate}`,
+      `${baseURL}/${estado}/${nombreAlcaldia}/${filtroFecha}/${startDate}/${endDate}`,
       {
         method: "POST",
         headers: {
@@ -45,7 +45,9 @@ const baseURL = process.env.NEXT_PUBLIC_RUTA_F
     }
     const resultadoFiltros = await response.json();
     //console.log(resultadoFiltros)
-    return resultadoFiltros;
+    const data = resultadoFiltros.map(rep => desc(rep))
+
+    return data;
   } catch (error) {
     console.error("Error a la hora de hacer la petición ", error);
     return null;

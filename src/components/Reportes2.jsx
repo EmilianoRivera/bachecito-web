@@ -8,6 +8,7 @@ import sinAtenderIcon from '../imgs/fondoRojo.png';
 import AuthContext from "../../context/AuthContext";
 import Link from 'next/link';
 import estrella from "../imgs/estrella.png";
+import { desc, enc } from "@/scripts/Cifrado/Cifrar";
 import {
     updateDoc,
     collection,
@@ -36,13 +37,17 @@ function ReportesComponente() {
             if (isLogged) {
                 try {
                     const currentUid = auth.currentUser.uid
+                    const id = enc(currentUid)
+                    const uid = encodeURIComponent(id)
                     const baseURL= process.env.NEXT_PUBLIC_RUTA_U
-                    const res = await fetch(`${baseURL}`)
+                    const res = await fetch(`${baseURL}/${uid}`)
                     if(!res.ok) {
                         throw new Error("Error al obtener la información");   
                     }
                     const data = res.json()
-                    setUserData(data)
+                    const datDesc = desc(data)
+                    console.log(datDesc)
+                    setUserData(datDesc)
                 } catch (error) {
                     console.error("Error al obtener los datos del usuario:", error);
                 }
@@ -61,7 +66,9 @@ function ReportesComponente() {
                     throw new Error("Error al traer los reportes");
                 }
                 const data = await response.json();
-                setRep(data);
+                const dataD = data.map(rep => desc(rep))
+                console.log(dataD)
+                setRep(dataD);
             } catch (error) {
                 console.log("Error al traer la información: ", error);
             }

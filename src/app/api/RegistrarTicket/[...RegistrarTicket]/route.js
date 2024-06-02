@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { db2, collection, addDoc, getDocs, app2 } from "../../../../../firebase";
+import { desc, enc } from "../../../../scripts/Cifrado/Cifrar";
 
 //import nodemailer from "nodemailer";
 import { Resend } from "resend";
@@ -65,7 +66,7 @@ export async function POST(req, { params }) {
     // Extraer los datos del cuerpo de la solicitud
     const [
       foto ,
-      uid,
+      Uid,
       errorSeleccionado,
       sistemaOperativo,
       navegador,
@@ -75,16 +76,48 @@ export async function POST(req, { params }) {
       nombre,
       area,
     ] = params.RegistrarTicket;
+
+    
     const url = decodeURIComponent(foto)
-    // Obtener la URL de descarga del archivo
     const rutitaD = decodeURIComponent(rutaError);
-    const folio = await folioTicket(errorSeleccionado, rutaError);
-    const priori = prioridad(errorSeleccionado);
+    const rutaE = desc(rutitaD)
+
+    const error = decodeURIComponent(errorSeleccionado)
+    const errorE = desc(error)
+
+    // Obtener la URL de descarga del archivo
+    const folio = await folioTicket(errorE, rutaE);
+    const priori = prioridad(errorE);
     const estado = "Sin asignar"
+    
+
+    const id = decodeURIComponent(Uid)
+    const uid = desc(id)
+
+    const descProm = decodeURIComponent(descripcionProblema)
+    const dP = desc(descProm)
+
+    const email = decodeURIComponent(correoA)
+    const corr = desc(email)
+
+    const name = decodeURIComponent(nombre)
+    const nom = desc(name)
+
+    const ar = decodeURIComponent(area)
+    const areas = desc(ar)
+
+/*     console.log(Uid, " ", uid)
+    console.log(rutitaD, " ", rutaE)
+    console.log(correoA, " ", corr)
+    console.log(nombre, " ", nom)
+    console.log(errorSeleccionado, " ", errorE)
+    console.log(descripcionProblema, " ", dP)
+
+ */
     // Validar los datos si es necesario
     resend.emails.send({
       from: "onboarding@resend.dev",
-      to: correoA,
+      to: corr,
       subject: "Confirmación de recepción de ticket",
       html: `Se ha recibido su ticket con el folio: ${folio}.`,
     });
@@ -92,20 +125,20 @@ export async function POST(req, { params }) {
       folio,
       uid,
       priori,
-      errorSeleccionado,
+      errorE,
       sistemaOperativo,
       navegador,
-      rutitaD,
-      descripcionProblema,
+      rutaE,
+      dP, //descripcionProblema
       fechaDeEnvio: new Date(),
-      correoA,
-      nombre,
-      area,
+      corr, //correo
+      nom, //nombre
+      areas, //areas
       url,
       estado
     });
     // Enviar una respuesta de éxito
-    return NextResponse.json(docRef);
+    return NextResponse.json("EXITO");
   } catch (error) {
     console.error("Error al obtener reportes:", error);
     return NextResponse.error("Error al obtener reportes", { status: 500 });

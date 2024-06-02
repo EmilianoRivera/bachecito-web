@@ -1,5 +1,7 @@
 import { NextResponse } from "next/server";  
 import { db, collection, addDoc, getDocs } from "../../../../../firebase";
+import { desc, enc } from "../../../../scripts/Cifrado/Cifrar";
+
 //import nodemailer from "nodemailer";
 import { Resend } from 'resend';
 
@@ -66,8 +68,9 @@ export async function POST(req, { params }) {
     console.log(params.Soporte);
 
     // Extraer los datos del cuerpo de la solicitud
-
+console.log("LKJSADLKFJASLKDFJLAKSFD")
     const [
+      Uid,
       errorSeleccionado,
       sistemaOperativo,
       navegador,
@@ -81,33 +84,53 @@ export async function POST(req, { params }) {
     ] = params.Soporte;
     const rutitaD = decodeURIComponent(rutaError);
     const urlsitaD = decodeURIComponent(url);
+    
+    const id = decodeURIComponent(Uid)
+    const uid = desc(id)
+
+    const descProm = decodeURIComponent(descripcionProblema)
+    const dP = desc(descProm)
+
+    const email = decodeURIComponent(correoA)
+    const corr = desc(email)
+
+    const name = decodeURIComponent(nombre)
+    const nom = desc(name)
+
+    const ar = decodeURIComponent(area)
+    const areas = desc(ar)
+
     const folio = await folioTicket(errorSeleccionado, rutaError);
     const priori = prioridad(errorSeleccionado);
-  
+    
+
+    console.log(correoA, " ", corr)
+    console.log(nombre, " ", nom)
+    console.log(area, " ", areas)
     console.log(resend)
-    resend.emails.send({
+/*     resend.emails.send({
       from: 'onboarding@resend.dev',
-      to: correoA,
+      to: corr,
       subject: 'Confirmación de recepción de ticket',
       html: `Se ha recibido su ticket con el folio: ${folio}.`
-    });
+    }); */
     
 
 
-    const docRef = await addDoc(collection(db, 'tickets'), {
+/*     const docRef = await addDoc(collection(db, 'tickets'), {
         folio,
         priori,
         errorSeleccionado,
         sistemaOperativo,
         navegador,
         rutitaD,
-        descripcionProblema,
+        dP,
         fechaDeEnvio: new Date(),
         urlsitaD,
-        nombre,
-        correoA,
-        area
-      });
+        nom,
+        corr,
+        areas
+      }); */
  
     return NextResponse.json("ESTATUS 200");
   } catch (error) {

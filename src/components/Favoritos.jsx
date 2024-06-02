@@ -3,7 +3,7 @@ import React, { useEffect, useState, useContext } from 'react';
 import { collection, query, where, getDocs, getDoc, updateDoc } from 'firebase/firestore';
 import { db, auth } from '../../firebase';
 import AuthContext from "../../context/AuthContext";
-
+import { desc } from '@/scripts/Cifrado/Cifrar';
 function Favoritos() {
   const { isLogged } = useContext(AuthContext);
   const [userData, setUserData] = useState(null);
@@ -115,10 +115,10 @@ function Favoritos() {
           throw new Error("Failed to fetch data");
         }
         const data = await response.json();
-
-        const sinAtender = data.filter(report => foliosGuardados.includes(report.folio) && report.estado === 'Sin atender');
-        const enAtencion = data.filter(report => foliosGuardados.includes(report.folio) && report.estado === 'En atención');
-        const atendidos = data.filter(report => foliosGuardados.includes(report.folio) && report.estado === 'Atendido');
+        const dataDesc = data.map(rep => desc(rep))
+        const sinAtender = dataDesc.filter(report => foliosGuardados.includes(report.folio) && report.estado === 'Sin atender');
+        const enAtencion = dataDesc.filter(report => foliosGuardados.includes(report.folio) && report.estado === 'En atención');
+        const atendidos = dataDesc.filter(report => foliosGuardados.includes(report.folio) && report.estado === 'Atendido');
 
         setRepSinAtender(sinAtender);
         setRepEnAtencion(enAtencion);
