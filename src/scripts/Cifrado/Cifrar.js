@@ -1,6 +1,6 @@
 import CryptoJS from 'crypto-js';
 
-const password = '1234KSDFOSKDFSDF234%$#&';
+const password = process.env.NEXT_PUBLIC_CIF;
 
 // Cifrar datos
 export function enc(data) {

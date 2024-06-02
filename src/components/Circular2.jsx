@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
 import "./Circular2.css"
- 
+import { desc } from "@/scripts/Cifrado/Cifrar";
 const COLORS = ["#FF5136", "#FFC63D", "#A4DF77"];
 
 function CRep() {
@@ -24,10 +24,14 @@ function CRep() {
         const totalData = await reportesTot.json();
         const estadoData = await reportesEst.json();
 
-        setTotalRep(totalData);
-        setRepEstado(estadoData);
+        const dataDesc = desc(totalData);
+        const dataDesc2 = desc(estadoData.cifrado);
+        console.log(dataDesc2)
 
-        const formattedData = Object.entries(estadoData).map(([key, value]) => {
+        setTotalRep(dataDesc);
+        setRepEstado(dataDesc2);
+
+        const formattedData = Object.entries(dataDesc2).map(([key, value]) => {
         
           return { name: `${key}  `, value };
         });

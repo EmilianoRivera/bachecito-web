@@ -6,7 +6,6 @@ export async function GET(request, { params }) {
   try {
     const E_uid = decodeURIComponent(params.uid);
     const uid = desc(E_uid);
-
     const userQuery = query(
       collection(db, 'usuarios'),
       where('uid', '==', uid)

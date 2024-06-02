@@ -5,7 +5,7 @@ import '../app/Cuenta/Administrador/Reportes/Reportes.css';
 import React from 'react';
 import Image from "next/image";
 import Link from 'next/link';
-
+import { desc } from "@/scripts/Cifrado/Cifrar";
 
 export default function ReportesAdmin() {
     const [rep, setRep] = useState([]);
@@ -25,13 +25,14 @@ export default function ReportesAdmin() {
     useEffect(() => {
         async function fetchData() {
             try {
-                const baseURL= process.env.NEXT_PUBLIC_REL
+                const baseURL= process.env.NEXT_PUBLIC_RUTA_REL
                 const response = await fetch(`${baseURL}`);
                 if (!response.ok) {
                     throw new Error("Failed to fetch data");
                 }
                 const data = await response.json();
-                setRep(data);
+                const dataDesc = data.map(rep => desc(rep))
+                setRep(dataDesc);
             } catch (error) {
                 console.log("Error fetching data: ", error);
             }

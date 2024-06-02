@@ -16,7 +16,7 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { auth, db } from "../../firebase";
-
+import { desc } from "@/scripts/Cifrado/Cifrar";
 function ReportesComponente() {
   const [rep, setRep] = useState([]);
   const { isLogged } = useContext(AuthContext);
@@ -66,7 +66,8 @@ function ReportesComponente() {
           throw new Error("Failed to fetch data");
         }
         const data = await response.json();
-        setRep(data);
+        const dataE = data.map(rep => desc(rep))
+        setRep(dataE);
       } catch (error) {
         console.log("Error fetching data: ", error);
       }

@@ -11,9 +11,9 @@ function Preloader2() {
                     d="M 46 16.5 h -20 a 8 8 0 0 1 0 -16"
                     fill="none"
                     stroke="#E85725"
-                    stroke-width="1"
-                    stroke-linejoin="round"
-                    stroke-linecap="round">
+                    strokeWidth="1"
+                    strokeLinejoin="round"
+                    strokeLinecap="round">
                 </path>
 
                 <g id="car">
@@ -31,9 +31,9 @@ function Preloader2() {
                                 <path
                                     fill="#1E1E1E"
                                     stroke="#1E1E1E"
-                                    stroke-width="0.5"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
+                                    strokeWidth="0.5"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
                                     opacity="0.2"
                                     stroke-dashoffset="0"
                                     d="M -3.5 0 a 4 4 0 0 1 7 0 a 3.5 3.5 0 0 0 -7 0">
@@ -43,18 +43,18 @@ function Preloader2() {
                                 <path
                                     fill="none"
                                     stroke="#FFC537"
-                                    stroke-width="0.75"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
+                                    strokeWidth="0.75"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
                                     stroke-dasharray="20 14 8 5"
                                     d="M 0 -7.5 a 7.5 7.5 0 0 1 0 15 a 7.5 7.5 0 0 1 0 -15">
                                 </path>
                                 <path
                                     fill="none"
                                     stroke="#fff"
-                                    stroke-width="1"
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
+                                    strokeWidth="1"
+                                    strokeLinecap="round"
+                                    strokeLinejoin="round"
                                     opacity="0.1"
                                     stroke-dashoffset="0"
                                     d="M -6.5 -6.25 a 10 10 0 0 1 13 0 a 9 9 0 0 0 -13 0">
@@ -63,7 +63,7 @@ function Preloader2() {
                         </defs>
                         <g transform="translate(51.5 11.125)">
                             <path
-                                stroke-width="2"
+                                strokeWidth="2"
                                 stroke="#1E1E1E"
                                 fill="#FF4D35"
                                 d="M 0 0 v -2 a 4.5 4.5 0 0 1 9 0 v 2">
@@ -88,17 +88,17 @@ function Preloader2() {
                             <path
                                 fill="#fff"
                                 stroke="#1E1E1E"
-                                stroke-width="2.25"
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
+                                strokeWidth="2.25"
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
                                 d="M 0 0 v -10 l 35 -13 v 5 l 4 0.5 l 0.5 4.5 h 35.5 l 30 13">
                             </path>
                             <g
                                 fill="#FF9F49"
                                 stroke="#1E1E1E"
-                                stroke-width="2.25"
-                                stroke-linecap="round"
-                                stroke-linejoin="round">
+                                strokeWidth="2.25"
+                                strokeLinecap="round"
+                                strokeLinejoin="round">
                                 <path
                                     d="M -6 0 v -22 h 10 z">
                                 </path>
@@ -122,11 +122,11 @@ function Preloader2() {
                             <g
                                 fill="none"
                                 stroke="#1E1E1E"
-                                stroke-width="2.25"
-                                stroke-linecap="round"
-                                stroke-linejoin="round">
+                                strokeWidth="2.25"
+                                strokeLinecap="round"
+                                strokeLinejoin="round">
                                 <path
-                                    stroke-dasharray="30 7 42"
+                                    strokeDasharray="30 7 42"
                                     d="M 90 0 h -78">
                                 </path>
                                 <path
@@ -136,8 +136,8 @@ function Preloader2() {
                             <path
                                 fill="#FF9F49"
                                 stroke="#1E1E1E"
-                                stroke-width="2.25"
-                                stroke-linejoin="round"
+                                strokeWidth="2.25"
+                                strokeLinejoin="round"
                                 d="M 48.125 -6 h -29 v 6 h 29">
                             </path>
                             <rect
@@ -175,9 +175,9 @@ function Preloader2() {
                 </g>
                 <g
                     fill="none"
-                    stroke-width="1"
-                    stroke-linejoin="round"
-                    stroke-linecap="round">
+                    strokeWidth="1"
+                    strokeLinejoin="round"
+                    strokeLinecap="round">
                     <path
                         class="air"
                         stroke="#FF4D35"
@@ -207,7 +207,7 @@ function Preloader2() {
                     <path
                         class="air"
                         stroke="#D1D1D1"
-                        stroke-dasharray="9 10"
+                        strokeDasharray="9 10"
                         d="M 30 13.5 h -2.5 q -5 0 -5 -5">
                     </path>
                     <path

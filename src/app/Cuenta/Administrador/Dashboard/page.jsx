@@ -147,7 +147,7 @@ function Dashboard() {
             <div className="circular">
               <Circular
                 width={300}
-                height={400}
+                height={300}
                 estados={estado}
                 alcaldias={alcaldias}
                 startDates={startDate}
@@ -164,7 +164,7 @@ function Dashboard() {
             <div className="barras">
               <Barras
                 width={680}
-                height={350}
+                height={400}
                 estados={estado}
                 alcaldias={alcaldias}
                 startDates={startDate}

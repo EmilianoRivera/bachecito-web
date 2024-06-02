@@ -6,7 +6,7 @@ import Link from 'next/link';
 import React from 'react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
-
+import { enc, desc } from "@/scripts/Cifrado/Cifrar";
 export default function ReportesAdmin() {
     const [rep, setRep] = useState([]);
     const [isEstadoAlertVisible, setIsEstadoAlertVisible] = useState(false);
@@ -94,11 +94,14 @@ export default function ReportesAdmin() {
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await fetch("/api/Reportes");
+                const baseURL = process.env.NEXT_PUBLIC_RUTA_R
+                const response = await fetch(`${baseURL}`);
                 if (!response.ok) {
                     throw new Error("Failed to fetch data");
                 }
-                const data = await response.json();
+                const dataEnc = await response.json();
+                const data = dataEnc.map(rep => desc(rep))
+                console.log("ACA ESTA MI DATAAAA",data)
                 setRep(data);
             } catch (error) {
                 console.log("Error fetching data: ", error);
@@ -184,7 +187,9 @@ export default function ReportesAdmin() {
             const baseURL = process.env.NEXT_PUBLIC_RUTA_R
             const res = await fetch(`${baseURL}`);
             const data = await res.json(); // Espera a que se resuelva la promesa
-            setReportes(data);
+
+            const descDesc = data.map(rep => desc(rep))
+            setReportes(descDesc);
         }
 
         fetchData();
@@ -231,7 +236,7 @@ export default function ReportesAdmin() {
             };
 
             // Realizar la solicitud POST con el objeto de parámetros en el cuerpo
-            const baseURL= process.env.NEXT_PUBLIC_RUTA_RF
+            const baseURL= process.env.NEXT_PUBLIC_RUTA_F
             const datosNuevos = await fetch(`${baseURL}/${estado}/${nombreAlcaldia}/${filtroFecha}/${startDate}/${endDate}`, {
                 method: 'POST',
                 headers: {
@@ -243,6 +248,7 @@ export default function ReportesAdmin() {
                 throw new Error("Fallo a la petición de /api/filtros/estado/${estado}");
             }
             const estadosReportes = await datosNuevos.json();
+            const data = estadosReportes.map(rep => desc(rep))
           //  console.log(estadosReportes);
 
         } catch (error) {

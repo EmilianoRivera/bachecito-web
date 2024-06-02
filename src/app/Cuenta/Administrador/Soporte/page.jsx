@@ -424,7 +424,7 @@ function Soporte() {
         if (ticketResponse.ok) {
           console.log("Formulario enviado con éxito");
           alert("Formulario enviado con exito");
-         // window.location.reload();
+         window.location.reload();
         } else {
           console.error(
             "Error al enviar el formulario:",
@@ -817,8 +817,8 @@ function Soporte() {
                           onChange={handleAsignarTarea}
                         >
                           <option>Escoger carácter de error</option>
-                          <option value="backend">🖥️ Funcionalidad</option>
-                          <option value="frontend">🎨 Diseño</option>
+                          <option value="Backend">🖥️ Funcionalidad</option>
+                          <option value="Frontend">🎨 Diseño</option>
                         </select>
                       </div>
                     </td>

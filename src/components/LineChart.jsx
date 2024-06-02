@@ -1,5 +1,5 @@
-// components/LineChart.jsx
 import React, { useEffect, useState } from 'react';
+import { desc } from '@/scripts/Cifrado/Cifrar';
 import {
   LineChart as RechartsLineChart,
   Line,
@@ -7,7 +7,6 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend,
   Brush,
   ResponsiveContainer
 } from 'recharts';
@@ -20,7 +19,8 @@ async function fetchUsers() {
   }
 
   const data = await res.json();
-  return data;
+  const dataDesc = data.map(rep => desc(rep));
+  return dataDesc;
 }
 
 function convertFirestoreTimestampToDate(timestamp) {
@@ -30,7 +30,7 @@ function convertFirestoreTimestampToDate(timestamp) {
 
 function formatDate(date) {
   const day = date.getDate();
-  const month = date.getMonth() + 1; // Months are zero indexed
+  const month = date.getMonth() + 1; // Los meses están indexados desde cero
   const year = date.getFullYear();
   return `${day}/${month}/${year}`;
 }
@@ -44,30 +44,23 @@ function processData(users) {
     return acc;
   }, {});
 
-  return Object.keys(dateCounts).map((date, index) => {
-    // Lógica de colores basada en el índice
-    const color =
-      index % 3 === 0 ? "#FF8A57" :
-      index % 3 === 1 ? "#FFB54E" :
-      index % 2 === 0 ? "#FFE75F" :
-      index % 5 === 0 ? "#90F49B" :
-      index % 7 === 0 ? "#2EC4B6" :
-      index % 11 === 0 ? "#49C3FB" :
-      index % 13 === 0 ? "#65A6FA" :
-      index % 17 === 0 ? "#5D9DD5" :
-      index % 19 === 0 ? "#65A6FA" :
-      index % 23 === 0 ? "#49C3FB" :
-      index % 29 === 0 ? "#2EC4B6" :
-      index % 31 === 0 ? "#90F49B" :
-      index % 37 === 0 ? "#D3FF7A" :
-      index % 41 === 0 ? "#FFE75F" : "#000000"; // Default color
+  return Object.keys(dateCounts).map(date => ({
+    date,
+    count: dateCounts[date],
+  }));
+}
 
-    return {
-      date,
-      count: dateCounts[date],
-      color // Agregar color al objeto de datos
-    };
-  });
+function CustomTooltip({ payload, label, active }) {
+  if (active && payload && payload.length) {
+    return (
+      <div className="custom-tooltip" style={{ backgroundColor: '#fff', padding: '10px', border: '1px solid #FF8A57' }}>
+        <p className="label" style={{ color: '#FF8A57' }}>{`Fecha: ${label}`}</p>
+        <p className="intro" style={{ color: '#FF8A57' }}>{`Usuarios: ${payload[0].value}`}</p>
+      </div>
+    );
+  }
+
+  return null;
 }
 
 function LineChart() {
@@ -86,18 +79,20 @@ function LineChart() {
   return (
     <ResponsiveContainer width="100%" height={400}>
       <RechartsLineChart data={data}>
-        <CartesianGrid strokeDasharray="3 3" />
-        <XAxis dataKey="date" />
-        <YAxis />
-        <Tooltip />
-        <Legend />
+        <CartesianGrid strokeDasharray="3 3" stroke="#A9A9A9" />
+        <XAxis dataKey="date" stroke="#A9A9A9" />
+        <YAxis stroke="#A9A9A9" />
+        <Tooltip content={<CustomTooltip />} />
         <Line 
           type="monotone" 
           dataKey="count" 
-          stroke={data.length > 0 ? data[0].color : "#8884d8"} // Usar el color del primer punto como ejemplo
-          activeDot={{ r: 8 }} 
+          stroke="#FF8A57" // Color naranja
+          strokeWidth={2}
+          dot={{ stroke: '#FF8A57', strokeWidth: 2, r: 5 }}
+          activeDot={{ r: 8, fill: '#FF8A57' }} 
+          animationDuration={500}
         />
-        <Brush />
+        <Brush dataKey="date" stroke="#FF8A57" fill="rgba(255, 138, 87, 0.2)" travellerStroke="#FF8A57" />
       </RechartsLineChart>
     </ResponsiveContainer>
   );
