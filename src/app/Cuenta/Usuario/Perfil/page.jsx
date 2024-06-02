@@ -85,7 +85,6 @@ export default function Perfil() {
 
         const userDataDesc = desc(userData)
         const reportesDesc = reportesData.map(rep => desc(rep))
-        console.log(userDataDesc, " ", reportesDesc)
 
 
         setUserData(userDataDesc);
