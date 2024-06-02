@@ -43,10 +43,10 @@ export async function POST(request, {params}) {
       correo: corr.toLowerCase(),
       rol:"usuario",
       estadoCuenta: true,
-      rol:"usuario",
       fechaCreacion: new Date(),
       incidencias:0,
       numRep:0,
+      inhabilitada: false
     };
     addDoc(usuariosCollection, nuevoUsuario);
 
