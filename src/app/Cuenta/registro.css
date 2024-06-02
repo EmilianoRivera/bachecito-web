@@ -1909,3 +1909,19 @@ input[type="checkbox"]:checked::before {
 .modal-content2 .datos:hover::placeholder {
     color: #ff9f49; /* Cambia el color del placeholder al pasar el mouse */
 }
+.custom-alert {
+    background-color: #ff9f49;
+    color: #000000;
+    padding: 10px 15px;
+    border: 1px solid #ff7300;
+    border-radius: 5px;
+    margin: 0 auto;
+    position: fixed;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1000; /* Valor alto para asegurar que esté por encima del navbar */
+  }
+  
+  
+  

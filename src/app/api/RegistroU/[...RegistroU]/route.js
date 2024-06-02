@@ -22,7 +22,18 @@ export async function POST(request, {params}) {
       apellidoMaterno: apmat,
       fechaNacimiento: fechaNacimiento,
       correo: email.toLowerCase(),
+      rol:"usuario",
       estadoCuenta: true,
+<<<<<<< HEAD
+      rol:"usuario",
+      fechaCreacion: new Date(),
+      incidencias:0,
+      numRep:0,
+=======
+      fechaCreacion: new Date(),
+      incidencias:0,
+      numRep:0
+>>>>>>> cd0120ae9b6400b307987925319736f9e5347a84
     };
     addDoc(usuariosCollection, nuevoUsuario);
 
