@@ -154,6 +154,45 @@ function Registro() {
   const [edadValida, setEdadValida] = useState(true); // Estado para la validación de edad
   const [checkBoxChecked, setCheckBoxChecked] = useState(false);
 
+  const showAlert = (message) => {
+    const alertContainer = document.createElement("div");
+    alertContainer.classList.add("custom-alert");
+    
+    // Agrega un enlace para mostrar la alerta al hacer clic
+    const linkMarkup = `<a href="#" class="alert-link">Contáctanos</a>`;
+    
+    alertContainer.innerHTML = `<p>${message} ${linkMarkup}</p>`;
+    document.body.appendChild(alertContainer);
+  
+    // Maneja el clic en el enlace
+    const alertLink = alertContainer.querySelector(".alert-link");
+    alertLink.addEventListener("click", handleClick);
+  
+    // Elimina la alerta después de cierto tiempo (opcional)
+    setTimeout(() => {
+      alertContainer.remove();
+    }, 6000); // Eliminar la alerta después de 5 segundos
+  };
+  
+  const handleClick = (event) => {
+    event.preventDefault(); // Evita el comportamiento predeterminado del enlace
+  
+    // Muestra una alerta al usuario
+    const confirmation = confirm("Estás a punto de ser redirigido a tu cuenta de correo electrónico. ¿Deseas continuar?");
+  
+    // Si el usuario acepta, abre el cliente de correo
+    if (confirmation) {
+      const subject = encodeURIComponent('Atención al usuario por BACHECITO 26 - WEB');
+      const body = encodeURIComponent('¡Hola GEMMA!👋 Me pongo en contacto con ustedes debido a...');
+      window.open('mailto:somos.gemma.01@gmail.com?subject=' + subject + '&body=' + body);
+    } else {
+      // Si el usuario no acepta, no se hace nada
+      return;
+    }
+  };
+  
+  
+  
   const handleFechaNacimientoChange = (event) => {
     const fecha = event.target.value;
     setFechaNacimiento(fecha);
@@ -195,17 +234,17 @@ function Registro() {
     if (!checkBoxChecked) missingFields.push("Aceptar Términos y Condiciones");
 
     if (missingFields.length > 0) {
-      alert("Faltan los siguientes campos por llenar: " + missingFields.join(", "));
+      showAlert("Faltan los siguientes campos por llenar: " + missingFields.join(", "));
       return;
     }
 
     if (!edadValida) {
-      alert("La edad debe estar entre 18 y 70 años.");
+      showAlert("La edad debe estar entre 18 y 70 años.");
       return;
     }
 
     if (!checkBoxChecked) {
-      alert("Debes aceptar la política de privacidad y los términos y condiciones.");
+      showAlert("Debes aceptar la política de privacidad y los términos y condiciones.");
       return;
     }
 
@@ -281,7 +320,7 @@ function Registro() {
     try {
       event.preventDefault();
       if (!checkBoxChecked) {
-        alert("Debes aceptar la política de privacidad y los términos y condiciones.");
+        showAlert("Debes aceptar la política de privacidad y los términos y condiciones.");
         return;
       }
 
@@ -314,21 +353,20 @@ function Registro() {
       }
       const data = await res.json()
 
-      console.log(data)
-      alert("Bienvenido a Bachecito 26, se envio un correo de verificación (:");
+     // console.log(data)
+      showAlert("Bienvenido a Bachecito 26, se envio un correo de verificación (:");
 
       push("/Cuenta/Usuario/Perfil");
     } catch (error) {
       console.error("Error al crear la cuenta: ", error);
-      alert(error.message);
+      showAlert(error.message);
     }
   };
 
   const handleSignIn = async (event) => {
     event.preventDefault();
     setLoading(true);
-    //console.log("SignIn iniciado"); // Log para saber que la función ha sido llamada
-  
+    
     try {
       // Consulta para verificar el estado de la cuenta
       const reportesRef = collection(db, "usuarios");
@@ -337,55 +375,57 @@ function Registro() {
   
       let estadoCuenta;
       let userDoc;
+      let userRol;
+      let userHabilited;
   
       querySnapshot.forEach((doc) => {
         const data = doc.data();
         estadoCuenta = data.estadoCuenta;
+        userRol = data.rol;
+        userHabilited = data.inhabilitada;
         userDoc = doc;
       });
   
-     // console.log("Estado de la cuenta:", estadoCuenta); // Log para ver el estado de la cuenta
-  
-      if (estadoCuenta === false) {
+      if (estadoCuenta === false && userRol === "usuario" && userHabilited===false ) {
         const confirm = window.confirm("Tu cuenta ha sido desactivada. ¿Deseas restablecerla?");
         if (confirm) {
           await updateDoc(userDoc.ref, { estadoCuenta: true });
-          alert("Cuenta restablecida correctamente");
+          showAlert("Cuenta restablecida correctamente");
   
           // Si la cuenta está activa, proceder con el inicio de sesión
           const userCredential = await signInWithEmailAndPassword(auth, email, password);
           const user = userCredential.user;
-          alert("Inicio de sesión exitoso");
+          showAlert("Inicio de sesión exitoso");
           push("/Cuenta/Usuario/Perfil");
         } else {
-          alert("Inicio de sesión cancelado");
+          showAlert("Inicio de sesión cancelado");
           return; // Salir de la función para no proceder con el inicio de sesión
         }
-      } else if (estadoCuenta === true) {
+      } else if (estadoCuenta === true && userRol === "usuario" && userHabilited===false ) {
         // Si la cuenta ya está activa, proceder con el inicio de sesión
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
-        alert("Inicio de sesión exitoso");
+        showAlert("Inicio de sesión exitoso");
         push("/Cuenta/Usuario/Perfil");
       } else {
-        alert("La cuenta no existe o no tiene estado válido.");
+        showAlert("Lo sentimos no puedes acceder al sistema. Motivos: Rol inválido, Acceso Inhabilitado al sumar tres incidencias o Tu cuenta no existe, ¿Necesitas ayuda?");
       }
     } catch (error) {
-      console.error("Error en el inicio de sesión:", error); // Log para ver cualquier error capturado
+      console.error("Error en el inicio de sesión:", error);
       setError(error.message);
-      alert("Correo o contraseña incorrectos");
+      showAlert("Correo o contraseña incorrectos");
     } finally {
       setLoading(false);
-   //   console.log("SignIn FINALIZAD0"); // Log para saber que la función ha finalizado
     }
   };
+  
 
   const Recuperar = (e) => {
     e.preventDefault();
     const auth = getAuth();
     sendPasswordResetEmail(auth, recoveryEmail)
       .then(() => {
-        alert(`Correo de recuperación enviado a: ${recoveryEmail}`);
+        showAlert(`Correo de recuperación enviado a: ${recoveryEmail}`);
         setModalVisible(false);
       })
       .catch((error) => {
