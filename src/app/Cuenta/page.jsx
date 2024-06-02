@@ -155,7 +155,7 @@ function Registro() {
 
   const showAlert = (message) => {
     const alertContainer = document.createElement("div");
-    alertContainer.classList.add("custom-alert");
+    alertContainer.classList.add("custom-alertCU");
     
     // Agrega un enlace para mostrar la alerta al hacer clic
     const linkMarkup = `<a href="#" class="alert-link">Contáctanos</a>`;
@@ -339,16 +339,16 @@ function Registro() {
         body: JSON.stringify(parametros),
       })
       if(!res.ok ){
-        throw new Error("Failed to fetch user data");
+        throw new Error("No se pudieron recuperar los datos del usuario 😢");
       }
       const data = await res.json()
 
      // console.log(data)
-      showAlert("Bienvenido a Bachecito 26, se envio un correo de verificación (:");
+      showAlert("Bienvenido a Bachecito 26, se envio un correo de verificación ✉");
 
       push("/Cuenta/Usuario/Perfil");
     } catch (error) {
-      console.error("Error al crear la cuenta: ", error);
+      console.error("Error al crear la cuenta: ", error, "🚧");
       showAlert(error.message);
     }
   };
@@ -398,7 +398,7 @@ function Registro() {
         showAlert("Inicio de sesión exitoso");
         push("/Cuenta/Usuario/Perfil");
       } else {
-        showAlert("Lo sentimos no puedes acceder al sistema. Motivos: Rol inválido, Acceso Inhabilitado al sumar tres incidencias o Tu cuenta no existe, ¿Necesitas ayuda?");
+        showAlert("Lo sentimos no puedes acceder al sistema. Motivos posibles: Rol inválido, Acceso Inhabilitado o cuenta inexistente, ¿Necesitas ayuda?");
       }
     } catch (error) {
       console.error("Error en el inicio de sesión:", error);
