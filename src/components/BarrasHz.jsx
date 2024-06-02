@@ -11,9 +11,9 @@ import {
 } from "recharts";
 import moment from "moment";
 import 'moment/locale/es'; // Importar la configuración local en español
+import { desc } from "@/scripts/Cifrado/Cifrar";
 moment.locale('es'); // Establecer el idioma a español
 import "@/components/txt-graficas.css";
-
 const alcaldias = [
   "Álvaro Obregón", "Azcapotzalco", "Benito Juárez", "Coyoacán",
   "Cuajimalpa de Morelos", "Cuauhtémoc", "Gustavo A. Madero", "Iztacalco",
@@ -30,7 +30,6 @@ export default function BarrasHz({
   filtroFechas = "Todos los tiempos",
 }) {
   const [alcEstRep, setAlcEstRep] = useState(null);
-
   useEffect(() => {
     async function fetchData() {
       try {
@@ -40,11 +39,17 @@ export default function BarrasHz({
           throw new Error("Error al obtener los datos");
         }
         const data = await response.json();
-        setAlcEstRep(data);
+
+        const dataDesc = desc(data.cifrado)
+        console.log(dataDesc)
+
+        setAlcEstRep(dataDesc);
       } catch (error) {
         console.log("Error fetching data: ", error);
       }
     }
+console.log("AYUDAAAA")
+
     fetchData();
   }, []);
 

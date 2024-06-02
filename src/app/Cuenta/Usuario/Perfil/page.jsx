@@ -21,6 +21,7 @@ import Alerta from "@/components/Alerta3";
 
 import Router from 'next/router';
 import Preloader from "@/components/preloader2";
+import { desc, enc } from "@/scripts/Cifrado/Cifrar";
 
 export default function Perfil() {
   const [loading, setLoading] = useState(false);
@@ -55,6 +56,7 @@ export default function Perfil() {
       const unsubscribe = auth.onAuthStateChanged((user) => {
         if (user) {
           const uid = user.uid;
+          console.log("ESTE ES EL USER",user)
           fetchData(uid);
         } else {
           router.push("/login");
@@ -65,18 +67,29 @@ export default function Perfil() {
 
     async function fetchData(uid) {
       try {
+        const Uid = enc(uid)
+        const id = encodeURIComponent(Uid)
         const baseURL= process.env.NEXT_PUBLIC_RUTA_U
         const baseURLR = process.env.NEXT_PUBLIC_RUTA_RP
-        const userResponse = await fetch(`${baseURL}/${uid}`);
-        const reportesResponse = await fetch(`${baseURLR}/${uid}`);
+       
+        console.log(id)
+
+        const userResponse = await fetch(`${baseURL}/${id}`);
+       
+        const reportesResponse = await fetch(`${baseURLR}/${id}`);
         if (!userResponse.ok || !reportesResponse.ok) {
           throw new Error("Failed to fetch user data");
         }
         const userData = await userResponse.json();
         const reportesData = await reportesResponse.json();
 
-        setUserData(userData);
-        setReportes(reportesData);
+        const userDataDesc = desc(userData)
+        const reportesDesc = reportesData.map(rep => desc(rep))
+        console.log(userDataDesc, " ", reportesDesc)
+
+
+        setUserData(userDataDesc);
+        setReportes(reportesDesc);
       } catch (error) {
         console.error("Error fetching data:", error);
       }

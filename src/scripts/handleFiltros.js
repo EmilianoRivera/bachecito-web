@@ -10,7 +10,7 @@ import {
   obtenerMesDesdeFecha,
   obtenerAñoDesdeFecha,
 } from "./funcionesFiltro";
-
+import { enc } from "./Cifrado/Cifrar";
 import { db, collection, getDocs, query, where } from "../../firebase";
 
 //Todos los casos del filtro de fecha
@@ -30,7 +30,8 @@ export async function fechaFiltroFormateada(
       );
       const reportesFechaHoy = await getDocs(filtroFechaHoy);
       reportesFechaHoy.forEach((doc) => {
-        resultados.push(doc.data());
+        let dat= doc.data()
+        resultados.push(enc(dat));
       });
       break;
 
@@ -45,8 +46,8 @@ export async function fechaFiltroFormateada(
         const reporte = doc.data();
         const fechaReporte = parsearDeStringADate(reporte.fechaReporte);
         if (fechaReporte >= inicioSemana && fechaReporte <= finSemana) {
-          console.log(reporte);
-          resultados.push(reporte);
+          let rep = enc(reporte)
+          resultados.push(rep);
         }
       });
       break;
@@ -82,8 +83,8 @@ export async function fechaFiltroFormateada(
           );
           // Comparar el mes del reporte con el mes actual
           if (mesReporte == mesAnterior && añoReporte == añoDeFechaActual) {
-            console.log(reporte);
-            resultados.push(reporte);
+            let rep = enc(reporte)
+            resultados.push(rep);
           }
         });
       } catch (error) {
@@ -113,8 +114,8 @@ export async function fechaFiltroFormateada(
             fechaReporte >= fechaSeisMesesAtras &&
             fechaReporte <= fechaActual
           ) {
-            console.log(reporte);
-            resultados.push(reporte);
+            let rep = enc(reporte)
+            resultados.push(rep);
           }
         });
 
@@ -158,8 +159,9 @@ export async function fechaFiltroFormateada(
 
           // Comparar los años
           if (añoReporte === añoActual) {
-            console.log(reporte);
-            resultados.push(reporte);
+            let rep = enc(reporte)
+   
+            resultados.push(rep);
           }
         });
       } catch (error) {
@@ -169,7 +171,6 @@ export async function fechaFiltroFormateada(
       break;
 
     case "Rango personalizado":
-      console.log("first")
       const newStartDate = new Date(startDate);
       const newLastEnd = new Date(endDate);
       const refRep = collection(db, "reportes");
@@ -183,7 +184,8 @@ export async function fechaFiltroFormateada(
           console.log(parsearDeStringADate(reporte.fechaReporte)>= new Date(startDate))
            */
         if (fechaReporte >= newStartDate && fechaReporte <= newLastEnd) {
-          resultados.push(reporte);
+          let rep = enc(reporte)
+          resultados.push(rep);
         }
       });
 
@@ -221,8 +223,8 @@ export async function fechaFiltroFormateadaEspecifico(
         const reporte = doc.data();
         const alcaldiaDelReporte = buscarAlcaldias(reporte.ubicacion);
         if (alcaldiaDelReporte === alcaldia) {
-          console.log(reporte);
-          filtroEspecifico.push(reporte);
+          let rep = enc(reporte)
+          filtroEspecifico.push(rep);
         }
       });
       break;
@@ -247,8 +249,8 @@ export async function fechaFiltroFormateadaEspecifico(
           fechaReporte <= finSemana &&
           alcaldiaDelReporte === alcaldia
         ) {
-          console.log(reporte);
-          filtroEspecifico.push(reporte);
+          let rep = enc(reporte)
+          filtroEspecifico.push(rep);
         }
       });
       break;
@@ -295,8 +297,8 @@ export async function fechaFiltroFormateadaEspecifico(
             añoReporte == añoDeFechaActual &&
             alcaldiaDelReporte === alcaldia
           ) {
-            filtroEspecifico.push(reporte);
-            console.log(reporte);
+            let rep = enc(reporte)
+          filtroEspecifico.push(rep);
           }
         });
       } catch (error) {
@@ -310,7 +312,7 @@ export async function fechaFiltroFormateadaEspecifico(
       try {
         console.log("CASO ULTIMOS 6 MESES");
         // Obtener la fecha actual y la fecha que estaba hace 6 meses
-        console.log(estado, " ", alcaldia, " ", startDate, " ", endDate, " ");
+     
         const fechaActual = new Date();
         const fechaSeisMesesAtras = new Date();
         fechaSeisMesesAtras.setMonth(fechaSeisMesesAtras.getMonth() - 6);
@@ -327,14 +329,14 @@ export async function fechaFiltroFormateadaEspecifico(
           const fechaReporte = parsearDeStringADate(reporte.fechaReporte);
           const alcaldiaDelReporte = buscarAlcaldias(reporte.ubicacion);
 
-          console.log(alcaldiaDelReporte, " ", alcaldia);
+         
           if (
             fechaReporte >= fechaSeisMesesAtras &&
             fechaReporte <= fechaActual &&
             alcaldiaDelReporte === alcaldia
           ) {
-            console.log(reporte);
-            filtroEspecifico.push(reporte);
+            let rep = enc(reporte)
+            filtroEspecifico.push(rep);
           }
         });
 
@@ -383,8 +385,8 @@ export async function fechaFiltroFormateadaEspecifico(
 
           // Comparar los años
           if (añoReporte === añoActual && alcaldiaDelReporte === alcaldia) {
-            console.log(reporte);
-            filtroEspecifico.push(reporte);
+            let rep = enc(reporte)
+            filtroEspecifico.push(rep);
           }
         });
       } catch (error) {
@@ -405,7 +407,7 @@ export async function fechaFiltroFormateadaEspecifico(
         const reporte = doc.data();
         const fechaReporte = parsearDeStringADate(reporte.fechaReporte); // Supongamos que la fecha del reporte se encuentra en la propiedad "fecha"
         const alcaldiaDelReporte = buscarAlcaldias(reporte.ubicacion);
-        console.log(newStartDate, " ",newLastEnd )
+/*         console.log(newStartDate, " ",newLastEnd )
         console.log("------")
         console.log(startDate, " ", endDate)
         console.log(alcaldia)
@@ -414,14 +416,14 @@ export async function fechaFiltroFormateadaEspecifico(
         console.log(  fechaReporte <= newLastEnd)
         console.log("FECHAS FIN: ",fechaReporte, " ", newLastEnd)
         console.log("FECHAS INICIO: ",fechaReporte, " ", newStartDate)
-
+ */
         if (
           fechaReporte >= newStartDate &&
           fechaReporte <= newLastEnd &&
           alcaldiaDelReporte === alcaldia
         ) {
-          console.log(reporte);
-          filtroEspecifico.push(reporte);
+          let rep = enc(reporte)
+          filtroEspecifico.push(rep);
         }
       });
 
@@ -441,7 +443,6 @@ export async function fechaFiltroEGAlcaldias(
   endDate,
   estado
 ) {
-  console.log(estado);
   let filtroEspecifico = [];
   switch (fechaFiltro) {
     case "Hoy":
@@ -457,7 +458,8 @@ export async function fechaFiltroEGAlcaldias(
       const reportesFechaHoy = await getDocs(filtroFechaHoy);
       reportesFechaHoy.forEach((doc) => {
         const reporte = doc.data();
-        filtroEspecifico.push(reporte);
+        let rep = enc(reporte)
+        filtroEspecifico.push(rep);
       });
       break;
 
@@ -476,8 +478,9 @@ export async function fechaFiltroEGAlcaldias(
         const fechaReporte = parsearDeStringADate(reporte.fechaReporte);
 
         if (fechaReporte >= inicioSemana && fechaReporte <= finSemana) {
-          console.log(reporte);
-          filtroEspecifico.push(reporte);
+          const reporte = doc.data();
+          let rep = enc(reporte)
+          filtroEspecifico.push(rep);
         }
       });
       break;
@@ -518,8 +521,9 @@ export async function fechaFiltroEGAlcaldias(
           );
           // Comparar el mes del reporte con el mes actual
           if (mesReporte == mesAnterior && añoReporte == añoDeFechaActual) {
-            filtroEspecifico.push(reporte);
-            console.log(reporte);
+            const reporte = doc.data();
+            let rep = enc(reporte)
+            filtroEspecifico.push(rep);
           }
         });
       } catch (error) {
@@ -553,8 +557,9 @@ export async function fechaFiltroEGAlcaldias(
             fechaReporte >= fechaSeisMesesAtras &&
             fechaReporte <= fechaActual
           ) {
-            console.log(reporte);
-            filtroEspecifico.push(reporte);
+            const reporte = doc.data();
+        let rep = enc(reporte)
+        filtroEspecifico.push(rep);
           }
         });
 
@@ -601,8 +606,9 @@ export async function fechaFiltroEGAlcaldias(
 
           // Comparar los años
           if (añoReporte === añoActual) {
-            console.log(reporte);
-            filtroEspecifico.push(reporte);
+            const reporte = doc.data();
+            let rep = enc(reporte)
+            filtroEspecifico.push(rep);
           }
         });
       } catch (error) {
@@ -624,8 +630,9 @@ export async function fechaFiltroEGAlcaldias(
         const reporte = doc.data();
         const fechaReporte = parsearDeStringADate(reporte.fechaReporte); // Supongamos que la fecha del reporte se encuentra en la propiedad "fecha"
         if (fechaReporte >= newStartDate && fechaReporte <= newLastEnd) {
-          console.log(reporte);
-          filtroEspecifico.push(reporte);
+          const reporte = doc.data();
+          let rep = enc(reporte)
+          filtroEspecifico.push(rep);
         }
       });
 
@@ -645,7 +652,6 @@ export async function fechaFiltroEGEstados(
   endDate,
   alcaldia
 ) {
-  console.log("WTF", alcaldia);
   let filtroEspecifico = [];
   switch (fechaFiltro) {
     case "Hoy":
@@ -662,9 +668,8 @@ export async function fechaFiltroEGEstados(
         const reporte = doc.data();
         const alcaldiaDelReporte = buscarAlcaldias(reporte.ubicacion);
         if (alcaldiaDelReporte === alcaldia) {
-          console.log("----------------");
-
-          filtroEspecifico.push(reporte);
+          const rep = enc(reporte)          
+          filtroEspecifico.push(rep);
         }
       });
       break;
@@ -686,8 +691,8 @@ export async function fechaFiltroEGEstados(
           fechaReporte <= finSemana &&
           alcaldiaDelReporte === alcaldia
         ) {
-          console.log(reporte);
-          filtroEspecifico.push(reporte);
+          const rep = enc(reporte)          
+          filtroEspecifico.push(rep);
         }
       });
       break;
@@ -731,8 +736,8 @@ export async function fechaFiltroEGEstados(
             añoReporte == añoDeFechaActual &&
             alcaldiaDelReporte === alcaldia
           ) {
-            filtroEspecifico.push(reporte);
-            console.log(reporte);
+            const rep = enc(reporte)          
+          filtroEspecifico.push(rep);
           }
         });
       } catch (error) {
@@ -765,8 +770,8 @@ export async function fechaFiltroEGEstados(
             fechaReporte <= fechaActual &&
             alcaldiaDelReporte === alcaldia
           ) {
-            console.log(reporte);
-            filtroEspecifico.push(reporte);
+            const rep = enc(reporte)          
+            filtroEspecifico.push(rep);
           }
         });
 
@@ -812,8 +817,8 @@ export async function fechaFiltroEGEstados(
 
           // Comparar los años
           if (añoReporte === añoActual && alcaldiaDelReporte === alcaldia) {
-            console.log(reporte);
-            filtroEspecifico.push(reporte);
+            const rep = enc(reporte)          
+            filtroEspecifico.push(rep);
           }
         });
       } catch (error) {
@@ -839,8 +844,8 @@ export async function fechaFiltroEGEstados(
           fechaReporte <= newLastEnd &&
           alcaldiaDelReporte === alcaldia
         ) {
-          console.log(reporte);
-          filtroEspecifico.push(reporte);
+          const rep = enc(reporte)          
+          filtroEspecifico.push(rep);
         }
       });
 

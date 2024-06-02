@@ -26,6 +26,7 @@ import {
 import "./registro.css";
 import AuthContext from "../../../context/AuthContext";
 import { dataTable, events , numberDisplay } from "dc";
+import { enc } from "@/scripts/Cifrado/Cifrar";
 
 
 
@@ -322,16 +323,25 @@ function Registro() {
         showAlert("Debes aceptar la política de privacidad y los términos y condiciones.");
         return;
       }
+
+      const nom = enc(nombre)
+      const apellidoP = enc(appat)
+      const apellidoM = enc(apmat)
+      const fechaN = enc(fechaNacimiento)
+      const corr = enc(email)
+      const pass = enc(password)
+
+
       const parametros = {
-      nombre: nombre,
-      appat: appat,
-      apmat: apmat,
-      fechaNacimiento: fechaNacimiento,
-      email: email,
-      password: password
+      nombre: encodeURIComponent(nom),
+      appat: encodeURIComponent(apellidoP),
+      apmat: encodeURIComponent(apellidoM),
+      fechaNacimiento: encodeURIComponent(fechaN),
+      email: encodeURIComponent(corr),
+      password: encodeURIComponent(pass)
     };
       const baseURL = process.env.NEXT_PUBLIC_RUTA_REGISTROU
-      const res = await fetch(`${baseURL}/${nombre}/${appat}/${apmat}/${fechaNacimiento}/${email}/${password}`,{
+      const res = await fetch(`${baseURL}/${encodeURIComponent(nom)}/${encodeURIComponent(apellidoP)}/${encodeURIComponent(apellidoM)}/${encodeURIComponent(fechaN)}/${encodeURIComponent(corr)}/${encodeURIComponent(pass)}`,{
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -7,33 +7,46 @@ import {
     signOut,
     sendPasswordResetEmail, getAuth
   } from "firebase/auth";
+import { desc } from "@/scripts/Cifrado/Cifrar";
 export async function POST(request, {params}) {
   try {
     const [nombre, appat, apmat, fechaNacimiento, email, password ] = params.RegistroU
-    const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+    const name = decodeURIComponent(nombre)
+    const aP = decodeURIComponent(appat)
+    const aM = decodeURIComponent(apmat)
+    const fN = decodeURIComponent(fechaNacimiento)
+    const correo = decodeURIComponent(email)
+    const contra = decodeURIComponent(password)
+
+    const nom = desc(name)
+    const apellidoP = desc(aP)
+    const apellidoM = desc(aM)
+    const fechaN = desc(fN)
+    const corr = desc(correo)
+    const pass = desc(contra)
+
+    const userCredential = await createUserWithEmailAndPassword(auth, corr, pass);
+
     const user = userCredential.user;
+
     sendEmailVerification(user);
+
     const uid = user.uid;
     const usuariosCollection = collection(db, "usuarios");
+
     const nuevoUsuario = {
       uid: uid,
-      nombre: nombre,
-      apellidoPaterno: appat,
-      apellidoMaterno: apmat,
-      fechaNacimiento: fechaNacimiento,
-      correo: email.toLowerCase(),
+      nombre: nom,
+      apellidoPaterno: apellidoP,
+      apellidoMaterno: apellidoM,
+      fechaNacimiento: fechaN,
+      correo: corr.toLowerCase(),
       rol:"usuario",
       estadoCuenta: true,
-<<<<<<< HEAD
-      rol:"usuario",
       fechaCreacion: new Date(),
       incidencias:0,
       numRep:0,
-=======
-      fechaCreacion: new Date(),
-      incidencias:0,
-      numRep:0
->>>>>>> cd0120ae9b6400b307987925319736f9e5347a84
+      inhabilitada: false
     };
     addDoc(usuariosCollection, nuevoUsuario);
 

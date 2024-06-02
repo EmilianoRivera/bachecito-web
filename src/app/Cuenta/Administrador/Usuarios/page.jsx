@@ -2,7 +2,7 @@
 import React, { useEffect, useState } from 'react';
 import { db } from "../../../../../firebase";
 import { collection, getDocs, query, where, updateDoc, doc, Timestamp } from 'firebase/firestore';
-
+import { desc } from '@/scripts/Cifrado/Cifrar';
 import "./usuers.css";
 
 function Page() {
@@ -27,7 +27,9 @@ function Page() {
                     throw new Error('Failed to fetch data');
                 }
                 const data = await response.json();
-                const filteredUsers = data.filter(user => user.rol === 'usuario');
+                const dataDesc = data.map(rep => desc(rep))
+
+                const filteredUsers = dataDesc.filter(user => user.rol === 'usuario');
                 setUsers(filteredUsers);
             } catch (error) {
                 console.log('Error fetching data: ', error);

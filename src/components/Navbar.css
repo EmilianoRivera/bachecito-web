@@ -242,6 +242,7 @@
       quiera interactuar como botones deben de tener un z-index: 100;
       y un position relative para que se pueda interactuar con ellos sobre del navbar
       en el apartado de administrador */
+      z-index: 100;
   }
 
   .navBar.admin a{

@@ -18,6 +18,8 @@ import {
   fechaFiltroFormateadaEspecifico,fechaFiltroEGAlcaldias,fechaFiltroEGEstados
 } from "../../../../scripts/handleFiltros";
 
+import { enc, desc } from "@/scripts/Cifrado/Cifrar";
+
 async function filtroGeneral(
   fechaFiltro,
   fechaActual,
@@ -26,14 +28,14 @@ async function filtroGeneral(
   startDate,
   endDate
 ) {
-  console.log(
+/*   console.log(
     "DEL GENERAL",
     "fechaFiltro: ", fechaFiltro, 
     "endDate: ", endDate,
     "startDate: ", startDate, 
     "ESTADO: ", estado, 
     "Alcaldia: ", alcaldia,
-  )
+  ) */
   let elementosFiltrados = [];
 
 
@@ -49,7 +51,8 @@ async function filtroGeneral(
 
     reportesAlcaldiaFecha.forEach((doc) => {
       const reporte= doc.data()
-      elementosFiltrados.push(reporte);
+      const cif = enc(reporte)
+      elementosFiltrados.push(cif);
     });
   } else if (alcaldia === "Todas" && estado === "Todos") {
     const formateoFechaFiltro = await fechaFiltroFormateada(
@@ -67,7 +70,8 @@ async function filtroGeneral(
       //obtener alcaldia
       const alcaldiaDelReporte = buscarAlcaldias(reporte.ubicacion);
       if (alcaldia === alcaldiaDelReporte) {
-        elementosFiltrados.push(reporte);
+        const cif = enc(reporte)
+        elementosFiltrados.push(cif);
       }
     });
   } else if (fechaFiltro === "Todos los tiempos") {
@@ -78,7 +82,9 @@ async function filtroGeneral(
       const reporte = doc.data()
       const alcaldiaDelReporte = buscarAlcaldias(reporte.ubicacion);
       if (alcaldia === alcaldiaDelReporte) {
-        elementosFiltrados.push(doc.data());
+        const reporte= doc.data()
+        const cif = enc(reporte)
+        elementosFiltrados.push(cif);
       }
     });
   } else if (alcaldia === "Todas") {
@@ -114,8 +120,8 @@ async function filtroEspecifico(
         startDate,
         endDate
 ) {
- console.log("ESPEIFICO",fechaFiltro, " ", fechaActual, " ", estado, " ", alcaldia, " ", startDate," ", endDate )
-console.log(new Date(startDate), " ", new Date(endDate))
+/*  console.log("ESPEIFICO",fechaFiltro, " ", fechaActual, " ", estado, " ", alcaldia, " ", startDate," ", endDate )
+console.log(new Date(startDate), " ", new Date(endDate)) */
   let filtroEspecifico = [];
   const formateoFechaFiltroEspecifico = await fechaFiltroFormateadaEspecifico(
     fechaFiltro,
@@ -125,34 +131,32 @@ console.log(new Date(startDate), " ", new Date(endDate))
         startDate,
         endDate
   );
-
   return formateoFechaFiltroEspecifico;
 }
 
 //Funcion que recibe y envia la petición
 export async function POST(request, { params }) {
   try {
-    const [estado,alcaldia,fechaFiltro,startDate,endDate, ] = params.filtros; 
-    
+    const [estado,alcaldia,fechaFiltro,startDate,endDate] = params.filtros; 
+
  // console.log("DEL POST",estado, " ", endDate, " ", fechaFiltro, " ", alcaldia, " ", startDate)
     const fechaActual = obtenerFechaActual();
-   // console.log(fechaFiltro === "Todos los tiempos")
     if (estado ==="Todos" && alcaldia === "Todas" && fechaFiltro === "Todos los tiempos") {
       const refRep = collection(db, "reportes")
       const getReportes = await getDocs(refRep)
       let reportes = []
       getReportes.forEach((doc) => {
         const rep = doc.data()
-        reportes.push(rep)
+        const repEnc = enc(rep)
+        reportes.push(repEnc)
       })
-   //   console.log("POAR AQUI",reportes)
       return NextResponse.json(reportes)
     }  else if (
       estado === "Todos" ||
       alcaldia === "Todas" ||
       fechaFiltro === "Todos los tiempos"
     ) {
-
+      let arr = []
       const filtradoGeneral = await filtroGeneral(
         fechaFiltro,
         fechaActual,
@@ -161,10 +165,13 @@ export async function POST(request, { params }) {
         startDate,
         endDate
       );
+/*       const filtradoGEncrypt = enc(filtradoGeneral)
+      arr.push(filtradoGEncrypt) */
   //    console.log(filtradoGeneral.length)
       return NextResponse.json(filtradoGeneral);
     } 
     else {
+      let arr = []
       const filtradoEspecifico = await filtroEspecifico(
         fechaFiltro,
         fechaActual,
@@ -174,7 +181,8 @@ export async function POST(request, { params }) {
         endDate
       );
      // console.log(filtradoEspecifico.length)
- 
+/*       const filtroEEncrypt = enc(filtradoEspecifico)
+      arr.push(filtroEEncrypt) */
       return NextResponse.json(filtradoEspecifico);
     }
   } catch (error) {
