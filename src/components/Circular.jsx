@@ -157,8 +157,8 @@ export default function Circular({
             data={data}
             cx="50%"
             cy="50%"
-            outerRadius={150}
-            innerRadius={60}
+            outerRadius={124}
+            innerRadius={35}
             fill="#8884d8"
             dataKey="value"
           >

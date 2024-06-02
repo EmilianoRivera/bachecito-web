@@ -47,6 +47,7 @@ export async function POST(request, {params}) {
       incidencias:0,
       numRep:0,
       inhabilitada: false
+ 
     };
     addDoc(usuariosCollection, nuevoUsuario);
 
