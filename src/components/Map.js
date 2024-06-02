@@ -1,8 +1,10 @@
 "use client";
-import { MapContainer, Marker, TileLayer, Popup, Polygon } from "react-leaflet";
-import "../app/Cuenta/Administrador/Mapa/Mapa.css"
+import { MapContainer, Marker, TileLayer, Popup, Polygon,Circle } from "react-leaflet";
+import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "./map.css"
+import "../app/Cuenta/Usuario/Estadisticas/style.css"
+import MarkerIcon from "../../node_modules/leaflet/dist/images/marker-icon.png";
 import "leaflet/dist/images/layers.png";
 import "leaflet/dist/images/layers-2x.png";
 import "leaflet/dist/images/marker-icon-2x.png";
@@ -10,8 +12,8 @@ import "leaflet/dist/images/marker-shadow.png";
 import atendidoIcon from '../imgs/BanderaVerdeConFondo.png';
 import enProcesoIcon from '../imgs/BanderaAmarillaConFondo.png';
 import sinAtenderIcon from '../imgs/BanderaRojaConFondo.png';
+import { desc } from "@/scripts/Cifrado/Cifrar";
 import { useEffect, useState } from "react";
-
 const polygon = [
   [19.592749, -99.12369],
   [19.588528, -99.126953],
@@ -724,9 +726,9 @@ const polygonOptions = {
   fillColor: '#FFB471', // Relleno
 };
 
-
-const MapAdmin = () => {
+const Map = ({ searchFolio, searchStatus, alcaldia }) => {
   const [markers, setMarkers] = useState([]);
+  const [userLocation, setUserLocation] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
@@ -737,9 +739,9 @@ const MapAdmin = () => {
           throw new Error("Failed to fetch data");
         }
         const data = await res.json();
-        
+        const dataDesc = data.map(rep => desc(rep))
         // Convertir las ubicaciones de los reportes en coordenadas
-        const markersData = await Promise.all(data.map(async (reporte) => {
+        const markersData = await Promise.all(dataDesc.map(async (reporte) => {
           const coordenadas = await reverse(reporte.ubicacion, reporte.descripcion);
           if (coordenadas) {
             return {
@@ -748,20 +750,58 @@ const MapAdmin = () => {
               fecha: reporte.fechaReporte,
               imagenURL: reporte.imagenURL,
               ubicacion: reporte.ubicacion,
-              estados: reporte.estado
+              estados: reporte.estado,
+              folio: reporte.folio
             };
           }
           return null;
         }));
-        
-        // Filtrar los marcadores válidos y establecer el estado
-        setMarkers(markersData.filter(marker => marker !== null));
+
+        // Filtrar valores nulos de markersData
+        const validMarkersData = markersData.filter(marker => marker !== null);
+
+        // Filtrar los marcadores según los filtros
+        const filteredMarkers = filterMarkers(validMarkersData);
+        // Establecer los marcadores filtrados como estado
+        setMarkers(filteredMarkers);
       } catch (error) {
         console.log("Error fetching data: ", error);
       }
     }
 
     fetchData();
+  }, [searchFolio, searchStatus, alcaldia]);
+
+  const filterMarkers = (markersData) => {
+    console.log("searchStatus:", searchStatus);
+    console.log("searchFolio:", searchFolio);
+    console.log("Alcaldia: ", alcaldia)
+    if (searchStatus === "Todos" && searchFolio === "Todos los folios" || alcaldia ==="Todas") {
+      return markersData;
+    }
+
+    return markersData.filter(marker => 
+      (searchStatus === "Todos" || marker.estados.toLowerCase() === searchStatus.toLowerCase()) &&
+      (searchFolio === "Todos los folios" || marker.folio.startsWith(searchFolio))
+    );
+  };
+
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setUserLocation({
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          });
+        },
+        (error) => {
+          console.error("Error getting user location:", error);
+        }
+      );
+    } else {
+      console.error("Geolocation is not supported by this browser.");
+    }
   }, []);
 
   function getIconUrl(estado) {
@@ -776,6 +816,7 @@ const MapAdmin = () => {
         return MarkerIcon.src; // Icono por defecto si el estado no coincide con ninguno de los casos anteriores
     }
   }
+
   async function reverse(ubi, descripcion) {
     try {
       const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
@@ -797,13 +838,12 @@ const MapAdmin = () => {
     }
   }
 
+  const radius = 800;
+
   return (
     <div>
-       <MapContainer
-        style={{
-          height: "77vh",
-          width: "90vw",
-        }}
+      <MapContainer
+        className="mapcontainer"
         center={[19.453986, -99.17505]}
         zoom={10.2}
         scrollWheelZoom={false}
@@ -814,12 +854,24 @@ const MapAdmin = () => {
         id="map"
       >
         <TileLayer
-          url="https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=Pyxxe8P2qOBkCkRdy5jX	"
+          url="https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=Pyxxe8P2qOBkCkRdy5jX"
           attribution="Map data &copy; <a href='https://www.openstreetmap.org/'>OpenStreetMap</a> contributors, 
           <a href='https://creativecommons.org/licenses/by-sa/2.0/'>CC-BY-SA</a>, 
           Imagery © <a href='https://www.maptiler.com/'>MapTiler</a>"
         />
-         <Polygon pathOptions={polygonOptions} positions={polygon} />
+        <Polygon pathOptions={polygonOptions} positions={polygon} />
+        {userLocation && userLocation.lat && userLocation.lng && (
+          <Circle
+            radius={radius}
+            fillColor="#FF5733"
+            fillOpacity={0.7}
+            center={[userLocation.lat, userLocation.lng]}
+            pathOptions={{
+              color: "#FF5733",
+              weight: 0.1,
+            }}
+          />
+        )}
         {markers.map((marker, index) => (
           <Marker
             key={index}
@@ -828,16 +880,15 @@ const MapAdmin = () => {
               new L.Icon({
                 iconUrl: getIconUrl(marker.estados),
                 iconRetinaUrl: getIconUrl(marker.estados),
-                iconSize: [23, 23],
+                iconSize: [20, 20],
               })
             }
           >
-            <Popup id="popup">  
+            <Popup id="popup">
               <div className="reportito-popup">
                 <img src={marker.imagenURL} alt="Foto del reporte" style={{ maxWidth: '95px', borderRadius:'1rem', }} />
                 <p className="fecha-popup">Fecha: {marker.fecha}</p>
                 <p className="estado-popup">Estado: {marker.estados}</p>
-                <p className="ubicacion-popup">Ubicación: {marker.ubicacion}</p>
                 <p className="descripcion-popup">Descripción: {marker.descripcion}</p>
               </div>
             </Popup>
@@ -848,4 +899,4 @@ const MapAdmin = () => {
   );
 };
 
-export default MapAdmin;
+export default Map;

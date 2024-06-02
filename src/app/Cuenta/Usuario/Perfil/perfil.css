@@ -78,7 +78,7 @@
   position: fixed;
   width: 100%;
   margin-top: -11vh;
-  z-index: 500;
+  z-index: -1;
   background-color: var(--background-color);
 }
 
@@ -94,7 +94,7 @@
   height: 43vh;
   border-radius: 3vh;
   margin-bottom: 25px;
-  z-index: 100;
+  z-index: 1;
   position: relative;
   background-color: var(--background-color-6);
 }
@@ -192,8 +192,8 @@
 .icon-star2 {
   height: 90%;
   align-self: center;
-  justify-self: end;
   cursor: pointer;
+  justify-self: end;
 }
 
 
@@ -245,6 +245,8 @@
   display: flex;
   box-sizing: border-box;
   margin-right: 18px;
+  z-index: -10;
+  position: relative;
 }
 
 
@@ -288,7 +290,7 @@
 
 .folio{
   position: absolute;
-  width: 15%;
+  width: 23%;
   color: white;
   margin-top: 10px;
   margin-left: 10px;

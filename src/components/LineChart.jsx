@@ -77,7 +77,7 @@ function LineChart() {
   }, []);
 
   return (
-    <ResponsiveContainer width="100%" height={400}>
+    <ResponsiveContainer width="100%" height={300} style={{marginLeft: '-3%'}}>
       <RechartsLineChart data={data}>
         <CartesianGrid strokeDasharray="3 3" stroke="#A9A9A9" />
         <XAxis dataKey="date" stroke="#A9A9A9" />

@@ -834,8 +834,9 @@ const DEFAULT_LONGITUDE = -99.1750683; // batiz
   
 
   const mapStyles = {
-    height: "80vh",
+    height: "72vh",
     width: "59vw",
+    borderRadius: "1rem",
   };
 
   const defaultCenter = {
@@ -859,6 +860,7 @@ const DEFAULT_LONGITUDE = -99.1750683; // batiz
             },
           },
           scrollwheel: false,
+          mapTypeControl: false,
         }}
       >
            <StandaloneSearchBox
@@ -873,22 +875,25 @@ const DEFAULT_LONGITUDE = -99.1750683; // batiz
         >
           <input
             type="text"
-            placeholder="Buscar ubicaciones en Ciudad de México..."
+            placeholder="Buscar ubicaciones en CDMX..."
             style={{
               boxSizing: 'border-box',
               border: '1px solid transparent',
-              width: '240px',
+              width: '265px',
               height: '32px',
               padding: '0 12px',
-              borderRadius: '3px',
+              borderRadius: '1rem',
               boxShadow: '0 2px 6px rgba(0, 0, 0, 0.3)',
               fontSize: '14px',
               outline: 'none',
               textOverflow: 'ellipses',
               position: 'absolute',
-              left: '50%',
+              left: '17%',
+              top: '2%',
               marginLeft: '-120px',
               zIndex: '1',
+              backgroundColor: '#ffffffc7',
+              backdropFilter: 'blur(3px)'
             }}
           />
         </StandaloneSearchBox>
