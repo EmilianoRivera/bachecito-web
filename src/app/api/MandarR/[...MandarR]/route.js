@@ -64,8 +64,8 @@ const contadorFunc = async (direccion) => {
 
 export async function POST(request, { params }) {
   try {
-    const [uidUsuario, nombre, apellidoPaterno, url, descripcion, ubicacion] = params.MandarR;
-    const imagenURL = decodeURIComponent(url);
+    const [uidUsuario, nombre, apellidoPaterno, imagenURL, descripcion, ubicacion] = params.MandarR;
+    
     const id = decodeURIComponent(uidUsuario);
     const uid = desc(id);
 
@@ -76,7 +76,7 @@ export async function POST(request, { params }) {
     
     console.log("uid: ", uid)
     console.log("URL:", imagenURL)
-/*     const docRef = await addDoc(collection(db, "reportes"), {
+    const docRef = await addDoc(collection(db, "reportes"), {
       apellidoPaterno,
       contador: cantidadReportes + 1,
       descripcion,
@@ -88,7 +88,7 @@ export async function POST(request, { params }) {
       nombre,
       ubicacion,
       uid,
-    }); */
+    });
 
     return NextResponse.json("ESTATUS 200");
   } catch (error) {
