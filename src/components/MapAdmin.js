@@ -776,7 +776,7 @@ const MapAdmin = ( searchFolio, searchStatus, alcaldia, filtroFecha, startDate, 
   }, [searchFolio, searchStatus, alcaldia, filtroFecha, startDate, endDate]);
 
   const filterMarkers = (markersData) => {
-    console.log(searchStatus)
+    console.log("estado selcted:", searchStatus);
     return markersData.filter((marker) => {
       const statusMatch =
         searchStatus === "Todos" ||

@@ -30,7 +30,7 @@ export default function MapAdmin() {
   const [alcaldia,  setSelectedAlcaldia] = useState("Todas")
   const [mapInitialized, setMapInitialized] = useState(false); // Definición de mapInitialized
   const [searchStatus, setSearchStatus] = useState("Todos");
-  const [searchFolio, setSearchFolio] = useState("Todos los folios");
+  const [searchFolio, setSearchFolio] = useState("Todas");
   
   const handleAlcaldiaChange = (e) => {
     const selectedFolio = e.target.value;
@@ -42,7 +42,7 @@ export default function MapAdmin() {
   useEffect(() => {
     // Marca el mapa como inicializado
     setMapInitialized(true);
-  }, [searchFolio, searchStatus]);
+  }, [searchFolio, searchStatus, filtroFecha, startDate, endDate]);
 
 
   const handleFechaChange = (e) => {
@@ -133,9 +133,8 @@ export default function MapAdmin() {
           </label>
           {isEstadoSelectVisible && (
             <select  onChange={(e) => setSearchStatus(e.target.value)}>
-              <option value="Sin Estado">Todos</option>
-              <option value="Sin Estado">Sin Estado</option>
-              <option value="Sin atender">Sin atender</option>
+              <option value="Todos">Todos</option>
+               <option value="Sin atender">Sin atender</option>
               <option value="En Atención">En Atención</option>
               <option value="Atendido">Atendido</option>
             </select>
@@ -146,8 +145,14 @@ export default function MapAdmin() {
         {isGraphicsVisible ? "Ocultar gráficos" : "Mostrar gráficos"}
       </button>
       {mapInitialized && (
-         <DynamicMap searchFolio={searchFolio} searchStatus={searchStatus} alcaldia={alcaldia} />
-      )}
+       <DynamicMap
+       searchFolio={searchFolio}
+       searchStatus={searchStatus}
+       alcaldia={alcaldia}
+       filtroFecha={filtroFecha}
+       startDate={startDate}
+       endDate={endDate}
+     /> )}
       {/* Solo muestra el div si isGraphicsVisible es true */}
       {isGraphicsVisible && (
         <div className="container-graphics">
