@@ -100,6 +100,7 @@ function Page() {
             console.error('Error disabling account: ', error);
         }
     };
+    
     const handleDetailsClick = async (uid) => {
         try {
             const userQuery = query(
