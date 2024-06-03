@@ -90,9 +90,9 @@ function Page() {
     const handleSearchQueryChange = (e) => {
         setSearchQuery(e.target.value);
     };
-    const sendEmail = async (email, subject, text) => {
+    const sendEmail = async (email, subject, text, incidenciaNum, nombreUsuario) => {
         try {
-            const response = await fetch('/api/sendEmail', {
+            const response = await fetch(`/api/sendEmail/${email}/${subject}/${text}/${incidenciaNum}/${nombreUsuario}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -101,6 +101,8 @@ function Page() {
                     to: email,
                     subject: subject,
                     text: text,
+                    incidenciaNum: incidenciaNum,
+                    nombreUsuario: nombreUsuario,
                 }),
             });
 
@@ -158,12 +160,19 @@ function Page() {
                     updates.inhabilitada = true;
                 }
 
-
+                const fullName = `${userData.nombre} ${userData.apellidoPaterno}`.toLowerCase();
                 await updateDoc(userRef, updates);
                 await sendEmail(
                     userData.correo,
                     'Nueva Incidencia Registrada',
-                    `Se ha registrado una nueva incidencia con la siguiente descripción: ${descripcion}.`
+                    `
+                    Se ha registrado la incidencia número ${newIncidenciasCount} en tu cuenta de Bachecito 26:
+                                    
+                    Descripción: ${descripcion}
+                    Gravedad: ${prioridad}
+                    `,
+                     newIncidenciasCount,
+                     fullName
                 );
             });
 
@@ -213,6 +222,7 @@ function Page() {
             console.error('Error disabling account: ', error);
         }
     };
+ 
     const handleDetailsClick = async (uid, detailsType) => {
         try {
             const userQuery = query(
