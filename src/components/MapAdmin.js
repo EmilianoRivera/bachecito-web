@@ -11,7 +11,7 @@ import atendidoIcon from '../imgs/BanderaVerdeConFondo.png';
 import enProcesoIcon from '../imgs/BanderaAmarillaConFondo.png';
 import sinAtenderIcon from '../imgs/BanderaRojaConFondo.png';
 import { useEffect, useState } from "react";
-
+import { desc } from "@/scripts/Cifrado/Cifrar";
 const polygon = [
   [19.592749, -99.12369],
   [19.588528, -99.126953],
@@ -737,9 +737,9 @@ const MapAdmin = () => {
           throw new Error("Failed to fetch data");
         }
         const data = await res.json();
-        
+        const dataDesc = data.map((rep) => desc(rep));
         // Convertir las ubicaciones de los reportes en coordenadas
-        const markersData = await Promise.all(data.map(async (reporte) => {
+        const markersData = await Promise.all(dataDesc.map(async (reporte) => {
           const coordenadas = await reverse(reporte.ubicacion, reporte.descripcion);
           if (coordenadas) {
             return {
