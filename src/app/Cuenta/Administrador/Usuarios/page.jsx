@@ -90,6 +90,29 @@ function Page() {
     const handleSearchQueryChange = (e) => {
         setSearchQuery(e.target.value);
     };
+    const sendEmail = async (email, subject, text) => {
+        try {
+            const response = await fetch('/api/sendEmail', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    to: email,
+                    subject: subject,
+                    text: text,
+                }),
+            });
+
+            const result = await response.json();
+            if (!response.ok) {
+                throw new Error(result.message || 'Failed to send email');
+            }
+            console.log('Email sent successfully');
+        } catch (error) {
+            console.error('Error sending email: ', error);
+        }
+    };
     const incidencia = async (uid, descripcion, prioridad) => {
         try {
             const userQuery = query(
@@ -137,6 +160,11 @@ function Page() {
 
 
                 await updateDoc(userRef, updates);
+                await sendEmail(
+                    userData.correo,
+                    'Nueva Incidencia Registrada',
+                    `Se ha registrado una nueva incidencia con la siguiente descripción: ${descripcion}.`
+                );
             });
 
             // Reset description and close modal after adding the incident
@@ -161,7 +189,7 @@ function Page() {
             });
 
             // Fetch users again to refresh the data
-            fetchData();
+            fetchFilteredUsers();
         } catch (error) {
             console.error('Error disabling account: ', error);
         }
@@ -180,7 +208,7 @@ function Page() {
             });
 
             // Fetch users again to refresh the data
-            fetchData();
+            fetchFilteredUsers();
         } catch (error) {
             console.error('Error disabling account: ', error);
         }
