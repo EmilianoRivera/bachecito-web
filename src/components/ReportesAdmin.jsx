@@ -1,95 +1,63 @@
 "use client";
 import { useEffect, useState } from "react";
-import { db, collection, getDocs, updateDoc, doc, query, where } from "../../firebase";
+import { db, collection, getDocs, updateDoc } from "../../firebase";
 import '../app/Cuenta/Administrador/Reportes/Reportes.css';
 import Link from 'next/link';
 import React from 'react';
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { enc, desc } from "@/scripts/Cifrado/Cifrar";
+import {
+    isToday,
+    isThisWeek,
+    isThisMonth,
+    isThisYear,
+    isWithinInterval,
+    subMonths,
+    parse,
+    format
+  } from "date-fns";
+
 export default function ReportesAdmin() {
     const [rep, setRep] = useState([]);
     const [isEstadoAlertVisible, setIsEstadoAlertVisible] = useState(false);
     const [alertaEstadoData, setAlertaEstadoData] = useState({ folio: null, estadoActual: null });
-    const [alcaldiaSeleccionada, setAlcaldiaSeleccionada] = useState("Todas");
     const [searchLocation, setSearchLocation] = useState("");
-    function showDeleteHeader() {
-        const table = document.querySelector('.containerReportesAdmin table');
-        table.classList.add('show-header');
-    }
-
-    function hideDeleteHeader() {
-        const table = document.querySelector('.containerReportesAdmin table');
-        table.classList.remove('show-header');
-    }
-
     const [estadoOriginal, setEstadoOriginal] = useState(null);
-    const showEstadoAlert = (folio, estado) => {
-        // Configura los datos de la alerta de cambio de estado
-        setAlertaEstadoData({ folio: folio, estadoActual: estado });
-        setIsEstadoAlertVisible(true);
+    const [isDeleteAlertVisible, setIsDeleteAlertVisible] = useState(false);
+    const [deleteAlertData, setDeleteAlertData] = useState({ folio: null });
 
-        // Guarda el estado original del reporte antes de abrir la alerta
-        const rows = document.querySelectorAll('.containerReportesAdmin .Reportes');
-        const reporteOriginal = [...rows].find(row => row.querySelector('.folio').textContent === folio);
-        if (reporteOriginal) {
-            const estadoOriginal = reporteOriginal.querySelector('.estado').textContent;
-            setEstadoOriginal(estadoOriginal);
-        }
-    };
+    const [startDate, setStartDate] = useState(new Date());
+    const [endDate, setEndDate] = useState(new Date());
+    const [filtroFecha, setFiltroFecha] = useState("Todos los tiempos");
+    const [estado, setEstado] = useState("Todos");
+    const [alcaldiaSeleccionada, setAlcaldiaSeleccionada] = useState("Todas");
 
-    const closeEstadoAlert = () => {
-        // Oculta la alerta de cambio de estado
-        setIsEstadoAlertVisible(false);
-        window.location.reload();
-    };
+    const [isFechaSelectVisible, setIsFechaSelectVisible] = useState(false);
+    const [isAlcaldiaSelectVisible, setIsAlcaldiaSelectVisible] = useState(false);
+    const [isEstadoSelectVisible, setIsEstadoSelectVisible] = useState(false);
 
-    const cancelEstadoAlert = () => {
-        // Oculta la alerta de cambio de estado
-        setIsEstadoAlertVisible(false);
+    const [reportesFiltrados, setReportesFiltrados] = useState([]);
 
-        // Revertir los cambios realizados desde que se abrió la alerta
-        const { folio, estadoActual } = alertaEstadoData;
-        const rows = document.querySelectorAll('.containerReportesAdmin .Reportes');
-        rows.forEach((row) => {
-            if (row.querySelector('.folio').textContent === folio) {
-                // Revertir solo si el estado actual es diferente al estado original
-                if (row.querySelector('.estado').textContent !== estadoOriginal) {
-                    row.querySelector('.estado').textContent = estadoOriginal;
-                }
-            }
-        });
-    };
-
-    const updateEstado = async (folio, nuevoEstado) => {
-        try {
-            // Lógica para actualizar el estado del reporte en la base de datos
-            const refCollection = collection(db, 'reportes');
-            const querySnapshot = await getDocs(refCollection);
-
-            querySnapshot.forEach(async (doc) => {
-                const reporte = doc.data();
-                if (reporte.folio === folio) {
-                    // Actualizar el documento para establecer eliminado: true
-                    await updateDoc(doc.ref, { estado: nuevoEstado });
-                    // Después de actualizar el estado, llamar a fetchFiltroEstado para obtener datos actualizados
-                    await fetchFiltroEstado();
-
-                    console.log(`Se marcó como eliminado el reporte con folio ${folio}`);
-                }
-            })
-            // Actualizar el estado del reporte en la tabla HTML
-            const rows = document.querySelectorAll('.containerReportesAdmin .Reportes');
-            rows.forEach((row) => {
-                if (row.querySelector('.folio').textContent === folio) {
-                    row.querySelector('.estado').textContent = nuevoEstado;
-                }
-            });
-        } catch (error) {
-            console.error("Error al cambiar el estado del reporte", error);
-        }
-    };
-
+    const alcaldiasCDMX = [
+        "Todas",
+        "🐴 Álvaro Obregón ",
+        "🐜 Azcapotzalco ",
+        "🐷 Benito Juárez",
+        "🐺 Coyoacán",
+        "🌳 Cuajimalpa de Morelos",
+        "🦅 Cuauhtémoc",
+        "🌿 Gustavo A. Madero ",
+        "🏠 Iztacalco",
+        "🐭 Iztapalapa",
+        "🏔 La Magdalena Contreras",
+        "🦗 Miguel Hidalgo",
+        "🌾 Milpa Alta",
+        "🌋 Tláhuac",
+        "🦶 Tlalpan",
+        "🌻 Venustiano Carranza",
+        "🐠 Xochimilco",
+    ];
 
     useEffect(() => {
         async function fetchData() {
@@ -100,9 +68,9 @@ export default function ReportesAdmin() {
                     throw new Error("Failed to fetch data");
                 }
                 const dataEnc = await response.json();
-                const data = dataEnc.map(rep => desc(rep))
-              
+                const data = dataEnc.map(rep => desc(rep));
                 setRep(data);
+                setReportesFiltrados(data);
             } catch (error) {
                 console.log("Error fetching data: ", error);
             }
@@ -111,6 +79,148 @@ export default function ReportesAdmin() {
         fetchData();
     }, []);
 
+    useEffect(() => {
+        const filtrarReportes = () => {
+            let filtrados = rep;
+
+            // Filtrar por estado
+            if (estado !== "Todos") {
+                filtrados = filtrados.filter(reporte => reporte.estado === estado);
+            }
+
+            // Filtrar por alcaldía
+            if (alcaldiaSeleccionada !== "Todas") {
+                filtrados = filtrados.filter(reporte => obtenerAlcaldiaPorFolio(reporte.folio) === alcaldiaSeleccionada);
+            }
+
+            // Filtrar por ubicación
+            if (searchLocation) {
+                const ubicacionLowerCase = searchLocation.toLowerCase();
+                filtrados = filtrados.filter(reporte => reporte.ubicacion.toLowerCase().includes(ubicacionLowerCase));
+            }
+
+            // Filtrar por fechas
+            filtrados = filtrados.filter(reporte => checkFechaMatch(reporte.fechaReporte));
+
+            setReportesFiltrados(filtrados);
+        };
+
+        filtrarReportes();
+    }, [estado, alcaldiaSeleccionada, searchLocation, filtroFecha, startDate, endDate, rep]);
+
+    const handleAlcaldiaChange = (e) => {
+        setAlcaldiaSeleccionada(e.target.value);
+    };
+
+    const handleFechaChange = (e) => {
+        setFiltroFecha(e.target.value);
+    };
+
+    const handleEstadoChange = (e) => {
+        setEstado(e.target.value);
+    };
+
+    const checkFechaMatch = (fecha) => {
+        const parsedFecha = parse(fecha, 'd/M/yyyy', new Date());
+
+        switch (filtroFecha) {
+          case "Todos los tiempos":
+            return true;
+          case "Hoy":
+            return isToday(parsedFecha);
+          case "Esta semana":
+            return isThisWeek(parsedFecha);
+          case "Último mes":
+            const lastMonth = subMonths(new Date(), 1);
+            return (
+              parsedFecha.getMonth() === lastMonth.getMonth() &&
+              parsedFecha.getFullYear() === lastMonth.getFullYear()
+            );
+          case "Últimos 6 meses":
+            return isWithinInterval(parsedFecha, {
+              start: subMonths(new Date(), 6),
+              end: new Date(),
+            });
+          case "Este año":
+            return isThisYear(parsedFecha);
+          case "Rango personalizado":
+            return isWithinInterval(parsedFecha, {
+              start: startDate,
+              end: endDate,
+            });
+          default:
+            return false;
+        }
+      };
+
+    const obtenerAlcaldiaPorFolio = (folio) => {
+        const primerosTresDigitos = folio.substring(0, 3);
+
+        switch (primerosTresDigitos) {
+            case '001': return '🐴 Álvaro Obregón';
+            case '002': return '🐜 Azcapotzalco ';
+            case '003': return '🐷 Benito Juárez';
+            case '004': return '🐺 Coyoacán';
+            case '005': return '🌳 Cuajimalpa de Morelos';
+            case '006': return '🦅 Cuauhtémoc';
+            case '007': return '🌿 Gustavo A. Madero ';
+            case '008': return '🏠 Iztacalco';
+            case '009': return '🐭 Iztapalapa';
+            case '010': return '🏔 La Magdalena Contreras';
+            case '011': return '🦗 Miguel Hidalgo';
+            case '012': return '🌾 Milpa Alta';
+            case '013': return '🌋 Tláhuac';
+            case '014': return '🦶 Tlalpan';
+            case '015': return '🌻 Venustiano Carranza';
+            case '016': return '🐠 Xochimilco';
+            default: return 'No se encontró la alcaldía';
+        }
+    };
+
+    const showDeleteHeader = () => {
+        const table = document.querySelector('.containerReportesAdmin table');
+        table.classList.add('show-header');
+    };
+
+    const hideDeleteHeader = () => {
+        const table = document.querySelector('.containerReportesAdmin table');
+        table.classList.remove('show-header');
+    };
+
+    const showEstadoAlert = (folio, estado) => {
+        setAlertaEstadoData({ folio: folio, estadoActual: estado });
+        setIsEstadoAlertVisible(true);
+        const rows = document.querySelectorAll('.containerReportesAdmin .Reportes');
+        const reporteOriginal = [...rows].find(row => row.querySelector('.folio').textContent === folio);
+        if (reporteOriginal) {
+            const estadoOriginal = reporteOriginal.querySelector('.estado').textContent;
+            setEstadoOriginal(estadoOriginal);
+        }
+    };
+    const showDeleteAlert = (folio) => {
+        setDeleteAlertData({ folio: folio });
+        setIsDeleteAlertVisible(true);
+    };
+    const closeEstadoAlert = () => {
+        setIsEstadoAlertVisible(false);
+        window.location.reload();
+    };
+    const closeDeleteAlert = () => {
+        setIsDeleteAlertVisible(false);
+    };
+
+    const cancelEstadoAlert = () => {
+        setIsEstadoAlertVisible(false);
+        const { folio } = alertaEstadoData;
+        const rows = document.querySelectorAll('.containerReportesAdmin .Reportes');
+        rows.forEach((row) => {
+            if (row.querySelector('.folio').textContent === folio) {
+                if (row.querySelector('.estado').textContent !== estadoOriginal) {
+                    row.querySelector('.estado').textContent = estadoOriginal;
+                }
+            }
+        });
+    };
     const handleClick = async (folio) => {
         try {
             const refCollection = collection(db, 'reportes');
@@ -138,219 +248,35 @@ export default function ReportesAdmin() {
         }
     };
 
-
-    const [isDeleteAlertVisible, setIsDeleteAlertVisible] = useState(false);
-    const [deleteAlertData, setDeleteAlertData] = useState({ folio: null });
-
-    // Función para mostrar la alerta de eliminación
-    const showDeleteAlert = (folio) => {
-        setDeleteAlertData({ folio: folio });
-        setIsDeleteAlertVisible(true);
-    };
-
-    // Función para ocultar la alerta de eliminación
-    const closeDeleteAlert = () => {
-        setIsDeleteAlertVisible(false);
-    };
-
-    const alcaldiasCDMX = [
-        "Todas",
-        "🐴 Álvaro Obregón ",
-        "🐜 Azcapotzalco ",
-        "🐷 Benito Juárez",
-        "🐺 Coyoacán",
-        "🌳 Cuajimalpa de Morelos",
-        "🦅 Cuauhtémoc",
-        "🌿 Gustavo A. Madero ",
-        "🏠 Iztacalco",
-        "🐭 Iztapalapa",
-        "🏔 La Magdalena Contreras",
-        "🦗 Miguel Hidalgo",
-        "🌾 Milpa Alta",
-        "🌋 Tláhuac",
-        "🦶 Tlalpan",
-        "🌻 Venustiano Carranza",
-        "🐠 Xochimilco",
-    ];
-    const [reportes, setReportes] = useState([]);
-    const obtenerAlcaldiaCDMX = (ubicacion) => {
-        // Lista de nombres de alcaldías de la CDMX
-        const alcaldiasCDMX = ["Azcapotzalco", "Coyoacán", "Cuajimalpa", "Gustavo A. Madero", "Iztacalco", "Iztapalapa", "Magdalena Contreras", "Miguel Hidalgo", "Milpa Alta", "Tláhuac", "Tlalpan", "Venustiano Carranza", "Xochimilco"];
-
-        const ubicacionLowercase = ubicacion.toLowerCase();
-
-        const alcaldiaEncontrada = alcaldiasCDMX.find(alcaldia => ubicacionLowercase.includes(alcaldia.toLowerCase()));
-        return alcaldiaEncontrada ? alcaldiaEncontrada : "No disponible";
-    };
-    useEffect(() => {
-        async function fetchData() {
-            const baseURL = process.env.NEXT_PUBLIC_RUTA_R
-            const res = await fetch(`${baseURL}`);
-            const data = await res.json(); // Espera a que se resuelva la promesa
-
-            const descDesc = data.map(rep => desc(rep))
-            setReportes(descDesc);
-        }
-
-        fetchData();
-    }, []);
-
-    /*ESTO ES DEL RANGO PERSONALIZADO */
-    const [startDate, setStartDate] = useState(new Date());
-    const [endDate, setEndDate] = useState(new Date());
-    /*ESTO ES DEL FILTRO DE FECHA EN GENERAL */
-
-    const [filtroFecha, setFiltroFecha] = useState("Todos los tiempos");
-
-
-    const [estado, setEstado] = useState("Todos");
-    const [alcaldias, setAlcaldia] = useState("Todas");
-
-    // Estados para manejar la visibilidad de los select
-    const [isFechaSelectVisible, setIsFechaSelectVisible] = useState(false);
-    const [isAlcaldiaSelectVisible, setIsAlcaldiaSelectVisible] = useState(false);
-    const [isEstadoSelectVisible, setIsEstadoSelectVisible] = useState(false);
-
-    const handleAlcaldiaChange = (e) => {
-        const alcaldiaSeleccionada = e.target.value;
-        setAlcaldiaSeleccionada(alcaldiaSeleccionada);
-    };
-
-
-    const handleFechaChange = (e) => {
-        const selectedValue = e.target.value;
-        setFiltroFecha(selectedValue);
-    };
-
-    const nombreAlcaldia = alcaldias.replace(/^[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+|[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+$/g, "");
-    async function fetchFiltroEstado() {
+    const updateEstado = async (folio, nuevoEstado) => {
         try {
-            const parametros = {
-                estado: estado,
-                alcaldia: alcaldias,
-                filtroFecha: filtroFecha,
-                startDate: startDate,
-                endDate: endDate
-            };
+            const refCollection = collection(db, 'reportes');
+            const querySnapshot = await getDocs(refCollection);
 
-            // Realizar la solicitud POST con el objeto de parámetros en el cuerpo
-            const baseURL= process.env.NEXT_PUBLIC_RUTA_F
-            const datosNuevos = await fetch(`${baseURL}/${estado}/${nombreAlcaldia}/${filtroFecha}/${startDate}/${endDate}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json' // Indicar que el cuerpo es JSON
-                },
-                body: JSON.stringify(parametros) // Convertir el objeto a JSON
+            querySnapshot.forEach(async (doc) => {
+                const reporte = doc.data();
+                if (reporte.folio === folio) {
+                    await updateDoc(doc.ref, { estado: nuevoEstado });
+                 //   await fetchFiltroEstado();
+                    console.log(`Se actualizo el reporte con folio: ${folio}`);
+                }
+            })
+            const rows = document.querySelectorAll('.containerReportesAdmin .Reportes');
+            rows.forEach((row) => {
+                if (row.querySelector('.folio').textContent === folio) {
+                    row.querySelector('.estado').textContent = nuevoEstado;
+                }
             });
-            if (!datosNuevos.ok) {
-                throw new Error("Fallo a la petición de /api/filtros/estado/${estado}");
-            }
-            const estadosReportes = await datosNuevos.json();
-            const data = estadosReportes.map(rep => desc(rep))
-          //  console.log(estadosReportes);
-
         } catch (error) {
-            console.error("Error a la hora de hacer la petición: ", error);
-        }
-    }
-
-    fetchFiltroEstado();
-
-    /*FILTRO PARA EL ESTADOOOOOO */
-    const [reportesFiltrados, setReportesFiltrados] = useState(rep);
-    useEffect(() => {
-        if (estado === "Todos") {
-            setReportesFiltrados(rep);
-        } else {
-            filtrarReportesPorEstado(estado);
-        }
-    }, [estado, rep]); // Agregamos 'estado' como una dependencia para que se ejecute cuando cambie
-
-    const filtrarReportesPorEstado = (estadoSeleccionado) => {
-        const reportesFiltrados = rep.filter(reporte => reporte.estado === estadoSeleccionado);
-        setReportesFiltrados(reportesFiltrados);
-    };
-
-    const handleEstadoChange = (e) => {
-        const estadoSeleccionado = e.target.value;
-        setEstado(estadoSeleccionado)
-    };
-
-
-    const filtrarReportesPorUbi = (ubi) => {
-        const ubicacionLowerCase = ubi.toLowerCase();
-        const reportesFiltrados = rep.filter(reporte => reporte.ubicacion.toLowerCase().includes(ubicacionLowerCase));
-        setReportesFiltrados(reportesFiltrados);
-    };
-    useEffect(() => {
-        filtrarReportesPorUbi(searchLocation);
-    }, [searchLocation, rep]);
-    /**setEstado(e.target.value);
-        console.log("Estado") */
-
-    const obtenerAlcaldiaPorFolio = (folio) => {
-        // Obtener los primeros tres dígitos del folio
-        const primerosTresDigitos = folio.substring(0, 3);
-
-        // Mapear los primeros tres dígitos a la alcaldía correspondiente
-        switch (primerosTresDigitos) {
-            case '001':
-                return '🐴 Álvaro Obregón';
-            case '002':
-                return '🐜 Azcapotzalco ';
-            case '003':
-                return '🐷 Benito Juárez';
-            case '004':
-                return '🐺 Coyoacán';
-            case '005':
-                return '🌳 Cuajimalpa de Morelos';
-            case '006':
-                return '🦅 Cuauhtémoc';
-            case '007':
-                return '🌿 Gustavo A. Madero ';
-            case '008':
-                return '🏠 Iztacalco';
-            case '009':
-                return '🐭 Iztapalapa';
-            case '010':
-                return '🏔 La Magdalena Contreras';
-            case '011':
-                return '🦗 Miguel Hidalgo';
-            case '012':
-                return '🌾 Milpa Alta';
-            case '013':
-                return '🌋 Tláhuac';
-            case '014':
-                return '🦶 Tlalpan';
-            case '015':
-                return '🌻 Venustiano Carranza';
-            case '016':
-                return '🐠 Xochimilco';
-            default:
-                return 'No se encontró la alcaldía';
-
-        }
-
-    };
-
-    useEffect(() => {
-        filtrarReportesPorAlcaldia(alcaldiaSeleccionada);
-    }, [alcaldiaSeleccionada, rep]);
-
-    const filtrarReportesPorAlcaldia = (alcaldiaSeleccionada) => {
-        if (alcaldiaSeleccionada === "Todas") {
-            setReportesFiltrados(rep);
-        } else {
-            const reportesFiltrados = rep.filter(reporte => obtenerAlcaldiaPorFolio(reporte.folio) === alcaldiaSeleccionada);
-            setReportesFiltrados(reportesFiltrados);
+            console.error('Error al actualizar el estado del reporte:', error);
         }
     };
-
 
     return (
         <div className="containerReportesAdmin">
             <div className="flex-papelera">
                 <div className="filtros-dashboard">
+
                     <div className="filtro-dashboard" id="fechas">
                         <label onClick={() => setIsFechaSelectVisible(!isFechaSelectVisible)}>
                             <img src="https://i.postimg.cc/hPbM6PxS/calendario-reloj.png" alt={``} />
@@ -384,6 +310,7 @@ export default function ReportesAdmin() {
                             </div>
                         )}
                     </div>
+
                     <div className="filtro-dashboard" id="alcaldia">
                         <label
                             onClick={() => setIsAlcaldiaSelectVisible(!isAlcaldiaSelectVisible)}
@@ -401,6 +328,7 @@ export default function ReportesAdmin() {
                             </select>
                         )}
                     </div>
+
                     <div className="filtro-dashboard" id="estado">
                         <label
                             onClick={() => setIsEstadoSelectVisible(!isEstadoSelectVisible)}
@@ -418,6 +346,7 @@ export default function ReportesAdmin() {
                             </select>
                         )}
                     </div>
+
                     <div>
 
 
@@ -500,5 +429,3 @@ export default function ReportesAdmin() {
         </div>
     );
 }
-
-

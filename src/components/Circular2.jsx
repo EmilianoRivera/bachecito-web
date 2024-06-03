@@ -32,7 +32,6 @@ function CRep() {
         setRepEstado(dataDesc2);
 
         const formattedData = Object.entries(dataDesc2).map(([key, value]) => {
-        
           return { name: `${key}  `, value };
         });
 

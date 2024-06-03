@@ -145,7 +145,6 @@ function Soporte() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const unsubscribe = auth.onAuthStateChanged((user) => {
-        console.log("ES ESTE? ", user)
         if (user) {
           const uid = user.uid;
           fetchData(uid);
@@ -389,8 +388,6 @@ function Soporte() {
     const descProm = enc(descripcionProblema)
     const selectedRuta = enc(selectedRutaError)
     const errorSelec = enc(errorSeleccionado)
-
-//    console.log("MI ERROR ",errorSelec)
     let res = prompt("¿Desea levantar el ticket? (SI/NO)");
     if (res.toUpperCase() === "SI") {
       try {
@@ -424,7 +421,7 @@ function Soporte() {
         if (ticketResponse.ok) {
           console.log("Formulario enviado con éxito");
           alert("Formulario enviado con exito");
-         window.location.reload();
+      window.location.reload();
         } else {
           console.error(
             "Error al enviar el formulario:",
@@ -923,10 +920,10 @@ function Soporte() {
             <tbody>
               {ticket.map((ticket, index) => (
                 <tr key={index}>
-                  <td>{ticket.nombre}</td>
-                  <td>{ticket.correoA}</td>
-                  <td>{ticket.area}</td>
-                  <td>{ticket.descripcionProblema}</td>
+                  <td>{ticket.nom}</td>
+                  <td>{ticket.corr}</td>
+                  <td>{ticket.areas}</td>
+                  <td>{ticket.dP}</td>
                   <td>{ticket.estado}</td>
                   <td>{formatTimestamp(ticket.fechaDeEnvio)}</td>
                   <td>{formatTimestamp(ticket.fechaResuelto)}</td>
@@ -964,11 +961,11 @@ function Soporte() {
                   {formatTimestamp(ticketEncontrado.fechaResuleto)}
                 </p>
                 <p>Folio: {ticketEncontrado.folio}</p>
-                <p>Area: {ticketEncontrado.area}</p>
+                <p>Area: {ticketEncontrado.areas}</p>
                 <p>Navegador: {ticketEncontrado.navegador}</p>
                 <p>Sistema Operativo: {ticketEncontrado.sistemaOperativo}</p>
-                <p>Tipo de error: {ticketEncontrado.errorSeleccionado}</p>
-                <p>Ruta: {ticketEncontrado.rutitaD}</p>
+                <p>Tipo de error: {ticketEncontrado.errorE}</p>
+                <p>Ruta: {ticketEncontrado.rutaE}</p>
                 <p>
                   <button className="detallitos" onClick={closeModal}>
                     Cerrar

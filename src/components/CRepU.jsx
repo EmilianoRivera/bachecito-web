@@ -18,7 +18,6 @@ function CRep() {
           throw new Error("Failed to fetch data");
         }
 
-      
         const data = await reportesTot.json();
         const data2 = await reportesEst.json();
 
@@ -34,7 +33,6 @@ function CRep() {
     }
     fetchData();
   }, []);
-
   return (
     <div className="totalReportes-estadisticas">
       <div className="encabezado-estadisticas">
@@ -47,8 +45,7 @@ function CRep() {
             <span className="tooltip">Sin atender</span>
           </div>
           <div className="cont-reportes-estadisticas">
-            {" "}
-            {repEstado.sinAtender}{" "}
+            {repEstado["Sin Atender"]}{" "}
           </div>
         </div>
         <div className="in-yellow">
@@ -56,8 +53,7 @@ function CRep() {
             <span className="tooltip">En atención</span>
           </div>
           <div className="cont-reportes-estadisticas">
-            {" "}
-            {repEstado.enAtencion}{" "}
+            {repEstado["En Atención"]}{" "}
           </div>
         </div>
         <div className="in-green">
@@ -65,8 +61,7 @@ function CRep() {
             <span className="tooltip">Atendido</span>
           </div>
           <div className="cont-reportes-estadisticas">
-            {" "}
-            {repEstado.atendido}{" "}
+            {repEstado.Atendido}{" "}
           </div>
         </div>
       </div>

@@ -25,6 +25,7 @@ export async function GET(request) {
       "Sin Atender": sinAtender,
       "En Atención": enAtencion,
       Atendido: atendido,
+
     };
 
     // Cifrar los datos
