@@ -12,7 +12,15 @@ import atendidoIcon from '../imgs/BanderaVerdeConFondo.png';
 import enProcesoIcon from '../imgs/BanderaAmarillaConFondo.png';
 import sinAtenderIcon from '../imgs/BanderaRojaConFondo.png';
 import { useEffect, useState } from "react";
-
+import {
+  isToday,
+  isThisWeek,
+  isThisMonth,
+  isThisYear,
+  isWithinInterval,
+  subMonths,
+  parse
+} from "date-fns";
 const polygon = [
   [19.592749, -99.12369],
   [19.588528, -99.126953],
@@ -726,9 +734,10 @@ const polygonOptions = {
 };
 
 
-const MapAdmin = ( searchFolio, searchStatus, alcaldia, filtroFecha, startDate, endDate ) => {
+const MapAdmin = ( {searchFolio, searchStatus, alcaldia, filtroFecha, startDate, endDate} ) => {
   const [markers, setMarkers] = useState([]);
-
+  console.log("searchStatus:", searchStatus)
+  console.log("searchStatus:", searchFolio)
   useEffect(() => {
     async function fetchData() {
       try {
@@ -739,6 +748,9 @@ const MapAdmin = ( searchFolio, searchStatus, alcaldia, filtroFecha, startDate, 
         }
         const data = await res.json();
         const dataDesc = data.map((rep) => desc(rep));
+
+ 
+
         const markersData = await Promise.all(
           dataDesc.map(async (reporte) => {
             const coordenadas = await reverse(
@@ -767,6 +779,7 @@ const MapAdmin = ( searchFolio, searchStatus, alcaldia, filtroFecha, startDate, 
         const filteredMarkers = filterMarkers(validMarkersData);
         console.log(filteredMarkers);
         setMarkers(filteredMarkers);
+
       } catch (error) {
         console.log("Error fetching data: ", error);
       }

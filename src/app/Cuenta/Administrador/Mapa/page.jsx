@@ -31,7 +31,6 @@ export default function MapAdmin() {
   const [mapInitialized, setMapInitialized] = useState(false); // Definición de mapInitialized
   const [searchStatus, setSearchStatus] = useState("Todos");
   const [searchFolio, setSearchFolio] = useState("Todas");
-  
   const handleAlcaldiaChange = (e) => {
     const selectedFolio = e.target.value;
     const selectedOption = e.target.options[e.target.selectedIndex];
