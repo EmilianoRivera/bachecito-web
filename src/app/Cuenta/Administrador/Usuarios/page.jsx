@@ -92,7 +92,7 @@ function Page() {
     };
     const sendEmail = async (email, subject, text) => {
         try {
-            const response = await fetch('/api/sendEmail', {
+            const response = await fetch(`/api/sendEmail/${email}/${subject}/${text}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
