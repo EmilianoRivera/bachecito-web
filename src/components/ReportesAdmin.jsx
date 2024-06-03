@@ -197,10 +197,16 @@ export default function ReportesAdmin() {
             setEstadoOriginal(estadoOriginal);
         }
     };
-
+    const showDeleteAlert = (folio) => {
+        setDeleteAlertData({ folio: folio });
+        setIsDeleteAlertVisible(true);
+    };
     const closeEstadoAlert = () => {
         setIsEstadoAlertVisible(false);
         window.location.reload();
+    };
+    const closeDeleteAlert = () => {
+        setIsDeleteAlertVisible(false);
     };
 
     const cancelEstadoAlert = () => {
@@ -215,6 +221,32 @@ export default function ReportesAdmin() {
             }
         });
     };
+    const handleClick = async (folio) => {
+        try {
+            const refCollection = collection(db, 'reportes');
+            const querySnapshot = await getDocs(refCollection);
+
+            querySnapshot.forEach(async (doc) => {
+                const reporte = doc.data();
+                if (reporte.folio === folio) {
+                    // Actualizar el documento para establecer eliminado: true
+                    await updateDoc(doc.ref, { eliminado: true });
+
+                 //   console.log(`Se marcó como eliminado el reporte con folio ${folio}`);
+
+                    // Eliminar la fila de la tabla HTML
+                    const rows = document.querySelectorAll('.containerReportesAdmin .Reportes');
+                    rows.forEach((row) => {
+                        if (row.querySelector('.folio').textContent === folio) {
+                            row.remove();
+                        }
+                    });
+                }
+            });
+        } catch (error) {
+            console.error("Error al obtener los reportes", error);
+        }
+    };
 
     const updateEstado = async (folio, nuevoEstado) => {
         try {
@@ -225,8 +257,8 @@ export default function ReportesAdmin() {
                 const reporte = doc.data();
                 if (reporte.folio === folio) {
                     await updateDoc(doc.ref, { estado: nuevoEstado });
-                    await fetchFiltroEstado();
-                    console.log(`Se marcó como eliminado el reporte con folio ${folio}`);
+                 //   await fetchFiltroEstado();
+                    console.log(`Se actualizo el reporte con folio: ${folio}`);
                 }
             })
             const rows = document.querySelectorAll('.containerReportesAdmin .Reportes');
