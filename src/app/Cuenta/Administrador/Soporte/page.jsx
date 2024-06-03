@@ -145,7 +145,6 @@ function Soporte() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const unsubscribe = auth.onAuthStateChanged((user) => {
-        console.log("ES ESTE? ", user)
         if (user) {
           const uid = user.uid;
           fetchData(uid);
