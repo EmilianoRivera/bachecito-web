@@ -94,7 +94,7 @@ function Registro() {
       return;
     }
     // Verificar si la tecla presionada no es una letra o si la longitud del valor excede 20 caracteres
-    if (!/[a-zA-Z]/.test(key) || value.length >= 50) {
+    if (!/[a-zA-Z\s]/.test(key) || value.length >= 50) {
       event.preventDefault(); // Prevenir la acción por defecto si no es una letra o si se supera la longitud máxima
     }
   };
@@ -355,6 +355,7 @@ function Registro() {
 
      // console.log(data)
       showAlert("Bienvenido a Bachecito 26, se envio un correo de verificación ✉");
+      setActive(!active);
     } catch (error) {
       console.error("Error al crear la cuenta: ", error, "🚧");
       showAlert(error.message);
