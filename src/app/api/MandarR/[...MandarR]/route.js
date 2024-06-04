@@ -1,5 +1,4 @@
 import { NextResponse } from "next/server";
-import { obtenerFechaActual, formatearFecha } from "../../../../scripts/funcionesFiltro";
 import { db, collection, addDoc, query, doc, getDocs, writeBatch, where } from "../../../../../firebase";
 import { desc } from "@/scripts/Cifrado/Cifrar";
 import { getDoc } from "firebase/firestore";
@@ -62,8 +61,21 @@ const contadorFunc = async (direccion) => {
   }
 };
 
+
+function obtenerFechaActual() {
+  const fechaActual = new Date();
+  const dia = String(fechaActual.getDate()).padStart(2, '0');
+  const mes = String(fechaActual.getMonth() + 1).padStart(2, '0'); // Se agrega 1 porque los meses van de 0 a 11
+  const año = fechaActual.getFullYear();
+
+  // Formatear la fecha en el formato deseado (dd-mm-yyyy)
+  const fechaFormateada = `${dia}-${mes}-${año}`;
+
+  return fechaFormateada;
+}
 export async function POST(request, { params }) {
   try {
+    
     const [uidUsuario, nombre, apellidoPaterno, imagenURL, descripcion, ubicacion] = params.MandarR;
     
     const id = decodeURIComponent(uidUsuario);
@@ -71,11 +83,9 @@ export async function POST(request, { params }) {
 
     const folio = await obtenerFolioPorDireccion(ubicacion);
     const cantidadReportes = await contadorFunc(ubicacion);
-    const fechaActual = obtenerFechaActual();
-    const fechaReporte = formatearFecha(fechaActual);
-    
-    console.log("uid: ", uid)
-    console.log("URL:", imagenURL)
+    const fechaReporte = obtenerFechaActual();
+   
+
     const docRef = await addDoc(collection(db, "reportes"), {
       apellidoPaterno,
       contador: cantidadReportes + 1,
