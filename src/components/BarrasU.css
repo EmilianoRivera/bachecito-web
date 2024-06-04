@@ -169,3 +169,39 @@
   margin-top: -45vh;
   margin-left: 22%;
 }
+
+
+/*----------------------------ESTILOS PARA BARRASHZ---------------------------*/
+
+.loading-container {
+  display: flex;
+  justify-content: space-between;
+  width: 60px;
+  margin: 20px;
+}
+
+.loading-dot {
+  width: 16px;
+  height: 16px;
+  background-color: #35ee82; /* Blue color */
+  border-radius: 50%;
+  animation: bounce 1.4s ease infinite; /* Apply bouncing animation */
+}
+
+.loading-dot:nth-child(2) {
+  animation-delay: 0.2s;
+}
+
+.loading-dot:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes bounce {
+  0%, 80%, 100% {
+      transform: translateY(0);
+  }
+  40% {
+      transform: translateY(-12px); /* Adjust the bounce height */
+  }
+}
+

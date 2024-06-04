@@ -341,7 +341,7 @@
 /*Grafica barras*/
 .grafica-barras{
   min-width: 50vw;
-  min-height: 80vh;
+  height: auto;
 }
 
 .grafica-barras h3{
