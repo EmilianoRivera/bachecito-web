@@ -137,8 +137,8 @@ console.log(new Date(startDate), " ", new Date(endDate)) */
 //Funcion que recibe y envia la petición
 export async function POST(request, { params }) {
   try {
-    const [estado,alcaldia,fechaFiltro,startDate,endDate] = params.filtros; 
-
+    const [estado,alc,fechaFiltro,startDate,endDate] = params.filtros; 
+    const alcaldia = decodeURIComponent(alc)
  // console.log("DEL POST",estado, " ", endDate, " ", fechaFiltro, " ", alcaldia, " ", startDate)
     const fechaActual = obtenerFechaActual();
     if (estado ==="Todos" && alcaldia === "Todas" && fechaFiltro === "Todos los tiempos") {
@@ -164,10 +164,8 @@ export async function POST(request, { params }) {
         alcaldia,
         startDate,
         endDate
-      );
-/*       const filtradoGEncrypt = enc(filtradoGeneral)
-      arr.push(filtradoGEncrypt) */
-  //    console.log(filtradoGeneral.length)
+      ); 
+
       return NextResponse.json(filtradoGeneral);
     } 
     else {

@@ -90,7 +90,10 @@ export default function ReportesAdmin() {
 
             // Filtrar por alcaldía
             if (alcaldiaSeleccionada !== "Todas") {
-                filtrados = filtrados.filter(reporte => obtenerAlcaldiaPorFolio(reporte.folio) === alcaldiaSeleccionada);
+                filtrados = filtrados.filter(reporte => {
+                    console.log("")
+                    obtenerAlcaldiaPorFolio(reporte.folio) === alcaldiaSeleccionada
+                });
             }
 
             // Filtrar por ubicación

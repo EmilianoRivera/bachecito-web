@@ -25,14 +25,14 @@ async function fetchFiltroEstado(estado, alcaldia, filtroFecha, startDate, endDa
     );
     const parametros = {
       estado: estado,
-      alcaldia: nombreAlcaldia,
+      alcaldia:encodeURIComponent(nombreAlcaldia) ,
       filtroFecha: filtroFecha,
       startDate: startDate,
       endDate: endDate,
     };
     const baseURL = process.env.NEXT_PUBLIC_RUTA_F;
     const response = await fetch(
-      `${baseURL}/${estado}/${nombreAlcaldia}/${filtroFecha}/${startDate}/${endDate}`,
+      `${baseURL}/${estado}/${encodeURIComponent(nombreAlcaldia)}/${filtroFecha}/${startDate}/${endDate}`,
       {
         method: "POST",
         headers: {
