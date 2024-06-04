@@ -68,63 +68,34 @@ function Administrador() {
     event.preventDefault();
     try {
       setLoading(true); // Muestra el preloader
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        
-        email,
-        password
-      );
-      const user = userCredential.user;
-  
-      if (user && !user.emailVerified) {
-        alert("Por favor, verifica tu correo electrónico para iniciar sesión.");
-        signOut(auth);
-      } else {
-        const reportesRef = collection(db, "usuarios");
-        const q = query(reportesRef, where("uid", "==", user.uid));
-        const querySnapshot = await getDocs(q);
-  
-        let estadoCuenta;
-  
-        querySnapshot.forEach((doc) => {
-          const data = doc.data();
-          estadoCuenta = data.estadoCuenta;
-        });
-  
-        if (estadoCuenta === false) {
-          const confirm = window.confirm(
-            "Tu cuenta ha sido desactivada. ¿Deseas restablecerla?"
-          );
-          if (confirm) {
-            querySnapshot.forEach(async (doc) => {
-              await updateDoc(doc.ref, {
-                estadoCuenta: true,
-              });
-            });
-            alert("Cuenta restablecida correctamente");
-            push("/Cuenta/Administrador/Dashboard");
-          } else {
-            signOut(auth);
-            alert("Inicio de sesión cancelado");
-          }
-        } else {
-          let isAdmin = false;
-          querySnapshot.forEach((doc) => {
-            const userData = doc.data();
-            if (userData.rol === "admin") {
-              isAdmin = true;
-            }
-          });
-  
+      const reportesRef = collection(db, "usuarios");
+      const q = query(reportesRef, where("correo", "==", email));
+      const querySnapshot = await getDocs(q);
+      let userDoc;
+      let userRol;
+      let isAdmin = false;
+      querySnapshot.forEach((doc) => {
+        const data = doc.data();
+         userRol = data.rol;
+        userDoc = doc;
+      });
+      if (userRol === "admin") {
+        isAdmin = true;
+      }
           if (isAdmin) {
+            const userCredential = await signInWithEmailAndPassword(
+              auth,
+              email,
+              password
+            );
+            const user = userCredential.user;
             alert("Inicio de sesión exitoso");
             push("/Cuenta/Administrador/Dashboard");
           } else {
             signOut(auth);
             alert("No tienes permiso para iniciar sesión como administrador");
           }
-        }
-      }
+        
     } catch (error) {
       console.error(error.message);
     } finally {

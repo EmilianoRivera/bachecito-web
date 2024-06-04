@@ -355,8 +355,6 @@ function Registro() {
 
      // console.log(data)
       showAlert("Bienvenido a Bachecito 26, se envio un correo de verificación ✉");
-
-      push("/Cuenta/Usuario/Perfil");
     } catch (error) {
       console.error("Error al crear la cuenta: ", error, "🚧");
       showAlert(error.message);
