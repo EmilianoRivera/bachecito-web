@@ -45,7 +45,6 @@ const [noData, setNoData] = useState(false);
         const data = await response.json();
 
         const dataDesc = desc(data.cifrado)
-
         setAlcEstRep(dataDesc);
         setLoading(false);
       } catch (error) {
