@@ -3,9 +3,20 @@
     transition: none !important;
   }
 
+  svg{
+    background-color: var(--background-color-14);
+
+  }
+
   .mapcontainer{
     height: 72vh;
           width: 59vw;
+          
+  }
+
+  #mapsmap{
+    background-color: var(--background-color);
+
   }
 
   @media(max-width: 800px){
@@ -15,6 +26,8 @@
 
     }
   }
+
+
 
   @media(max-width: 500px){
     .mapcontainer{
@@ -27,6 +40,8 @@
   .mapcontainer2{
     height: 72vh;
           width: 59vw;
+    transition: none !important;
+
   }
 
   @media(max-width: 1100px){
