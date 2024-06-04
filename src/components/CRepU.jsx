@@ -40,7 +40,7 @@ function CRep() {
         <div className="contador-estadisticas"> {totalRep} </div>
       </div>
       <div className="estados-estadisticas">
-        <div className="in-red">
+        <div className="in-red-estadisticas">
           <div className="red">
             <span className="tooltip">Sin atender</span>
           </div>
@@ -48,7 +48,7 @@ function CRep() {
             {repEstado["Sin Atender"]}{" "}
           </div>
         </div>
-        <div className="in-yellow">
+        <div className="in-yellow-estadisticas">
           <div className="yellow">
             <span className="tooltip">En atención</span>
           </div>
@@ -56,7 +56,7 @@ function CRep() {
             {repEstado["En Atención"]}{" "}
           </div>
         </div>
-        <div className="in-green">
+        <div className="in-green-estadisticas">
           <div className="green">
             <span className="tooltip">Atendido</span>
           </div>

@@ -198,7 +198,7 @@
   height: 52%;
 }
 
-.in-red{
+.in-red-estadisticas{
   width: 32%;
   height: 100%;
   background-color:var(--background-color-2);
@@ -263,7 +263,7 @@
   font-weight: 900;
 }
 
-.in-yellow{
+.in-yellow-estadisticas{
   width: 32%;
   height: 100%;
   margin-left: 2%;
@@ -285,7 +285,7 @@
   cursor: pointer;
 }
 
-.in-green{
+.in-green-estadisticas{
   width: 32%;
   height: 100%;
   margin-left: 2%;

@@ -139,6 +139,7 @@ function Dashboard() {
 
       <div className="flex-dashboard">
         <div className="ladoIZ-dashboard">
+          
           <CRep />
 
           <div className="grafica-circular">
