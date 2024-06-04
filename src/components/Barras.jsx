@@ -13,6 +13,7 @@ import {
 } from "recharts";
 import moment from "moment";
 import 'moment/locale/es';
+import "@/components/BarrasU.css";
 
 moment.locale('es');
 
@@ -81,7 +82,7 @@ async function fetchFiltroEstado(
 
 function buscarAlcaldias(ubicacion) {
   const regexAlcaldiasCDMX =
-    /(Álvaro Obregón|Azcapotzalco|Benito Juárez|Coyoacán|Cuajimalpa de Morelos|Cuauhtémoc|Gustavo A. Madero|Iztacalco|Iztapalapa|La Magdalena Contreras|Miguel Hidalgo|Milpa Alta|Tlalpan|Tláhuac|Venustiano Carranza|Xochimilco)/gi;
+    /(Álvaro Obregón|Azcapotzalco|Benito Juárez|Coyoacán|Cuajimalpa de Morelos|Cuauhtémoc|Gustavo A. Madero|Iztacalco|Iztapalapa|La Magdalena Contreras|Miguel Hidalgo|Milpa AlAlta|Tlalpan|Tláhuac|Venustiano Carranza|Xochimilco)/gi;
   const alcaldiasEnUbicacion = ubicacion.match(regexAlcaldiasCDMX);
 
   if (alcaldiasEnUbicacion) {
@@ -115,6 +116,7 @@ export default function Barras({
   const svgRef = useRef();
   const [datas, setData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [dataLoaded, setDataLoaded] = useState(false);
 
   const transformData = (data) => {
     const groupedData = data.reduce((acc, item) => {
@@ -154,6 +156,7 @@ export default function Barras({
         console.log("Error fetching data: ", error);
       } finally {
         setLoading(false);
+        setDataLoaded(true);
       }
     }
     fetchData();
@@ -161,48 +164,61 @@ export default function Barras({
 
   return (
     <>
-      <ResponsiveContainer width="100%" height={height}>
-        <BarChart
-          margin={{ top: 20, right: 30, left: -20, bottom: 70 }} // Ajustar margen inferior
-          data={datas}
-          style={{ fontFamily: 'sans-serif', fontSize: '13px' }}
-        >
-          <CartesianGrid stroke="#ccc" />
-          <XAxis
-            dataKey="fecha"
-            type="category"
-            domain={datas.map(entry => entry.fecha)}
-            tickFormatter={(date) => moment(date).format('DD MMM')}
-            angle={-45}
-            textAnchor="end"
-            interval={0}
+      {!dataLoaded && 
+      <div className="loader-barrasss">
+         <div className="loading_volume_load-1">
+                    <div class="loading_volume_line"></div>
+                    <div class="loading_volume_line"></div>
+                    <div class="loading_volume_line"></div>
+                    <div class="loading_volume_line"></div>
+                    <div class="loading_volume_line"></div>
+                </div>
+        </div>}
+      {dataLoaded && (
+        <ResponsiveContainer width="100%" height={height}>
+          <BarChart
+            margin={{ top: 20, right: 30, left: -20, bottom: 70 }} // Ajustar margen inferior
+            data={datas}
             style={{ fontFamily: 'sans-serif', fontSize: '13px' }}
-          />
-          <YAxis />
-          <Tooltip
-            formatter={(value, name, props) => {
-              const { payload } = props;
-              return [`${value}`, `Alcaldía: ${payload.alcaldia}`];
-            }}
-            labelFormatter={(label) => moment(label).format("DD MMM YYYY")}
-            style={{ fontFamily: 'sans-serif', fontSize: '13px' }}
-          />
-          <Brush
-            dataKey="fecha"
-            height={30}
-            stroke="#FF8A57"
-            fill="rgba(255, 138, 87, 0.2)"
-            travellerStroke="#FF8A57"
-            tickFormatter={(date) => moment(date).format('DD/MM/YYYY')}
-            y={height - 50} // Mover el Brush más abajo
-          />
-          <Bar dataKey="contador" barSize={30} minPointSize={1}>
-            {datas.map((entry, index) => (
-              <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
-            ))}
-          </Bar>
-        </BarChart>
-      </ResponsiveContainer>
+          >
+            <CartesianGrid stroke="#ccc" />
+            <XAxis
+              dataKey="fecha"
+              type="category"
+              domain={datas.map(entry => entry.fecha)}
+              tickFormatter={(date) => moment(date).format('DD MMM')}
+              angle={-45}
+              textAnchor="end"
+              interval={0}
+              style={{ fontFamily: 'sans-serif', fontSize: '13px' }}
+            />
+            <YAxis />
+            <Tooltip
+              formatter={(value, name, props) => {
+                const { payload } = props;
+                return [`${value}`, `Alcaldía: ${payload.alcaldia}`];
+              }}
+              labelFormatter={(label) => moment(label).format("DD MMM YYYY")}
+              style={{ fontFamily: 'sans-serif', fontSize: '13px' }}
+            />
+            <Brush
+              dataKey="fecha"
+              height={30}
+              stroke="#FF8A57"
+              fill="rgba(255, 138, 87, 0.2)"
+              travellerStroke="#FF8A57"
+              tickFormatter={(date) => moment(date).format('DD/MM/YYYY')}
+              y={height - 50} // Mover el Brush más abajo
+            />
+            <Bar dataKey="contador" barSize={30} minPointSize={1}>
+              {datas.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              ))}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      )}
+      {dataLoaded && datas.length === 0 && <div className="Nodataa">No hay datos disponibles</div>}
       <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px', flexWrap: 'wrap' }}>
         {alcaldias.split(',').map((alcaldia, index) => (
           <div key={index} style={{ display: 'flex', alignItems: 'center', margin: '0 10px' }}>

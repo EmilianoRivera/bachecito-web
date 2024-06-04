@@ -110,28 +110,33 @@ table {
     background: var(--background-color-6); /* Color de la barra de desplazamiento al pasar el mouse sobre ella */
 }
 
-.modal{
+.modal-inc{
     z-index: 100000;
     position: fixed;
     width: 90vw;
-    height: 80vh;
-    top: 12vh;
+    height: 87vh;
+    top: 10vh;
+    background-color: var(--background-color-12);
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow-y: scroll;
+
   }
   
-  .modal-content{
+  .modal-inc-content{
     background-color: var(--background-color-7);
     backdrop-filter: blur(5px); 
     padding: 20px;
     border-radius: 1rem;
     width: 45vw;
     justify-content: center;
-    align-items: center;
     text-align: center;
     text-justify: justify;
     border: 2px solid #b9b9b9;
+    margin-top: auto;
+    margin-bottom: auto;
+    height: auto;
   }
 
   .incidencia-abierta{
@@ -142,7 +147,7 @@ table {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: -15px;
+    height: 33vh;
   }
   .incidencia-abierta2{
     color: #FF9F49;
@@ -209,7 +214,13 @@ table {
     justify-content: left;
     padding: 15px;
     box-sizing: border-box;
+
     display: block;
+ }
+
+ .Datos-incidencia2 p{
+  color: #FF5136;
+
  }
 
 
@@ -227,14 +238,10 @@ table {
     width: 15px;
   }
 
-  .modal h2{
+  .modal-inc h2{
     color: #FF9F49;
     font-weight: bolder;
     margin-top: -10px;
-  }
-
-  .modal p{
-    color: #1E1E1E;
   }
 
   .agregar-incidencia{
@@ -333,3 +340,19 @@ table {
     background-color: #ff9f49;
 
   }
+
+  .FilUsuariosAdmin{
+    width: 50vw;
+    min-width: 55vw;
+    height: 8vh;
+    background-color: var(--background-color-2);
+    margin-bottom: 5vh;
+    border-radius: 1.5rem;
+    align-items: center;
+    display: flex;
+    z-index: 1000;
+    justify-content: space-between;
+    font-family: 'Poppins', sans-serif;
+    top: 0;
+    position: sticky;
+   }

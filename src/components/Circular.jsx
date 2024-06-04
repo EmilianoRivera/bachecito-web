@@ -2,8 +2,10 @@
 import React, { useEffect, useState } from "react";
 import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
 import { enc, desc } from "@/scripts/Cifrado/Cifrar";
+import "@/components/Circular2.css";
 
 async function fetchFiltroEstado(estado, alcaldias, filtroFecha, startDate, endDate) {
+  
   const alcaldia = alcaldias.replace(/^[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+|[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+$/g, "");
   try {
     const parametros = {
@@ -90,15 +92,20 @@ export default function Circular({
 }) {
   const [rep, setRep] = useState([]); //guarda los reportes totales por alcaldia
 
+  const [isLoading, setIsLoading] = useState(true);
+const [dataLoaded, setDataLoaded] = useState(false);
+
   useEffect(() => {
     async function fetchData() {
+      setIsLoading(true);
       try {
         const result = await fetchFiltroEstado(
           estados,
           alcaldias,
           filtroFechas,
           startDates,
-          endDates
+          endDates,
+          setDataLoaded(true)
         );
 
         if (result === null) {
@@ -109,6 +116,8 @@ export default function Circular({
         setRep(formateados);
       } catch (error) {
         console.error("Error fetching data: ", error);
+      } finally {
+        setIsLoading(false);
       }
     }
 
@@ -139,9 +148,18 @@ export default function Circular({
     "#FFB54E",
   ];
 
+  
+
   return (
     <div>
-      {data.length > 0 ? (
+      {isLoading ? (
+        <div style={{ fontFamily: 'sans-serif'}}>
+        <div class="loader-wheel-changer-c">
+          </div>
+      </div>
+      ) : dataLoaded && data.length === 0 ? (
+        <div className="noloader">No hay datos disponibles</div>
+      ) : dataLoaded ? (
         <PieChart width={width} height={height}>
           <Pie
             data={data}
@@ -167,8 +185,9 @@ export default function Circular({
           />
         </PieChart>
       ) : (
-        <div style={{ fontFamily: 'sans-serif', fontSize: '13px' }}>Cargando datos...</div>
+        <div className="noloader">Error al cargar los datos</div>
       )}
+
     </div>
   );
 }
