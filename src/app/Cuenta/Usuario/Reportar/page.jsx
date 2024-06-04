@@ -1,6 +1,15 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { auth, app, db,collection, where, query, getDocs,updateDoc } from "../../../../../firebase";
+import {
+  auth,
+  app,
+  db,
+  collection,
+  where,
+  query,
+  getDocs,
+  updateDoc,
+} from "../../../../../firebase";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import styles from "./reportes.css";
@@ -98,10 +107,12 @@ function Reportar() {
     const imagenURL = await handleFileUpload();
     const descripcion = des;
     const ubi = ubicacion;
+    if(imagenURL === 0) {
+      alert("Error con la imagen, por favor, escoge una adecuada")
+    }else {
+      // console.log(uid, " ", nombre, " ", apellidoPaterno, " " , " ", descripcion, " ", ubi)
 
-    // console.log(uid, " ", nombre, " ", apellidoPaterno, " " , " ", descripcion, " ", ubi)
-
-    const baseURL = process.env.NEXT_PUBLIC_RUTA_MR;
+     const baseURL = process.env.NEXT_PUBLIC_RUTA_MR;
     const res = await fetch(
       `${baseURL}/${encodeURIComponent(
         uid
@@ -144,7 +155,9 @@ function Reportar() {
       console.error("Error al analizar la respuesta:", error);
     }
     // Aquí puedes agregar la lógica para enviar los datos al servidor
-  };
+  
+    }
+    };
   const contadorNumRep = async () => {
     const userDocRef = collection(db, "usuarios");
     const userQuery = query(userDocRef, where("uid", "==", userData.uid));
@@ -166,14 +179,22 @@ function Reportar() {
       return;
     }
 
-    const storage = getStorage(app);
-    const randomId = Math.random().toString(36).substring(7);
-    const imageName = `Ticket_${randomId}`;
-    const storageRef = ref(storage, `ImagenesBaches/${imageName}`);
-    await uploadBytes(storageRef, archivito);
-    return getDownloadURL(storageRef);
+    const archivoMime = archivito.type;
+    if (
+      archivoMime.includes("image/jpeg") ||
+      archivoMime.includes("image/png")
+    ) {
+      const storage = getStorage(app);
+      const randomId = Math.random().toString(36).substring(7);
+      const imageName = `Ticket_${randomId}`;
+      const storageRef = ref(storage, `ImagenesBaches/${imageName}`);
+      await uploadBytes(storageRef, archivito);
+      return getDownloadURL(storageRef);
+    } else {
+      alert("Por favor, escoge una imagen")
+      return 0
+    }
   };
-
   return (
     <>
       {loading && <Preloader />}
