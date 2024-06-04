@@ -163,6 +163,7 @@ function Reportar() {
       <div className="container-reportar">
         <div className="izquierda-reportar">
           <form onSubmit={handleSubmit}>
+            <div className="blocks">
             <div className="nombress">
               <label htmlFor="nombre">REPORTE HECHO POR</label>
               <p className="nombres-blanco">
@@ -173,6 +174,7 @@ function Reportar() {
             <div className="ubicacionn">
               <label htmlFor="ubicacion">UBICACIÓN</label>
               <p className="ubicacion-blanco">{ubicacion}</p>
+            </div>
             </div>
 
             <div className="flexForm">

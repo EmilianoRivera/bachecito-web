@@ -834,8 +834,8 @@ const DEFAULT_LONGITUDE = -99.1750683; // batiz
   
 
   const mapStyles = {
-    height: "72vh",
-    width: "59vw",
+    height: "100%",
+    width: "100%",
     borderRadius: "1rem",
   };
 
@@ -845,8 +845,9 @@ const DEFAULT_LONGITUDE = -99.1750683; // batiz
   };
   const libraries = ["places"];
  return (
-    <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY}   libraries={libraries}>
-      <GoogleMap
+    <div className="mapcontainer2">
+      <LoadScript googleMapsApiKey={process.env.NEXT_PUBLIC_GOOGLE_API_KEY}   libraries={libraries}     >
+      <GoogleMap 
         mapContainerStyle={mapStyles}
         zoom={10.4}
         center={defaultCenter}
@@ -916,6 +917,7 @@ const DEFAULT_LONGITUDE = -99.1750683; // batiz
         />
       </GoogleMap>
     </LoadScript>
+    </div>
   );
 };
 
