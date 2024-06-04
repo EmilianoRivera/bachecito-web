@@ -745,6 +745,8 @@ function Soporte() {
             </div>
           </div>
         </div>
+        
+        <div className="seccion-oculta">
         <div className="container_FormularioSoporte">
           <div className="containerFR">
             <br />
@@ -975,6 +977,8 @@ function Soporte() {
             </div>
           )}
         </div>
+        </div>
+
       </div>
     </div>
   );
