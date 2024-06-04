@@ -378,7 +378,9 @@ export default function ReportesAdmin() {
                     </div>
                 </div>
 
-                <input
+            </div>
+            
+            <input
                     className="Buscador"
                     type="text"
                     placeholder="Buscar por ubicación o folio..."
@@ -391,7 +393,6 @@ export default function ReportesAdmin() {
                 <div className="papelera">
                     <Link href="/Cuenta/Administrador/Papelera" className="papelera-option"><img src="https://i.postimg.cc/02gZVXL3/basura.png" alt="soporte" />PAPELERA</Link>
                 </div>
-            </div>
             
             <table>
                 <thead>
