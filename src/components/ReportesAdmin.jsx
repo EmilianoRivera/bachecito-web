@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { db, collection, getDocs, updateDoc } from "../../firebase";
+import { db, collection, getDocs, updateDoc, writeBatch, query, where} from "../../firebase";
 import '../app/Cuenta/Administrador/Reportes/Reportes.css';
 import Link from 'next/link';
 import React from 'react';
@@ -96,7 +96,9 @@ export default function ReportesAdmin() {
             // Filtrar por ubicación
             if (searchLocation) {
                 const ubicacionLowerCase = searchLocation.toLowerCase();
-                filtrados = filtrados.filter(reporte => reporte.ubicacion.toLowerCase().includes(ubicacionLowerCase));
+                const folioLowerCase = searchLocation.toLowerCase();
+                filtrados = filtrados.filter(reporte => reporte.ubicacion.toLowerCase().includes(ubicacionLowerCase)
+            || reporte.folio.toLowerCase().includes(folioLowerCase));
             }
 
             // Filtrar por fechas
@@ -225,6 +227,24 @@ export default function ReportesAdmin() {
             }
         });
     };
+    const contadorFunc = async (direccion) => {
+        try {
+          const reportesQuery = query(collection(db, 'reportes'), where("ubicacion", "==", direccion));
+          const reportesSnap = await getDocs(reportesQuery);
+      
+          const batch = writeBatch(db);
+          reportesSnap.forEach((doc) => {
+            const reporte = doc.data();
+            const nuevoContador = reporte.contador - 1;
+            batch.update(doc.ref, { contador: nuevoContador });
+          });
+          await batch.commit();
+          return reportesSnap.docs.length;
+        } catch (error) {
+          console.error('Error al actualizar contador', error);
+        }
+      };
+      
     const handleClick = async (folio) => {
         try {
             const refCollection = collection(db, 'reportes');
@@ -235,7 +255,8 @@ export default function ReportesAdmin() {
                 if (reporte.folio === folio) {
                     // Actualizar el documento para establecer eliminado: true
                     await updateDoc(doc.ref, { eliminado: true });
-
+                    const ubicacion = reporte.ubicacion;
+                    await contadorFunc(ubicacion);
                  //   console.log(`Se marcó como eliminado el reporte con folio ${folio}`);
 
                     // Eliminar la fila de la tabla HTML
@@ -360,7 +381,7 @@ export default function ReportesAdmin() {
                 <input
                     className="Buscador"
                     type="text"
-                    placeholder="Buscar ubicación..."
+                    placeholder="Buscar por ubicación o folio..."
                     value={searchLocation}
                     onChange={(e) => setSearchLocation(e.target.value)}
                 />

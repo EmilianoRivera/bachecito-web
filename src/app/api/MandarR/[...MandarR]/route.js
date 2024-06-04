@@ -5,7 +5,7 @@ import { getDoc } from "firebase/firestore";
 
 const obtenerFolioPorDireccion = async (direccion) => {
   try {
-    const alcaldiasRef = doc(db, 'alcaldia', 'WnV250O8owtOuHIMz54K');
+    const alcaldiasRef = doc(db, 'alcaldia', 'NFEUuhTpDlLA0ycwqNPm');
     const alcaldiasSnap = await getDoc(alcaldiasRef);
 
     if (alcaldiasSnap.exists()) {

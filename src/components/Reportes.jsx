@@ -133,9 +133,11 @@ function ReportesComponente() {
       };
     });
   };
+  const folioLowerCase = searchLocation.toLowerCase();
   const filteredReports = rep.filter((report) =>
     //report.descripcion.toLowerCase().includes(searchTerm.toLowerCase()) &&
-    report.ubicacion.toLowerCase().includes(searchLocation.toLowerCase()) &&
+  
+    report.ubicacion.toLowerCase().includes(searchLocation.toLowerCase()) || report.folio.toLowerCase().includes(folioLowerCase)&&
     (searchStatus === "" || report.estado.toLowerCase() === searchStatus.toLowerCase()) &&
     (searchFolio === "" || report.folio.startsWith(searchFolio)) &&
     (searchDate === "" || report.fechaReporte === searchDate)
@@ -149,7 +151,7 @@ function ReportesComponente() {
         <input
           className="Buscador"
           type="text"
-          placeholder="Buscar ubicación..."
+          placeholder="Buscar por ubicación o folio..."
           value={searchLocation}
           onChange={(e) => setSearchLocation(e.target.value)}
         />

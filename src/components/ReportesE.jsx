@@ -1,6 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
-import { db, collection, getDocs, updateDoc, deleteDoc, doc, query, where } from "../../firebase";
+import { db, collection, getDocs, updateDoc, deleteDoc, query, where, writeBatch} from "../../firebase";
 import '../app/Cuenta/Administrador/Reportes/Reportes.css';
 import React from 'react';
 import Image from "next/image";
@@ -40,7 +40,23 @@ export default function ReportesAdmin() {
 
         fetchData();
     }, []);
-
+    const contadorFunc = async (direccion) => {
+        try {
+          const reportesQuery = query(collection(db, 'reportes'), where("ubicacion", "==", direccion));
+          const reportesSnap = await getDocs(reportesQuery);
+      
+          const batch = writeBatch(db);
+          reportesSnap.forEach((doc) => {
+            const reporte = doc.data();
+            const nuevoContador = reporte.contador + 1;
+            batch.update(doc.ref, { contador: nuevoContador });
+          });
+          await batch.commit();
+          return reportesSnap.docs.length;
+        } catch (error) {
+          console.error('Error al actualizar contador', error);
+        }
+      };
     const handleClick = async (folio) => {
         try {
             const refCollection = collection(db, 'reportes');
@@ -51,8 +67,9 @@ export default function ReportesAdmin() {
                 if (reporte.folio === folio) {
                     // Actualizar el documento para establecer eliminado: false 
                     await updateDoc(doc.ref, { eliminado: false });
-
-                    console.log(`Se marcó como eliminado el reporte con folio ${folio}`);
+                    const ubicacion = reporte.ubicacion;
+                    await contadorFunc(ubicacion);
+                   // console.log(`Se marcó como eliminado el reporte con folio ${folio}`);
 
                     // Eliminar la fila de la tabla HTML
                     const rows = document.querySelectorAll('.containerReportesAdmin .Reportes');
