@@ -780,7 +780,6 @@ const Map = ({ searchFolio, searchStatus, alcaldia, filtroFecha, startDate, endD
         );
 
         const filteredMarkers = filterMarkers(validMarkersData);
-        console.log(filteredMarkers);
         setMarkers(filteredMarkers);
       } catch (error) {
         console.log("Error fetching data: ", error);

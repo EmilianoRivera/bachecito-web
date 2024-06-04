@@ -56,7 +56,6 @@ export default function Perfil() {
       const unsubscribe = auth.onAuthStateChanged((user) => {
         if (user) {
           const uid = user.uid;
-          console.log("ESTE ES EL USER",user)
           fetchData(uid);
         } else {
           router.push("/login");
@@ -72,7 +71,6 @@ export default function Perfil() {
         const baseURL= process.env.NEXT_PUBLIC_RUTA_U
         const baseURLR = process.env.NEXT_PUBLIC_RUTA_RP
        
-        console.log(id)
 
         const userResponse = await fetch(`${baseURL}/${id}`);
        

@@ -8,6 +8,14 @@ import {
     sendPasswordResetEmail, getAuth
   } from "firebase/auth";
 import { desc } from "@/scripts/Cifrado/Cifrar";
+
+function formatearFecha(fecha) {
+  const partesFecha = fecha.split("-"); 
+  const dia = partesFecha[2];
+  const mes = partesFecha[1];
+  const año = partesFecha[0];
+  return `${dia}-${mes}-${año}`;
+}
 export async function POST(request, {params}) {
   try {
     const [nombre, appat, apmat, fechaNacimiento, email, password ] = params.RegistroU
@@ -25,13 +33,16 @@ export async function POST(request, {params}) {
     const corr = desc(correo)
     const pass = desc(contra)
 
+    const fechaNFormateada = formatearFecha(fechaN)
+
+
     const userCredential = await createUserWithEmailAndPassword(auth, corr, pass);
 
     const user = userCredential.user;
 
     sendEmailVerification(user);
 
-    const uid = user.uid;
+     const uid = user.uid;
     const usuariosCollection = collection(db, "usuarios");
 
     const nuevoUsuario = {
@@ -39,7 +50,7 @@ export async function POST(request, {params}) {
       nombre: nom,
       apellidoPaterno: apellidoP,
       apellidoMaterno: apellidoM,
-      fechaNacimiento: fechaN,
+      fechaNacimiento: fechaNFormateada,
       correo: corr.toLowerCase(),
       rol:"usuario",
       estadoCuenta: true,

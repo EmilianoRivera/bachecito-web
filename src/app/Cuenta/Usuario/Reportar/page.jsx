@@ -1,6 +1,15 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { auth, app } from "../../../../../firebase";
+import {
+  auth,
+  app,
+  db,
+  collection,
+  where,
+  query,
+  getDocs,
+  updateDoc,
+} from "../../../../../firebase";
 import { useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
 import styles from "./reportes.css";
@@ -38,7 +47,7 @@ function Reportar() {
       Router.events.off("routeChangeError", handleRouteChangeComplete);
     };
   }, []);
- 
+
   const [imagenFondo, setImagenFondo] = useState("");
 
   const handleChange2 = (event) => {
@@ -67,16 +76,17 @@ function Reportar() {
 
     async function fetchData(uid) {
       try {
+        const Uid = enc(uid);
 
-        const Uid = enc(uid)
-
-        const baseURL = process.env.NEXT_PUBLIC_RUTA_U
-        const userResponse = await fetch(`${baseURL}/${encodeURIComponent(Uid)}`);
+        const baseURL = process.env.NEXT_PUBLIC_RUTA_U;
+        const userResponse = await fetch(
+          `${baseURL}/${encodeURIComponent(Uid)}`
+        );
         if (!userResponse.ok) {
           throw new Error("Failed to fetch user data");
         }
         const userData = await userResponse.json();
-        const dataDesc = desc(userData)
+        const dataDesc = desc(userData);
         setUserData(dataDesc);
       } catch (error) {
         console.error("Error fetching data:", error);
@@ -95,13 +105,18 @@ function Reportar() {
     const nombre = userData.nombre;
     const apellidoPaterno = userData.apellidoPaterno;
     const imagenURL = await handleFileUpload();
-    console.log("MI IMAGEN",imagenURL)
     const descripcion = des;
     const ubi = ubicacion;
-   // console.log(uid, " ", nombre, " ", apellidoPaterno, " " , " ", descripcion, " ", ubi)
-   const baseURL= process.env.NEXT_PUBLIC_RUTA_MR
+    if(imagenURL === 0) {
+      alert("Error con la imagen, por favor, escoge una adecuada")
+    }else {
+      // console.log(uid, " ", nombre, " ", apellidoPaterno, " " , " ", descripcion, " ", ubi)
+
+     const baseURL = process.env.NEXT_PUBLIC_RUTA_MR;
     const res = await fetch(
-      `${baseURL}/${encodeURIComponent(uid)}/${nombre}/${apellidoPaterno}/${encodeURIComponent(
+      `${baseURL}/${encodeURIComponent(
+        uid
+      )}/${nombre}/${apellidoPaterno}/${encodeURIComponent(
         imagenURL
       )}/${descripcion}/${ubi}`,
       {
@@ -110,7 +125,7 @@ function Reportar() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          uid:encodeURIComponent(uid),
+          uid: encodeURIComponent(uid),
           nombre,
           apellidoPaterno,
           imagenURL: encodeURIComponent(imagenURL),
@@ -131,15 +146,30 @@ function Reportar() {
 
     try {
       const data = await res.json();
-      alert("Se ha enviado su reporte con exito")
-      router.push("/Cuenta/Usuario/Perfil")
+      alert("Se ha enviado su reporte con exito");
+      contadorNumRep();
+
+      router.push("/Cuenta/Usuario/Perfil");
       //console.log("Respuesta de la API:", data);
     } catch (error) {
       console.error("Error al analizar la respuesta:", error);
     }
     // Aquí puedes agregar la lógica para enviar los datos al servidor
-  };
+  
+    }
+    };
+  const contadorNumRep = async () => {
+    const userDocRef = collection(db, "usuarios");
+    const userQuery = query(userDocRef, where("uid", "==", userData.uid));
+    const userSnap = await getDocs(userQuery);
 
+    if (!userSnap.empty) {
+      const userDoc = userSnap.docs[0];
+      await updateDoc(userDoc.ref, {
+        numRep: (userDoc.data().numRep || 0) + 1,
+      });
+    }
+  };
   const handleFileUpload = async () => {
     const archivo = document.querySelector('input[type="file"]');
     const archivito = archivo.files[0];
@@ -149,14 +179,22 @@ function Reportar() {
       return;
     }
 
-    const storage = getStorage(app);
-    const randomId = Math.random().toString(36).substring(7);
-    const imageName = `Ticket_${randomId}`;
-    const storageRef = ref(storage, `ImagenesBaches/${imageName}`);
-    await uploadBytes(storageRef, archivito);
-    return getDownloadURL(storageRef);
+    const archivoMime = archivito.type;
+    if (
+      archivoMime.includes("image/jpeg") ||
+      archivoMime.includes("image/png")
+    ) {
+      const storage = getStorage(app);
+      const randomId = Math.random().toString(36).substring(7);
+      const imageName = `Ticket_${randomId}`;
+      const storageRef = ref(storage, `ImagenesBaches/${imageName}`);
+      await uploadBytes(storageRef, archivito);
+      return getDownloadURL(storageRef);
+    } else {
+      alert("Por favor, escoge una imagen")
+      return 0
+    }
   };
-
   return (
     <>
       {loading && <Preloader />}

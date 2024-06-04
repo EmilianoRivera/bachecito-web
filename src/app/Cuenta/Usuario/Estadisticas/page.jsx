@@ -51,7 +51,9 @@ export default function Estadisticas() {
   const handleAlcaldiaChange = (e) => {
     const selectedFolio = e.target.value;
     const selectedOption = e.target.options[e.target.selectedIndex];
-    const selectedAlcaldia = selectedOption.text.replace(/^[^\w]+/, "").trim();
+    const selectedAlcaldia = selectedOption.text.replace(/^[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+|[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+$/g,
+    "").trim();
+  
     setSearchFolio(selectedFolio);
     setSelectedAlcaldia(selectedAlcaldia);
   };
