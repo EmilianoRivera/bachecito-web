@@ -202,6 +202,8 @@ color: #FF9F49;
     position: absolute; 
     left: 10%;
     top: 58%;
+    font-family: "Nunito", sans-serif;
+    cursor: pointer;
 }
 
 .container-registroUs #olvi-contra:hover{
@@ -214,7 +216,12 @@ color: #FF9F49;
     margin-top: 60%;
     margin-left: -65%;
     margin-top: 0px;
-    
+    font-family: "Nunito", sans-serif;
+    cursor: pointer;
+}
+
+.container-registroUs #admin-ini:hover{
+    color: #FFC537;
 }
 
 .container-registroUs button, .alerta-logueado button{
@@ -1779,6 +1786,34 @@ input[type="checkbox"]:checked::before {
         margin-top: 5vh;
         cursor: pointer;
     }
+
+    .alerta-logueado{
+        background-color: var(--background-color-2);
+        width: 80vw;
+        height: 25vh;
+        border-radius: 1.5rem;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        font-family: "Nunito", sans-serif;
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .alerta-logueado button{
+        background-color: #ff9f49;
+        color: #fff;
+        font-size: 12px;
+        padding: 10px 45px;
+        border: 1px solid transparent;
+        border-radius: 8px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        margin-top: 10px;
+        cursor: pointer;
+    }
+
+
   }
 
   .modal {

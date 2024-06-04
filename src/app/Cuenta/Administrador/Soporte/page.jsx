@@ -41,6 +41,8 @@ function Soporte() {
   const [showModal, setShowModal] = useState(false);
   const [ticketEncontrado, setTicketEncontrado] = useState([]);
 
+  const [showSection, setShowSection] = useState(false);
+
   const toggleDetalle1 = () => {
     setMostrarDetalle1(!mostrarDetalle1);
   };
@@ -367,22 +369,13 @@ function Soporte() {
       console.error("No se ha seleccionado ningún archivo");
       return;
     }
-    const archivoMime = archivito.type;
-    if (
-      archivoMime.includes("image/jpeg") ||
-      archivoMime.includes("image/png")
-    ) {
-      const storage = getStorage(app2);
-      const randomId = Math.random().toString(36).substring(7);
-      const imageName = `Ticket_${randomId}`;
-      const storageRef = ref(storage, `ImagenesTickets/${imageName}`);
-      await uploadBytes(storageRef, archivito);
-      return getDownloadURL(storageRef);
-    } else {
-      alert("Por favor, escoge una imagen")
-      return 0
-    }
-  
+
+    const storage = getStorage(app2);
+    const randomId = Math.random().toString(36).substring(7);
+    const imageName = `Ticket_${randomId}`;
+    const storageRef = ref(storage, `ImagenesTickets/${imageName}`);
+    await uploadBytes(storageRef, archivito);
+    return getDownloadURL(storageRef);
   };
   // Acá va toda la lógica
 
@@ -397,58 +390,56 @@ function Soporte() {
     const descProm = enc(descripcionProblema)
     const selectedRuta = enc(selectedRutaError)
     const errorSelec = enc(errorSeleccionado)
-    if(url === 0) {
-      alert("Error con la imagen, por favor, escoge una adecuada")
-    }else {
-      let res = prompt("¿Desea levantar el ticket? (SI/NO)");
-      if (res.toUpperCase() === "SI") {
-        try {
-          const baseURL = process.env.NEXT_PUBLIC_RUTA_RT;
-          const parametros = {
-            url: encodeURIComponent(url),
-            Uid: encodeURIComponent(Uid),
-            errorSeleccionado: encodeURIComponent(errorSelec),
-            sistemaOperativo,
-            navegador,
-            selectedRutaError: encodeURIComponent(selectedRuta),
-            descripcionProblema: encodeURIComponent(descProm),
-            correoA:encodeURIComponent(correoA),
-            nombre:encodeURIComponent(nombre),
-            area: encodeURIComponent(area),
-          }
-          const ticketResponse = await fetch(
-            `${baseURL}/${encodeURIComponent(
-              url
-            )}/${encodeURIComponent(Uid)}/${encodeURIComponent(errorSelec)}/${sistemaOperativo}/${navegador}/${encodeURIComponent(
-              selectedRuta
-            )}/${encodeURIComponent(descProm)}/${encodeURIComponent(correoA)}/${encodeURIComponent(nombre)}/${encodeURIComponent(area)}`,
-            {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify(parametros),
-            }
-          );
-          if (ticketResponse.ok) {
-            console.log("Formulario enviado con éxito");
-            alert("Formulario enviado con exito");
-        window.location.reload();
-          } else {
-            console.error(
-              "Error al enviar el formulario:",
-              ticketResponse.status
-            );
-          }
-        } catch (error) {
-          console.error("Error al enviar el formulario:", error);
+    let res = prompt("¿Desea levantar el ticket? (SI/NO)");
+    if (res.toUpperCase() === "SI") {
+      try {
+        const baseURL = process.env.NEXT_PUBLIC_RUTA_RT;
+        const parametros = {
+          url: encodeURIComponent(url),
+          Uid: encodeURIComponent(Uid),
+          errorSeleccionado: encodeURIComponent(errorSelec),
+          sistemaOperativo,
+          navegador,
+          selectedRutaError: encodeURIComponent(selectedRuta),
+          descripcionProblema: encodeURIComponent(descProm),
+          correoA:encodeURIComponent(correoA),
+          nombre:encodeURIComponent(nombre),
+          area: encodeURIComponent(area),
         }
-      } else {
-        alert("NO SE LEVANTARA SU TICKET");
+        const ticketResponse = await fetch(
+          `${baseURL}/${encodeURIComponent(
+            url
+          )}/${encodeURIComponent(Uid)}/${encodeURIComponent(errorSelec)}/${sistemaOperativo}/${navegador}/${encodeURIComponent(
+            selectedRuta
+          )}/${encodeURIComponent(descProm)}/${encodeURIComponent(correoA)}/${encodeURIComponent(nombre)}/${encodeURIComponent(area)}`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify(parametros),
+          }
+        );
+        if (ticketResponse.ok) {
+          console.log("Formulario enviado con éxito");
+          alert("Formulario enviado con exito");
+      window.location.reload();
+        } else {
+          console.error(
+            "Error al enviar el formulario:",
+            ticketResponse.status
+          );
+        }
+      } catch (error) {
+        console.error("Error al enviar el formulario:", error);
       }
-
-
+    } else {
+      alert("NO SE LEVANTARA SU TICKET");
     }
+  };
+
+  const handleToggleClick = () => {
+    setShowSection(!showSection);
   };
 
   return (
@@ -760,6 +751,15 @@ function Soporte() {
             </div>
           </div>
         </div>
+
+        <button id="toggleButton" onClick={handleToggleClick} >
+          <span className="spaan" 
+          style={{ color: showSection ? "#D1D1D1" : "#FF5136" }}>
+          {showSection ? "Volver" : "Ayuda con Errores"}
+          </span>
+          <img src={showSection ? "https://i.postimg.cc/s2n97mSF/flecha-circulo-izquierda.png" : "https://i.postimg.cc/tCFD1h4k/exclamacion_(1).png"} alt="" />
+        </button>
+        <div className="seccion-oculta" style={{ display: showSection ? "block" : "none" }}>
         <div className="container_FormularioSoporte">
           <div className="containerFR">
             <br />
@@ -989,6 +989,7 @@ function Soporte() {
               </div>
             </div>
           )}
+        </div>
         </div>
       </div>
     </div>
