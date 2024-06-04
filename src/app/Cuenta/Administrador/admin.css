@@ -66,8 +66,13 @@ body, div{
 
 .container-adminLogin svg {
   position: absolute;
+  min-width: 320px;
   width: 100%;
   margin-top: -10px;
+}
+
+.centered{
+  width: 75%;
 }
 
 .container-adminLogin path {
@@ -110,7 +115,6 @@ body, div{
 #iniciarSesion-btn-admin button{
   line-height: 30px;
   outline: none !important;
-  margin-left: 10%;
 }
 
 #iniciarSesion-btn-admin {
@@ -132,6 +136,19 @@ body, div{
   color: #FF4D35;
 }
 
+.toggle-password{
+  background: none;
+  border: none;
+  position: absolute;
+  right: 0;
+  margin-top: -30px;
+}
+
+.toggle-password img{
+ width: 25px;
+ height: 25px;
+}
+
 @media(max-width:1500px){
   .container-adminLogin {
     display: flex;
@@ -149,6 +166,13 @@ body, div{
     margin: 0 auto;
     width: 55vw;
   }
+
+  .container-adminLogin svg {
+    position: absolute;
+    min-width: 320px;
+    width: 100%;
+    margin-top: 0px;
+  }
 }
 
 @media(max-width:1000px){
@@ -158,8 +182,24 @@ body, div{
     margin: 0 auto;
     width: 70vw;
   }
+
+  .container-adminLogin svg {
+    position: absolute;
+    min-width: 320px;
+    width: 100%;
+    margin-top: -5px;
+  }
 }
 
+@media(max-width:900px){
+
+  .container-adminLogin svg {
+    position: absolute;
+    min-width: 320px;
+    width: 100%;
+    margin-top: 2px;
+  }
+}
 
 @media(max-width:800px){
   .container-adminLogin {
@@ -168,7 +208,38 @@ body, div{
     margin: 0 auto;
     width: 80vw;
   }
+
+  .container-adminLogin svg {
+    position: absolute;
+    min-width: 220px;
+    width: 100%;
+  }
+
+  .centered{
+    margin-top: 40px;
+  }
+  #margin{
+    margin-top: 10px;
+  }
+
+  #iniciarSesion-btn-admin{
+    margin-top: 41px;
+  }
 }
+
+@media(max-width:700px){
+  .centered{
+  margin-top: 20px;
+}
+#margin{
+  margin-top: 10px;
+}
+
+#iniciarSesion-btn-admin{
+  margin-top: 21px;
+}
+}
+
 
 @media (max-width: 600px) {
   .page-adminLogin {
@@ -201,5 +272,31 @@ body, div{
     border-bottom-left-radius: 0rem;
     border-top-right-radius: 2rem;
   }
+
+  .container-adminLogin svg {
+    position: absolute;
+    min-width: 320px;
+    width: 100%;
+    margin-top: -60px;
+  }
+  .centered{
+    width: 80%;
+  }
+
+  #margin{
+    margin-top: 40px;
+  }
+
+  #iniciarSesion-btn-admin{
+    margin-top: 75px;
+  }
 }
 
+@media(max-width:500px){
+  .container-adminLogin   svg {
+    position: absolute;
+    min-width: 320px;
+    width: 100%;
+    margin-top: -10vh;
+  }
+}
