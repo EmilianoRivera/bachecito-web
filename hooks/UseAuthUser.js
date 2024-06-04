@@ -10,7 +10,7 @@ export const useAuthUser = () => {
   //hooks del router y del context
   const { push } = useRouter();
   const pathname = usePathname();
-  const { setisLogged, setIsAdmin, setIsDev } = useContext(AuthContext); 
+  const { setisLogged, setIsAdmin } = useContext(AuthContext); 
   
 
   useEffect(() => {
@@ -21,7 +21,6 @@ export const useAuthUser = () => {
       onAuthStateChanged(auth, async (user) => {
         let userLogged = user === null ? false : true;
   
-  
         if (!userLogged) {
           if (pathname === "/Cuenta/Administrador") {
             push(pathname)
@@ -30,7 +29,7 @@ export const useAuthUser = () => {
             push("/Cuenta")
           }
           setisLogged(false);
-          setIsDev(false)
+          
           setIsAdmin(false);
         } else {
           setisLogged(true);
@@ -41,26 +40,21 @@ export const useAuthUser = () => {
           if (!querySnapshot.empty) {
             const docSnapshot = querySnapshot.docs[0];
             const userData = docSnapshot.data();
-            let admin, dev;
+            let admin;
             if(userData.rol === "admin"){
               admin = userData.rol
               setIsAdmin(admin);
-            } else {
-             dev = userData.rol === "dev"
-             console.log(dev)
-              setIsDev(dev)
-            }
+            } 
             
   
             if (pathname === "/Cuenta/Administrador" && admin) {
               push("/Cuenta/Administrador/Dashboard"); 
-            } else if (pathname === "/Cuenta" && dev) {
-              push("/Cuenta/Desarrolladores")
-            }else if (pathname === "/Cuenta/Administrador") {
+            } 
+            else if (pathname === "/Cuenta/Administrador") {
               push("/");
             }
           } else {
-            console.log("El documento del usuario no existe en Firestore");
+            console.log("El documento del usuario no existe");
             setIsAdmin(false);
             if (pathname === "/Cuenta") {
               push("/"); 
@@ -70,5 +64,5 @@ export const useAuthUser = () => {
       });
   
     }
-  }, []);
+  }, [setisLogged, setIsAdmin]);
 };

@@ -1,10 +1,7 @@
 "use client"
 import React, { useState } from 'react';
-import {auth, db} from "../../../../../firebase";
-import {createUserWithEmailAndPassword, sendEmailVerification}from "firebase/auth";
-import { addDoc, collection } from 'firebase/firestore';
 import "./NuevoAdmin.css";
-
+import { enc, desc } from '@/scripts/Cifrado/Cifrar';
 export default function NuevoAdmin() {
     const [username, setUsername] = useState('');
     const [appat, setAppat] = useState('');
@@ -12,28 +9,50 @@ export default function NuevoAdmin() {
     const [fechaNacimiento, setFechaNacimiento] = useState('');
     const [correo, setCorreo] = useState('');
     const [password, setPassword] = useState('')
+
+
+
+
+
     const registroAdmin = async(e) => {
         try {
             e.preventDefault();
-            const adminCredential = await createUserWithEmailAndPassword(auth, correo, password)
-            const admin = adminCredential.user
-            sendEmailVerification(admin)
-            alert("Se envió correo")
-            const uid = admin.uid
-            
-            const usuariosCollection = collection(db, "usuarios")   //collection(db, "tickets")
-            const nuevoUsuario = {
-                uid: uid, 
-                nombre: username,
-                apellidoPaterno: appat,
-                apellidoMaterno: apmat,
-                fechaNacimiento: fechaNacimiento,
-                correo: correo,
-                estadoCuenta: true,
-                rol: "admin",
+
+            const user = enc(username)
+            const paterno = enc(appat)
+            const materno = enc(apmat)
+            const fechaN = enc(fechaNacimiento)
+            const email = enc(correo)
+            const pass = enc(password)
+            console.log(user, " ", paterno, " ", materno, " ",
+                fechaN, " ", email, " ", pass
+            )
+
+
+            const parametros = {
+                username: encodeURIComponent(user),
+                appat: encodeURIComponent(paterno),
+                apmat: encodeURIComponent(materno),
+                fechaNacimiento: encodeURIComponent(fechaN),
+                correo: encodeURIComponent(email),
+                password: encodeURIComponent(pass),
             }
-            addDoc(usuariosCollection, nuevoUsuario)
-            alert("Se guardó el usuario")
+            const baseURL = process.env.NEXT_PUBLIC_RUTA_NA
+            const res = await fetch(`${baseURL}/${encodeURIComponent(user)}/${encodeURIComponent(paterno)}/${encodeURIComponent(materno)}/${ encodeURIComponent(fechaN)}/${encodeURIComponent(email)}/${encodeURIComponent(pass)}`, {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(parametros),
+            })
+            if(!res.ok) {
+                throw new Error("Error al crear a nuevo admin")
+            }
+            const data = await res.json()
+            const dataDesc = desc(data)
+
+            alert("Se envió correo: ", dataDesc)
+     
         } catch (error) {
             console.error("error al crear la cuenta: ", error)
             alert(error.mesagge)

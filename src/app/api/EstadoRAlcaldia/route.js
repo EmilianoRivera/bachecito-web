@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { db, collection, getDocs } from "../../../../firebase";
+import { enc } from "@/scripts/Cifrado/Cifrar"; // Asegúrate de que la ruta sea correcta
 
 export async function GET(request) {
   try {
@@ -37,17 +38,21 @@ export async function GET(request) {
       }
     });
 
-    console.log(datos);
+    // Cifrar los datos
+    const cifradoDatos = enc(datos);
 
-    return NextResponse.json(datos);
+    console.log(cifradoDatos);
+
+    return NextResponse.json({cifrado: cifradoDatos});
   } catch (error) {
     console.error("Error al obtener reportes:", error);
     return NextResponse.error("Error al obtener reportes", { status: 500 });
   }
 }
+
 function obtenerAlcaldiasEnUbicacion(ubicacion) {
   const regexAlcaldiasCDMX =
-    /(Azcapotzalco|Coyoacán|Cuajimalpa de Morelos|Gustavo A. Madero|Iztacalco|Iztapalapa|Magdalena Contreras|Miguel Hidalgo|Milpa Alta|Tláhuac|Tlalpan|Venustiano Carranza|Xochimilco)/gi;
+    /(Azcapotzalco|Coyoacán|Cuajimalpa de Morelos|Gustavo A. Madero|Iztacalco|Iztapalapa|Magdalena Contreras|Miguel Hidalgo|Milpa Alta|Tláhuac|Tlalpan|Venustiano Carranza|Xochimilco|Álvaro Obregón)/gi;
 
   return ubicacion.match(regexAlcaldiasCDMX);
 }

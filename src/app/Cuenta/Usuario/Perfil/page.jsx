@@ -21,6 +21,7 @@ import Alerta from "@/components/Alerta3";
 
 import Router from 'next/router';
 import Preloader from "@/components/preloader2";
+import { desc, enc } from "@/scripts/Cifrado/Cifrar";
 
 export default function Perfil() {
   const [loading, setLoading] = useState(false);
@@ -65,16 +66,26 @@ export default function Perfil() {
 
     async function fetchData(uid) {
       try {
-        const userResponse = await fetch(`/api/Usuario/${uid}`);
-        const reportesResponse = await fetch(`/api/ReportesPerfil/${uid}`);
+        const Uid = enc(uid)
+        const id = encodeURIComponent(Uid)
+        const baseURL= process.env.NEXT_PUBLIC_RUTA_U
+        const baseURLR = process.env.NEXT_PUBLIC_RUTA_RP
+       
+
+        const userResponse = await fetch(`${baseURL}/${id}`);
+       
+        const reportesResponse = await fetch(`${baseURLR}/${id}`);
         if (!userResponse.ok || !reportesResponse.ok) {
           throw new Error("Failed to fetch user data");
         }
         const userData = await userResponse.json();
         const reportesData = await reportesResponse.json();
 
-        setUserData(userData);
-        setReportes(reportesData);
+        const userDataDesc = desc(userData)
+        const reportesDesc = reportesData.map(rep => desc(rep))
+
+        setUserData(userDataDesc);
+        setReportes(reportesDesc);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -258,12 +269,93 @@ export default function Perfil() {
         </div>
       )}
       <div className="line-vertical"></div>
+
       <div className="right-side">
         <div className="encabezado-historial">
           <h2>Tu historial de reportes:</h2>
         </div>
 
-        {reportes.map((reporte, index) => (
+        {reportes.length === 0 ? (
+            <div className="no-founds">
+              <div className="ast-centered">
+              <div className="backg">
+		<div className="planet">
+			<div className="r1"></div>
+			<div className="r2"></div>
+			<div className="r3"></div>
+			<div className="r4"></div>
+			<div className="r5"></div>
+			<div className="r6"></div>
+			<div className="r7"></div>
+			<div className="r8"></div>
+			<div className="shad"></div>
+		</div>
+		<div className="stars">
+			<div className="s1"></div>
+			<div className="s2"></div>
+			<div className="s3"></div>
+			<div className="s4"></div>
+			<div className="s5"></div>
+			<div className="s6"></div>
+		</div>
+		<div className="an">
+			<div className="tank"></div>
+			<div className="astro">
+					
+					<div className="helmet">
+						<div className="glass">
+							<div className="shine"></div>
+						</div>
+					</div>
+					<div className="dress">
+						<div className="c">
+							<div className="btn1"></div>
+							<div className="btn2"></div>
+							<div className="btn3"></div>
+							<div className="btn4"></div>
+						</div>
+					</div>
+					<div className="handl">
+						<div className="handl1">
+							<div className="glovel">
+								<div className="thumbl"></div>
+								<div className="b2"></div>
+							</div>
+						</div>
+					</div>
+					<div className="handr">
+						<div className="handr1">
+							<div className="glover">
+								<div className="thumbr"></div>
+								<div className="b1"></div>
+							</div>
+						</div>
+					</div>
+					<div className="legl">
+						<div className="bootl1">
+							<div className="bootl2"></div>
+						</div>
+					</div>
+					<div className="legr">
+						<div className="bootr1">
+							<div className="bootr2"></div>
+						</div>
+					</div>
+					<div className="pipe">
+						<div className="pipe2">
+							<div className="pipe3"></div>
+						</div>
+					</div>
+				</div>
+			</div>
+    </div>
+              </div>
+<div className="nofounds-txt">
+<p>¡Vaya! Parece que no has hecho ningún reporte todavía.</p>
+  </div>              
+            </div>
+          ) : (
+            reportes.map((reporte, index) => (
           <div className="box2-2" id="box2-2" key={index}>
             <div className="column-left2">
               <div className="fotografía2">
@@ -272,6 +364,7 @@ export default function Perfil() {
                   alt=""
                   style={{ maxWidth: "100%", maxHeight: "100%", borderRadius:"1rem", }}
                 />
+                <p className="no-foto2">No se pudo cargar la imagen</p>
               </div>
               <div className="column-left-inferior2">
                 <div className="fecha2">{reporte.fechaReporte}</div>
@@ -291,6 +384,7 @@ export default function Perfil() {
             <div className="column-right2">
               <div className="column-right-superior2">
                 <div className="estado2">
+                  <div className="folio">Folio: {reporte.folio}</div>
                   {reporte.estado === "Sin atender" && (
                     <img
                       src={sinAtenderIcon.src}
@@ -329,10 +423,12 @@ export default function Perfil() {
                 <div className="guardar2">
  
                   {userData && userData.uid && userData.foliosGuardados && userData.foliosGuardados.includes(reporte.folio) ? (
-                    <img src="https://i.postimg.cc/RVrPJ3rN/estrella-1.png"
+                    <img 
+                    className="icon-star2"
+                    src="https://i.postimg.cc/RVrPJ3rN/estrella-1.png"
                     style={{ opacity: 1, transition: 'opacity 0.3s ease' }}
-                      className="icon-star2" alt="Folio guardado" onClick={() => guardarFoliosEnDB(reporte.folio, userData)}/>
- 
+                    alt="Folio guardado" 
+                    onClick={() => guardarFoliosEnDB(reporte.folio, userData)}/>
                   ) : (
                     <img
                       className="icon-star2"
@@ -356,7 +452,10 @@ export default function Perfil() {
               </div>
             </div>
           </div>
-        ))}
+        ))
+          )}
+
+        
 
         {showToggleButton && (
           <button id="toggleButton" onClick={toggleLeftSide}>

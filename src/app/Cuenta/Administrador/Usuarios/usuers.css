@@ -82,10 +82,6 @@ table {
     align-items: center;
     justify-items: center;
   }
-  
-  .Detalles img{
-    height: 2rem;
-  }
 
   .Detalles span{
     background-color: var(--background-color-3);
@@ -93,16 +89,10 @@ table {
     width: 100px;
     height: 30px;
     margin-left: 10px;
-    display: none;
     font-size: 13px;
     color: var(--text-color);
     border-radius: 1rem;
   }
-
-  .Detalles:hover span{
-    display: flex;
-  }
-  
   ::-webkit-scrollbar {
     width: 10px; /* Ancho de la barra de desplazamiento */
 }
@@ -120,28 +110,33 @@ table {
     background: var(--background-color-6); /* Color de la barra de desplazamiento al pasar el mouse sobre ella */
 }
 
-.modal{
+.modal-inc{
     z-index: 100000;
     position: fixed;
     width: 90vw;
-    height: 80vh;
-    top: 12vh;
+    height: 87vh;
+    top: 10vh;
+    background-color: var(--background-color-12);
     display: flex;
     justify-content: center;
     align-items: center;
+    overflow-y: scroll;
+
   }
   
-  .modal-content{
+  .modal-inc-content{
     background-color: var(--background-color-7);
     backdrop-filter: blur(5px); 
     padding: 20px;
     border-radius: 1rem;
     width: 45vw;
     justify-content: center;
-    align-items: center;
     text-align: center;
     text-justify: justify;
     border: 2px solid #b9b9b9;
+    margin-top: auto;
+    margin-bottom: auto;
+    height: auto;
   }
 
   .incidencia-abierta{
@@ -152,8 +147,23 @@ table {
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 20px;
+    height: 33vh;
   }
+  .incidencia-abierta2{
+    color: #FF9F49;
+  }
+
+  .incidencia-abierta2{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: -15px;
+  }
+  .incidencia-abierta2 > div {
+    max-width: 300px; /* Ancho máximo ajustable según tu preferencia */
+    max-height: 150px;
+    margin: 0 10px; /* Margen horizontal para separar los divs */
+}
 
   .inc-flex{
     width: 75%;
@@ -169,7 +179,7 @@ table {
     border: none;
     border-radius: 1rem;
     height: 10vh;
-    margin-bottom: 10px;
+    margin-bottom: 1rem;
      color: var(--text-color);
      background-color: var(--background-color-2);
   }
@@ -191,13 +201,28 @@ table {
   .Datos-incidencia{
      background-color: var(--background-color-10);
      border-radius: 10px;
-    width: 25vw;
-    max-width: 25vw;
-     margin-left: 2vw;
      justify-content: left;
      padding: 15px;
      box-sizing: border-box;
   }
+
+  .Datos-incidencia2{
+    border-radius: 10px;
+     margin-left: 2vw;
+     width: 25vw;
+   max-width: 25vw;
+    justify-content: left;
+    padding: 15px;
+    box-sizing: border-box;
+
+    display: block;
+ }
+
+ .Datos-incidencia2 p{
+  color: #FF5136;
+
+ }
+
 
   .boton-cerrar{
     background: none;
@@ -213,14 +238,10 @@ table {
     width: 15px;
   }
 
-  .modal h2{
+  .modal-inc h2{
     color: #FF9F49;
     font-weight: bolder;
     margin-top: -10px;
-  }
-
-  .modal p{
-    color: #1E1E1E;
   }
 
   .agregar-incidencia{
@@ -267,3 +288,71 @@ table {
     color: #FF9F49;
     transition: .3s;
   }
+
+
+  .desactivar-cuenta{
+    cursor: pointer;
+    justify-content: center;
+    display: flex;
+    align-items: center;
+  }
+  
+  .desactivar-cuenta img{
+    height: 2rem;
+    margin-right: 10px;
+  }
+
+  .desactivar-cuenta span{
+    background-color: var(--background-color-3);
+    padding: 5px;
+    width: 80px;
+    height: 30px;
+    display: none;
+    color: var(--text-color);
+    border-radius: 1rem;
+    font-size: 13px;
+  }
+
+  .desactivar-cuenta:hover span{
+    display: block;
+  }
+
+
+  
+  .incidencia-abierta select {
+    width: 70%;
+    display: block;
+    padding: 5px;
+    font-size: 14px;
+    background-color: var(--background-color-2);
+    border-radius: 1rem;
+    color: var(--text-color);
+    border: 1px solid var(--background-color-6);
+    margin-bottom: .7rem;
+  }
+
+  .incidencia-abierta select option{
+    border-radius: 1rem;
+    border: none;
+  }
+
+  .incidencia-abierta select option:hover{
+    background-color: #ff9f49;
+
+  }
+
+  .FilUsuariosAdmin{
+    width: 50vw;
+    min-width: 55vw;
+    height: 8vh;
+    background-color: var(--background-color-2);
+    margin-bottom: 5vh;
+    border-radius: 1.5rem;
+    align-items: center;
+    display: flex;
+    z-index: 1000;
+    justify-content: space-between;
+    font-family: 'Poppins', sans-serif;
+    top: 0;
+    position: sticky;
+   }

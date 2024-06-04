@@ -5,6 +5,8 @@ import Barras from "@/components/Barras";
 import Circular from "@/components/Circular";
 import BarrasHz from "@/components/BarrasHz";
 import CRep from "@/components/CRepU";
+/* import PieCharts from "@/components/PieCharts"; */
+import LineChart from "@/components/LineChart";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 function Dashboard() {
@@ -43,7 +45,7 @@ function Dashboard() {
   const [isEstadoSelectVisible, setIsEstadoSelectVisible] = useState(false);
 
   const handleAlcaldiaChange = (e) => {
-   // console.log("Alcaldía seleccionada:", e.target.value);
+    // console.log("Alcaldía seleccionada:", e.target.value);
     setAlcaldia(e.target.value);
   };
 
@@ -53,7 +55,7 @@ function Dashboard() {
 
   const handleFechaChange = (e) => {
     const selectedValue = e.target.value;
-   // console.log("Fecha seleccionada:", selectedValue);
+    // console.log("Fecha seleccionada:", selectedValue);
     setFiltroFecha(selectedValue);
   };
   return (
@@ -137,39 +139,40 @@ function Dashboard() {
 
       <div className="flex-dashboard">
         <div className="ladoIZ-dashboard">
+          
           <CRep />
 
           <div className="grafica-circular">
             <h3>
-              ALCALDIAS CON <br /> MAS REPORTES
+              ALCALDIAS CON MAS REPORTES
             </h3>
             <div className="circular">
-            <Circular
-  width={300}
-  height={400}
-  estados={estado}
-  alcaldias={alcaldias}
-  startDates={startDate}
-  endDates={endDate}
-  filtroFechas={filtroFecha}
-/>
+              <Circular
+                width={300}
+                height={300}
+                estados={estado}
+                alcaldias={alcaldias}
+                startDates={startDate}
+                endDates={endDate}
+                filtroFechas={filtroFecha}
+              />
             </div>
           </div>
         </div>
 
         <div className="ladoDER-dashboard">
           <div className="grafica-barras">
-            <h3>REPORTES POR ALCALDIA</h3>
+            <h3>REPORTES POR FECHAS SEGUN SU ALCALDIA</h3>
             <div className="barras">
-            <Barras
-  width={680}
-  height={350}
-  estados={estado}
-  alcaldias={alcaldias}
-  startDates={startDate}
-  endDates={endDate}
-  filtroFechas={filtroFecha}
-/>
+              <Barras 
+                width={1000}
+                height={420}
+                estados={estado}
+                alcaldias={alcaldias}
+                startDates={startDate}
+                endDates={endDate}
+                filtroFechas={filtroFecha}
+              />
             </div>
           </div>
         </div>
@@ -178,15 +181,29 @@ function Dashboard() {
       <div className="grafica-barras-hz">
         <h3>REPORTES SEGÚN SU ESTADO DE ATENCIÓN POR ALCALDIA</h3>
         <BarrasHz
-  width={500}
-  height={1000}
-  estados={estado}
-  alcaldias={alcaldias}
-  startDates={startDate}
-  endDates={endDate}
-  filtroFechas={filtroFecha}
-/>
+          width={500}
+          height={700}
+          estados={estado}
+          alcaldias={alcaldias}
+          startDates={startDate}
+          endDates={endDate}
+          filtroFechas={filtroFecha}
+        />
+
       </div>
+      <div className="grafica-barras-hz" >
+        <h3>CUENTAS DE USUARIOS POR DIA</h3>
+        <LineChart />
+
+      </div>
+      
+      <div className="grafica-barras" >
+        <h3>REPORTES POR ALCALDIA</h3>
+        {/* <PieCharts /> */}
+
+      </div>
+      
+      
     </div>
   );
 }

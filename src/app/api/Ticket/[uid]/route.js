@@ -1,19 +1,22 @@
 import { NextResponse } from "next/server";
+import { desc, enc } from "../../../../scripts/Cifrado/Cifrar";
+
 import { db2, collection, getDocs, query, where} from "../../../../../firebase";
 
 export async function GET(request, {params}) {
   try {
-    const uid = params.uid
-
+    const id = decodeURIComponent(params.uid)
+    const uid = desc(id)
     const ticketsRef = collection(db2, 'tickets')
     const q = query(ticketsRef,  where("uid", "==", uid));
     const ticketsSnapshot = await getDocs(q);
-
+    
     const tickets = [];
-
+    
     ticketsSnapshot.forEach((doc) => {
       const ticket = doc.data();
-      tickets.push(ticket);
+      const ticketEncrypted = enc(ticket)
+      tickets.push(ticketEncrypted);
     });
 
     return NextResponse.json(tickets);

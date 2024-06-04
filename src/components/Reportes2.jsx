@@ -8,6 +8,7 @@ import sinAtenderIcon from '../imgs/fondoRojo.png';
 import AuthContext from "../../context/AuthContext";
 import Link from 'next/link';
 import estrella from "../imgs/estrella.png";
+import { desc, enc } from "@/scripts/Cifrado/Cifrar";
 import {
     updateDoc,
     collection,
@@ -35,24 +36,18 @@ function ReportesComponente() {
         const fetchUserData = async () => {
             if (isLogged) {
                 try {
-                    // Realizar la consulta para obtener los datos del usuario
-                    const userQuery = query(
-                        collection(db, "usuarios"),
-                        where("uid", "==", auth.currentUser.uid)
-                    );
-                    const userDocs = await getDocs(userQuery);
-
-                    // Si hay documentos en el resultado de la consulta
-                    if (!userDocs.empty) {
-                        // Obtener el primer documento (debería haber solo uno)
-                        const userDoc = userDocs.docs[0];
-                        // Obtener los datos del documento
-                        const userData = userDoc.data();
-                        // Establecer los datos del usuario en el estado
-                        setUserData(userData);
-                    } else {
-                        console.log("No se encontró el documento del usuario");
+                    const currentUid = auth.currentUser.uid
+                    const id = enc(currentUid)
+                    const uid = encodeURIComponent(id)
+                    const baseURL= process.env.NEXT_PUBLIC_RUTA_U
+                    const res = await fetch(`${baseURL}/${uid}`)
+                    if(!res.ok) {
+                        throw new Error("Error al obtener la información");   
                     }
+                    const data = res.json()
+                    const datDesc = desc(data)
+                    console.log(datDesc)
+                    setUserData(datDesc)
                 } catch (error) {
                     console.error("Error al obtener los datos del usuario:", error);
                 }
@@ -65,14 +60,17 @@ function ReportesComponente() {
     useEffect(() => {
         async function fetchData() {
             try {
-                const response = await fetch("/api/Reportes");
+                const baseURL = process.env.NEXT_PUBLIC_RUTA_R
+                const response = await fetch(`${baseURL}`);
                 if (!response.ok) {
-                    throw new Error("Failed to fetch data");
+                    throw new Error("Error al traer los reportes");
                 }
                 const data = await response.json();
-                setRep(data);
+                const dataD = data.map(rep => desc(rep))
+                console.log(dataD)
+                setRep(dataD);
             } catch (error) {
-                console.log("Error fetching data: ", error);
+                console.log("Error al traer la información: ", error);
             }
         }
 
@@ -161,7 +159,30 @@ function ReportesComponente() {
     onChange={(e) => setSearchDate(e.target.value)}
 /> */}
             {filteredReports.length === 0 ? (
-                <div className="alert alert-warning">No se encontraron resultados</div>
+                <div className="alert alert-warning">
+                <div><h2>No se encontraron resultados </h2></div>
+                <div className="completo">
+                  <div className="ghost">
+                    <div className="face">
+                      <div className="eyes">
+                        <span></span><span></span>
+                      </div>
+                      <div className="mouth"></div>
+                    </div>
+    
+                    <div className="hands">
+                      <span></span><span></span>
+                    </div>
+    
+                    <div className="feet">
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                      <span></span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             ) : (
                 filteredReports.map((report, index) => (
                     <div className="box2" id="box2" key={index}>
@@ -169,6 +190,7 @@ function ReportesComponente() {
                             <div className="columnm-left">
                                 <div className="fotografía">
                                     <img src={report.imagenURL} alt={""} style={{ width: '100%', maxHeight: '100%' }} />
+                                    <p className="no-foto2">No se pudo cargar la imagen</p>
                                 </div>
 
                                 <div className="column-left-inferior">

@@ -1,18 +1,12 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { PieChart, Pie, Cell, Tooltip, Legend } from "recharts";
+import { enc, desc } from "@/scripts/Cifrado/Cifrar";
+import "@/components/Circular2.css";
 
-async function fetchFiltroEstado(
-  estado,
-  alcaldias,
-  filtroFecha,
-  startDate,
-  endDate
-) {
-  const alcaldia = alcaldias.replace(
-    /^[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+|[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+$/g,
-    ""
-  );
+async function fetchFiltroEstado(estado, alcaldias, filtroFecha, startDate, endDate) {
+  
+  const alcaldia = alcaldias.replace(/^[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+|[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+$/g, "");
   try {
     const parametros = {
       estado: estado,
@@ -21,9 +15,9 @@ async function fetchFiltroEstado(
       startDate: startDate,
       endDate: endDate,
     };
-
+    const baseURL = process.env.NEXT_PUBLIC_RUTA_F;
     const response = await fetch(
-      `/api/filtros/${estado}/${alcaldia}/${filtroFecha}/${startDate}/${endDate}`,
+      `${baseURL}/${estado}/${alcaldia}/${filtroFecha}/${startDate}/${endDate}`,
       {
         method: "POST",
         headers: {
@@ -35,8 +29,14 @@ async function fetchFiltroEstado(
     if (!response.ok) {
       throw new Error("Fallaron los filtros");
     }
-    const resultadoFiltros = await response.json();
-    return resultadoFiltros;
+
+    const resultado = await response.json();
+    if (!Array.isArray(resultado)) {
+      console.log("La respuesta del servidor no es un array");
+    }
+
+    const data = resultado.map((rep) => desc(rep));
+    return data;
   } catch (error) {
     console.error("Error a la hora de hacer la petición ", error);
     return null;
@@ -92,15 +92,20 @@ export default function Circular({
 }) {
   const [rep, setRep] = useState([]); //guarda los reportes totales por alcaldia
 
+  const [isLoading, setIsLoading] = useState(true);
+const [dataLoaded, setDataLoaded] = useState(false);
+
   useEffect(() => {
     async function fetchData() {
+      setIsLoading(true);
       try {
         const result = await fetchFiltroEstado(
           estados,
           alcaldias,
           filtroFechas,
           startDates,
-          endDates
+          endDates,
+          setDataLoaded(true)
         );
 
         if (result === null) {
@@ -111,6 +116,8 @@ export default function Circular({
         setRep(formateados);
       } catch (error) {
         console.error("Error fetching data: ", error);
+      } finally {
+        setIsLoading(false);
       }
     }
 
@@ -118,7 +125,7 @@ export default function Circular({
   }, [estados, alcaldias, startDates, endDates, filtroFechas]);
 
   const data = Object.keys(rep).map((key) => ({
-    name: key,
+    name: key.charAt(0).toUpperCase() + key.slice(1), // Capitalize first letter
     value: rep[key],
   }));
 
@@ -140,16 +147,26 @@ export default function Circular({
     "#FFE75F",
     "#FFB54E",
   ];
+
+  
+
   return (
     <div>
-      {data.length > 0 ? (
+      {isLoading ? (
+        <div style={{ fontFamily: 'sans-serif'}}>
+        <div class="loader-wheel-changer-c">
+          </div>
+      </div>
+      ) : dataLoaded && data.length === 0 ? (
+        <div className="noloader">No hay datos disponibles</div>
+      ) : dataLoaded ? (
         <PieChart width={width} height={height}>
           <Pie
             data={data}
             cx="50%"
             cy="50%"
-            outerRadius={150}
-            innerRadius={60}
+            outerRadius={124}
+            innerRadius={35}
             fill="#8884d8"
             dataKey="value"
           >
@@ -158,14 +175,19 @@ export default function Circular({
             ))}
           </Pie>
           <Tooltip
-            formatter={(value, name) => [`${value} reportes`, name]}
+            formatter={(value, name) => [`${value} reportes`, `Alcaldía: ${name}`]}
             labelFormatter={(name) => `Alcaldía: ${name}`}
+            style={{ fontFamily: 'sans-serif', fontSize: '13px' }} // Tipografía y tamaño de fuente
           />
-          <Legend />
+          <Legend
+            formatter={(value) => value.charAt(0).toUpperCase() + value.slice(1)}
+            style={{ fontFamily: 'sans-serif', fontSize: '13px' }} // Tipografía y tamaño de fuente
+          />
         </PieChart>
       ) : (
-        <div>Cargando datos...</div>
+        <div className="noloader">Error al cargar los datos</div>
       )}
+
     </div>
   );
 }

@@ -16,7 +16,7 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { auth, db } from "../../firebase";
-
+import { desc } from "@/scripts/Cifrado/Cifrar";
 function ReportesComponente() {
   const [rep, setRep] = useState([]);
   const { isLogged } = useContext(AuthContext);
@@ -60,12 +60,14 @@ function ReportesComponente() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch("/api/Reportes");
+        const baseURL = process.env.NEXT_PUBLIC_RUTA_R
+        const response = await fetch(`${baseURL}`);
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
         const data = await response.json();
-        setRep(data);
+        const dataE = data.map(rep => desc(rep))
+        setRep(dataE);
       } catch (error) {
         console.log("Error fetching data: ", error);
       }
@@ -121,16 +123,21 @@ function ReportesComponente() {
       console.error("Error al guardar/eliminar el folio en la base de datos:", error);
     }
 
-    setUserData((prevUserData) => ({
-      ...prevUserData,
-      foliosGuardados: prevUserData.foliosGuardados.includes(folio)
-        ? prevUserData.foliosGuardados.filter((f) => f !== folio)
-        : [...(prevUserData.foliosGuardados || []), folio],
-    }));
+    setUserData((prevUserData) => {
+      const foliosGuardados = prevUserData.foliosGuardados || [];
+      return {
+        ...prevUserData,
+        foliosGuardados: foliosGuardados.includes(folio)
+          ? foliosGuardados.filter((f) => f !== folio)
+          : [...foliosGuardados, folio],
+      };
+    });
   };
+  const folioLowerCase = searchLocation.toLowerCase();
   const filteredReports = rep.filter((report) =>
     //report.descripcion.toLowerCase().includes(searchTerm.toLowerCase()) &&
-    report.ubicacion.toLowerCase().includes(searchLocation.toLowerCase()) &&
+  
+    report.ubicacion.toLowerCase().includes(searchLocation.toLowerCase()) || report.folio.toLowerCase().includes(folioLowerCase)&&
     (searchStatus === "" || report.estado.toLowerCase() === searchStatus.toLowerCase()) &&
     (searchFolio === "" || report.folio.startsWith(searchFolio)) &&
     (searchDate === "" || report.fechaReporte === searchDate)
@@ -144,7 +151,7 @@ function ReportesComponente() {
         <input
           className="Buscador"
           type="text"
-          placeholder="Buscar ubicación..."
+          placeholder="Buscar por ubicación o folio..."
           value={searchLocation}
           onChange={(e) => setSearchLocation(e.target.value)}
         />
@@ -190,7 +197,30 @@ function ReportesComponente() {
 
 
         {filteredReports.length === 0 ? (
-          <div className="alert alert-warning">No se encontraron resultados</div>
+          <div className="alert alert-warning">
+            <div><h2>No se encontraron resultados </h2></div>
+            <div className="completo">
+              <div className="ghost">
+                <div className="face">
+                  <div className="eyes">
+                    <span></span><span></span>
+                  </div>
+                  <div className="mouth"></div>
+                </div>
+
+                <div className="hands">
+                  <span></span><span></span>
+                </div>
+
+                <div className="feet">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
+              </div>
+            </div>
+          </div>
         ) : (
           filteredReports.map((report, index) => (
             <div className="box2" id="box2" key={index}>
@@ -198,6 +228,7 @@ function ReportesComponente() {
                 <div className="columnm-left">
                   <div className="fotografía">
                     <img src={report.imagenURL} alt={""} style={{ width: '100%', maxHeight: '100%' }} />
+                    <p className="no-foto2">No se pudo cargar la imagen</p>
                   </div>
 
                   <div className="column-left-inferior">

@@ -344,6 +344,39 @@ body {
   margin-left: 30px;
 }
 
+.regresar{
+  background-color: var(--background-color-2);
+  width: 12vw;
+  height: 8vh;
+  margin-bottom: 2vh;
+  border-radius: 1.5rem;
+  align-items: center;
+  display: flex;
+  margin-left: 86%;
+  margin-right: 1rem;
+  text-align: center;
+  align-content: space-between;
+  
+}
+
+.regresar img{
+  height: 1.7rem;
+  margin-top: 8px;
+  margin-left: 30px;
+  margin-right: 10px;
+}
+
+.flex-regresar{
+  display: flex;
+}
+
+.regresar .regresar-option{
+  text-decoration: none;
+  color: #FF9F49;
+  display: flex;
+
+}
+
 .filtros-dashboard{
   width: 50vw;
   min-width: 55vw;

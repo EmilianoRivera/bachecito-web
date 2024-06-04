@@ -1,6 +1,7 @@
 "use client";
 import { useEffect, useState } from "react";
 import React from "react";
+
 function CRep() {
   const [totalRep, setTotalRep] = useState(0);
   const [repEstado, setRepEstado] = useState({});
@@ -35,14 +36,15 @@ function CRep() {
       </div>
 
       {/* Acceder directamente a las propiedades del objeto repEstado */}
-      <div id="reportes-no-completos">
-        No Resuelto: {repEstado.sinAtender}
+      <div id="reportes-no-completos" className="in-red">
+        No Resuelto: {repEstado["Sin Atender"]}
+
       </div>
       <div id="reportes-en-proceso">
-        En Proceso: {repEstado.enAtencion}
+        En Proceso: {repEstado["En Atención"]}
       </div>
       <div id="reportes-reparados">
-        Resuelto: {repEstado.atendido}
+        Resuelto: {repEstado.Atendido}
       </div>
     </div>
   );
