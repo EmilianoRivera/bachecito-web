@@ -153,9 +153,13 @@ export default function ReportesAdmin() {
         }
       };
 
-    const obtenerAlcaldiaPorFolio = (folio) => {
+      const obtenerAlcaldiaPorFolio = (folio) => {
+        if (!folio) {
+            return 'No se encontró la alcaldía';
+        }
+    
         const primerosTresDigitos = folio.substring(0, 3);
-
+    
         switch (primerosTresDigitos) {
             case '001': return '🐴 Álvaro Obregón';
             case '002': return '🐜 Azcapotzalco ';
@@ -176,7 +180,7 @@ export default function ReportesAdmin() {
             default: return 'No se encontró la alcaldía';
         }
     };
-
+    
     const showDeleteHeader = () => {
         const table = document.querySelector('.containerReportesAdmin table');
         table.classList.add('show-header');

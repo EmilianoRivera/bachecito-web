@@ -10,8 +10,8 @@ export async function POST(req, {params}) {
     port: 465,
     secure: true,
     auth: {
-      user: "somos.gemma.01@gmail.com", // Tu correo
-      pass: "zuhxzlvmsmpxvaib", // Tu contraseña
+      user: NEXT_PUBLIC_EMAIL_USER, // Tu correo
+      pass:NEXT_PUBLIC_EMAIL_PASS, // Tu contraseña
     },
     tls: {
       rejectUnauthorized: false,
@@ -19,7 +19,7 @@ export async function POST(req, {params}) {
   });
 console.log("correo a enviar: ",to, " ", subject, " ", text)
   const mailOptions = {
-    from: "somos.gemma.01@gmail.com",
+    from:NEXT_PUBLIC_EMAIL_USER,
     to: to,
     subject: subject,
     text: `Hola ${nombreUsuario},
