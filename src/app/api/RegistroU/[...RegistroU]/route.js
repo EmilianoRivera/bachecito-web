@@ -57,8 +57,8 @@ export async function POST(request, {params}) {
       fechaCreacion: new Date(),
       incidencias:0,
       numRep:0,
-      inhabilitada: false
- 
+      inhabilitada: false,
+      verificado: false,
     };
     addDoc(usuariosCollection, nuevoUsuario);
 

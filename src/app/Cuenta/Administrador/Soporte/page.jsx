@@ -219,7 +219,8 @@ function Soporte() {
     { ruta: "/Administrador/Mapa", modulo: "🗺️ Mapa" },
     { ruta: "/Administrador/NuevoAdmin", modulo: "👤 Nuevo Administrador" },
     { ruta: "/Administrador/Reportes", modulo: "⚠️ Reportes" },
-    { ruta: "/Administrador/Papelera", modulo: "⚠️ Reportes" },
+    { ruta: "/Administrador/Papelera", modulo: "⚠️ Reportes / Papelera" },
+    { ruta: "/Administrador/Usuarios", modulo: "👥 Usuarios" },
     { ruta: "Otros", modulo: "🔄️ Otra opción" },
   ];
 
@@ -237,6 +238,10 @@ function Soporte() {
     { clave: "P001", nombre: "👀 Error al Visualizar reportes en la papelera" },
     { clave: "P002", nombre: "⛔ Error al Eliminar reportes de la papelera" },
     { clave: "T001", nombre: "📨 Error al Enviar Ticket" },
+    { clave: "U001", nombre: "⏳ Error al Cargar Usuarios" },
+    { clave: "U002", nombre: "📇 Error al Filtrar Usuarios" },
+    { clave: "U003", nombre: "➕ Error al Agregar Incidencias de Usuarios" },
+    { clave: "U004", nombre: "✖️ Error al Banear Usuarios" },
     { clave: "0000", nombre: "🔄️ Otro: (Especificar en Descripcion)" },
   ];
 
