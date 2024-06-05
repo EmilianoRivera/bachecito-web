@@ -25,6 +25,7 @@
     z-index: 100;
     font-family: "Baloo Thambi 2", system-ui;
     width: 75%;
+    left: 2%;
     margin: 0 auto;
     /* Centra horizontalmente */
 }
@@ -154,7 +155,6 @@
     background-color: var(--background-color-2);
     border-radius: 15px;
     width: 100%;
-    margin-top: 5%;
     align-items: center;
     justify-content: center;
     margin-bottom: 5%;
@@ -172,7 +172,6 @@
     background-color: var(--background-color-2);
     border-radius: 15px;
     width: 60%;
-    margin-top: 5%;
     align-items: center;
     justify-content: center;
     margin-bottom: 5%;
@@ -370,7 +369,8 @@ select::-ms-expand {
 }
 
 .container_table_ .ticket-table {
-    width: 100%;
+    width: 80%;
+    margin-left: 10%;
     font-family: "Baloo Thambi 2", system-ui;
     /* Ahora la tabla ocupará todo el ancho del contenedor */
 }
@@ -555,4 +555,48 @@ select::-ms-expand {
 ::-webkit-scrollbar-thumb:hover {
     background: var(--background-color-2);
     /* Color de la barra de desplazamiento al pasar el mouse sobre ella */
+
+}
+
+
+.seccion-oculta{
+    position: absolute;
+    z-index: 100;
+    top: 0;
+    background-color: var(--background-color);
+    width: 90vw;
+}
+
+#toggleButton{
+    z-index: 100000;
+    position: fixed;
+    top: 16vh;
+    left: 9vw;
+    border: none;
+    outline: none;
+    background-color: var(--background-color);
+    cursor: pointer;
+    transition: .2s  ease-in;
+}
+
+#toggleButton img{
+    width: 2.7rem;
+    height: 2.7rem;
+    transition: .2s  ease-in;
+
+}
+
+#toggleButton span{
+    display: none;
+    background-color: var(--background-color-2);
+    padding: 10px;
+    box-sizing: border-box;
+    border-radius: 20px;
+    font-weight: bolder;
+}
+
+#toggleButton:hover .spaan {
+    display: block;
+    position: fixed;
+    margin-top: 60px;
 }

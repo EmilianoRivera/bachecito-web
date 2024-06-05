@@ -52,7 +52,7 @@ export async function GET(request) {
 
 function obtenerAlcaldiasEnUbicacion(ubicacion) {
   const regexAlcaldiasCDMX =
-    /(Azcapotzalco|Coyoacán|Cuajimalpa de Morelos|Gustavo A. Madero|Iztacalco|Iztapalapa|Magdalena Contreras|Miguel Hidalgo|Milpa Alta|Tláhuac|Tlalpan|Venustiano Carranza|Xochimilco)/gi;
+    /(Azcapotzalco|Coyoacán|Cuajimalpa de Morelos|Gustavo A. Madero|Iztacalco|Iztapalapa|Magdalena Contreras|Miguel Hidalgo|Milpa Alta|Tláhuac|Tlalpan|Venustiano Carranza|Xochimilco|Álvaro Obregón)/gi;
 
   return ubicacion.match(regexAlcaldiasCDMX);
 }

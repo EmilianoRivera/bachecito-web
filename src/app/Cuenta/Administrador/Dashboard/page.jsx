@@ -5,6 +5,7 @@ import Barras from "@/components/Barras";
 import Circular from "@/components/Circular";
 import BarrasHz from "@/components/BarrasHz";
 import CRep from "@/components/CRepU";
+/* import PieCharts from "@/components/PieCharts"; */
 import LineChart from "@/components/LineChart";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
@@ -138,11 +139,12 @@ function Dashboard() {
 
       <div className="flex-dashboard">
         <div className="ladoIZ-dashboard">
+          
           <CRep />
 
           <div className="grafica-circular">
             <h3>
-              ALCALDIAS CON <br /> MAS REPORTES
+              ALCALDIAS CON MAS REPORTES
             </h3>
             <div className="circular">
               <Circular
@@ -160,11 +162,11 @@ function Dashboard() {
 
         <div className="ladoDER-dashboard">
           <div className="grafica-barras">
-            <h3>REPORTES POR ALCALDIA</h3>
+            <h3>REPORTES POR FECHAS SEGUN SU ALCALDIA</h3>
             <div className="barras">
-              <Barras
-                width={680}
-                height={400}
+              <Barras 
+                width={1000}
+                height={420}
                 estados={estado}
                 alcaldias={alcaldias}
                 startDates={startDate}
@@ -180,7 +182,7 @@ function Dashboard() {
         <h3>REPORTES SEGÚN SU ESTADO DE ATENCIÓN POR ALCALDIA</h3>
         <BarrasHz
           width={500}
-          height={1000}
+          height={700}
           estados={estado}
           alcaldias={alcaldias}
           startDates={startDate}
@@ -189,13 +191,12 @@ function Dashboard() {
         />
 
       </div>
-      <div className="grafica-barras-hz">
+      <div className="grafica-barras-hz" >
         <h3>CUENTAS DE USUARIOS POR DIA</h3>
-        <LineChart
- 
-        />
+        <LineChart />
 
       </div>
+      
       
     </div>
   );

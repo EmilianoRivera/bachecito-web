@@ -22,9 +22,10 @@ export async function GET(request) {
     });
 
     const reportesEstado = {
-      sinAtender: sinAtender,
-      enAtencion: enAtencion,
-      atendido: atendido,
+      "Sin Atender": sinAtender,
+      "En Atención": enAtencion,
+      Atendido: atendido,
+
     };
 
     // Cifrar los datos

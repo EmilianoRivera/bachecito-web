@@ -13,6 +13,7 @@ body, div{
   --background-color-5: #fff;
   --text-color-5: #606060;
   --background-color-6: #d1d1d1;
+  --background-color-14: #d1d1d100;
 
   --background-color-10: #f1f1f1;
   --text-color-6: #FF5136;
@@ -31,7 +32,7 @@ body, div{
   --text-color-7: #f7f7f7;
   --background-color-11: #2e2e2e;
   --background-color-12: #2424246b;
-
+  --background-color-14: #66666634;
   --text-color-3: #ffffff;
   --background-color-2: #2e2e2e;
   --background-color-4: #525252;
@@ -1412,4 +1413,55 @@ justify-items: center;
   .container-inicio{
   cursor:default;
   }
+}
+
+
+.modal-content2 .datos{
+  background-color: var(--background-color);
+  border: none;
+  margin: 8px 0;
+  padding: 10px 15px;
+  font-size: 13px;
+  border-radius: 8px;
+  width: 90%;
+  outline: auto;
+  outline-color: var(--background-color);
+  color: var(--text-color);
+  transition: outline 0.5s ease;
+}
+
+.modal-content2 .datos:hover { /* Cambia el color del texto al pasar el mouse */
+  outline-color: #FF9F49;
+  border-color: #ff9f49; /* Agrega un borde naranja al pasar el mouse */
+}
+
+.modal-content2 .datos::placeholder {
+  color: var(--text-color-3); /* Color del placeholder predeterminado */
+  transition: color 0.5s ease; /* Transición suave */
+}
+
+.modal-content2 .datos:hover::placeholder {
+  color: #ff9f49; /* Cambia el color del placeholder al pasar el mouse */
+}
+
+
+.custom-alertCU {
+  background-color: var(--background-color-12);
+  backdrop-filter: blur(50px); 
+  padding: 20px;
+  border-radius: 1rem;
+  width: 40vw;
+  margin-left: 8vw;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  text-justify: justify;
+  border: 2px solid #ffffff;
+  z-index: 100000;
+  position: fixed;
+  top: 5vh;
+  color: var(--text-color-7);
+  left: 20vw;
+  font-size: 1rem;
+  font-family: "Nunito", sans-serif;
 }

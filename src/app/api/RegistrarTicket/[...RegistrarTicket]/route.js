@@ -78,7 +78,7 @@ export async function POST(req, { params }) {
     ] = params.RegistrarTicket;
 
     
-    const url = decodeURIComponent(foto)
+    const url =  foto
     const rutitaD = decodeURIComponent(rutaError);
     const rutaE = desc(rutitaD)
 
@@ -105,15 +105,8 @@ export async function POST(req, { params }) {
 
     const ar = decodeURIComponent(area)
     const areas = desc(ar)
-
-/*     console.log(Uid, " ", uid)
-    console.log(rutitaD, " ", rutaE)
-    console.log(correoA, " ", corr)
-    console.log(nombre, " ", nom)
-    console.log(errorSeleccionado, " ", errorE)
-    console.log(descripcionProblema, " ", dP)
-
- */
+ //console.log(url)
+  
     // Validar los datos si es necesario
     resend.emails.send({
       from: "onboarding@resend.dev",
@@ -134,7 +127,7 @@ export async function POST(req, { params }) {
       corr, //correo
       nom, //nombre
       areas, //areas
-      url,
+      foto,
       estado
     });
     // Enviar una respuesta de éxito

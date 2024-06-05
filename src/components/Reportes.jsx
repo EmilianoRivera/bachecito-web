@@ -123,30 +123,31 @@ function ReportesComponente() {
       console.error("Error al guardar/eliminar el folio en la base de datos:", error);
     }
 
-    setUserData((prevUserData) => ({
-      ...prevUserData,
-      foliosGuardados: prevUserData.foliosGuardados.includes(folio)
-        ? prevUserData.foliosGuardados.filter((f) => f !== folio)
-        : [...(prevUserData.foliosGuardados || []), folio],
-    }));
+    setUserData((prevUserData) => {
+      const foliosGuardados = prevUserData.foliosGuardados || [];
+      return {
+        ...prevUserData,
+        foliosGuardados: foliosGuardados.includes(folio)
+          ? foliosGuardados.filter((f) => f !== folio)
+          : [...foliosGuardados, folio],
+      };
+    });
   };
-  const filteredReports = rep.filter((report) =>
-    //report.descripcion.toLowerCase().includes(searchTerm.toLowerCase()) &&
-    report.ubicacion.toLowerCase().includes(searchLocation.toLowerCase()) &&
-    (searchStatus === "" || report.estado.toLowerCase() === searchStatus.toLowerCase()) &&
-    (searchFolio === "" || report.folio.startsWith(searchFolio)) &&
-    (searchDate === "" || report.fechaReporte === searchDate)
-  );
+  const filteredReports = rep.filter((report) => {
+    const locationMatch = report.ubicacion.toLowerCase().includes(searchLocation.toLowerCase());
+    const statusMatch = searchStatus === "" || report.estado.toLowerCase() === searchStatus.toLowerCase();
+    const folioMatch = searchFolio === "" || report.folio.startsWith(searchFolio);
+    const dateMatch = searchDate === "" || report.fechaReporte === searchDate;
+    return locationMatch && statusMatch && folioMatch && dateMatch;
 
-
-
+  });
   return (
     <div>
       <div className="filters-search">
         <input
           className="Buscador"
           type="text"
-          placeholder="Buscar ubicación..."
+          placeholder="Buscar por ubicación o folio..."
           value={searchLocation}
           onChange={(e) => setSearchLocation(e.target.value)}
         />

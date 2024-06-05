@@ -1,17 +1,34 @@
 "use client";
-import { MapContainer, Marker, TileLayer, Popup, Polygon,Circle } from "react-leaflet";
+import {
+  MapContainer,
+  Marker,
+  TileLayer,
+  Popup,
+  Polygon,
+  Circle,
+} from "react-leaflet";
+import {
+  isToday,
+  isThisWeek,
+  isThisMonth,
+  isThisYear,
+  isWithinInterval,
+  subMonths,
+  parse
+} from "date-fns";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import "./map.css"
-import "../app/Cuenta/Usuario/Estadisticas/style.css"
-import MarkerIcon from "../../node_modules/leaflet/dist/images/marker-icon.png";
+import "./map.css";
+import "../app/Cuenta/Usuario/Estadisticas/style.css";
+import MarkerIcon from "leaflet/dist/images/marker-icon.png";
 import "leaflet/dist/images/layers.png";
 import "leaflet/dist/images/layers-2x.png";
 import "leaflet/dist/images/marker-icon-2x.png";
 import "leaflet/dist/images/marker-shadow.png";
-import atendidoIcon from '../imgs/BanderaVerdeConFondo.png';
-import enProcesoIcon from '../imgs/BanderaAmarillaConFondo.png';
-import sinAtenderIcon from '../imgs/BanderaRojaConFondo.png';
+import atendidoIcon from "../imgs/BanderaVerdeConFondo.png";
+import enProcesoIcon from "../imgs/BanderaAmarillaConFondo.png";
+import sinAtenderIcon from "../imgs/BanderaRojaConFondo.png";
+import { desc } from "@/scripts/Cifrado/Cifrar";
 import { useEffect, useState } from "react";
 const polygon = [
   [19.592749, -99.12369],
@@ -719,46 +736,50 @@ const polygon = [
   [19.590585, -99.117876],
   [19.591994, -99.119454],
 ];
-
 const polygonOptions = {
-  color: '#ff9f49', // Borde
-  fillColor: '#FFB471', // Relleno
+  color: "#ff9f49", // Borde
+  fillColor: "#FFB471", // Relleno
 };
-
-const Map = ({ searchFolio, searchStatus, alcaldia }) => {
+const Map = ({ searchFolio, searchStatus, alcaldia, filtroFecha, startDate, endDate }) => {
   const [markers, setMarkers] = useState([]);
   const [userLocation, setUserLocation] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const baseURL = process.env.NEXT_PUBLIC_RUTA_R
+        const baseURL = process.env.NEXT_PUBLIC_RUTA_R;
         const res = await fetch(`${baseURL}`);
         if (!res.ok) {
           throw new Error("Failed to fetch data");
         }
         const data = await res.json();
+        const dataDesc = data.map((rep) => desc(rep));
+        const markersData = await Promise.all(
+          dataDesc.map(async (reporte) => {
+            const coordenadas = await reverse(
+              reporte.ubicacion,
+              reporte.descripcion
+            );
+            if (coordenadas) {
+              return {
+                coordenadas,
+                descripcion: reporte.descripcion,
+                fecha: reporte.fechaReporte,
+                imagenURL: reporte.imagenURL,
+                ubicacion: reporte.ubicacion,
+                estados: reporte.estado,
+                folio: reporte.folio,
+              };
+            }
+            return null;
+          })
+        );
 
-        // Convertir las ubicaciones de los reportes en coordenadas
-        const markersData = await Promise.all(data.map(async (reporte) => {
-          const coordenadas = await reverse(reporte.ubicacion, reporte.descripcion);
-          if (coordenadas) {
-            return {
-              coordenadas,
-              descripcion: reporte.descripcion,
-              fecha: reporte.fechaReporte,
-              imagenURL: reporte.imagenURL,
-              ubicacion: reporte.ubicacion,
-              estados: reporte.estado,
-              folio: reporte.folio
-            };
-          }
-          return null;
-        }));
+        const validMarkersData = markersData.filter(
+          (marker) => marker !== null
+        );
 
-        // Filtrar los marcadores según los filtros
-        const filteredMarkers = filterMarkers(markersData);
-        // Establecer los marcadores filtrados como estado
+        const filteredMarkers = filterMarkers(validMarkersData);
         setMarkers(filteredMarkers);
       } catch (error) {
         console.log("Error fetching data: ", error);
@@ -766,20 +787,57 @@ const Map = ({ searchFolio, searchStatus, alcaldia }) => {
     }
 
     fetchData();
-  }, [searchFolio, searchStatus, alcaldia]);
+  }, [searchFolio, searchStatus, alcaldia, filtroFecha, startDate, endDate]);
 
   const filterMarkers = (markersData) => {
-    console.log("searchStatus:", searchStatus);
-    console.log("searchFolio:", searchFolio);
-console.log("Alcaldia: ", alcaldia)
-    if (searchStatus === "Todos" && searchFolio === "Todos los folios" || alcaldia ==="Todas") {
-      return markersData;
-    }
+    return markersData.filter((marker) => {
+      const statusMatch =
+        searchStatus === "Todos" ||
+        marker.estados.toLowerCase() === searchStatus.toLowerCase();
+      const folioMatch =
+        searchFolio === "Todas" || marker.folio.startsWith(searchFolio);
+      const alcaldiaMatch =
+        alcaldia === "Todas" ||
+        marker.ubicacion.toLowerCase().includes(alcaldia.toLowerCase());
+      const fechaMatch = checkFechaMatch(marker.fecha);
+     /*  console.log("mi fecha", isToday(parse(marker.fecha, 'd/M/yyyy', new Date())))
+      console.log(marker.fecha)
+      console.log(parse(marker.fecha, 'd/M/yyyy', new Date())) */
+      return statusMatch && folioMatch && alcaldiaMatch && fechaMatch;
+    });
+  };
 
-    return markersData.filter(marker => 
-      (searchStatus === "Todos" || marker.estados.toLowerCase() === searchStatus.toLowerCase()) &&
-      (searchFolio === "Todos los folios" || marker.folio.startsWith(searchFolio))
-    );
+  const checkFechaMatch = (fecha) => {
+    const parsedFecha = parse(fecha, 'd/M/yyyy', new Date());
+
+    switch (filtroFecha) {
+      case "Todos los tiempos":
+        return true;
+      case "Hoy":
+        return isToday(parsedFecha);
+      case "Esta semana":
+        return isThisWeek(parsedFecha);
+        case "Último mes":
+          const lastMonth = subMonths(new Date(), 1);
+          return (
+            parsedFecha.getMonth() === lastMonth.getMonth() &&
+            parsedFecha.getFullYear() === lastMonth.getFullYear()
+          );
+      case "Últimos 6 meses":
+        return isWithinInterval(parsedFecha, {
+          start: subMonths(new Date(), 6),
+          end: new Date(),
+        });
+      case "Este año":
+        return isThisYear(parsedFecha);
+      case "Rango personalizado":
+        return isWithinInterval(parsedFecha, {
+          start: startDate,
+          end: endDate,
+        });
+      default:
+        return false;
+    }
   };
 
   useEffect(() => {
@@ -788,7 +846,7 @@ console.log("Alcaldia: ", alcaldia)
         (position) => {
           setUserLocation({
             lat: position.coords.latitude,
-            lng: position.coords.longitude
+            lng: position.coords.longitude,
           });
         },
         (error) => {
@@ -809,7 +867,7 @@ console.log("Alcaldia: ", alcaldia)
       case "Sin atender":
         return sinAtenderIcon.src;
       default:
-        return MarkerIcon.src; // Icono por defecto si el estado no coincide con ninguno de los casos anteriores
+        return MarkerIcon.src;
     }
   }
 
@@ -817,19 +875,24 @@ console.log("Alcaldia: ", alcaldia)
     try {
       const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
       const encodedAddress = encodeURIComponent(ubi);
-      const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodedAddress}&key=${apiKey}`);
+      const response = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodedAddress}&key=${apiKey}`
+      );
       const data = await response.json();
-  
-      if (data.status !== 'OK' || data.results.length === 0) {
+
+      if (data.status !== "OK" || data.results.length === 0) {
         console.error(`No se encontraron resultados para la ubicación: ${ubi}`);
         return null;
       }
-  
+
       const { lat, lng } = data.results[0].geometry.location;
-  
+
       return { lat: parseFloat(lat), lng: parseFloat(lng) };
     } catch (error) {
-      console.error(`Error al convertir ubicación a coordenadas para ${descripcion}:`, error);
+      console.error(
+        `Error al convertir ubicación a coordenadas para ${descripcion}:`,
+        error
+      );
       return null;
     }
   }
@@ -882,10 +945,16 @@ console.log("Alcaldia: ", alcaldia)
           >
             <Popup id="popup">
               <div className="reportito-popup">
-                <img src={marker.imagenURL} alt="Foto del reporte" style={{ maxWidth: '95px', borderRadius:'1rem', }} />
+                <img
+                  src={marker.imagenURL}
+                  alt="Foto del reporte"
+                  style={{ maxWidth: "95px", borderRadius: "1rem" }}
+                />
                 <p className="fecha-popup">Fecha: {marker.fecha}</p>
                 <p className="estado-popup">Estado: {marker.estados}</p>
-                <p className="descripcion-popup">Descripción: {marker.descripcion}</p>
+                <p className="descripcion-popup">
+                  Descripción: {marker.descripcion}
+                </p>
               </div>
             </Popup>
           </Marker>

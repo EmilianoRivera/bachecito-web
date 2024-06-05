@@ -8,7 +8,7 @@ export async function GET(request, {params}) {
     const Uid = decodeURIComponent(id)
     const UId = desc(Uid)
     const userQuery = query(
-      collection(db, "reportes"), where("uidUsuario", "==", UId), where("eliminado", "==", false)
+      collection(db, "reportes"), where("uid", "==", UId), where("eliminado", "==", false)
     );
     
     const userDocs = await getDocs(userQuery);

@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { db, collection, getDocs } from "../../../../firebase";
-
+import { desc, enc } from "@/scripts/Cifrado/Cifrar";
 export async function GET(request) {
   try {
     const reportesRef = collection(db, 'reportes');
@@ -17,8 +17,9 @@ export async function GET(request) {
         contAlcaldias[alcaldia] = (contAlcaldias[alcaldia] || 0) + alcaldiasEnReporte[alcaldia];
       });
     }); 
-
-    return NextResponse.json(contAlcaldias);
+    const encContAlcaldias = enc(contAlcaldias)
+ 
+    return NextResponse.json(encContAlcaldias);
   } catch (error) {
     console.error("Error al obtener reportes:", error);
     return NextResponse.error("Error al obtener reportes", { status: 500 });

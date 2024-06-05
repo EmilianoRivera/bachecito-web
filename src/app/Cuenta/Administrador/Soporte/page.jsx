@@ -41,6 +41,8 @@ function Soporte() {
   const [showModal, setShowModal] = useState(false);
   const [ticketEncontrado, setTicketEncontrado] = useState([]);
 
+  const [showSection, setShowSection] = useState(false);
+
   const toggleDetalle1 = () => {
     setMostrarDetalle1(!mostrarDetalle1);
   };
@@ -145,7 +147,6 @@ function Soporte() {
   useEffect(() => {
     if (typeof window !== "undefined") {
       const unsubscribe = auth.onAuthStateChanged((user) => {
-        console.log("ES ESTE? ", user)
         if (user) {
           const uid = user.uid;
           fetchData(uid);
@@ -159,13 +160,15 @@ function Soporte() {
       try {
         const E_uid = enc(uid);
         const baseURL = process.env.NEXT_PUBLIC_RUTA_U;
-    
-        const userResponse = await fetch(`${baseURL}/${encodeURIComponent(E_uid)}`);
-    
+
+        const userResponse = await fetch(
+          `${baseURL}/${encodeURIComponent(E_uid)}`
+        );
+
         if (!userResponse.ok) {
           throw new Error("Failed to fetch user data");
         }
-    
+
         const encryptedUserDatas = await userResponse.json();
         const userDatas = desc(encryptedUserDatas);
         setUserData(userDatas);
@@ -173,7 +176,6 @@ function Soporte() {
         console.error("Error al traer la info:", error);
       }
     }
-    
   }, []);
 
   useEffect(() => {
@@ -183,26 +185,27 @@ function Soporte() {
           console.error("Los datos del usuario no están accesibles");
           return;
         }
-    
+
         const uids = enc(userData.uid);
-    
+
         const baseURL = process.env.NEXT_PUBLIC_RUTA_T;
-        const ticketsData = await fetch(`${baseURL}/${encodeURIComponent(uids)}`);
+        const ticketsData = await fetch(
+          `${baseURL}/${encodeURIComponent(uids)}`
+        );
         if (!ticketsData.ok) {
           throw new Error("Error al traer los datos");
         }
-    
+
         const encryptedTickets = await ticketsData.json();
-    
+
         // Asegúrate de que encryptedTickets es un array de strings
-        const tickets = encryptedTickets.map(ticket => desc(ticket));
-        
+        const tickets = encryptedTickets.map((ticket) => desc(ticket));
+
         setTickets(tickets);
       } catch (error) {
         console.error("Error al traer los tickets:", error);
       }
     }
-    
 
     // Ejecutar fetchTickets() solo si userData está disponible y tiene un valor válido
     if (userData && userData.uid) {
@@ -216,7 +219,8 @@ function Soporte() {
     { ruta: "/Administrador/Mapa", modulo: "🗺️ Mapa" },
     { ruta: "/Administrador/NuevoAdmin", modulo: "👤 Nuevo Administrador" },
     { ruta: "/Administrador/Reportes", modulo: "⚠️ Reportes" },
-    { ruta: "/Administrador/Papelera", modulo: "⚠️ Reportes" },
+    { ruta: "/Administrador/Papelera", modulo: "⚠️ Reportes / Papelera" },
+    { ruta: "/Administrador/Usuarios", modulo: "👥 Usuarios" },
     { ruta: "Otros", modulo: "🔄️ Otra opción" },
   ];
 
@@ -234,6 +238,10 @@ function Soporte() {
     { clave: "P001", nombre: "👀 Error al Visualizar reportes en la papelera" },
     { clave: "P002", nombre: "⛔ Error al Eliminar reportes de la papelera" },
     { clave: "T001", nombre: "📨 Error al Enviar Ticket" },
+    { clave: "U001", nombre: "⏳ Error al Cargar Usuarios" },
+    { clave: "U002", nombre: "📇 Error al Filtrar Usuarios" },
+    { clave: "U003", nombre: "➕ Error al Agregar Incidencias de Usuarios" },
+    { clave: "U004", nombre: "✖️ Error al Banear Usuarios" },
     { clave: "0000", nombre: "🔄️ Otro: (Especificar en Descripcion)" },
   ];
 
@@ -359,8 +367,7 @@ function Soporte() {
     }
   };
 
-  const handleFileUpload = async ( ) => {
-
+  const handleFileUpload = async () => {
     const archivo = document.querySelector('input[type="file"]');
     const archivito = archivo.files[0];
 
@@ -386,11 +393,9 @@ function Soporte() {
     const area = enc(asignarTarea);
     const Uid = enc(userData.uid);
     const url = await handleFileUpload();
-    const descProm = enc(descripcionProblema)
-    const selectedRuta = enc(selectedRutaError)
-    const errorSelec = enc(errorSeleccionado)
-
-//    console.log("MI ERROR ",errorSelec)
+    const descProm = enc(descripcionProblema);
+    const selectedRuta = enc(selectedRutaError);
+    const errorSelec = enc(errorSeleccionado);
     let res = prompt("¿Desea levantar el ticket? (SI/NO)");
     if (res.toUpperCase() === "SI") {
       try {
@@ -403,16 +408,20 @@ function Soporte() {
           navegador,
           selectedRutaError: encodeURIComponent(selectedRuta),
           descripcionProblema: encodeURIComponent(descProm),
-          correoA:encodeURIComponent(correoA),
-          nombre:encodeURIComponent(nombre),
+          correoA: encodeURIComponent(correoA),
+          nombre: encodeURIComponent(nombre),
           area: encodeURIComponent(area),
-        }
+        };
         const ticketResponse = await fetch(
-          `${baseURL}/${encodeURIComponent(
-            url
-          )}/${encodeURIComponent(Uid)}/${encodeURIComponent(errorSelec)}/${sistemaOperativo}/${navegador}/${encodeURIComponent(
+          `${baseURL}/${encodeURIComponent(url)}/${encodeURIComponent(
+            Uid
+          )}/${encodeURIComponent(
+            errorSelec
+          )}/${sistemaOperativo}/${navegador}/${encodeURIComponent(
             selectedRuta
-          )}/${encodeURIComponent(descProm)}/${encodeURIComponent(correoA)}/${encodeURIComponent(nombre)}/${encodeURIComponent(area)}`,
+          )}/${encodeURIComponent(descProm)}/${encodeURIComponent(
+            correoA
+          )}/${encodeURIComponent(nombre)}/${encodeURIComponent(area)}`,
           {
             method: "POST",
             headers: {
@@ -424,7 +433,7 @@ function Soporte() {
         if (ticketResponse.ok) {
           console.log("Formulario enviado con éxito");
           alert("Formulario enviado con exito");
-         window.location.reload();
+          window.location.reload();
         } else {
           console.error(
             "Error al enviar el formulario:",
@@ -437,6 +446,10 @@ function Soporte() {
     } else {
       alert("NO SE LEVANTARA SU TICKET");
     }
+  };
+
+  const handleToggleClick = () => {
+    setShowSection(!showSection);
   };
 
   return (
@@ -464,11 +477,11 @@ function Soporte() {
                   <p>
                     <br />
                     Para eliminar un reporte de bache del sistema primero accede
-                    al apartado de "Reportes". Una vez allí, al posicionar el
-                    cursor sobre cada reporte, verás la opción "ELIMINAR". Al
+                    al apartado de &quot;Reportes&quot;. Una vez allí, al posicionar el
+                    cursor sobre cada reporte, verás la opción &quot;ELIMINAR&quot;. Al
                     hacer clic en el ícono, el reporte se enviará a la papelera.
                     Si deseas eliminarlo de manera permanente, dirígete al
-                    apartado de papelera dentro de "Reportes" y haz clic en el
+                    apartado de papelera dentro de &quot;Reportes&quot; y haz clic en el
                     ícono correspondiente, lo que eliminará el reporte sin
                     posibilidad de restaurarlo.
                     <br />
@@ -491,7 +504,7 @@ function Soporte() {
                   <p>
                     <br />
                     Si eliminaste accidentalmente un reporte, no te preocupes.
-                    Dentro de "Reportes" se dispone de una papelera donde se
+                    Dentro de &quot;Reportes&quot; se dispone de una papelera donde se
                     almacenan los reportes eliminados y los cuales pueden ser
                     restaurados nuevamente al panel de visualización de
                     reportes. Sin embargo, es importante tener en cuenta que si
@@ -516,7 +529,7 @@ function Soporte() {
                 <div className="descripcion_pf">
                   <p>
                     <br />
-                    Sí, dentro de "Reportes" contamos con una papelera de
+                    Sí, dentro de &quot;Reportes&quot; contamos con una papelera de
                     reportes eliminados donde puedes restaurar los reportes que
                     eliminaste recientemente. Sin embargo, es importante tener
                     en cuenta que si decides eliminar un reporte desde la
@@ -552,27 +565,27 @@ function Soporte() {
                       <li>
                         <b>Filtrar los reportes por fecha:</b> En la esquina
                         superior izquierda, se puede filtrar cada reporte por
-                        Rango Fechas con opciones como "Todos los tiempos",
-                        "Hoy", "Esta semana", "Último mes", "Últimos 6 meses",
-                        "Este año" y "Rango personalizado".
+                        Rango Fechas con opciones como &quot;Todos los tiempos&quot;,
+                        &quot;Hoy&quot;, &quot;Esta semana&quot;, &quot;Último mes&quot;, &quot;Últimos 6 meses&quot;,
+                        &quot;Este año&quot; y &quot;Rango personalizado&quot;.
                       </li>
                       <li>
                         <b>Filtrar los reportes por alcaldía:</b> En la esquina
                         superior izquierda, se ofrece la posibilidad de filtrar
                         los reportes por alcaldía en los que se puede elegir
-                        entre "Todas" o seleccionar cada alcaldía
+                        entre &quot;Todas&quot; o seleccionar cada alcaldía
                         individualmente.
                       </li>
                       <li>
                         <b>Filtrar los reportes por estado:</b> En la esquina
                         superior izquierda, los reportes pueden ser filtrados
                         por estado, en los que se incluyen opciones como
-                        “Todos”, “Sin atender”, “En atención” y “Atendido”.{" "}
+                        &quot;Todos&quot;, &quot;Sin atender&quot;, &quot;En atención&quot; y &quot;Atendido&quot;.{" "}
                       </li>
                       <li>
                         <b>Eliminar reporte:</b> Para eliminar un reporte, al
                         pasar el mouse sobre cada uno, aparece la opción
-                        "ELIMINAR" junto a "#REPORTADO" en el lado derecho. Al
+                        &quot;ELIMINAR&quot; junto a &quot;#REPORTADO&quot; en el lado derecho. Al
                         hacer clic, se despliega una alerta solicitando
                         confirmación de eliminación con el folio del reporte. Si
                         se selecciona eliminar, el reporte será trasladado a la
@@ -584,9 +597,9 @@ function Soporte() {
                         <b>Acceso a la papelera:</b> En la esquina superior
                         derecha, se ubica la papelera que contiene los reportes
                         eliminados. Cada uno conserva su identificación,
-                        añadiendo las opciones de “RESTAURAR” para devolver el
+                        añadiendo las opciones de &quot;RESTAURAR&quot; para devolver el
                         reporte al panel de visualización de reportes y
-                        “ELIMINAR” para eliminarlo permanentemente.{" "}
+                        &quot;ELIMINAR&quot; para eliminarlo permanentemente.{" "}
                       </li>
                     </ul>
                   </p>
@@ -609,7 +622,7 @@ function Soporte() {
                   <p>
                     <br />
                     Si experimentas problemas técnicos al usar el sistema te
-                    recomendamos ir a nuestro apartado de "Soporte" en el que a
+                    recomendamos ir a nuestro apartado de &quot;Soporte&quot; en el que a
                     través de un formulario podrás reportar los problemas
                     técnicos que encuentres y nuestro equipo se encargará de
                     procesar tu reporte para resolver el problema lo antes
@@ -663,7 +676,7 @@ function Soporte() {
                     mismo módulo de soporte. Su ticket contendrá un apartado de
                     estado, donde podrá ver si está en proceso, resuelto o
                     enviado. Una vez que su solicitud sea atendida y resuelta,
-                    verá que su estado cambia a "Resuelto". De esta manera,
+                    verá que su estado cambia a &quot;Resuelto&quot;. De esta manera,
                     podrá mantenerse al tanto del progreso y la resolución de su
                     solicitud.
                     <br />
@@ -735,12 +748,12 @@ function Soporte() {
                   <p>
                     <br />
                     Para descargar nuestra aplicación móvil dirígete al apartado
-                    de "Inicio" antes de iniciar sesión, al final de esta
-                    sección encontrarás un botón de "Descargar la Aplicación".
-                    Haz clic en ese botón y podrás descargar la aplicación móvil
-                    directamente a tu dispositivo. Una vez descargada, podrás
-                    empezar a utilizarla para el reporte de baches de manera
-                    rápida y sencilla.
+                    de &quot;Inicio&quot; antes de iniciar sesión, al final de
+                    esta sección encontrarás un botón de &quot;Descargar la
+                    Aplicación&quot;. Haz clic en ese botón y podrás descargar
+                    la aplicación móvil directamente a tu dispositivo. Una vez
+                    descargada, podrás empezar a utilizarla para el reporte de
+                    baches de manera rápida y sencilla.
                     <br />
                   </p>
                 </div>
@@ -748,266 +761,292 @@ function Soporte() {
             </div>
           </div>
         </div>
-        <div className="container_FormularioSoporte">
-          <div className="containerFR">
-            <br />
-            <form onSubmit={handleSubmit}>
-              <table className="table_form_sp">
-                <thead>
-                  <tr>
-                    <td className="filita" colSpan="2">
-                      <h2 id="titulo_sp">
-                        👷 Formulario de Soporte Técnico 🛠️
-                      </h2>
-                    </td>
-                  </tr>
-                </thead>
 
-                <tbody>
-                  <tr>
-                    <td className="columna_soporte_1">
-                      <label>Seleccione el error:</label>
-                    </td>
-                    <td className="columna_soporte_2">
-                      <div className="select">
-                        <select
-                          value={errorSeleccionado}
-                          onChange={handleError}
-                        >
-                          <option>Tipo de Error</option>
-                          {catalogoErrores.map((errorSeleccionado, index) => (
-                            <option key={index} value={errorSeleccionado.clave}>
-                              {`${errorSeleccionado.nombre}`}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    </td>
-                  </tr>
+        <button id="toggleButton" onClick={handleToggleClick}>
+          <span
+            className="spaan"
+            style={{ color: showSection ? "#D1D1D1" : "#FF5136" }}
+          >
+            {showSection ? "Volver" : "Ayuda con Errores"}
+          </span>
+          <img
+            src={
+              showSection
+                ? "https://i.postimg.cc/s2n97mSF/flecha-circulo-izquierda.png"
+                : "https://i.postimg.cc/tCFD1h4k/exclamacion_(1).png"
+            }
+            alt=""
+          />
+        </button>
+        <div
+          className="seccion-oculta"
+          style={{ display: showSection ? "block" : "none" }}
+        >
+          <div className="container_FormularioSoporte">
+            <div className="containerFR">
+              <br />
+              <form onSubmit={handleSubmit}>
+                <table className="table_form_sp">
+                  <thead>
+                    <tr>
+                      <td className="filita" colSpan="2">
+                        <h2 id="titulo_sp">
+                          👷 Formulario de Soporte Técnico 🛠️
+                        </h2>
+                      </td>
+                    </tr>
+                  </thead>
 
-                  <tr>
-                    <td className="columna_soporte_1">
-                      <label>Módulo donde se encontró el error: </label>
-                    </td>
-                    <td className="columna_soporte_2">
-                      <div className="select">
-                        <select
-                          value={selectedRutaError}
-                          onChange={handleRutaError}
-                        >
-                          <option>Módulo del Error</option>
-                          {catalogoRutaErrores.map((errorOption, index) => (
-                            <option key={index} value={errorOption.ruta}>
-                              {`${errorOption.modulo}`}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    </td>
-                  </tr>
+                  <tbody>
+                    <tr>
+                      <td className="columna_soporte_1">
+                        <label>Seleccione el error:</label>
+                      </td>
+                      <td className="columna_soporte_2">
+                        <div className="select">
+                          <select
+                            value={errorSeleccionado}
+                            onChange={handleError}
+                          >
+                            <option>Tipo de Error</option>
+                            {catalogoErrores.map((errorSeleccionado, index) => (
+                              <option
+                                key={index}
+                                value={errorSeleccionado.clave}
+                              >
+                                {`${errorSeleccionado.nombre}`}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </td>
+                    </tr>
 
-                  <tr>
-                    <td className="columna_soporte_1">
-                      <label>Carácter de error:</label>
-                    </td>
-                    <td className="columna_soporte_2">
-                      <div className="select">
-                        <select
-                          value={asignarTarea}
-                          onChange={handleAsignarTarea}
-                        >
-                          <option>Escoger carácter de error</option>
-                          <option value="Backend">🖥️ Funcionalidad</option>
-                          <option value="Frontend">🎨 Diseño</option>
-                        </select>
-                      </div>
-                    </td>
-                  </tr>
+                    <tr>
+                      <td className="columna_soporte_1">
+                        <label>Módulo donde se encontró el error: </label>
+                      </td>
+                      <td className="columna_soporte_2">
+                        <div className="select">
+                          <select
+                            value={selectedRutaError}
+                            onChange={handleRutaError}
+                          >
+                            <option>Módulo del Error</option>
+                            {catalogoRutaErrores.map((errorOption, index) => (
+                              <option key={index} value={errorOption.ruta}>
+                                {`${errorOption.modulo}`}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </td>
+                    </tr>
 
-                  <tr>
-                    <td className="columna_soporte_1">
-                      <label>Seleccione su sistema operativo: </label>
-                    </td>
-                    <td className="columna_soporte_2">
-                      <div className="select">
-                        <select value={sistemaOperativo} onChange={handleSO}>
-                          <option value="">Sistema Operativo</option>
-                          {catalogoSistemaOperativo.map((sistema, index) => (
-                            <option key={index} value={sistema}>
-                              {`${sistema}`}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    </td>
-                  </tr>
+                    <tr>
+                      <td className="columna_soporte_1">
+                        <label>Carácter de error:</label>
+                      </td>
+                      <td className="columna_soporte_2">
+                        <div className="select">
+                          <select
+                            value={asignarTarea}
+                            onChange={handleAsignarTarea}
+                          >
+                            <option>Escoger carácter de error</option>
+                            <option value="Backend">🖥️ Funcionalidad</option>
+                            <option value="Frontend">🎨 Diseño</option>
+                          </select>
+                        </div>
+                      </td>
+                    </tr>
 
-                  <tr>
-                    <td className="columna_soporte_1">
-                      <label>Seleccione su navegador: </label>
-                    </td>
-                    <td className="columna_soporte_2">
-                      <div className="select">
-                        <select value={navegador} onChange={handleNavegador}>
-                          <option value="">Navegador</option>
-                          {catalogoNavegadores.map((navegador, index) => (
-                            <option key={index} value={navegador}>
-                              {`${navegador}`}
-                            </option>
-                          ))}
-                        </select>
-                      </div>
-                    </td>
-                  </tr>
+                    <tr>
+                      <td className="columna_soporte_1">
+                        <label>Seleccione su sistema operativo: </label>
+                      </td>
+                      <td className="columna_soporte_2">
+                        <div className="select">
+                          <select value={sistemaOperativo} onChange={handleSO}>
+                            <option value="">Sistema Operativo</option>
+                            {catalogoSistemaOperativo.map((sistema, index) => (
+                              <option key={index} value={sistema}>
+                                {`${sistema}`}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </td>
+                    </tr>
 
-                  <tr>
-                    <td className="columna_soporte_1">
-                      <label>Adjuntar fotografía del problema: </label>
-                    </td>
-                    <td className="columna_soporte_2">
-                      <input
-                        type="file"
-                        accept="image/*"
-                        onChange={handleFoto}
-                      />
-                    </td>
-                  </tr>
+                    <tr>
+                      <td className="columna_soporte_1">
+                        <label>Seleccione su navegador: </label>
+                      </td>
+                      <td className="columna_soporte_2">
+                        <div className="select">
+                          <select value={navegador} onChange={handleNavegador}>
+                            <option value="">Navegador</option>
+                            {catalogoNavegadores.map((navegador, index) => (
+                              <option key={index} value={navegador}>
+                                {`${navegador}`}
+                              </option>
+                            ))}
+                          </select>
+                        </div>
+                      </td>
+                    </tr>
 
-                  <tr>
-                    <td className="columna_soporte_1">
-                      <label>Descripción del problema: </label>
-                    </td>
-                    <td className="columna_soporte_2">
-                      <div className="wrapper">
-                        <textarea
-                          ref={textareaRef}
-                          value={descripcionProblema}
-                          onChange={handleDescripcionProblema}
-                          rows="1" // Esto evita que el textarea se ajuste automáticamente en altura
-                          cols="50"
-                          placeholder="El error se encontró en..."
-                          style={{ resize: "none" }} // Esto evita que el usuario pueda ajustar manualmente el tamaño del textarea
+                    <tr>
+                      <td className="columna_soporte_1">
+                        <label>Adjuntar fotografía del problema: </label>
+                      </td>
+                      <td className="columna_soporte_2">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleFoto}
                         />
-                      </div>
-                    </td>
-                  </tr>
+                      </td>
+                    </tr>
 
-                  <tr>
-                    <td className="filita" colSpan="2">
-                      <br />
-                      <button type="submit" id="submit">
-                        Enviar
+                    <tr>
+                      <td className="columna_soporte_1">
+                        <label>Descripción del problema: </label>
+                      </td>
+                      <td className="columna_soporte_2">
+                        <div className="wrapper">
+                          <textarea
+                            ref={textareaRef}
+                            value={descripcionProblema}
+                            onChange={handleDescripcionProblema}
+                            rows="1" // Esto evita que el textarea se ajuste automáticamente en altura
+                            cols="50"
+                            placeholder="El error se encontró en..."
+                            style={{ resize: "none" }} // Esto evita que el usuario pueda ajustar manualmente el tamaño del textarea
+                          />
+                        </div>
+                      </td>
+                    </tr>
+
+                    <tr>
+                      <td className="filita" colSpan="2">
+                        <br />
+                        <button type="submit" id="submit">
+                          Enviar
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+                <br />
+              </form>
+            </div>
+          </div>
+          <br /> <br />
+          <div className="container_table_">
+            <table className="ticket-table">
+              <thead>
+                <tr className="sticky-top">
+                  <th>Nombre</th>
+                  <th>Correo</th>
+                  <th>Area Encargada</th>
+                  <th>Descripcion del Problema</th>
+                  <th>Estado del Ticket</th>
+                  <th>Fecha De Envio</th>
+                  <th>Fecha De Resolución</th>
+                </tr>
+              </thead>
+              <tbody>
+                {ticket.map((ticket, index) => (
+                  <tr key={index}>
+                    <td>{ticket.nom}</td>
+                    <td>{ticket.corr}</td>
+                    <td>{ticket.areas}</td>
+                    <td>{ticket.dP}</td>
+                    <td>{ticket.estado}</td>
+                    <td>{formatTimestamp(ticket.fechaDeEnvio)}</td>
+                    <td>{formatTimestamp(ticket.fechaResuelto)}</td>
+                    <td>
+                      <button
+                        className="detallitos"
+                        onClick={() => openModal(ticket.folio)}
+                      >
+                        Detalles
                       </button>
                     </td>
                   </tr>
-                </tbody>
-              </table>
-              <br />
-            </form>
+                ))}
+              </tbody>
+            </table>
+
+            {showModal && (
+              <div className="modal">
+
+                <div className="titul">
+                  <p id="titulin_">Detalles del ticket 📑</p>
+                </div>
+
+                <div className="modal-content">
+
+                  <span className="close" onClick={closeModal}>
+                    &times;
+                  </span>
+
+                  <table className="table-content">
+                    <tr>
+                      <td className="tdsito1"><p className="psito">Prioridad: </p></td>
+                      <td className="tdsito2"><p className="p">{ticketEncontrado.priori}</p></td>
+                    </tr>
+                    <tr>
+                      <td className="tdsito1"><p className="psito">Estado: </p></td>
+                      <td className="tdsito2"><p className="p">{ticketEncontrado.estado}</p></td>
+                    </tr>
+                    <tr>
+                      <td className="tdsito1"><p className="psito">Fecha Asignado:{" "}</p></td>
+                      <td className="tdsito2"><p className="p">{formatTimestamp(ticketEncontrado.fechaAsignado)}</p></td>
+                    </tr>
+                    <tr>
+                      <td className="tdsito1"><p className="psito">Fecha De Envio:{" "}</p></td>
+                      <td className="tdsito2"><p>{formatTimestamp(ticketEncontrado.fechaDeEnvio)}</p></td>
+                    </tr>
+                    <tr>
+                      <td className="tdsito1"><p className="psito">Fecha De Resuelto:{" "}</p></td>
+                      <td className="tdsito2"><p className="p">{formatTimestamp(ticketEncontrado.fechaResuleto)}</p></td>
+                    </tr>
+                    <tr>
+                      <td className="tdsito1"><p className="psito">Folio: </p></td>
+                      <td className="tdsito2"><p className="p">{ticketEncontrado.folio}</p></td>
+                    </tr>
+                    <tr>
+                      <td className="tdsito1"><p className="psito">Area: </p></td>
+                      <td className="tdsito2"><p className="p">{ticketEncontrado.area}</p></td>
+                    </tr>
+                    <tr>
+                      <td className="tdsito1"><p className="psito">Navegador: </p></td>
+                      <td className="tdsito2"><p className="p">{ticketEncontrado.navegador}</p></td>
+                    </tr>
+                    <tr>
+                      <td className="tdsito1"><p className="psito">Sistema Operativo: </p></td>
+                      <td className="tdsito2"><p className="p">{ticketEncontrado.sistemaOperativo}</p></td>
+                    </tr>
+                    <tr>
+                      <td className="tdsito1"><p className="psito">Tipo de error: </p></td>
+                      <td className="tdsito2"><p className="p">{ticketEncontrado.errorSeleccionado}</p></td>
+                    </tr>
+                    <tr>
+                      <td className="tdsito1"><p className="psito">Ruta: </p></td>
+                      <td className="tdsito2"><p className="p">{ticketEncontrado.rutitaD}</p></td>
+                    </tr>
+                  </table>
+
+                  <button className="detallitos" onClick={closeModal}>
+                    Cerrar
+                  </button>
+                </div>
+              </div>
+            )}
           </div>
-        </div>
-        <br /> <br />
-        <div className="container_table_">
-          <table className="ticket-table">
-            <thead>
-              <tr className="sticky-top">
-                <th>Nombre</th>
-                <th>Correo</th>
-                <th>Area Encargada</th>
-                <th>Descripcion del Problema</th>
-                <th>Estado del Ticket</th>
-                <th>Fecha De Envio</th>
-                <th>Fecha De Resolución</th>
-              </tr>
-            </thead>
-            <tbody>
-              {ticket.map((ticket, index) => (
-                <tr key={index}>
-                  <td>{ticket.nombre}</td>
-                  <td>{ticket.correoA}</td>
-                  <td>{ticket.area}</td>
-                  <td>{ticket.descripcionProblema}</td>
-                  <td>{ticket.estado}</td>
-                  <td>{formatTimestamp(ticket.fechaDeEnvio)}</td>
-                  <td>{formatTimestamp(ticket.fechaResuelto)}</td>
-                  <td>
-                    <button
-                      className="detallitos"
-                      onClick={() => openModal(ticket.folio)}
-                    >
-                      Detalles
-                    </button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
-          {showModal && (
-            <div className="modal">
-
-              <div className="titul">
-                <p id="titulin_">Detalles del ticket 📑</p>
-              </div>
-
-              <div className="modal-content">
-
-                <span className="close" onClick={closeModal}>
-                  &times;
-                </span>
-
-                <table className="table-content">
-                  <tr>
-                    <td className="tdsito1"><p className="psito">Prioridad: </p></td>
-                    <td className="tdsito2"><p className="p">{ticketEncontrado.priori}</p></td>
-                  </tr>
-                  <tr>
-                    <td className="tdsito1"><p className="psito">Estado: </p></td>
-                    <td className="tdsito2"><p className="p">{ticketEncontrado.estado}</p></td>
-                  </tr>
-                  <tr>
-                    <td className="tdsito1"><p className="psito">Fecha Asignado:{" "}</p></td>
-                    <td className="tdsito2"><p className="p">{formatTimestamp(ticketEncontrado.fechaAsignado)}</p></td>
-                  </tr>
-                  <tr>
-                    <td className="tdsito1"><p className="psito">Fecha De Envio:{" "}</p></td>
-                    <td className="tdsito2"><p>{formatTimestamp(ticketEncontrado.fechaDeEnvio)}</p></td>
-                  </tr>
-                  <tr>
-                    <td className="tdsito1"><p className="psito">Fecha De Resuelto:{" "}</p></td>
-                    <td className="tdsito2"><p className="p">{formatTimestamp(ticketEncontrado.fechaResuleto)}</p></td>
-                  </tr>
-                  <tr>
-                    <td className="tdsito1"><p className="psito">Folio: </p></td>
-                    <td className="tdsito2"><p className="p">{ticketEncontrado.folio}</p></td>
-                  </tr>
-                  <tr>
-                    <td className="tdsito1"><p className="psito">Area: </p></td>
-                    <td className="tdsito2"><p className="p">{ticketEncontrado.area}</p></td>
-                  </tr>
-                  <tr>
-                    <td className="tdsito1"><p className="psito">Navegador: </p></td>
-                    <td className="tdsito2"><p className="p">{ticketEncontrado.navegador}</p></td>
-                  </tr>
-                  <tr>
-                    <td className="tdsito1"><p className="psito">Sistema Operativo: </p></td>
-                    <td className="tdsito2"><p className="p">{ticketEncontrado.sistemaOperativo}</p></td>
-                  </tr>
-                  <tr>
-                    <td className="tdsito1"><p className="psito">Tipo de error: </p></td>
-                    <td className="tdsito2"><p className="p">{ticketEncontrado.errorSeleccionado}</p></td>
-                  </tr>
-                  <tr>
-                    <td className="tdsito1"><p className="psito">Ruta: </p></td>
-                    <td className="tdsito2"><p className="p">{ticketEncontrado.rutitaD}</p></td>
-                  </tr>
-                </table>
-
-                <button className="detallitos" onClick={closeModal}>
-                  Cerrar
-                </button>
-              </div>
-            </div>
-          )}
         </div>
       </div>
     </div>

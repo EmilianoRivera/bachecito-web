@@ -49,9 +49,10 @@ export default function NuevoAdmin() {
                 throw new Error("Error al crear a nuevo admin")
             }
             const data = await res.json()
-            const dataDesc = desc(data)
+           
 
-            alert("Se envió correo: ", dataDesc)
+            alert("Se envió correo: " + username)
+            window.location.reload()
      
         } catch (error) {
             console.error("error al crear la cuenta: ", error)

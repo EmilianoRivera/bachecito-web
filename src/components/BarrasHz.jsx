@@ -20,6 +20,7 @@ const alcaldias = [
   "Iztapalapa", "La Magdalena Contreras", "Miguel Hidalgo", "Milpa Alta",
   "Tlalpan", "Tláhuac", "Venustiano Carranza", "Xochimilco"
 ];
+import "@/components/BarrasU.css";
 
 export default function BarrasHz({
   width = 400, // Valor predeterminado para la anchura
@@ -30,8 +31,11 @@ export default function BarrasHz({
   filtroFechas = "Todos los tiempos",
 }) {
   const [alcEstRep, setAlcEstRep] = useState(null);
+const [loading, setLoading] = useState(true);
+const [noData, setNoData] = useState(false);
   useEffect(() => {
     async function fetchData() {
+      setLoading(true);
       try {
         const baseURL = process.env.NEXT_PUBLIC_RUTA_EA
         const response = await fetch(`${baseURL}`); 
@@ -41,14 +45,14 @@ export default function BarrasHz({
         const data = await response.json();
 
         const dataDesc = desc(data.cifrado)
-        console.log(dataDesc)
-
         setAlcEstRep(dataDesc);
+        setLoading(false);
       } catch (error) {
         console.log("Error fetching data: ", error);
+        setLoading(false);
+      setNoData(true);
       }
     }
-console.log("AYUDAAAA")
 
     fetchData();
   }, []);
@@ -84,10 +88,17 @@ console.log("AYUDAAAA")
     return transformedData;
   };
   
-  if (!alcEstRep) {
-    return <div>Cargando datos...</div>; // Mensaje de carga
-  }
-  
+  if (loading) {
+    return <div>
+      <div class="loading-container">
+                <div class="loading-dot"></div>
+                <div class="loading-dot"></div>
+                <div class="loading-dot"></div>
+            </div>
+    </div>;
+} else if (noData) {
+return <div>No se encontraron datos</div>;
+} else {
   return (
     <ResponsiveContainer width="99%" height={height} >
       <BarChart
@@ -95,17 +106,17 @@ console.log("AYUDAAAA")
         height={height}
         data={transformData(alcEstRep)}
         layout="vertical"
-        margin={{ top: 20, right: 30, left: 30, bottom: 5 }}
+        margin={{ right: 30, left: 30,}}
         style={{fontFamily: 'sans-serif', fontSize: '13px',}}
       >
         <CartesianGrid strokeDasharray="3 3" />
         <XAxis type="number" />
         <YAxis dataKey="alcaldia" type="category" />
         <Tooltip />
-        <Bar dataKey="atendido" stackId="a" fill="#52c41a" />
-        <Bar dataKey="enAtencion" stackId="a" fill="#faad14" />
-        <Bar dataKey="sinAtender" stackId="a" fill="#f5222d" />
+        <Bar dataKey="atendido" stackId="a" fill="#A4DF77" />
+        <Bar dataKey="enAtencion" stackId="a" fill="#FFC63D" />
+        <Bar dataKey="sinAtender" stackId="a" fill="#FF674F" />
       </BarChart>
     </ResponsiveContainer>
-  );
+  );}
 }
