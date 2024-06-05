@@ -15,12 +15,13 @@ function Page() {
     const [estadoCuentaFilter, setEstadoCuentaFilter] = useState("Todos");
     const [inhabilitadaFilter, setInhabilitadaFilter] = useState("Todos");
     const [numIncidenciasFilter, setNumIncidenciasFilter] = useState("Todos");
+    const [verificadoFilter, setVerificadoFilter] = useState("Todos");
     const [searchQuery, setSearchQuery] = useState("");
     const [filteredUsers, setFilteredUsers] = useState([]);
 
     useEffect(() => {
         fetchFilteredUsers();
-    }, [estadoCuentaFilter, inhabilitadaFilter, numIncidenciasFilter]);
+    }, [estadoCuentaFilter, inhabilitadaFilter, numIncidenciasFilter, verificadoFilter]);
 
     useEffect(() => {
         filterUsersBySearchQuery();
@@ -44,6 +45,9 @@ function Page() {
             }
             if (inhabilitadaFilter !== "Todos") {
                 filteredUsers = filteredUsers.filter(user => user.estadoCuenta === (inhabilitadaFilter === "true"));
+            }
+            if (verificadoFilter !== "Todos") {
+                filteredUsers = filteredUsers.filter(user => user.verificado === (verificadoFilter === "true"));
             }
             if (numIncidenciasFilter !== "Todos") {
                 filteredUsers = filteredUsers.filter(user => user.incidencias === parseInt(numIncidenciasFilter));
@@ -78,6 +82,10 @@ function Page() {
     const handleInhabilitadaFilterChange = (e) => {
         setInhabilitadaFilter(e.target.value);
     };
+    const handleVerificadoFilterChange = (e) => {
+        setVerificadoFilter(e.target.value);
+    };
+    
     
     const handleNumIncidenciasFilterChange = (e) => {
         setNumIncidenciasFilter(e.target.value);
@@ -330,6 +338,11 @@ function Page() {
                 <option value="true">Activa</option>
                 <option value="false">Desactivada</option>
                 </select>
+            <select onChange={handleVerificadoFilterChange}>
+            <option value="Todos">Todos los estados de Verificación</option>
+                <option value="true">Verificado</option>
+                <option value="false">No verificado</option>
+                </select>
             <select onChange={handleNumIncidenciasFilterChange}>
             <option value="Todos">Numero de Incidencias</option>
                 <option value="0">0</option>
@@ -354,6 +367,7 @@ function Page() {
                     <th>Fecha de Creación</th>
                         <th>Nombre</th>
                         <th>Email</th>
+                        <th>Estado de Verificación</th>
                         <th>Estado de la cuenta</th>
                         <th>Acceso al sistema</th>
                         <th>#Reportes</th>
@@ -368,6 +382,7 @@ function Page() {
                              <td>{formatTimestamp(user.fechaCreacion)}</td>
                             <td>{user.nombre} {user.apellidoPaterno}</td>
                             <td>{user.correo}</td>
+                            <td>{user.verificado ? 'Verificada' : 'No verificado'}</td>
                             <td>{user.estadoCuenta ? 'Activa' : 'Desactivada'}</td>
                             <td>{user.inhabilitada ? 'Inhabilitado' : 'Habilitado'}</td>
                             <td>{user.numRep}</td>

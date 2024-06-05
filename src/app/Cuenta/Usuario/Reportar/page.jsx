@@ -17,7 +17,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import Preloader from "@/components/preloader2";
 import Router from "next/router";
 import { desc, enc } from "@/scripts/Cifrado/Cifrar";
-import { prodErrorMap } from "firebase/auth";
+import { sendEmailVerification } from "firebase/auth"; // Importa la función de envío de correo de verificación
 
 // Importa el componente del mapa de manera dinámica
 const DynamicMap = dynamic(() => import("@/components/MapR"), {
@@ -30,7 +30,7 @@ function Reportar() {
   const [userData, setUserData] = useState({});
   const [des, setDesc] = useState("Sin descripción");
   const [ubicacion, setUbicacion] = useState("Sin ubicación");
-
+  const [showVerificationModal, setShowVerificationModal] = useState(false); // Estado para controlar el modal
   const [loading, setLoading] = useState(false);
   useEffect(() => {
     const handleRouteChangeStart = () => setLoading(true);
@@ -88,6 +88,9 @@ function Reportar() {
         const userData = await userResponse.json();
         const dataDesc = desc(userData);
         setUserData(dataDesc);
+        if (!dataDesc.verificado) {
+          setShowVerificationModal(true); // Mostrar el modal si no está verificado
+        }
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -195,6 +198,14 @@ function Reportar() {
       return 0
     }
   };
+  const handleSendVerificationEmail = async () => {
+    try {
+      await sendEmailVerification(auth.currentUser);
+      alert("Correo de verificación enviado. Por favor revisa tu bandeja de entrada.");
+    } catch (error) {
+      console.error("Error al enviar el correo de verificación:", error);
+    }
+  };
   return (
     <>
       {loading && <Preloader />}
@@ -255,6 +266,18 @@ function Reportar() {
           </div>
         </div>
       </div>
+      {showVerificationModal && (
+  <>
+    <div className="modal-overlay"></div>
+    <div className="modal">
+      <div className="modal-content">
+        <p>Para acceder a este espacio necesitas verificar tu correo.</p>
+        <button onClick={handleSendVerificationEmail}>Click aquí para enviar un correo de verificación</button>
+      </div>
+    </div>
+  </>
+)}
+
     </>
   );
 }
