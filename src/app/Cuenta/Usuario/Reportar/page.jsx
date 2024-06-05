@@ -24,7 +24,6 @@ const DynamicMap = dynamic(() => import("@/components/MapR"), {
   ssr: false,
 });
 
-
 const showAlert = (message) => {
   const alertContainer = document.createElement("div");
   alertContainer.classList.add("custom-alertCU");
@@ -122,8 +121,11 @@ function Reportar() {
     setDesc(descs);
   };
 
+const [submitting, setSubmitting] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitting(true);
     const uid = enc(userData.uid);
     const nombre = userData.nombre;
     const apellidoPaterno = userData.apellidoPaterno;
@@ -180,6 +182,8 @@ function Reportar() {
     } catch (error) {
       console.error("Error al enviar el reporte:", error);
       showAlert(`Ocurrió un error: ${error.message} 😥`);
+    } finally {
+      setSubmitting(false);
     }
   };
 
@@ -273,7 +277,7 @@ function Reportar() {
                   onChange={handleChange2}
                 />
               </div>
-              <button className="submiiit" type="submit">
+              <button className="submiiit" type="submit" disabled={submitting}>
                 ¡REPORTAR!
               </button>
             </div>

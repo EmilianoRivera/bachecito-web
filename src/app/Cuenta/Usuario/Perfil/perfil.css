@@ -85,7 +85,7 @@
 
 .column-left2 {
   width: 45%;
-  height: 100%;
+  height: auto;
 }
 
 
@@ -247,6 +247,8 @@
   margin-right: 18px;
   z-index: -10;
   position: relative;
+  height: auto;
+  max-height:65vh;
 }
 
 
@@ -290,7 +292,7 @@
 
 .folio{
   position: absolute;
-  width: 23%;
+  width: 50%;
   color: white;
   margin-top: 10px;
   margin-left: 10px;
@@ -887,8 +889,8 @@ position: relative;
 
 .column-right-superior2{
   position: absolute;
-  width: 38%;
-  margin-left: -20%;
+  width: 80%;
+  left: 10%;
 }
 
 .ubicacion2{
@@ -954,7 +956,7 @@ position: relative;
 
   
 .folio{
-  width: 30%;
+  width: 50%;
 }
 
   .right-side {
