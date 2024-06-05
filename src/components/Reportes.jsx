@@ -16,12 +16,16 @@ import {
   getDoc,
 } from "firebase/firestore";
 import { auth, db } from "../../firebase";
-
+import { desc } from "@/scripts/Cifrado/Cifrar";
 function ReportesComponente() {
   const [rep, setRep] = useState([]);
   const { isLogged } = useContext(AuthContext);
   const [userData, setUserData] = useState(null);
-
+  // const [searchTerm, setSearchTerm] = useState("");
+  const [searchLocation, setSearchLocation] = useState("");
+  const [searchStatus, setSearchStatus] = useState("");
+  const [searchFolio, setSearchFolio] = useState("");
+  const [searchDate, setSearchDate] = useState("");
   useEffect(() => {
     const fetchUserData = async () => {
       if (isLogged) {
@@ -56,12 +60,14 @@ function ReportesComponente() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch("/api/Reportes");
+        const baseURL = process.env.NEXT_PUBLIC_RUTA_R
+        const response = await fetch(`${baseURL}`);
         if (!response.ok) {
           throw new Error("Failed to fetch data");
         }
         const data = await response.json();
-        setRep(data);
+        const dataE = data.map(rep => desc(rep))
+        setRep(dataE);
       } catch (error) {
         console.log("Error fetching data: ", error);
       }
@@ -116,86 +122,174 @@ function ReportesComponente() {
     } catch (error) {
       console.error("Error al guardar/eliminar el folio en la base de datos:", error);
     }
-    
-    setUserData((prevUserData) => ({
-      ...prevUserData,
-      foliosGuardados: prevUserData.foliosGuardados.includes(folio)
-        ? prevUserData.foliosGuardados.filter((f) => f !== folio)
-        : [...(prevUserData.foliosGuardados || []), folio],
-    }));
+
+    setUserData((prevUserData) => {
+      const foliosGuardados = prevUserData.foliosGuardados || [];
+      return {
+        ...prevUserData,
+        foliosGuardados: foliosGuardados.includes(folio)
+          ? foliosGuardados.filter((f) => f !== folio)
+          : [...foliosGuardados, folio],
+      };
+    });
   };
+  const filteredReports = rep.filter((report) => {
+    const locationMatch = report.ubicacion.toLowerCase().includes(searchLocation.toLowerCase());
+    const statusMatch = searchStatus === "" || report.estado.toLowerCase() === searchStatus.toLowerCase();
+    const folioMatch = searchFolio === "" || report.folio.startsWith(searchFolio);
+    const dateMatch = searchDate === "" || report.fechaReporte === searchDate;
+    return locationMatch && statusMatch && folioMatch && dateMatch;
 
+  });
   return (
-    <div className="reportes-boxes">
-      {rep.map((report, index) => (
-        <div className="box2" id="box2" key={index}>
-          <div className="prueba">
-            <div className="columnm-left">
-              <div className="fotografía">
-                <img src={report.imagenURL} alt={""} style={{ width: '100%', maxHeight: '100%' }}/>
-              </div>
+    <div>
+      <div className="filters-search">
+        <input
+          className="Buscador"
+          type="text"
+          placeholder="Buscar por ubicación o folio..."
+          value={searchLocation}
+          onChange={(e) => setSearchLocation(e.target.value)}
+        />
+        <img className="Buscador-img" src="https://i.postimg.cc/k5QNBFHC/busqueda-1.png" alt="" />
 
-              <div className="column-left-inferior">
-                <div className="fecha">{report.fechaReporte}</div>
+        <select
+          className="filter-estados"
+          value={searchStatus}
+          onChange={(e) => setSearchStatus(e.target.value)}
+        >
+          <option value="">Todos los estados</option>
+          <option value="Sin atender">Sin atender</option>
+          <option value="En atención">En atención</option>
+          <option value="Atendido">Atendido</option>
+        </select>
+        <select
+          className="filter-estados"
+          value={searchFolio}
+          onChange={(e) => setSearchFolio(e.target.value)}
+        >
+          <option value="">Todas las alcaldías</option>
+          <option value="001">🐴 Álvaro Obregón</option>
+          <option value="002">🐜 Azcapotzalco</option>
+          <option value="003">🐷 Benito Juárez</option>
+          <option value="004">🐺 Coyoacán</option>
+          <option value="005">🌳 Cuajimalpa de Morelos</option>
+          <option value="006">🦅 Cuauhtémoc</option>
+          <option value="007">🌿 Gustavo A. Madero</option>
+          <option value="008">🏠 Iztacalco</option>
+          <option value="009">🐭 Iztapalapa</option>
+          <option value="010">🏔 La Magdalena Contreras</option>
+          <option value="011">🦗 Miguel Hidalgo</option>
+          <option value="012">🌾 Milpa Alta</option>
+          <option value="013">🌋 Tláhuac</option>
+          <option value="014">🦶 Tlalpan</option>
+          <option value="015">🌻 Venustiano Carranza</option>
+          <option value="016">🐠 Xochimilco</option>
 
-                <div className="contador">
-                  <div className="icon">
-                    <img
-                      src="https://i.postimg.cc/s2ZYz740/exclamacion-de-diamante.png"
-                      className="logo"
-                    />
+
+        </select>
+      </div>
+      <div className="reportes-boxes">
+
+
+        {filteredReports.length === 0 ? (
+          <div className="alert alert-warning">
+            <div><h2>No se encontraron resultados </h2></div>
+            <div className="completo">
+              <div className="ghost">
+                <div className="face">
+                  <div className="eyes">
+                    <span></span><span></span>
                   </div>
-                  <div className="number">{report.contador}</div>
+                  <div className="mouth"></div>
                 </div>
-              </div>
-            </div>
-            <div className="column-right">
-              <div className="column-right-superior">
-                <div className="estado">  
-                  {report.estado === "Sin atender" && (
-                    <img src={sinAtenderIcon.src} alt={"Sin atender"}   style={{ width: "100%", height: "90%", borderRadius: "5vh" }} />
-                  )}
-                  {report.estado === "En atención" && (
-                    <img src={enProcesoIcon.src} alt={"En atención"}   style={{ width: "100%", height: "90%", borderRadius: "5vh" }}/>
-                  )}
-                  {report.estado === "Atendido" && (
-                    <img src={atendidoIcon.src} alt={"Atendido"}  style={{ width: "100%", height: "90%", borderRadius: "5vh" }} />
-                  )}
+
+                <div className="hands">
+                  <span></span><span></span>
                 </div>
-                <div className="guardar">
-              {userData && userData.uid && userData.foliosGuardados && userData.foliosGuardados.includes(report.folio) ? (
-                <img
-                  className="icon-star"
-                  src="https://i.postimg.cc/RVrPJ3rN/estrella-1.png"
-                  alt="Folio guardado"
-                  style={{ opacity: 1, transition: 'opacity 0.3s ease' }}
-                  onClick={() => toggleGuardarFolio(report.folio)}
-                />
-              ) : (
-                <img
-                  className="icon-star"
-                  src="https://i.postimg.cc/52PmmT4T/estrella.png"
-                  alt="Guardar folio"
-                  style={{ opacity: 0.5, transition: 'opacity 0.3s ease' }}
-                  onClick={() => toggleGuardarFolio(report.folio)}
-                />
-              )}
-            </div>
-              </div>
 
-              <div className="ubicacion">
-                <h3>Ubicación: </h3> 
-                <div className="box-ubi">{report.ubicacion}</div>
-              </div>
-
-              <div className="descripcion">
-                <h3>Descripción: </h3>
-                <div className="box-des">{report.descripcion}</div>
+                <div className="feet">
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                  <span></span>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      ))}
+        ) : (
+          filteredReports.map((report, index) => (
+            <div className="box2" id="box2" key={index}>
+              <div className="prueba">
+                <div className="columnm-left">
+                  <div className="fotografía">
+                    <img src={report.imagenURL} alt={""} style={{ width: '100%', maxHeight: '100%' }} />
+                    <p className="no-foto2">No se pudo cargar la imagen</p>
+                  </div>
+
+                  <div className="column-left-inferior">
+                    <div className="fecha">{report.fechaReporte}</div>
+
+                    <div className="contador">
+                      <div className="icon">
+                        <img
+                          src="https://i.postimg.cc/s2ZYz740/exclamacion-de-diamante.png"
+                          className="logo"
+                        />
+                      </div>
+                      <div className="number">{report.contador}</div>
+                    </div>
+                  </div>
+                </div>
+                <div className="column-right">
+                  <div className="column-right-superior">
+                    <div className="estado">
+                      {report.estado === "Sin atender" && (
+                        <img src={sinAtenderIcon.src} alt={"Sin atender"} style={{ width: "100%", height: "90%", borderRadius: "5vh" }} />
+                      )}
+                      {report.estado === "En atención" && (
+                        <img src={enProcesoIcon.src} alt={"En atención"} style={{ width: "100%", height: "90%", borderRadius: "5vh" }} />
+                      )}
+                      {report.estado === "Atendido" && (
+                        <img src={atendidoIcon.src} alt={"Atendido"} style={{ width: "100%", height: "90%", borderRadius: "5vh" }} />
+                      )}
+                    </div>
+                    <div className="guardar">
+                      {userData && userData.uid && userData.foliosGuardados && userData.foliosGuardados.includes(report.folio) ? (
+                        <img
+                          className="icon-star"
+                          src="https://i.postimg.cc/RVrPJ3rN/estrella-1.png"
+                          alt="Folio guardado"
+                          style={{ opacity: 1, transition: 'opacity 0.3s ease' }}
+                          onClick={() => toggleGuardarFolio(report.folio)}
+                        />
+                      ) : (
+                        <img
+                          className="icon-star"
+                          src="https://i.postimg.cc/52PmmT4T/estrella.png"
+                          alt="Guardar folio"
+                          style={{ opacity: 0.5, transition: 'opacity 0.3s ease' }}
+                          onClick={() => toggleGuardarFolio(report.folio)}
+                        />
+                      )}
+                    </div>
+                  </div>
+
+                  <div className="ubicacion">
+                    <h3>Ubicación: </h3>
+                    <div className="box-ubi">{report.ubicacion}</div>
+                  </div>
+
+                  <div className="descripcion">
+                    <h3>Descripción: </h3>
+                    <div className="box-des">{report.descripcion}</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
     </div>
   );
 }
