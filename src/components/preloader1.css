@@ -110,6 +110,20 @@ otherwise the dashes would still be partially visible on firefox and edge (at le
 }
 
 
-@media(max-width:800px){
-  
+@media(max-width:1000px){
+  .container-preloader > svg {
+    width: 40vw;
+    height: auto;
+    --stroke-dash: 46;
+    --stroke-dash-negative: -46;
+  }
+}
+
+@media(max-width:600px){
+  .container-preloader > svg {
+    width: 50vw;
+    height: auto;
+    --stroke-dash: 46;
+    --stroke-dash-negative: -46;
+  }
 }

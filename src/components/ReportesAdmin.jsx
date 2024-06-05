@@ -377,21 +377,22 @@ export default function ReportesAdmin() {
                     </div>
                 </div>
 
-            </div>
-            
-            <input
-                    className="Buscador"
+                <input
+                    className="Buscador-repadm"
                     type="text"
                     placeholder="Buscar por ubicación o folio..."
                     value={searchLocation}
                     onChange={(e) => setSearchLocation(e.target.value)}
                 />
-                <img className="Buscador-img" src="https://i.postimg.cc/k5QNBFHC/busqueda-1.png" alt="" />
+                <img className="Buscador-img-ad" src="https://i.postimg.cc/k5QNBFHC/busqueda-1.png" alt="" />
 
 
                 <div className="papelera">
                     <Link href="/Cuenta/Administrador/Papelera" className="papelera-option"><img src="https://i.postimg.cc/02gZVXL3/basura.png" alt="soporte" />PAPELERA</Link>
                 </div>
+            </div>
+            
+           
             
             <table>
                 <thead>
