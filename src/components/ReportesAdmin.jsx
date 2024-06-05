@@ -41,13 +41,13 @@ export default function ReportesAdmin() {
 
     const alcaldiasCDMX = [
         "Todas",
-        "🐴 Álvaro Obregón ",
-        "🐜 Azcapotzalco ",
+        "🐴 Álvaro Obregón",
+        "🐜 Azcapotzalco",
         "🐷 Benito Juárez",
         "🐺 Coyoacán",
         "🌳 Cuajimalpa de Morelos",
         "🦅 Cuauhtémoc",
-        "🌿 Gustavo A. Madero ",
+        "🌿 Gustavo A. Madero",
         "🏠 Iztacalco",
         "🐭 Iztapalapa",
         "🏔 La Magdalena Contreras",
@@ -164,12 +164,12 @@ export default function ReportesAdmin() {
     
         switch (primerosTresDigitos) {
             case '001': return '🐴 Álvaro Obregón';
-            case '002': return '🐜 Azcapotzalco ';
+            case '002': return '🐜 Azcapotzalco';
             case '003': return '🐷 Benito Juárez';
             case '004': return '🐺 Coyoacán';
             case '005': return '🌳 Cuajimalpa de Morelos';
             case '006': return '🦅 Cuauhtémoc';
-            case '007': return '🌿 Gustavo A. Madero ';
+            case '007': return '🌿 Gustavo A. Madero';
             case '008': return '🏠 Iztacalco';
             case '009': return '🐭 Iztapalapa';
             case '010': return '🏔 La Magdalena Contreras';
@@ -182,7 +182,6 @@ export default function ReportesAdmin() {
             default: return 'No se encontró la alcaldía';
         }
     };
-    
     const showDeleteHeader = () => {
         const table = document.querySelector('.containerReportesAdmin table');
         table.classList.add('show-header');
@@ -378,7 +377,9 @@ export default function ReportesAdmin() {
                     </div>
                 </div>
 
-                <input
+            </div>
+            
+            <input
                     className="Buscador"
                     type="text"
                     placeholder="Buscar por ubicación o folio..."
@@ -391,7 +392,6 @@ export default function ReportesAdmin() {
                 <div className="papelera">
                     <Link href="/Cuenta/Administrador/Papelera" className="papelera-option"><img src="https://i.postimg.cc/02gZVXL3/basura.png" alt="soporte" />PAPELERA</Link>
                 </div>
-            </div>
             
             <table>
                 <thead>

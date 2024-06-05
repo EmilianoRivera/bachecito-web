@@ -13,6 +13,7 @@ body, div{
   --background-color-5: #fff;
   --text-color-5: #606060;
   --background-color-6: #d1d1d1;
+  --background-color-14: #d1d1d100;
 
   --background-color-10: #f1f1f1;
   --text-color-6: #FF5136;
@@ -31,7 +32,7 @@ body, div{
   --text-color-7: #f7f7f7;
   --background-color-11: #2e2e2e;
   --background-color-12: #2424246b;
-
+  --background-color-14: #66666634;
   --text-color-3: #ffffff;
   --background-color-2: #2e2e2e;
   --background-color-4: #525252;

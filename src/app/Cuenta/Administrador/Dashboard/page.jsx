@@ -139,11 +139,12 @@ function Dashboard() {
 
       <div className="flex-dashboard">
         <div className="ladoIZ-dashboard">
+          
           <CRep />
 
           <div className="grafica-circular">
             <h3>
-              ALCALDIAS CON <br /> MAS REPORTES
+              ALCALDIAS CON MAS REPORTES
             </h3>
             <div className="circular">
               <Circular
@@ -161,7 +162,7 @@ function Dashboard() {
 
         <div className="ladoDER-dashboard">
           <div className="grafica-barras">
-            <h3>REPORTES POR ALCALDIA</h3>
+            <h3>REPORTES POR FECHAS SEGUN SU ALCALDIA</h3>
             <div className="barras">
               <Barras 
                 width={1000}

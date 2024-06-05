@@ -52,15 +52,15 @@ function CRep() {
       <div className='estados'>
         <div className='in-red'>
           <div className='red'></div>
-          <div className='cont-reportes'>{repEstado.sinAtender}</div>
+          <div className='cont-reportes'>{repEstado["Sin Atender"]}</div>
         </div>
         <div className='in-yellow'>
           <div className='yellow'></div>
-          <div className='cont-reportes'>{repEstado.enAtencion}</div>
+          <div className='cont-reportes'>{repEstado["En Atención"]}</div>
         </div>
         <div className='in-green'>
           <div className='green'></div>
-          <div className='cont-reportes'>{repEstado.atendido}</div>
+          <div className='cont-reportes'>{repEstado["Atendido"]}</div>
         </div>
       </div>
        <div className="pie-chart-container">

@@ -20,6 +20,7 @@ const alcaldias = [
   "Iztapalapa", "La Magdalena Contreras", "Miguel Hidalgo", "Milpa Alta",
   "Tlalpan", "Tláhuac", "Venustiano Carranza", "Xochimilco"
 ];
+import "@/components/BarrasU.css";
 
 export default function BarrasHz({
   width = 400, // Valor predeterminado para la anchura
@@ -30,8 +31,11 @@ export default function BarrasHz({
   filtroFechas = "Todos los tiempos",
 }) {
   const [alcEstRep, setAlcEstRep] = useState(null);
+const [loading, setLoading] = useState(true);
+const [noData, setNoData] = useState(false);
   useEffect(() => {
     async function fetchData() {
+      setLoading(true);
       try {
         const baseURL = process.env.NEXT_PUBLIC_RUTA_EA
         const response = await fetch(`${baseURL}`); 
@@ -41,10 +45,12 @@ export default function BarrasHz({
         const data = await response.json();
 
         const dataDesc = desc(data.cifrado)
-
         setAlcEstRep(dataDesc);
+        setLoading(false);
       } catch (error) {
         console.log("Error fetching data: ", error);
+        setLoading(false);
+      setNoData(true);
       }
     }
 
@@ -82,10 +88,17 @@ export default function BarrasHz({
     return transformedData;
   };
   
-  if (!alcEstRep) {
-    return <div>Cargando datos...</div>; // Mensaje de carga
-  }
-  
+  if (loading) {
+    return <div>
+      <div class="loading-container">
+                <div class="loading-dot"></div>
+                <div class="loading-dot"></div>
+                <div class="loading-dot"></div>
+            </div>
+    </div>;
+} else if (noData) {
+return <div>No se encontraron datos</div>;
+} else {
   return (
     <ResponsiveContainer width="99%" height={height} >
       <BarChart
@@ -105,5 +118,5 @@ export default function BarrasHz({
         <Bar dataKey="sinAtender" stackId="a" fill="#FF674F" />
       </BarChart>
     </ResponsiveContainer>
-  );
+  );}
 }

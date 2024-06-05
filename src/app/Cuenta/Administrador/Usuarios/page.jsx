@@ -327,7 +327,7 @@ function Page() {
 
     return (
         <div className='main-container-users'>
-            <div>
+            <div className='FilUsuariosAdmin'>
             <select onChange={handleEstadoCuentaFilterChange}>
             <option value="Todos">Todos los Accesos</option>
                 <option value="false">Habilitado</option>
@@ -423,8 +423,8 @@ function Page() {
             </table>
 
             {isModalOpen && (
-                <div className="modal">
-                    <div className="modal-content">
+                <div className="modal-inc">
+                    <div className="modal-inc-content">
                         <button className="boton-cerrar" onClick={closeModal}><img src="https://i.postimg.cc/C5pcdxv9/cancelar.png" /></button>
                         {currentUser ? (
                             <div className='incidencia-abierta'>
@@ -434,7 +434,7 @@ function Page() {
                                 <option value="Alta">Alta</option>
                                 <option value="Media">Media</option>
                                 <option value="Baja">Baja</option>
-                            </select>
+                                </select>
                                <input 
                                 className='des-incidencia'
                                     type="text" 

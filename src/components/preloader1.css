@@ -108,3 +108,8 @@ otherwise the dashes would still be partially visible on firefox and edge (at le
     stroke-dashoffset: var(--stroke-dash-negative);
   }
 }
+
+
+@media(max-width:800px){
+  
+}

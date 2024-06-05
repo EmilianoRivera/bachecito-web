@@ -32,6 +32,7 @@
   box-sizing: border-box;
   text-align: center;
   margin-bottom: 1rem;
+  width: 100%;
 }
 
 .nombress{
@@ -179,8 +180,6 @@
 
 .submiiit:hover{
   position: absolute;
-  left: 1.5vw;
-  width: 15vw;
   transition: .3s;
   padding: 10px;
   background-color: #ff9f49;
@@ -207,9 +206,64 @@
       margin-top: -6vh;
     }
 
-    .derecha-reportar{
+    .intro-reportar{
+      width: 95%;
+    }
+
+  }
+
+  @media(max-width:940px){
+    .container-reportar{
+      display: block;
+      padding-left: 15px;
+    }
+
+    .izquierda-reportar{
+      width: 94vw;
+      margin-right: 1vw;
+      margin-left: 1vw;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 0vh;
+      margin-bottom: 3vh;
+    }
+
+    .nombress{
+      width: 35%;
+      margin-right: 1.5%;
+    }
+
+    .ubicacionn{
+      min-width: 63%;
+    }
+    .blocks{
+      display: flex;
+      width: 94vw;
+    }
+
+    .descripcionnn{
+      width: 60vw;
+      height: 18.5vh;
+    }
+
+    #descripcion{
+      height: 4.5rem;
+    }
+
+    .fotografiaaa{
+      min-width: 30% ;
+    }
+
+    .fotografiaaa input{
+      width: 100%;
+    }
+
+    .submiiit{
+      bottom: 2vh;
+      left: 15vw;
       width: 30vw;
-      background-color: red;
     }
   }
   .modal-overlay {
@@ -255,4 +309,42 @@
     background-color: #0056b3;
   }
   
-  /*marca, modelo, numero de serie, color, dueño*/
+  @media(max-width:790px){
+    .container-reportar{
+      display: block;
+      padding-left: 10px;
+    }
+
+    .blocks{
+      display: block;
+      width: 94vw;
+    }
+
+    .nombress{
+      width: 94%;
+    }
+
+    .ubicacionn{
+      width: 94%;
+    }
+
+    #descripcion{
+      height: 72%;
+    }
+
+    .fotografiaaa input{
+      height: 82%;
+    }
+  }
+
+  @media(max-width:500px){
+    .submiiit{
+      bottom: 3vh;
+      left: 7vw;
+      width: 40vw;
+    }
+
+    .izquierda-reportar{
+      margin-bottom: 2vh;
+    }
+  }

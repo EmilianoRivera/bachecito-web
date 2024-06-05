@@ -725,9 +725,9 @@ function Registro() {
                 <p>
                   Con la entrada en vigor de la Ley General de Protección de
                   Datos Personales en Posesión de Sujetos Obligados (en lo
-                  sucesivo, "Ley General") y los Lineamientos Generales de
+                  sucesivo, &quot;Ley General&quot;) y los Lineamientos Generales de
                   Protección de Datos Personales para el Sector Público (en lo
-                  sucesivo, "Lineamientos Generales"), existe la obligación de
+                  sucesivo, &quot;Lineamientos Generales&quot;), existe la obligación de
                   atender las disposiciones que dichos ordenamientos establecen,
                   entre ellas el cumplimiento del principio de información, el
                   cual se materializa a través de la puesta a disposición del
@@ -736,7 +736,7 @@ function Registro() {
                 <p>
                   Este Aviso de Privacidad se emite de conformidad con la Ley de
                   Protección de Datos Personales en Posesión de Sujetos
-                  Obligados de la Ciudad de México (en adelante, "la Ley") y
+                  Obligados de la Ciudad de México (en adelante, &quot;la Ley&quot;) y
                   tiene como objetivo informarle sobre el tratamiento de sus
                   datos personales por parte de GEMMA, con domicilio en Mar
                   Mediterráneo 227, Popotla, 11400 Ciudad de México, CDMX.
@@ -1020,7 +1020,7 @@ function Registro() {
 
                 <h3>6. Limitación de Responsabilidad:</h3>
                 <p>
-                  La aplicación se proporciona "tal cual" y GEMMA no garantiza
+                  La aplicación se proporciona &quot;tal cual&quot; y GEMMA no garantiza
                   su funcionamiento ininterrumpido o libre de errores. GEMMA no
                   será responsable por daños directos o indirectos derivados del
                   uso de la aplicación.
