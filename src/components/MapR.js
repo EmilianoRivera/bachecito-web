@@ -889,7 +889,7 @@ const DEFAULT_LONGITUDE = -99.1750683; // batiz
               outline: 'none',
               textOverflow: 'ellipses',
               position: 'absolute',
-              left: '17%',
+              left: '23vh',
               top: '2%',
               marginLeft: '-120px',
               zIndex: '1',

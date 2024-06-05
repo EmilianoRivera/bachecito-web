@@ -24,6 +24,19 @@ const DynamicMap = dynamic(() => import("@/components/MapR"), {
   ssr: false,
 });
 
+const showAlert = (message) => {
+  const alertContainer = document.createElement("div");
+  alertContainer.classList.add("custom-alertCU");
+
+  alertContainer.innerHTML = `<p>${message}`;
+  document.body.appendChild(alertContainer);
+
+  // Elimina la alerta después de cierto tiempo (opcional)
+  setTimeout(() => {
+    alertContainer.remove();
+  }, 6000); // Eliminar la alerta después de 5 segundos
+};
+
 function Reportar() {
   const router = useRouter();
 
@@ -32,6 +45,8 @@ function Reportar() {
   const [ubicacion, setUbicacion] = useState("Sin ubicación");
   const [showVerificationModal, setShowVerificationModal] = useState(false); // Estado para controlar el modal
   const [loading, setLoading] = useState(false);
+  const [errorMsg, setErrorMsg] = useState(""); // Estado para el mensaje de error
+
   useEffect(() => {
     const handleRouteChangeStart = () => setLoading(true);
     const handleRouteChangeComplete = () => setLoading(false);
@@ -98,69 +113,80 @@ function Reportar() {
   }, [router]);
 
   const handleDescripcion = (e) => {
-    const descs = e.target.value;
+    let descs = e.target.value;
+    if (descs.length > 80) {
+      showAlert("La descripción no puede exceder los 80 caracteres 😨");
+      descs = descs.slice(0, 80);
+    }
     setDesc(descs);
   };
 
+const [submitting, setSubmitting] = useState(false);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setSubmitting(true);
     const uid = enc(userData.uid);
     const nombre = userData.nombre;
     const apellidoPaterno = userData.apellidoPaterno;
     const imagenURL = await handleFileUpload();
     const descripcion = des;
     const ubi = ubicacion;
-    if(imagenURL === 0) {
-      alert("Error con la imagen, por favor, escoge una adecuada")
-    }else {
-      // console.log(uid, " ", nombre, " ", apellidoPaterno, " " , " ", descripcion, " ", ubi)
-
-     const baseURL = process.env.NEXT_PUBLIC_RUTA_MR;
-    const res = await fetch(
-      `${baseURL}/${encodeURIComponent(
-        uid
-      )}/${nombre}/${apellidoPaterno}/${encodeURIComponent(
-        imagenURL
-      )}/${descripcion}/${ubi}`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          uid: encodeURIComponent(uid),
-          nombre,
-          apellidoPaterno,
-          imagenURL: encodeURIComponent(imagenURL),
-          descripcion,
-          ubi,
-        }),
-      }
-    );
-
-    if (!res.ok) {
-      console.error(
-        "Hubo un error en la petición:",
-        res.status,
-        res.statusText
-      );
+    if (!imagenFondo) {
+      showAlert("Por favor, adjunta una imagen antes de enviar el reporte 📸");
       return;
     }
-
+    if (imagenURL === 0) {
+      showAlert("Error con la imagen, por favor, escoge una adecuada");
+      return;
+    }
+    const baseURL = process.env.NEXT_PUBLIC_RUTA_MR;
     try {
+      const res = await fetch(
+        `${baseURL}/${encodeURIComponent(
+          uid
+        )}/${nombre}/${apellidoPaterno}/${encodeURIComponent(
+          imagenURL
+        )}/${descripcion}/${ubi}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            uid: encodeURIComponent(uid),
+            nombre,
+            apellidoPaterno,
+            imagenURL: encodeURIComponent(imagenURL),
+            descripcion,
+            ubi,
+          }),
+        }
+      );
+
+      if (!res.ok) {
+        throw new Error(`Hubo un error en la petición: ${res.status} ${res.statusText}`);
+      }
+
       const data = await res.json();
-      alert("Se ha enviado su reporte con exito");
+      showAlert("Se ha enviado su reporte con éxito 🎉");
       contadorNumRep();
+
+      // Vacia los campos del formulario
+      setDesc("Sin descripción");
+      setUbicacion("Sin ubicación");
+      setImagenFondo("");
 
       router.push("/Cuenta/Usuario/Perfil");
       //console.log("Respuesta de la API:", data);
     } catch (error) {
-      console.error("Error al analizar la respuesta:", error);
+      console.error("Error al enviar el reporte:", error);
+      showAlert(`Ocurrió un error: ${error.message} 😥`);
+    } finally {
+      setSubmitting(false);
     }
-    // Aquí puedes agregar la lógica para enviar los datos al servidor
-  
-    }
-    };
+  };
+
   const contadorNumRep = async () => {
     const userDocRef = collection(db, "usuarios");
     const userQuery = query(userDocRef, where("uid", "==", userData.uid));
@@ -173,6 +199,7 @@ function Reportar() {
       });
     }
   };
+
   const handleFileUpload = async () => {
     const archivo = document.querySelector('input[type="file"]');
     const archivito = archivo.files[0];
@@ -194,18 +221,20 @@ function Reportar() {
       await uploadBytes(storageRef, archivito);
       return getDownloadURL(storageRef);
     } else {
-      alert("Por favor, escoge una imagen")
-      return 0
+      showAlert("Por favor, escoge una imagen");
+      return 0;
     }
   };
+
   const handleSendVerificationEmail = async () => {
     try {
       await sendEmailVerification(auth.currentUser);
-      alert("Correo de verificación enviado. Por favor revisa tu bandeja de entrada.");
+      showAlert("Correo de verificación enviado. Por favor revisa tu bandeja de entrada.");
     } catch (error) {
       console.error("Error al enviar el correo de verificación:", error);
     }
   };
+
   return (
     <>
       {loading && <Preloader />}
@@ -213,17 +242,17 @@ function Reportar() {
         <div className="izquierda-reportar">
           <form onSubmit={handleSubmit}>
             <div className="blocks">
-            <div className="nombress">
-              <label htmlFor="nombre">REPORTE HECHO POR</label>
-              <p className="nombres-blanco">
-                {userData.nombre} {userData.apellidoPaterno}{" "}
-                {userData.apellidoMaterno}
-              </p>
-            </div>
-            <div className="ubicacionn">
-              <label htmlFor="ubicacion">UBICACIÓN</label>
-              <p className="ubicacion-blanco">{ubicacion}</p>
-            </div>
+              <div className="nombress">
+                <label htmlFor="nombre">REPORTE HECHO POR</label>
+                <p className="nombres-blanco">
+                  {userData.nombre} {userData.apellidoPaterno}{" "}
+                  {userData.apellidoMaterno}
+                </p>
+              </div>
+              <div className="ubicacionn">
+                <label htmlFor="ubicacion">UBICACIÓN</label>
+                <p className="ubicacion-blanco">{ubicacion}</p>
+              </div>
             </div>
 
             <div className="flexForm">
@@ -234,6 +263,7 @@ function Reportar() {
                   name="descripcion"
                   placeholder={des}
                   onChange={handleDescripcion}
+                  value={des}
                   required
                 />
               </div>
@@ -247,7 +277,7 @@ function Reportar() {
                   onChange={handleChange2}
                 />
               </div>
-              <button className="submiiit" type="submit">
+              <button className="submiiit" type="submit" disabled={submitting}>
                 ¡REPORTAR!
               </button>
             </div>
@@ -269,17 +299,16 @@ function Reportar() {
         </div>
       </div>
       {showVerificationModal && (
-  <>
-    <div className="modal-overlay"></div>
-    <div className="modal">
-      <div className="modal-content">
-        <p>Para acceder a este espacio necesitas verificar tu correo.</p>
-        <button onClick={handleSendVerificationEmail}>Click aquí para enviar un correo de verificación</button>
-      </div>
-    </div>
-  </>
-)}
-
+        <>
+          <div className="modal-overlay"></div>
+          <div className="modal">
+            <div className="modal-content">
+              <p>Para acceder a este espacio necesitas verificar tu correo.</p>
+              <button onClick={handleSendVerificationEmail}>Click aquí para enviar un correo de verificación</button>
+            </div>
+          </div>
+        </>
+      )}
     </>
   );
 }
