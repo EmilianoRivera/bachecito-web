@@ -348,3 +348,24 @@
       margin-bottom: 2vh;
     }
   }
+
+.custom-alertCU {
+  background-color: var(--background-color-12);
+  backdrop-filter: blur(50px); 
+  padding: 20px;
+  border-radius: 1rem;
+  width: 40vw;
+  margin-left: 8vw;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  text-justify: justify;
+  border: 2px solid #ffffff;
+  z-index: 100000;
+  position: fixed;
+  top: 5vh;
+  color: var(--text-color-7);
+  left: 20vw;
+  font-size: 1rem;
+  font-family: "Nunito", sans-serif;
+}
