@@ -140,8 +140,6 @@ function ReportesComponente() {
     const dateMatch = searchDate === "" || report.fechaReporte === searchDate;
     return locationMatch && statusMatch && folioMatch && dateMatch;
   });
-
-
   return (
     <div>
       <div className="filters-search">

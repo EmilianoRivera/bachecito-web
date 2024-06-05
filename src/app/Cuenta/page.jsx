@@ -58,6 +58,7 @@ function Registro() {
   const [canSubmit, setCanSubmit] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [recoveryEmail, setRecoveryEmail] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleAdminLinkClick = (event) => {
     event.preventDefault();
@@ -146,6 +147,7 @@ function Registro() {
   const [appat, setAppat] = useState("");
   const [apmat, setApmat] = useState("");
   const [error, setError] = useState("");
+  
   //VALIDACIÓN Fecha de nacimiento--------------------------------------------------------------------------------------------------------------------
   const [fechaNacimiento, setFechaNacimiento] = useState(""); // Estado para la fecha de nacimiento
   const [edadValida, setEdadValida] = useState(true); // Estado para la validación de edad
@@ -564,7 +566,7 @@ function Registro() {
                 required
               />
               <input
-                type="password"
+                type={showPassword ? "text" : "password"} 
                 className="datos"
                 name="password"
                 id="password"
@@ -576,6 +578,13 @@ function Registro() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+              <button
+                type="button"
+                className="toggle-password2"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                <img src={showPassword ? "https://i.postimg.cc/52rq6typ/ojos-cruzados-1.png" : "https://i.postimg.cc/pXqBMCtw/ojo-1.png"}/>
+              </button>
               <div className="checkbox-container">
                 <input
                   type="checkbox"
@@ -623,7 +632,7 @@ function Registro() {
                 required
               />
               <input
-                type="password"
+                type={showPassword ? "text" : "password"} 
                 className="datos"
                 placeholder="Contraseña"
                 onBlur={handlePassBlur}
@@ -637,6 +646,13 @@ function Registro() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+              <button
+                type="button"
+                className="toggle-password3"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                <img src={showPassword ? "https://i.postimg.cc/52rq6typ/ojos-cruzados-1.png" : "https://i.postimg.cc/pXqBMCtw/ojo-1.png"}/>
+              </button>
               <a id="olvi-contra" onClick={() => setModalVisible(true)}>
                 ¿Olvidaste tu contraseña? 😰
               </a>
