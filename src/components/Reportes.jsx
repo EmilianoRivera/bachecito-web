@@ -133,18 +133,14 @@ function ReportesComponente() {
       };
     });
   };
-  const folioLowerCase = searchLocation.toLowerCase();
-  const filteredReports = rep.filter((report) =>
-    //report.descripcion.toLowerCase().includes(searchTerm.toLowerCase()) &&
-  
-    report.ubicacion.toLowerCase().includes(searchLocation.toLowerCase()) || report.folio.toLowerCase().includes(folioLowerCase)&&
-    (searchStatus === "" || report.estado.toLowerCase() === searchStatus.toLowerCase()) &&
-    (searchFolio === "" || report.folio.startsWith(searchFolio)) &&
-    (searchDate === "" || report.fechaReporte === searchDate)
-  );
+  const filteredReports = rep.filter((report) => {
+    const locationMatch = report.ubicacion.toLowerCase().includes(searchLocation.toLowerCase());
+    const statusMatch = searchStatus === "" || report.estado.toLowerCase() === searchStatus.toLowerCase();
+    const folioMatch = searchFolio === "" || report.folio.startsWith(searchFolio);
+    const dateMatch = searchDate === "" || report.fechaReporte === searchDate;
+    return locationMatch && statusMatch && folioMatch && dateMatch;
 
-
-
+  });
   return (
     <div>
       <div className="filters-search">
