@@ -139,7 +139,7 @@ function ReportesComponente() {
     const folioMatch = searchFolio === "" || report.folio.startsWith(searchFolio);
     const dateMatch = searchDate === "" || report.fechaReporte === searchDate;
     return locationMatch && statusMatch && folioMatch && dateMatch;
-
+ 
   });
   return (
     <div>

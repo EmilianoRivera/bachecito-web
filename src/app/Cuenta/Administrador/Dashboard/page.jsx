@@ -1,10 +1,12 @@
 "use client";
 import React, { useState } from "react";
 import "./dash.css";
-import Barras from "@/components/BarrasU";
+import Barras from "@/components/Barras";
 import Circular from "@/components/Circular";
 import BarrasHz from "@/components/BarrasHz";
 import CRep from "@/components/CRepU";
+/* import PieCharts from "@/components/PieCharts"; */
+import LineChart from "@/components/LineChart";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 function Dashboard() {
@@ -27,44 +29,44 @@ function Dashboard() {
     "🌻 Venustiano Carranza",
     "🐠 Xochimilco",
   ];
-/*ESTO ES DEL RANGO PERSONALIZADO */
+  /*ESTO ES DEL RANGO PERSONALIZADO */
   const [startDate, setStartDate] = useState(new Date());
   const [endDate, setEndDate] = useState(new Date());
   /*ESTO ES DEL FILTRO DE FECHA EN GENERAL */
- 
+
   const [filtroFecha, setFiltroFecha] = useState("Todos los tiempos");
- 
- 
+
   const [estado, setEstado] = useState("Todos");
   const [alcaldias, setAlcaldia] = useState("Todas");
- 
- // Estados para manejar la visibilidad de los select
- const [isFechaSelectVisible, setIsFechaSelectVisible] = useState(false);
- const [isAlcaldiaSelectVisible, setIsAlcaldiaSelectVisible] = useState(false);
- const [isEstadoSelectVisible, setIsEstadoSelectVisible] = useState(false);
 
- const handleAlcaldiaChange = (e) => {
-   console.log("Alcaldía seleccionada:", e.target.value);
-   setAlcaldia(e.target.value)
- };
+  // Estados para manejar la visibilidad de los select
+  const [isFechaSelectVisible, setIsFechaSelectVisible] = useState(false);
+  const [isAlcaldiaSelectVisible, setIsAlcaldiaSelectVisible] = useState(false);
+  const [isEstadoSelectVisible, setIsEstadoSelectVisible] = useState(false);
 
- const handleEstadoChange = (e) => {
-   setEstado(e.target.value);
- };
+  const handleAlcaldiaChange = (e) => {
+    // console.log("Alcaldía seleccionada:", e.target.value);
+    setAlcaldia(e.target.value);
+  };
 
- const handleFechaChange = (e) => {
-   const selectedValue = e.target.value;
-   console.log("Fecha seleccionada:", selectedValue);
-   setFiltroFecha(selectedValue);
- };
+  const handleEstadoChange = (e) => {
+    setEstado(e.target.value);
+  };
+
+  const handleFechaChange = (e) => {
+    const selectedValue = e.target.value;
+    // console.log("Fecha seleccionada:", selectedValue);
+    setFiltroFecha(selectedValue);
+  };
   return (
     <div className="container-general">
- 
       <div className="filtros-dashboard">
         <div className="filtro-dashboard" id="fechas">
           <label onClick={() => setIsFechaSelectVisible(!isFechaSelectVisible)}>
-          <img src="https://i.postimg.cc/hPbM6PxS/calendario-reloj.png" alt={``} />
-
+            <img
+              src="https://i.postimg.cc/hPbM6PxS/calendario-reloj.png"
+              alt={``}
+            />
             Rango Fechas
           </label>
           {isFechaSelectVisible && (
@@ -78,7 +80,7 @@ function Dashboard() {
               <option value="Rango personalizado">Rango personalizado</option>
             </select>
           )}
- 
+
           {filtroFecha === "Rango personalizado" && (
             <div className="custom-date">
               <DatePicker
@@ -99,8 +101,10 @@ function Dashboard() {
           <label
             onClick={() => setIsAlcaldiaSelectVisible(!isAlcaldiaSelectVisible)}
           >
-            <img src="https://i.postimg.cc/wjw2xf0Z/marcador_(1).png" alt={``} />
-
+            <img
+              src="https://i.postimg.cc/wjw2xf0Z/marcador_(1).png"
+              alt={``}
+            />
             Alcaldía
           </label>
           {isAlcaldiaSelectVisible && (
@@ -113,14 +117,12 @@ function Dashboard() {
             </select>
           )}
         </div>
- 
 
         <div className="filtro-dashboard" id="estado">
           <label
             onClick={() => setIsEstadoSelectVisible(!isEstadoSelectVisible)}
           >
             <img src="https://i.postimg.cc/bwyLhcH1/bandera-alt.png" alt={``} />
-
             Estado
           </label>
           {isEstadoSelectVisible && (
@@ -131,49 +133,79 @@ function Dashboard() {
               <option value="Atendido">Atendido</option>
             </select>
           )}
- 
         </div>
       </div>
       {/*Componente para los reportes totales y sus estados */}
-      
+
       <div className="flex-dashboard">
         <div className="ladoIZ-dashboard">
+          
           <CRep />
 
           <div className="grafica-circular">
-            <h3>ALCALDIAS CON <br /> MAS REPORTES</h3>
+            <h3>
+              ALCALDIAS CON MAS REPORTES
+            </h3>
             <div className="circular">
               <Circular
-                width={250}
-                height={250}
+                width={300}
+                height={300}
                 estados={estado}
                 alcaldias={alcaldias}
                 startDates={startDate}
                 endDates={endDate}
-                filtroFechas = {filtroFecha}
+                filtroFechas={filtroFecha}
               />
             </div>
           </div>
         </div>
-        
+
         <div className="ladoDER-dashboard">
           <div className="grafica-barras">
-            <h3>REPORTES POR ALCALDIA</h3>
+            <h3>REPORTES POR FECHAS SEGUN SU ALCALDIA</h3>
             <div className="barras">
-              <Barras width={680} height={350} estados={estado} />
+              <Barras 
+                width={1000}
+                height={420}
+                estados={estado}
+                alcaldias={alcaldias}
+                startDates={startDate}
+                endDates={endDate}
+                filtroFechas={filtroFecha}
+              />
             </div>
           </div>
         </div>
-        
       </div>
 
       <div className="grafica-barras-hz">
         <h3>REPORTES SEGÚN SU ESTADO DE ATENCIÓN POR ALCALDIA</h3>
-        <BarrasHz width={500} height={300} />
+        <BarrasHz
+          width={500}
+          height={700}
+          estados={estado}
+          alcaldias={alcaldias}
+          startDates={startDate}
+          endDates={endDate}
+          filtroFechas={filtroFecha}
+        />
+
       </div>
+      <div className="grafica-barras-hz" >
+        <h3>CUENTAS DE USUARIOS POR DIA</h3>
+        <LineChart />
+
+      </div>
+      
+      <div className="grafica-barras" >
+        <h3>REPORTES POR ALCALDIA</h3>
+        {/* <PieCharts /> */}
+
+      </div>
+      
+      
     </div>
   );
 }
 
 export default Dashboard;
-

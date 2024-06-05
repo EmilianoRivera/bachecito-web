@@ -11,11 +11,11 @@
   }
   
   .filtros-dashboard{
-    width: 62vw;
     min-width: 62vw;
+    max-width: 75vw;
     height: 8vh;
     background-color: var(--background-color-2);
-    margin-bottom: 2vh;
+    margin-bottom: 4vh;
     border-radius: 1.5rem;
     align-items: center;
     display: flex;
@@ -74,10 +74,10 @@
     display: block;
     padding: 5px;
     font-size: 14px;
-    border: none;
     background-color: var(--background-color-2);
     border-radius: 1rem;
     color: var(--text-color);
+    border: 1px solid var(--background-color-6);
     transform: translateY(5vh) translateX(3vw);
   }
 
@@ -96,10 +96,10 @@
     padding: 5px;
     font-size: 14px;
     border-radius: 4px;
-    border: none;
     background-color: var(--background-color-2);
     border-radius: 1rem;
     color: var(--text-color);
+    border: 1px solid var(--background-color-6);
   }
   
   .custom-date {
@@ -111,8 +111,11 @@
   .custom-date .datepicker {
     padding: 5px;
     font-size: 14px;
-    border-radius: 4px;
-    border: 1px solid #ccc;
+    border-radius: 20px;
+    border: 1px solid var(--background-color-6);
+    background-color: var(--background-color-2);
+    color: var(--text-color);
+    outline: none;
   }
   
   .custom-date > * {
@@ -126,6 +129,8 @@
   .grafica-circular,
   .grafica-barras-hz {
     margin-top: 15px;
+    font-family: 'Poppins', sans-serif;
+
   }
   
   .grafica-circular,
@@ -155,13 +160,13 @@
 
 /*Contador reportes*/
 
-.totalReportes{
+.totalReportes-estadisticas{
   margin-bottom: 1rem;
   width: 35vw;
   height: 25vh;
 }
 
-.encabezado{
+.encabezado-estadisticas{
   width: 100%;
   height: 40%;
   background-color: var(--background-color-2);
@@ -172,7 +177,7 @@
   justify-content: center;
 }
 
-.encabezado h1{
+.encabezado-estadisticas h1{
   color: var(--text-color);
   font-family: 'Poppins', sans-serif;
   margin-right: 10px;
@@ -180,20 +185,20 @@
   font-weight: 600;
 }
 
-.contador{
+.contador-estadisticas{
   color: #FF4D35;
   font-family: 'Poppins', sans-serif;
   font-size: 18px;
   font-weight:800;
 }
 
-.estados{
+.estados-estadisticas{
   width: 100%;
   display: flex;
   height: 52%;
 }
 
-.in-red{
+.in-red-estadisticas{
   width: 32%;
   height: 100%;
   background-color:var(--background-color-2);
@@ -246,7 +251,7 @@
   transform: translateY(-120%);
 }
 
-.cont-reportes{
+.cont-reportes-estadisticas{
   color: var(--text-color);
   font-family: 'Poppins', sans-serif;
   font-size: 22px;
@@ -258,7 +263,7 @@
   font-weight: 900;
 }
 
-.in-yellow{
+.in-yellow-estadisticas{
   width: 32%;
   height: 100%;
   margin-left: 2%;
@@ -280,7 +285,7 @@
   cursor: pointer;
 }
 
-.in-green{
+.in-green-estadisticas{
   width: 32%;
   height: 100%;
   margin-left: 2%;
@@ -314,7 +319,8 @@
   justify-content: center;
   align-items: center;
   text-align: center;
-  display: flex;
+  display: block;
+  height: auto;
 }
 
 .grafica-circular h3{
@@ -325,13 +331,29 @@
   font-weight: 600;
 }
 
+.circular{
+  display: flex;
+  
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
 /*Grafica barras*/
 .grafica-barras{
-  width: 50vw;
-  height: 69vh;
+  min-width: 50vw;
+  height: auto;
 }
 
 .grafica-barras h3{
+  color: var(--text-color);
+  font-family: 'Poppins', sans-serif;
+  margin-right: 35px;
+  font-size: 16px;
+  font-weight: 600;
+  margin-left: 20px;
+}
+
+.grafica-barras-hz h3{
   color: var(--text-color);
   font-family: 'Poppins', sans-serif;
   margin-right: 35px;

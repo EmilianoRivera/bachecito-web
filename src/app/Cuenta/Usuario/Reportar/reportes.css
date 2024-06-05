@@ -1,0 +1,350 @@
+/* mapStyles.css */
+.container-reportar{
+  display: flex;
+  margin: 0;
+  padding: 0;
+  background-color: var(--background-color);
+  width: 100vw;
+  transition: none;
+  margin-top: 12vh;
+  font-family: 'Poppins', sans-serif;
+}
+
+.izquierda-reportar{
+  width: 37vw;
+  margin-right: 1.3vw;
+  margin-left: 1vw;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: -6vh;
+}
+
+.intro-reportar{
+  background-color: var(--background-color-2);
+  border-radius: 1rem;
+  color: var(--text-color);
+  padding:5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+  text-align: center;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+
+.nombress{
+  background-color: var(--background-color-2);
+  border-radius: 1rem;
+  padding-left:20px;
+  padding-right:20px;
+  padding-top:20px;
+  padding-bottom:5px;
+  margin-bottom: 1rem;
+}
+
+.nombress label{
+  color: var(--text-color-7);
+  font-size: medium;
+  font-weight:500;
+  font-style: italic;
+}
+
+.nombres-blanco{
+  background-color: var(--background-color);
+  border-radius: 1rem;
+  box-sizing: border-box;
+  font-size:15px;
+  color: var(--text-color);
+  padding: 15px;
+}
+
+.ubicacionn{
+  background-color: var(--background-color-2);
+  border-radius: 1rem;
+  padding-left:20px;
+  padding-right:20px;
+  padding-top:20px;
+  padding-bottom:5px;
+  margin-bottom: 1rem;
+}
+
+.ubicacionn label{
+  color: var(--text-color-7);
+  font-size: medium;
+  font-weight:500;
+  font-style: italic;
+}
+
+.ubicacion-blanco{
+  background-color: var(--background-color);
+  border-radius: 1rem;
+  box-sizing: border-box;
+  font-size:13px;
+  color: var(--text-color);
+  padding: 15px;
+  max-height: 4.5rem;
+}
+
+.flexForm{
+  display: flex;
+}
+
+.descripcionnn{
+  background-color: var(--background-color-2);
+  min-width: 15vw;
+  height: 23vh;
+  position: relative;
+  border-radius: 1rem;
+  padding-left:20px;
+  padding-right:20px;
+  padding-top:20px;
+  margin-bottom: 1rem;
+  padding-bottom:5px;
+}
+
+.descripcionnn label{
+  color: var(--text-color-7);
+  font-size: medium;
+  font-weight:500;
+  font-style: italic;
+}
+
+#descripcion{
+  border-radius: 1rem;
+  background-color: var(--background-color);
+  outline: none;
+  border: none;
+  font-size:13px;
+  color: var(--text-color);
+  padding: 15px;
+  resize: none;
+  width: 100%;
+  box-sizing: border-box;
+  height: 6rem;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.fotografiaaa{
+  max-width: 15vw;
+  position: relative;
+  margin-left: 1rem;
+  background-color: var(--background-color-2);
+  border-radius: 1rem;
+  padding-left:20px;
+  padding-right:20px;
+  padding-top:20px;
+  padding-bottom:5px;
+  display: block;
+  height: 30vh;
+}
+
+.fotografiaaa label{
+  color: var(--text-color-7);
+  font-size: medium;
+  font-weight:500;
+  font-style: italic;
+}
+
+.fotografiaaa input{
+  background-color: var(--background-color);
+  border-radius: 1rem;
+  box-sizing: border-box;
+  font-size:13px;
+  color: var(--text-color);
+  margin-top: 10px;
+  padding: 15px;
+  height: 8.5rem;
+  width: 15vw;
+  background-position: center;
+  background-size: cover;
+  background-repeat: no-repeat;
+
+}
+
+.submiiit{
+  position: absolute;
+  left: 1.5vw;
+  bottom: 4vh;
+  width: 15vw;
+  padding: 10px;
+  background-color: var(--background-color);
+  color: #D1D1D1;
+  border: solid 2px #D1D1D1;
+  border-radius: 10rem;
+  transition: .3s;
+}
+
+.submiiit:hover{
+  position: absolute;
+  transition: .3s;
+  padding: 10px;
+  background-color: #ff9f49;
+  color: #fff;
+  border: solid 2px #ff9f49;
+  border-radius: 10rem;
+}
+
+
+.map-container {
+    width: 100%;
+    height: 400px;
+  }
+  
+  @media(max-width:1100px){
+    .izquierda-reportar{
+      width: 50vw;
+      margin-right: 1.3vw;
+      margin-left: 1vw;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: -6vh;
+    }
+
+    .intro-reportar{
+      width: 95%;
+    }
+
+  }
+
+  @media(max-width:940px){
+    .container-reportar{
+      display: block;
+      padding-left: 15px;
+    }
+
+    .izquierda-reportar{
+      width: 94vw;
+      margin-right: 1vw;
+      margin-left: 1vw;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-top: 0vh;
+      margin-bottom: 3vh;
+    }
+
+    .nombress{
+      width: 35%;
+      margin-right: 1.5%;
+    }
+
+    .ubicacionn{
+      min-width: 63%;
+    }
+    .blocks{
+      display: flex;
+      width: 94vw;
+    }
+
+    .descripcionnn{
+      width: 60vw;
+      height: 18.5vh;
+    }
+
+    #descripcion{
+      height: 4.5rem;
+    }
+
+    .fotografiaaa{
+      min-width: 30% ;
+    }
+
+    .fotografiaaa input{
+      width: 100%;
+    }
+
+    .submiiit{
+      bottom: 2vh;
+      left: 15vw;
+      width: 30vw;
+    }
+  }
+  .modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 999;
+  }
+  
+  .modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%; /* Ajusta según sea necesario */
+    max-width: 500px; /* Ajusta según sea necesario */
+    background-color: white;
+    padding: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.25);
+    z-index: 1000;
+  }
+  
+  .modal-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .modal button {
+    margin-top: 20px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  
+  .modal button:hover {
+    background-color: #0056b3;
+  }
+  
+  @media(max-width:790px){
+    .container-reportar{
+      display: block;
+      padding-left: 10px;
+    }
+
+    .blocks{
+      display: block;
+      width: 94vw;
+    }
+
+    .nombress{
+      width: 94%;
+    }
+
+    .ubicacionn{
+      width: 94%;
+    }
+
+    #descripcion{
+      height: 72%;
+    }
+
+    .fotografiaaa input{
+      height: 82%;
+    }
+  }
+
+  @media(max-width:500px){
+    .submiiit{
+      bottom: 3vh;
+      left: 7vw;
+      width: 40vw;
+    }
+
+    .izquierda-reportar{
+      margin-bottom: 2vh;
+    }
+  }

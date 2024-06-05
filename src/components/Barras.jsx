@@ -1,90 +1,232 @@
 import React, { useEffect, useRef, useState } from "react";
-import * as d3 from "d3";
+import { enc, desc } from "../scripts/Cifrado/Cifrar";
+import {
+  BarChart,
+  Bar,
+  CartesianGrid,
+  XAxis,
+  YAxis,
+  Tooltip,
+  ResponsiveContainer,
+  Cell,
+  Brush,
+} from "recharts";
+import moment from "moment";
+import 'moment/locale/es';
+import "@/components/BarrasU.css";
 
-export default function Barras({ width, height }) {
+moment.locale('es');
+
+const COLORS = [
+  "#FF8A57",
+  "#FFB54E",
+  "#FFE75F",
+  "#D3FF7A",
+  "#90F49B",
+  "#2EC4B6",
+  "#49C3FB",
+  "#65A6FA",
+  "#5D9DD5",
+  "#65A6FA",
+  "#49C3FB",
+  "#2EC4B6",
+  "#90F49B",
+  "#D3FF7A",
+  "#FFE75F",
+  "#FFB54E",
+];
+
+async function fetchFiltroEstado(
+  estado = "Todos",
+  alcaldia = "Todas",
+  filtroFecha = "Todos los tiempos",
+  startDate,
+  endDate
+) {
+  try {
+    const nombreAlcaldia = alcaldia.replace(
+      /^[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+|[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+$/g,
+      ""
+    );
+
+    const parametros = {
+      estado: estado,
+      alcaldia: nombreAlcaldia,
+      filtroFecha: filtroFecha,
+      startDate: startDate,
+      endDate: endDate,
+    };
+    const baseURL = process.env.NEXT_PUBLIC_RUTA_F;
+    const response = await fetch(
+      `${baseURL}/${estado}/${nombreAlcaldia}/${filtroFecha}/${startDate}/${endDate}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(parametros),
+      }
+    );
+    if (!response.ok) {
+      throw new Error("Fallaron los filtros");
+    }
+    const resultadoFiltros = await response.json();
+    const data = resultadoFiltros.map(rep => desc(rep));
+
+    return data;
+  } catch (error) {
+    console.error("Error a la hora de hacer la petición ", error);
+    return null;
+  }
+}
+
+function buscarAlcaldias(ubicacion) {
+  const regexAlcaldiasCDMX =
+    /(Álvaro Obregón|Azcapotzalco|Benito Juárez|Coyoacán|Cuajimalpa de Morelos|Cuauhtémoc|Gustavo A. Madero|Iztacalco|Iztapalapa|La Magdalena Contreras|Miguel Hidalgo|Milpa AlAlta|Tlalpan|Tláhuac|Venustiano Carranza|Xochimilco)/gi;
+  const alcaldiasEnUbicacion = ubicacion.match(regexAlcaldiasCDMX);
+
+  if (alcaldiasEnUbicacion) {
+    const alcaldiasUnicas = new Set(alcaldiasEnUbicacion);
+    const alcaldiasString = Array.from(alcaldiasUnicas).join(", ");
+    return alcaldiasString;
+  } else {
+    return "No se encontraron alcaldías en la ubicación proporcionada.";
+  }
+}
+
+function funcCont(data, fechaReporte, alcaldia) {
+  const reportesMismoDiaYAlcaldia = data.filter(
+    (item) =>
+      moment(item.fechaReporte, "D/M/YYYY").format("YYYY-MM-DD") ===
+        moment(fechaReporte, "D/M/YYYY").format("YYYY-MM-DD") &&
+      buscarAlcaldias(item.ubicacion) === alcaldia
+  );
+  return reportesMismoDiaYAlcaldia.length;
+}
+
+export default function Barras({
+  width,
+  height,
+  estados,
+  alcaldias,
+  startDates,
+  endDates,
+  filtroFechas = "Este mes",
+}) {
   const svgRef = useRef();
-  const [dataAlcaldia, setAlcaldiaReporte] = useState([]);
-  const [totalReporte, setTotalReportes] = useState(0);
-  const [semanas, setSemanas] = useState(0);
-  const [fechaMayor, setfechaMayor] = useState();
-  const [fechaMenor, setfechaMenor] = useState();
+  const [datas, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [dataLoaded, setDataLoaded] = useState(false);
+
+  const transformData = (data) => {
+    const groupedData = data.reduce((acc, item) => {
+      const fecha = moment(item.fechaReporte, "D/M/YYYY").valueOf();
+      const contador = item.contador || 0;
+      const alcaldia = buscarAlcaldias(item.ubicacion);
+      const cont = funcCont(data, item.fechaReporte, alcaldia);
+      if (!isNaN(fecha)) {
+        const key = `${fecha}-${alcaldia}`;
+        if (!acc[key]) {
+          acc[key] = { fecha, contador: cont, alcaldia };
+        } else {
+          acc[key].cont += cont;
+        }
+      }
+      return acc;
+    }, {});
+    return Object.values(groupedData).sort((a, b) => a.fecha - b.fecha);
+  };
 
   useEffect(() => {
     async function fetchData() {
+      setLoading(true);
       try {
-       //const response = await fetch("/api/g2");
-        const totalReportesResponse = await fetch("/api/reportesTotales");
-
-        if (/* !response.ok || */ !totalReportesResponse.ok) {
-          throw new Error("Failed to fetch data");
-        }
-
-        /* const { contAlcaldias, fechaMenor, fechaMayor, semanas } =
-          await response.json(); */
-        const totalReportes = await totalReportesResponse.json();
-
-        const dataArray = Object.entries(contAlcaldias).map(
-          ([alcaldia, reportes]) => ({
-            alcaldia,
-            reportes,
-          })
+        const res = await fetchFiltroEstado(
+          estados,
+          alcaldias,
+          filtroFechas,
+          startDates,
+          endDates
         );
-
-        dataArray.sort((a, b) => a.alcaldia.localeCompare(b.alcaldia));
-
-        setAlcaldiaReporte(dataArray);
-        setTotalReportes(totalReportes);
-        setSemanas(semanas);
-        setfechaMayor(fechaMayor);
-        setfechaMenor(fechaMenor);
+        if (res === null) {
+          throw new Error("Error al traer datos a barras");
+        }
+        setData(transformData(res));
       } catch (error) {
         console.log("Error fetching data: ", error);
+      } finally {
+        setLoading(false);
+        setDataLoaded(true);
       }
     }
     fetchData();
-  }, []);
-/* 
-  console.log("SEMANAS", semanas);
-  console.log("fechas", fechaMayor, " ", fechaMenor);
-  console.log(dataAlcaldia);
-  console.log("TOTAL DE REPORTES", totalReporte);
-   */
-  useEffect(() => {
-  const data = [1, 2, 3, 4];
+  }, [estados, alcaldias, filtroFechas, startDates, endDates]);
 
-    if (!data || !data.length) return;
-
-    const svg = d3.select(svgRef.current);
-    const xScale = d3
-      .scaleBand()
-      .domain(data.map((d, i) => i)) // Los índices del array como dominio
-      .range([0, width]); // Rango de los valores en x
-
-    const yScale = d3
-      .scaleLinear()
-      .domain([0, d3.max(data)]) // Rango de los valores en y
-      .range([height, 0]);
-
-    // Agregamos los rectángulos
-    svg
-      .selectAll("rect")
-      .data(data)
-      .enter()
-      .append("rect")
-      .attr("x", (d, i) => xScale(i))
-      .attr("y", (d) => yScale(d))
-      .attr("width", xScale.bandwidth())
-      .attr("height", (d) => height - yScale(d))
-      .attr("fill", "steelblue");
-
-    // Agregamos los ejes
-    svg
-      .append("g")
-      .attr("transform", `translate(0, ${height})`)
-      .call(d3.axisBottom(xScale));
-
-    svg.append("g").call(d3.axisLeft(yScale));
-  }, [data, height, width]);
-
-  return <svg ref={svgRef} width={width} height={height}></svg>;
+  return (
+    <>
+      {!dataLoaded && 
+      <div className="loader-barrasss">
+         <div className="loading_volume_load-1">
+                    <div class="loading_volume_line"></div>
+                    <div class="loading_volume_line"></div>
+                    <div class="loading_volume_line"></div>
+                    <div class="loading_volume_line"></div>
+                    <div class="loading_volume_line"></div>
+                </div>
+        </div>}
+      {dataLoaded && (
+        <ResponsiveContainer width="100%" height={height}>
+          <BarChart
+            margin={{ top: 20, right: 30, left: -20, bottom: 70 }} // Ajustar margen inferior
+            data={datas}
+            style={{ fontFamily: 'sans-serif', fontSize: '13px' }}
+          >
+            <CartesianGrid stroke="#ccc" />
+            <XAxis
+              dataKey="fecha"
+              type="category"
+              domain={datas.map(entry => entry.fecha)}
+              tickFormatter={(date) => moment(date).format('DD MMM')}
+              angle={-45}
+              textAnchor="end"
+              interval={0}
+              style={{ fontFamily: 'sans-serif', fontSize: '13px' }}
+            />
+            <YAxis />
+            <Tooltip
+              formatter={(value, name, props) => {
+                const { payload } = props;
+                return [`${value}`, `Alcaldía: ${payload.alcaldia}`];
+              }}
+              labelFormatter={(label) => moment(label).format("DD MMM YYYY")}
+              style={{ fontFamily: 'sans-serif', fontSize: '13px' }}
+            />
+            <Brush
+              dataKey="fecha"
+              height={30}
+              stroke="#FF8A57"
+              fill="rgba(255, 138, 87, 0.2)"
+              travellerStroke="#FF8A57"
+              tickFormatter={(date) => moment(date).format('DD/MM/YYYY')}
+              y={height - 50} // Mover el Brush más abajo
+            />
+            <Bar dataKey="contador" barSize={30} minPointSize={1}>
+              {datas.map((entry, index) => (
+                <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+              ))}
+            </Bar>
+          </BarChart>
+        </ResponsiveContainer>
+      )}
+      {dataLoaded && datas.length === 0 && <div className="Nodataa">No hay datos disponibles</div>}
+      <div style={{ display: 'flex', justifyContent: 'center', marginTop: '20px', flexWrap: 'wrap' }}>
+        {alcaldias.split(',').map((alcaldia, index) => (
+          <div key={index} style={{ display: 'flex', alignItems: 'center', margin: '0 10px' }}>
+            <div style={{ width: '20px', height: '20px', backgroundColor: COLORS[index % COLORS.length], marginRight: '5px' }}></div>
+            <span style={{ fontFamily: 'sans-serif', fontSize: '13px' }}>{alcaldia.trim()}</span>
+          </div>
+        ))}
+      </div>
+    </>
+  );
 }

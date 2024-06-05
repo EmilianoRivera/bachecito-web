@@ -1,17 +1,34 @@
 "use client";
-import { MapContainer, Marker, TileLayer, Popup, Polygon,Circle } from "react-leaflet";
+import {
+  MapContainer,
+  Marker,
+  TileLayer,
+  Popup,
+  Polygon,
+  Circle,
+} from "react-leaflet";
+import {
+  isToday,
+  isThisWeek,
+  isThisMonth,
+  isThisYear,
+  isWithinInterval,
+  subMonths,
+  parse
+} from "date-fns";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import "./map.css"
-import "../app/Cuenta/Usuario/Estadisticas/style.css"
-import MarkerIcon from "../../node_modules/leaflet/dist/images/marker-icon.png";
+import "./map.css";
+import "../app/Cuenta/Usuario/Estadisticas/style.css";
+import MarkerIcon from "leaflet/dist/images/marker-icon.png";
 import "leaflet/dist/images/layers.png";
 import "leaflet/dist/images/layers-2x.png";
 import "leaflet/dist/images/marker-icon-2x.png";
 import "leaflet/dist/images/marker-shadow.png";
-import atendidoIcon from '../imgs/BanderaVerdeConFondo.png';
-import enProcesoIcon from '../imgs/BanderaAmarillaConFondo.png';
-import sinAtenderIcon from '../imgs/BanderaRojaConFondo.png';
+import atendidoIcon from "../imgs/BanderaVerdeConFondo.png";
+import enProcesoIcon from "../imgs/BanderaAmarillaConFondo.png";
+import sinAtenderIcon from "../imgs/BanderaRojaConFondo.png";
+import { desc } from "@/scripts/Cifrado/Cifrar";
 import { useEffect, useState } from "react";
 const polygon = [
   [19.592749, -99.12369],
@@ -719,50 +736,109 @@ const polygon = [
   [19.590585, -99.117876],
   [19.591994, -99.119454],
 ];
-
 const polygonOptions = {
-  color: '#ff9f49', // Borde
-  fillColor: '#FFB471', // Relleno
+  color: "#ff9f49", // Borde
+  fillColor: "#FFB471", // Relleno
 };
-
-const Map = () => {
+const Map = ({ searchFolio, searchStatus, alcaldia, filtroFecha, startDate, endDate }) => {
   const [markers, setMarkers] = useState([]);
   const [userLocation, setUserLocation] = useState(null);
 
   useEffect(() => {
     async function fetchData() {
       try {
-        const res = await fetch("/api/Reportes");
+        const baseURL = process.env.NEXT_PUBLIC_RUTA_R;
+        const res = await fetch(`${baseURL}`);
         if (!res.ok) {
           throw new Error("Failed to fetch data");
         }
         const data = await res.json();
-        
-        // Convertir las ubicaciones de los reportes en coordenadas
-        const markersData = await Promise.all(data.map(async (reporte) => {
-          const coordenadas = await reverse(reporte.ubicacion, reporte.descripcion);
-          if (coordenadas) {
-            return {
-              coordenadas,
-              descripcion: reporte.descripcion,
-              fecha: reporte.fechaReporte,
-              imagenURL: reporte.imagenURL,
-              ubicacion: reporte.ubicacion,
-              estados: reporte.estado
-            };
-          }
-          return null;
-        }));
-        
-        // Filtrar los marcadores válidos y establecer el estado
-        setMarkers(markersData.filter(marker => marker !== null));
+        const dataDesc = data.map((rep) => desc(rep));
+        const markersData = await Promise.all(
+          dataDesc.map(async (reporte) => {
+            const coordenadas = await reverse(
+              reporte.ubicacion,
+              reporte.descripcion
+            );
+            if (coordenadas) {
+              return {
+                coordenadas,
+                descripcion: reporte.descripcion,
+                fecha: reporte.fechaReporte,
+                imagenURL: reporte.imagenURL,
+                ubicacion: reporte.ubicacion,
+                estados: reporte.estado,
+                folio: reporte.folio,
+              };
+            }
+            return null;
+          })
+        );
+
+        const validMarkersData = markersData.filter(
+          (marker) => marker !== null
+        );
+
+        const filteredMarkers = filterMarkers(validMarkersData);
+        setMarkers(filteredMarkers);
       } catch (error) {
         console.log("Error fetching data: ", error);
       }
     }
 
     fetchData();
-  }, []);
+  }, [searchFolio, searchStatus, alcaldia, filtroFecha, startDate, endDate]);
+
+  const filterMarkers = (markersData) => {
+    return markersData.filter((marker) => {
+      const statusMatch =
+        searchStatus === "Todos" ||
+        marker.estados.toLowerCase() === searchStatus.toLowerCase();
+      const folioMatch =
+        searchFolio === "Todas" || marker.folio.startsWith(searchFolio);
+      const alcaldiaMatch =
+        alcaldia === "Todas" ||
+        marker.ubicacion.toLowerCase().includes(alcaldia.toLowerCase());
+      const fechaMatch = checkFechaMatch(marker.fecha);
+     /*  console.log("mi fecha", isToday(parse(marker.fecha, 'd/M/yyyy', new Date())))
+      console.log(marker.fecha)
+      console.log(parse(marker.fecha, 'd/M/yyyy', new Date())) */
+      return statusMatch && folioMatch && alcaldiaMatch && fechaMatch;
+    });
+  };
+
+  const checkFechaMatch = (fecha) => {
+    const parsedFecha = parse(fecha, 'd/M/yyyy', new Date());
+
+    switch (filtroFecha) {
+      case "Todos los tiempos":
+        return true;
+      case "Hoy":
+        return isToday(parsedFecha);
+      case "Esta semana":
+        return isThisWeek(parsedFecha);
+        case "Último mes":
+          const lastMonth = subMonths(new Date(), 1);
+          return (
+            parsedFecha.getMonth() === lastMonth.getMonth() &&
+            parsedFecha.getFullYear() === lastMonth.getFullYear()
+          );
+      case "Últimos 6 meses":
+        return isWithinInterval(parsedFecha, {
+          start: subMonths(new Date(), 6),
+          end: new Date(),
+        });
+      case "Este año":
+        return isThisYear(parsedFecha);
+      case "Rango personalizado":
+        return isWithinInterval(parsedFecha, {
+          start: startDate,
+          end: endDate,
+        });
+      default:
+        return false;
+    }
+  };
 
   useEffect(() => {
     if (navigator.geolocation) {
@@ -770,7 +846,7 @@ const Map = () => {
         (position) => {
           setUserLocation({
             lat: position.coords.latitude,
-            lng: position.coords.longitude
+            lng: position.coords.longitude,
           });
         },
         (error) => {
@@ -781,6 +857,7 @@ const Map = () => {
       console.error("Geolocation is not supported by this browser.");
     }
   }, []);
+
   function getIconUrl(estado) {
     switch (estado) {
       case "Atendido":
@@ -790,38 +867,42 @@ const Map = () => {
       case "Sin atender":
         return sinAtenderIcon.src;
       default:
-        return MarkerIcon.src; // Icono por defecto si el estado no coincide con ninguno de los casos anteriores
+        return MarkerIcon.src;
     }
   }
+
   async function reverse(ubi, descripcion) {
     try {
       const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
       const encodedAddress = encodeURIComponent(ubi);
-      const response = await fetch(`https://maps.googleapis.com/maps/api/geocode/json?address=${encodedAddress}&key=${apiKey}`);
+      const response = await fetch(
+        `https://maps.googleapis.com/maps/api/geocode/json?address=${encodedAddress}&key=${apiKey}`
+      );
       const data = await response.json();
-  
-      if (data.status !== 'OK' || data.results.length === 0) {
+
+      if (data.status !== "OK" || data.results.length === 0) {
         console.error(`No se encontraron resultados para la ubicación: ${ubi}`);
         return null;
       }
-  
+
       const { lat, lng } = data.results[0].geometry.location;
-  
+
       return { lat: parseFloat(lat), lng: parseFloat(lng) };
     } catch (error) {
-      console.error(`Error al convertir ubicación a coordenadas para ${descripcion}:`, error);
+      console.error(
+        `Error al convertir ubicación a coordenadas para ${descripcion}:`,
+        error
+      );
       return null;
     }
   }
 
- const radius=800;
+  const radius = 800;
+
   return (
     <div>
       <MapContainer
-        style={{
-          height: "85vh",
-          width: "59vw",
-        }}
+        className="mapcontainer"
         center={[19.453986, -99.17505]}
         zoom={10.2}
         scrollWheelZoom={false}
@@ -832,26 +913,24 @@ const Map = () => {
         id="map"
       >
         <TileLayer
-          url="https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=Pyxxe8P2qOBkCkRdy5jX	"
+          url="https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=Pyxxe8P2qOBkCkRdy5jX"
           attribution="Map data &copy; <a href='https://www.openstreetmap.org/'>OpenStreetMap</a> contributors, 
           <a href='https://creativecommons.org/licenses/by-sa/2.0/'>CC-BY-SA</a>, 
           Imagery © <a href='https://www.maptiler.com/'>MapTiler</a>"
         />
-         <Polygon pathOptions={polygonOptions} positions={polygon} />
-         {userLocation && userLocation.lat && userLocation.lng && (
-   <Circle
-   radius={radius}
-   fillColor="orange"
-   fillOpacity={0.5}
-   center={[userLocation.lat, userLocation.lng]}
-   pathOptions={{
-     color: "blue", // Color del borde
-     weight: 0.1  ,     // Grosor del borde
-   }}
- />
-)}
-
-
+        <Polygon pathOptions={polygonOptions} positions={polygon} />
+        {userLocation && userLocation.lat && userLocation.lng && (
+          <Circle
+            radius={radius}
+            fillColor="#FF5733"
+            fillOpacity={0.7}
+            center={[userLocation.lat, userLocation.lng]}
+            pathOptions={{
+              color: "#FF5733",
+              weight: 0.1,
+            }}
+          />
+        )}
         {markers.map((marker, index) => (
           <Marker
             key={index}
@@ -864,16 +943,20 @@ const Map = () => {
               })
             }
           >
-
-            <Popup id="popup">  
+            <Popup id="popup">
               <div className="reportito-popup">
-                <img src={marker.imagenURL} alt="Foto del reporte" style={{ maxWidth: '95px', borderRadius:'1rem', }} />
+                <img
+                  src={marker.imagenURL}
+                  alt="Foto del reporte"
+                  style={{ maxWidth: "95px", borderRadius: "1rem" }}
+                />
                 <p className="fecha-popup">Fecha: {marker.fecha}</p>
                 <p className="estado-popup">Estado: {marker.estados}</p>
-                <p className="descripcion-popup">Descripción: {marker.descripcion}</p>
+                <p className="descripcion-popup">
+                  Descripción: {marker.descripcion}
+                </p>
               </div>
             </Popup>
-
           </Marker>
         ))}
       </MapContainer>
