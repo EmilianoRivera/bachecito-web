@@ -15,6 +15,19 @@ import { updateDoc, collection, query, where, getDocs, addDoc } from "firebase/f
 import './admin.css'
 
 function Administrador() {
+  const showAlert = (message) => {
+    const alertContainer = document.createElement("div");
+    alertContainer.classList.add("custom-alertCU");
+
+    alertContainer.innerHTML = `<p>${message}</p>`;
+    document.body.appendChild(alertContainer);
+
+    // Elimina la alerta después de cierto tiempo (opcional)
+    setTimeout(() => {
+      alertContainer.remove();
+    }, 6000); // Eliminar la alerta después de 5 segundos
+  };
+
   useEffect(() => {
     let currentAnimation = null;
 
@@ -130,11 +143,11 @@ function Administrador() {
       if (isAdmin) {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
-        alert("Inicio de sesión exitoso");
+        showAlert("Inicio de sesión exitoso, bienvenido Admin 👷‍♂️");
         push("/Cuenta/Administrador/Dashboard");
       } else {
         signOut(auth);
-        alert("No tienes permiso para iniciar sesión como administrador");
+        showAlert("No tienes permisos para iniciar como Administrador 🚨");
       }
     } catch (error) {
       console.error(error.message);

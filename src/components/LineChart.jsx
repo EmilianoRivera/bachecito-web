@@ -65,31 +65,50 @@ function CustomTooltip({ payload, label, active }) {
 
 function LineChart() {
   const [data, setData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   useEffect(() => {
     async function getData() {
-      const users = await fetchUsers();
-      const processedData = processData(users);
-      setData(processedData);
+      try {
+        const users = await fetchUsers();
+        const processedData = processData(users);
+        setData(processedData);
+        if (processedData.length === 0) {
+          setError(true);
+        }
+      } catch (error) {
+        setError(true);
+      } finally {
+        setLoading(false);
+      }
     }
-    
+
     getData();
   }, []);
 
+  if (loading) {
+    return <p>Cargando...</p>;
+  }
+
+  if (error) {
+    return <p>No hay datos disponibles.</p>;
+  }
+
   return (
-    <ResponsiveContainer width="100%" height={300} style={{marginLeft: '-3%'}}>
+    <ResponsiveContainer width="100%" height={300} style={{ marginLeft: '-3%' }}>
       <RechartsLineChart data={data}>
         <CartesianGrid strokeDasharray="3 3" stroke="#A9A9A9" />
         <XAxis dataKey="date" stroke="#A9A9A9" />
         <YAxis stroke="#A9A9A9" />
         <Tooltip content={<CustomTooltip />} />
-        <Line 
-          type="monotone" 
-          dataKey="count" 
+        <Line
+          type="monotone"
+          dataKey="count"
           stroke="#FF8A57" // Color naranja
           strokeWidth={2}
           dot={{ stroke: '#FF8A57', strokeWidth: 2, r: 5 }}
-          activeDot={{ r: 8, fill: '#FF8A57' }} 
+          activeDot={{ r: 8, fill: '#FF8A57' }}
           animationDuration={500}
         />
         <Brush dataKey="date" stroke="#FF8A57" fill="rgba(255, 138, 87, 0.2)" travellerStroke="#FF8A57" />
