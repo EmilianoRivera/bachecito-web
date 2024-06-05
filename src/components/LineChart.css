@@ -1,0 +1,56 @@
+.loading_ball_switching_container {
+    width: 80px;
+    height: 50px;
+    position: relative;
+    margin-left: 40px;
+}
+
+.loading_ball {
+    width: 20px;
+    height:20px;
+    border-radius: 50%;
+    background-color: #ff523f; /* Blue color */
+    position: absolute;
+    animation-duration: 2s;
+    animation-timing-function: linear;
+    animation-iteration-count: infinite;
+}
+
+.loading_ball1 {
+    left: -20px;
+    animation-name: moveRight;
+}
+
+.loading_ball2 {
+    right: -20px;
+    animation-name: moveLeft;
+}
+
+@keyframes moveRight {
+    0% {
+        left: -20px;
+    }
+    50% {
+        left: calc(100% - 40px);
+    }
+    100% {
+        left: -20px;
+    }
+}
+
+@keyframes moveLeft {
+    0% {
+        right: -20px;
+    }
+    50% {
+        right: calc(100% - 40px);
+    }
+    100% {
+        right: -20px;
+    }
+}
+
+.noloader{
+    color: #ff9233;
+    margin: 20px;
+  }

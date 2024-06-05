@@ -10,6 +10,7 @@ import {
   Brush,
   ResponsiveContainer
 } from 'recharts';
+import "@/components/LineChart.css";
 
 async function fetchUsers() {
   const baseURL = process.env.NEXT_PUBLIC_RUTA_US;
@@ -88,11 +89,14 @@ function LineChart() {
   }, []);
 
   if (loading) {
-    return <p>Cargando...</p>;
+    return <div class="loading_ball_switching_container">
+    <div class="loading_ball loading_ball1"></div>
+    <div class="loading_ball loading_ball2"></div>
+</div>;
   }
 
   if (error) {
-    return <p>No hay datos disponibles.</p>;
+    return <div className='noloader'>No hay datos disponibles</div>;
   }
 
   return (
