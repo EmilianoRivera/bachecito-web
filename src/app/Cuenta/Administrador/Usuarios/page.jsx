@@ -182,6 +182,7 @@ function Page() {
                      newIncidenciasCount,
                      fullName
                 );
+                window.location.reload()
             });
 
             // Reset description and close modal after adding the incident
