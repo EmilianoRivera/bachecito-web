@@ -85,9 +85,6 @@ export const useAuthUser = () => {
 
             // Verificar si el correo del usuario está verificado
             const emailVerificado = user.emailVerified;
-            console.log("EMAIL:", emailVerificado);
-            console.log(user);
-            // Actualizar el documento del usuario con la bandera verificado solo si aún no está verificado
             if (emailVerificado === true && userData.verificado !== true) {
               const userDocRef = doc(db, "usuarios", docSnapshot.id);
               await updateDoc(userDocRef, { verificado: true });
