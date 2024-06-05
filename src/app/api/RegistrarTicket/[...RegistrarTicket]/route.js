@@ -1,5 +1,11 @@
 import { NextResponse } from "next/server";
-import { db2, collection, addDoc, getDocs, app2 } from "../../../../../firebase";
+import {
+  db2,
+  collection,
+  addDoc,
+  getDocs,
+  app2,
+} from "../../../../../firebase";
 import { desc, enc } from "../../../../scripts/Cifrado/Cifrar";
 
 //import nodemailer from "nodemailer";
@@ -40,6 +46,8 @@ function prioridad(errorSeleccionado) {
   switch (errorSeleccionado) {
     case "S001":
     case "S002":
+    case "U003":
+    case "U004":
     case "0000":
       priori = "ALTA";
       break;
@@ -53,6 +61,8 @@ function prioridad(errorSeleccionado) {
     case "P001":
     case "P002":
     case "T001":
+    case "U001":
+    case "U002":
       priori = "MEDIA";
       break;
     default:
@@ -65,7 +75,7 @@ export async function POST(req, { params }) {
   try {
     // Extraer los datos del cuerpo de la solicitud
     const [
-      foto ,
+      foto,
       Uid,
       errorSeleccionado,
       sistemaOperativo,
@@ -77,36 +87,34 @@ export async function POST(req, { params }) {
       area,
     ] = params.RegistrarTicket;
 
-    
-    const url =  foto
+    const url = foto;
     const rutitaD = decodeURIComponent(rutaError);
-    const rutaE = desc(rutitaD)
+    const rutaE = desc(rutitaD);
 
-    const error = decodeURIComponent(errorSeleccionado)
-    const errorE = desc(error)
+    const error = decodeURIComponent(errorSeleccionado);
+    const errorE = desc(error);
 
     // Obtener la URL de descarga del archivo
     const folio = await folioTicket(errorE, rutaE);
     const priori = prioridad(errorE);
-    const estado = "Sin asignar"
-    
+    const estado = "Sin asignar";
 
-    const id = decodeURIComponent(Uid)
-    const uid = desc(id)
+    const id = decodeURIComponent(Uid);
+    const uid = desc(id);
 
-    const descProm = decodeURIComponent(descripcionProblema)
-    const dP = desc(descProm)
+    const descProm = decodeURIComponent(descripcionProblema);
+    const dP = desc(descProm);
 
-    const email = decodeURIComponent(correoA)
-    const corr = desc(email)
+    const email = decodeURIComponent(correoA);
+    const corr = desc(email);
 
-    const name = decodeURIComponent(nombre)
-    const nom = desc(name)
+    const name = decodeURIComponent(nombre);
+    const nom = desc(name);
 
-    const ar = decodeURIComponent(area)
-    const areas = desc(ar)
- //console.log(url)
-  
+    const ar = decodeURIComponent(area);
+    const areas = desc(ar);
+    //console.log(url)
+
     // Validar los datos si es necesario
     resend.emails.send({
       from: "onboarding@resend.dev",
@@ -128,7 +136,7 @@ export async function POST(req, { params }) {
       nom, //nombre
       areas, //areas
       foto,
-      estado
+      estado,
     });
     // Enviar una respuesta de éxito
     return NextResponse.json("EXITO");
