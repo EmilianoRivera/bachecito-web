@@ -199,7 +199,7 @@ export default function Perfil() {
     setShowLeftSide(!showLeftSide);
   };
   async function deleteCokies() {
-    const response = await fetch('http://localhost:3000/api/cookie', {
+    const response = await fetch('/api/cookie', {
       method: 'DELETE'
     })
     const data = await response.json()
