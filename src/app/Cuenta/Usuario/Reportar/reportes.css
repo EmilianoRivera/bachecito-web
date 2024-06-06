@@ -266,7 +266,7 @@
       width: 30vw;
     }
   }
-  .modal-overlay {
+  .modal-overlay-rw {
     position: fixed;
     top: 0;
     left: 0;
@@ -275,12 +275,39 @@
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 999;
   }
+
+  .modal-reportweb{
+    width: 40vw;
+    min-height: 30vh;
+    padding: 2rem;
+    height: auto;
+    background-color: var(--background-color-2);
+    transform: translate(30vw, 30vh);
+    border-radius: 2rem;
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .texto-rw {
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 1rem;
+    color: var(--text-color);
+  }
   
+  .saludo-rw {
+    margin-bottom: 0;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    color: #ff9f49;
+    font-size: 1.5rem;
+  }
+
   .modal {
     position: fixed;
     top: 50%;
-    left: 50%;
     transform: translate(-50%, -50%);
+    left: 50%;
     width: 80%; /* Ajusta según sea necesario */
     max-width: 500px; /* Ajusta según sea necesario */
     background-color: white;
@@ -295,18 +322,21 @@
     align-items: center;
   }
   
-  .modal button {
-    margin-top: 20px;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
+  .modal-reportweb button {
+    background-color: #ff9f49;
+    padding: 10px;
     border: none;
+    border-radius: 1rem;
+    color: white;
+    width: 60%;
+    margin-left: 20%;
+    box-sizing: border-box;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
     cursor: pointer;
-    border-radius: 5px;
   }
   
-  .modal button:hover {
-    background-color: #0056b3;
+  .modal-reportweb button:hover {
+    background-color: #cc7a35;
   }
   
   @media(max-width:790px){
