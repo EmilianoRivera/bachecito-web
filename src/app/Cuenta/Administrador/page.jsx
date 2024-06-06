@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import anime from 'animejs';
+import anime, { get } from 'animejs';
 import { auth, db } from "../../../../firebase";
 import { useRouter } from "next/navigation";
 import Preloader from "@/components/preloader1";
@@ -121,7 +121,11 @@ function Administrador() {
       setCanSubmit(true);
     }
   };
-
+  async function getCokies() {
+    const response = await fetch('http://localhost:3000/api/cookie2')
+    const data = await response.json()
+    console.log(data)
+  }
   const handleSignIn = async (event) => {
     event.preventDefault();
     try {
@@ -143,6 +147,7 @@ function Administrador() {
       if (isAdmin) {
         const userCredential = await signInWithEmailAndPassword(auth, email, password);
         const user = userCredential.user;
+        await getCokies();
         showAlert("Inicio de sesión exitoso, bienvenido Admin 👷‍♂️");
         push("/Cuenta/Administrador/Dashboard");
       } else {

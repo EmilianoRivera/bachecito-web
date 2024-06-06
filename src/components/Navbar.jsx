@@ -35,13 +35,21 @@ function Navbar() {
   const toggleMenu = () => {
     setMenuActive(!menuActive);
   };
-
+  async function deleteCokies() {
+    const response = await fetch('http://localhost:3000/api/cookie2', {
+      method: 'DELETE'
+    })
+    const data = await response.json()
+    console.log(data)
+  }
   const handleLogout = () => {
     // Función para manejar el cierre de sesión después de la confirmación
     signOut(auth)
       .then(() => {
-        console.log("Cierre de sesión exitoso");
-        router.push("/Cuenta");
+        deleteCokies().then(()=>{
+          console.log("Cierre de sesión exitoso");
+          router.push("/Cuenta");
+        })
       })
       .catch((error) => {
         console.error("Error al cerrar sesión:", error);
