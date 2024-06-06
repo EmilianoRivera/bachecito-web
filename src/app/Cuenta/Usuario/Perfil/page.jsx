@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import "./perfil.css";
 import { signOut } from "firebase/auth";
+//import AuthGuard from "@/components/AuthGuard";
 import { useRouter } from "next/navigation";
 import { auth, db } from "../../../../../firebase";
 import AuthContext from "../../../../../context/AuthContext";
@@ -483,7 +484,6 @@ export default function Perfil() {
       </div>
       {isLogged && !userData && <p>Cargando datos del usuario...</p>}
     </div>
-    </>
-    
+</>    
   );
 }
