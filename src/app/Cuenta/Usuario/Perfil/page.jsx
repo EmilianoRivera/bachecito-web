@@ -2,6 +2,7 @@
 import React, { useState, useEffect, useContext } from "react";
 import "./perfil.css";
 import { signOut } from "firebase/auth";
+//import AuthGuard from "@/components/AuthGuard";
 import { useRouter } from "next/navigation";
 import { auth, db } from "../../../../../firebase";
 import AuthContext from "../../../../../context/AuthContext";
@@ -58,7 +59,7 @@ export default function Perfil() {
           const uid = user.uid;
           fetchData(uid);
         } else {
-          router.push("/login");
+          router.push("/Cuenta");
         }
       });
       return () => unsubscribe();
@@ -198,17 +199,28 @@ export default function Perfil() {
     setShowLeftSide(!showLeftSide);
   };
 
-  //cerrar sesion y desactivar cuenta
   const CerrarSesion = () => {
     signOut(auth)
       .then(() => {
-        console.log("Cierre de sesión exitoso");
-        router.push("/Cuenta");
+        deleteCokies().then(() => {
+          router.push("/Cuenta");
+          console.log("Cierre de sesión exitoso");
+        });
       })
       .catch((error) => {
         console.error("Error al cerrar sesión:", error);
       });
   };
+
+  async function deleteCokies() {
+    /* https://bachecito26.online/api/cookie */
+    const response = await fetch('/api/cookie', {
+      method: 'DELETE'
+    });
+    const data = await response.json();
+    console.log(data);
+  }
+
 
   const eliminarCuenta = async () => {
     try {
@@ -475,7 +487,6 @@ export default function Perfil() {
       </div>
       {isLogged && !userData && <p>Cargando datos del usuario...</p>}
     </div>
-    </>
-    
+</>    
   );
 }

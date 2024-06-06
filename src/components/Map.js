@@ -741,9 +741,9 @@ const polygonOptions = {
   fillColor: "#FFB471", // Relleno
 };
 const Map = ({ searchFolio, searchStatus, alcaldia, filtroFecha, startDate, endDate }) => {
+
   const [markers, setMarkers] = useState([]);
   const [userLocation, setUserLocation] = useState(null);
-
   useEffect(() => {
     async function fetchData() {
       try {
@@ -774,7 +774,6 @@ const Map = ({ searchFolio, searchStatus, alcaldia, filtroFecha, startDate, endD
             return null;
           })
         );
-
         const validMarkersData = markersData.filter(
           (marker) => marker !== null
         );
@@ -785,10 +784,8 @@ const Map = ({ searchFolio, searchStatus, alcaldia, filtroFecha, startDate, endD
         console.log("Error fetching data: ", error);
       }
     }
-
     fetchData();
   }, [searchFolio, searchStatus, alcaldia, filtroFecha, startDate, endDate]);
-
   const filterMarkers = (markersData) => {
     return markersData.filter((marker) => {
       const statusMatch =
@@ -800,16 +797,12 @@ const Map = ({ searchFolio, searchStatus, alcaldia, filtroFecha, startDate, endD
         alcaldia === "Todas" ||
         marker.ubicacion.toLowerCase().includes(alcaldia.toLowerCase());
       const fechaMatch = checkFechaMatch(marker.fecha);
-     /*  console.log("mi fecha", isToday(parse(marker.fecha, 'd/M/yyyy', new Date())))
-      console.log(marker.fecha)
-      console.log(parse(marker.fecha, 'd/M/yyyy', new Date())) */
+ 
       return statusMatch && folioMatch && alcaldiaMatch && fechaMatch;
     });
   };
-
   const checkFechaMatch = (fecha) => {
     const parsedFecha = parse(fecha, 'd/M/yyyy', new Date());
-
     switch (filtroFecha) {
       case "Todos los tiempos":
         return true;
@@ -839,7 +832,6 @@ const Map = ({ searchFolio, searchStatus, alcaldia, filtroFecha, startDate, endD
         return false;
     }
   };
-
   useEffect(() => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -857,7 +849,6 @@ const Map = ({ searchFolio, searchStatus, alcaldia, filtroFecha, startDate, endD
       console.error("Geolocation is not supported by this browser.");
     }
   }, []);
-
   function getIconUrl(estado) {
     switch (estado) {
       case "Atendido":
@@ -870,7 +861,6 @@ const Map = ({ searchFolio, searchStatus, alcaldia, filtroFecha, startDate, endD
         return MarkerIcon.src;
     }
   }
-
   async function reverse(ubi, descripcion) {
     try {
       const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
@@ -879,14 +869,11 @@ const Map = ({ searchFolio, searchStatus, alcaldia, filtroFecha, startDate, endD
         `https://maps.googleapis.com/maps/api/geocode/json?address=${encodedAddress}&key=${apiKey}`
       );
       const data = await response.json();
-
       if (data.status !== "OK" || data.results.length === 0) {
         console.error(`No se encontraron resultados para la ubicación: ${ubi}`);
         return null;
       }
-
       const { lat, lng } = data.results[0].geometry.location;
-
       return { lat: parseFloat(lat), lng: parseFloat(lng) };
     } catch (error) {
       console.error(
@@ -896,9 +883,7 @@ const Map = ({ searchFolio, searchStatus, alcaldia, filtroFecha, startDate, endD
       return null;
     }
   }
-
   const radius = 800;
-
   return (
     <div>
       <MapContainer
@@ -963,5 +948,4 @@ const Map = ({ searchFolio, searchStatus, alcaldia, filtroFecha, startDate, endD
     </div>
   );
 };
-
 export default Map;

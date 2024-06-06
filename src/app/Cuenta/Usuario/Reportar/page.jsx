@@ -17,7 +17,7 @@ import { getStorage, ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import Preloader from "@/components/preloader2";
 import Router from "next/router";
 import { desc, enc } from "@/scripts/Cifrado/Cifrar";
-import { sendEmailVerification } from "firebase/auth"; // Importa la función de envío de correo de verificación
+import { sendEmailVerification, onAuthStateChanged } from "firebase/auth"; // Importa la función de envío de correo de verificación
 
 // Importa el componente del mapa de manera dinámica
 const DynamicMap = dynamic(() => import("@/components/MapR"), {
@@ -83,7 +83,7 @@ function Reportar() {
           const uid = user.uid;
           fetchData(uid);
         } else {
-          router.push("/login");
+          router.push("/Cuenta");
         }
       });
       return () => unsubscribe();
@@ -229,12 +229,26 @@ const [submitting, setSubmitting] = useState(false);
   const handleSendVerificationEmail = async () => {
     try {
       await sendEmailVerification(auth.currentUser);
+
       showAlert("Correo de verificación enviado. Por favor revisa tu bandeja de entrada.");
+
     } catch (error) {
       console.error("Error al enviar el correo de verificación:", error);
     }
   };
-
+  const listenForEmailVerification = () => {
+    onAuthStateChanged(auth, async (user) => {
+      if (user) {
+        await user.reload(); // Recarga el estado del usuario
+        if (user.emailVerified) {
+          window.location.reload(); // Refresca la pantalla
+        }
+      }
+    });
+  };
+  //
+  
+  // Llama a esta función cuando inicies tu aplicación para empezar a escuchar
   return (
     <>
       {loading && <Preloader />}
