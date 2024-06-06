@@ -35,6 +35,7 @@ function Navbar() {
   const toggleMenu = () => {
     setMenuActive(!menuActive);
   };
+
   async function deleteCokies() {
     const response = await fetch('http://localhost:3000/api/cookie2', {
       method: 'DELETE'
@@ -42,19 +43,17 @@ function Navbar() {
     const data = await response.json()
     console.log(data)
   }
-  const handleLogout = () => {
+
+  const handleLogout = async () => {
     // Función para manejar el cierre de sesión después de la confirmación
-    signOut(auth)
-      .then(() => {
-        deleteCokies().then(()=>{
-          console.log("Cierre de sesión exitoso");
-          router.push("/Cuenta");
-        })
-      })
-      router.push("/Cuenta")
-      .catch((error) => {
-        console.error("Error al cerrar sesión:", error);
-      });
+    try {
+      await signOut(auth);
+      await deleteCokies();
+      console.log("Cierre de sesión exitoso");
+      router.push("/Cuenta");
+    } catch (error) {
+      console.error("Error al cerrar sesión:", error);
+    }
   };
 
   const handleLogoutConfirmation = () => {
@@ -155,11 +154,10 @@ function Navbar() {
                   />
                   <span className="hover-text">Soporte</span>
                 </Link>
-                <Link href="#" className="opc-admin">
+                <Link href="#" className="opc-admin" onClick={CerrarSesion}>
                   <img
                     src="https://i.postimg.cc/qRJSHq08/salida-2.png"
                     alt="salir"
-                    onClick={CerrarSesion}
                   />
                   <span className="hover-text">Salir</span>
                 </Link>

@@ -217,7 +217,6 @@ export default function Perfil() {
       .catch((error) => {
         console.error("Error al cerrar sesión:", error);
       });
-      push("/Cuenta")
   };
 
   const eliminarCuenta = async () => {

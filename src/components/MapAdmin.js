@@ -1,16 +1,16 @@
 "use client";
 import { MapContainer, Marker, TileLayer, Popup, Polygon } from "react-leaflet";
-import "../app/Cuenta/Administrador/Mapa/Mapa.css"
+import "../app/Cuenta/Administrador/Mapa/Mapa.css";
 import "leaflet/dist/leaflet.css";
-import "./map.css"
+import "./map.css";
 import "leaflet/dist/images/layers.png";
 import "leaflet/dist/images/layers-2x.png";
 import "leaflet/dist/images/marker-icon-2x.png";
 import "leaflet/dist/images/marker-shadow.png";
 import { desc } from "@/scripts/Cifrado/Cifrar";
-import atendidoIcon from '../imgs/BanderaVerdeConFondo.png';
-import enProcesoIcon from '../imgs/BanderaAmarillaConFondo.png';
-import sinAtenderIcon from '../imgs/BanderaRojaConFondo.png';
+import atendidoIcon from "../imgs/BanderaVerdeConFondo.png";
+import enProcesoIcon from "../imgs/BanderaAmarillaConFondo.png";
+import sinAtenderIcon from "../imgs/BanderaRojaConFondo.png";
 import { useEffect, useState } from "react";
 import {
   isToday,
@@ -19,7 +19,7 @@ import {
   isThisYear,
   isWithinInterval,
   subMonths,
-  parse
+  parse,
 } from "date-fns";
 const polygon = [
   [19.592749, -99.12369],
@@ -729,15 +729,20 @@ const polygon = [
 ];
 
 const polygonOptions = {
-  color: '#ff9f49', // Borde
-  fillColor: '#FFB471', // Relleno
+  color: "#ff9f49", // Borde
+  fillColor: "#FFB471", // Relleno
 };
 
-
-const MapAdmin = ( {searchFolio, searchStatus, alcaldia, filtroFecha, startDate, endDate} ) => {
+const MapAdmin = ({
+  searchFolio,
+  searchStatus,
+  alcaldia,
+  filtroFecha,
+  startDate,
+  endDate,
+}) => {
   const [markers, setMarkers] = useState([]);
-  console.log("searchStatus:", searchStatus)
-  console.log("searchStatus:", searchFolio)
+
   useEffect(() => {
     async function fetchData() {
       try {
@@ -748,8 +753,6 @@ const MapAdmin = ( {searchFolio, searchStatus, alcaldia, filtroFecha, startDate,
         }
         const data = await res.json();
         const dataDesc = data.map((rep) => desc(rep));
-
- 
 
         const markersData = await Promise.all(
           dataDesc.map(async (reporte) => {
@@ -777,9 +780,7 @@ const MapAdmin = ( {searchFolio, searchStatus, alcaldia, filtroFecha, startDate,
         );
 
         const filteredMarkers = filterMarkers(validMarkersData);
-        console.log(filteredMarkers);
         setMarkers(filteredMarkers);
-
       } catch (error) {
         console.log("Error fetching data: ", error);
       }
@@ -789,7 +790,6 @@ const MapAdmin = ( {searchFolio, searchStatus, alcaldia, filtroFecha, startDate,
   }, [searchFolio, searchStatus, alcaldia, filtroFecha, startDate, endDate]);
 
   const filterMarkers = (markersData) => {
-    console.log("estado selcted:", searchStatus);
     return markersData.filter((marker) => {
       const statusMatch =
         searchStatus === "Todos" ||
@@ -800,16 +800,12 @@ const MapAdmin = ( {searchFolio, searchStatus, alcaldia, filtroFecha, startDate,
         alcaldia === "Todas" ||
         marker.ubicacion.toLowerCase().includes(alcaldia.toLowerCase());
       const fechaMatch = checkFechaMatch(marker.fecha);
-     /*  console.log("mi fecha", isToday(parse(marker.fecha, 'd/M/yyyy', new Date())))
-      console.log(marker.fecha)
-      console.log(parse(marker.fecha, 'd/M/yyyy', new Date())) */
+
       return statusMatch && folioMatch && alcaldiaMatch && fechaMatch;
     });
   };
-  
   const checkFechaMatch = (fecha) => {
-    const parsedFecha = parse(fecha, 'd/M/yyyy', new Date());
-
+    const parsedFecha = parse(fecha, "d/M/yyyy", new Date());
     switch (filtroFecha) {
       case "Todos los tiempos":
         return true;
@@ -817,12 +813,12 @@ const MapAdmin = ( {searchFolio, searchStatus, alcaldia, filtroFecha, startDate,
         return isToday(parsedFecha);
       case "Esta semana":
         return isThisWeek(parsedFecha);
-        case "Último mes":
-          const lastMonth = subMonths(new Date(), 1);
-          return (
-            parsedFecha.getMonth() === lastMonth.getMonth() &&
-            parsedFecha.getFullYear() === lastMonth.getFullYear()
-          );
+      case "Último mes":
+        const lastMonth = subMonths(new Date(), 1);
+        return (
+          parsedFecha.getMonth() === lastMonth.getMonth() &&
+          parsedFecha.getFullYear() === lastMonth.getFullYear()
+        );
       case "Últimos 6 meses":
         return isWithinInterval(parsedFecha, {
           start: subMonths(new Date(), 6),
@@ -880,7 +876,7 @@ const MapAdmin = ( {searchFolio, searchStatus, alcaldia, filtroFecha, startDate,
 
   return (
     <div>
-       <MapContainer
+      <MapContainer
         style={{
           height: "77vh",
           width: "90vw",
@@ -900,7 +896,7 @@ const MapAdmin = ( {searchFolio, searchStatus, alcaldia, filtroFecha, startDate,
           <a href='https://creativecommons.org/licenses/by-sa/2.0/'>CC-BY-SA</a>, 
           Imagery © <a href='https://www.maptiler.com/'>MapTiler</a>"
         />
-         <Polygon pathOptions={polygonOptions} positions={polygon} />
+        <Polygon pathOptions={polygonOptions} positions={polygon} />
         {markers.map((marker, index) => (
           <Marker
             key={index}
@@ -913,13 +909,19 @@ const MapAdmin = ( {searchFolio, searchStatus, alcaldia, filtroFecha, startDate,
               })
             }
           >
-            <Popup id="popup">  
+            <Popup id="popup">
               <div className="reportito-popup">
-                <img src={marker.imagenURL} alt="Foto del reporte" style={{ maxWidth: '95px', borderRadius:'1rem', }} />
+                <img
+                  src={marker.imagenURL}
+                  alt="Foto del reporte"
+                  style={{ maxWidth: "95px", borderRadius: "1rem" }}
+                />
                 <p className="fecha-popup">Fecha: {marker.fecha}</p>
                 <p className="estado-popup">Estado: {marker.estados}</p>
                 <p className="ubicacion-popup">Ubicación: {marker.ubicacion}</p>
-                <p className="descripcion-popup">Descripción: {marker.descripcion}</p>
+                <p className="descripcion-popup">
+                  Descripción: {marker.descripcion}
+                </p>
               </div>
             </Popup>
           </Marker>
