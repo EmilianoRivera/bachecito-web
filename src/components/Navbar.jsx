@@ -37,7 +37,7 @@ function Navbar() {
   };
 
   async function deleteCokies() {
-    const response = await fetch('/api/cookie2', {
+    const response = await fetch('http://localhost:3000/api/cookie2', {
       method: 'DELETE'
     })
     const data = await response.json()
@@ -186,7 +186,7 @@ function Navbar() {
         )}
         {!isLogged && (
           <>
-            <Link href="/Sobre_Nosotros" className="opc">
+            <Link href="/SO_temp" className="opc">
               Sobre Nosotros
             </Link>
             <Link href="/Reportes" className="opc">
