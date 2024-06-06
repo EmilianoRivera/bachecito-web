@@ -83,7 +83,7 @@ function ReportesComponente() {
 
     const handleAlertButton = (action) => {
         // Aquí puedes manejar la lógica para los botones de la alerta
-        if (action === "confirm") {
+        if (action === "confirm") { 
             // Acción cuando se confirma la alerta
         } else if (action === "cancel") {
         }
