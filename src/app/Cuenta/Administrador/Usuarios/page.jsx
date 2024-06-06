@@ -100,7 +100,8 @@ function Page() {
     };
     const sendEmail = async (email, subject, text, incidenciaNum, nombreUsuario) => {
         try {
-            const response = await fetch(`/api/sendEmail/${email}/${subject}/${text}/${incidenciaNum}/${nombreUsuario}`, {
+            const baseURL = process.env.NEXT_PUBLIC_RUTA_SE
+            const response = await fetch(`${baseURL}/${email}/${subject}/${text}/${incidenciaNum}/${nombreUsuario}`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
