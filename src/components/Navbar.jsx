@@ -186,7 +186,7 @@ function Navbar() {
         )}
         {!isLogged && (
           <>
-            <Link href="/Sobre_Nosotros" className="opc">
+            <Link href="/SO_temp" className="opc">
               Sobre Nosotros
             </Link>
             <Link href="/Reportes" className="opc">
