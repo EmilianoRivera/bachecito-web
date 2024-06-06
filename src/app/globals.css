@@ -23,6 +23,8 @@ body, div{
   --text-color-7: #1E1E1E;
   --background-color-8: #ffffffc7;
   --background-image-1:url("https://i.postimg.cc/hGJ2TBZ9/form-Admin.png");
+  --background-image-2:url("https://i.postimg.cc/fyxPTLsh/Sin_nombre.png");
+
 }
 
 .dark-mode {
@@ -44,6 +46,7 @@ body, div{
   --background-color-10: #242424;
   --background-color-8: #2424246b;
   --background-image-1:url("https://i.postimg.cc/L5h56x86/Whats-App-Image-2024-05-04-at-19-09-21.jpg");
+  --background-image-2:url("https://i.postimg.cc/9fq8mpy7/Sin-nombre2.png");
 
 }
 

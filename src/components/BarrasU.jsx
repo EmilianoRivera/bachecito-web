@@ -113,7 +113,7 @@ const BarrasU = ({ estados, alcaldia, fechaFiltro, startDates, endDates }) => {
           <path id="mask" fill-rule="evenodd" clip-rule="evenodd" d="M96 0H0V96V192H96H192V96V0H96ZM96 0C149.019 0 192 42.9807 192 96C192 149.019 149.019 192 96 192C42.9807 192 0 149.019 0 96C0 42.9807 42.9807 0 96 0Z"/>
         </g>
       </svg>
-      <h2>No hay datos 🚥</h2>
+      <h2>Recuperando datos 🚥</h2>
     </div>
     </div>;
   }
