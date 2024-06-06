@@ -204,6 +204,7 @@ export default function Perfil() {
     })
     const data = await response.json()
     console.log(data)
+    CerrarSesion()
   }
   //cerrar sesion y desactivar cuenta
   const CerrarSesion = () => {
