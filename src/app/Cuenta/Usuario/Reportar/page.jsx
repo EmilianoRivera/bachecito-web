@@ -314,13 +314,16 @@ const [submitting, setSubmitting] = useState(false);
       </div>
       {showVerificationModal && (
         <>
-          <div className="modal-overlay"></div>
-          <div className="modal">
-            <div className="modal-content">
-              <p>Para acceder a este espacio necesitas verificar tu correo.</p>
-              <button onClick={handleSendVerificationEmail}>Click aquí para enviar un correo de verificación</button>
+          <div className="modal-overlay-rw">
+            <div className="modal-reportweb">
+              <div className="modal-content-rw">
+                <h1 className="saludo-rw">¡Un momento! 🚓</h1>
+                <p className="texto-rw">Para acceder a este espacio necesitas verificar tu correo electrónico.</p>
+                <button className="boton-rw" onClick={handleSendVerificationEmail}>Envienme otro correo</button>
+              </div>
             </div>
           </div>
+          
         </>
       )}
     </>
