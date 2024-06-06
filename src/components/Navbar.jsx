@@ -51,6 +51,7 @@ function Navbar() {
           router.push("/Cuenta");
         })
       })
+      router.push("/Cuenta")
       .catch((error) => {
         console.error("Error al cerrar sesión:", error);
       });
