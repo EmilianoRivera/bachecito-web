@@ -775,7 +775,7 @@ const Map = ({ searchFolio, searchStatus, alcaldia, filtroFecha, startDate, endD
           })
         );
         const validMarkersData = markersData.filter(
-          (marker) => marker !== nullF
+          (marker) => marker !== null
         );
 
         const filteredMarkers = filterMarkers(validMarkersData);

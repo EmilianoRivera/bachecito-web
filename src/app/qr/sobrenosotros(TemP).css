@@ -1,0 +1,35 @@
+.apk-cont{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    margin-top: 10vh;
+}
+
+.conttttt{
+    width: 50vw;
+    height: 80vh;
+    background-color: var(--background-color-2);
+    top: 10vh;
+    margin-top: 3vh;
+    display: block;
+    align-items: center;
+    border-radius: 2rem;
+    justify-content: center;
+}
+
+.imagennn{
+    width: 50%;
+    height: 80%;
+    margin-left: 25%;
+    background-image: var(--background-image-2);
+    background-size: cover;
+    background-position: 100%;
+}
+
+.conttttt h3{
+    color: #ff9f49;
+    font-family:Verdana, Geneva, Tahoma, sans-serif;
+    margin-left: 30%;
+    margin-top: 40px;
+}

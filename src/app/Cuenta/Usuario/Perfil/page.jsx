@@ -66,6 +66,7 @@ export default function Perfil() {
     }
 
     async function fetchData(uid) {
+      setLoading(true);
       try {
         const Uid = enc(uid)
         const id = encodeURIComponent(Uid)
@@ -89,6 +90,8 @@ export default function Perfil() {
         setReportes(reportesDesc);
       } catch (error) {
         console.error("Error fetching data:", error);
+      }  finally {
+        setLoading(false); // Set loading to false after the fetch is complete
       }
     }
   }, []);
@@ -99,68 +102,41 @@ export default function Perfil() {
     guardarFoliosEnDB(foliosGuardados);
   }, [foliosGuardados]);
   // Función para guardar el array de folios en la base de datos
-  const guardarFoliosEnDB = async (folio, userData) => {
+  const guardarFoliosEnDB = async (folio) => {
     try {
-      // Verificar si userData no es null y tiene la propiedad uid
       if (userData && userData.uid) {
-        // Realizar una consulta para encontrar el documento del usuario
         const userQuery = query(
           collection(db, "usuarios"),
           where("uid", "==", userData.uid)
         );
 
-        // Obtener el resultado de la consulta
         const userQuerySnapshot = await getDocs(userQuery);
 
-        // Verificar si se encontró algún documento
         if (!userQuerySnapshot.empty) {
-          // Obtener la referencia al primer documento encontrado
           const userDocRef = userQuerySnapshot.docs[0].ref;
-
-          // Obtener el documento del usuario
           const userDocSnap = await getDoc(userDocRef);
 
           if (userDocSnap.exists()) {
-            // Obtener los datos actuales del documento del usuario
             const userData = userDocSnap.data();
             const foliosGuardadosAnteriores = userData.foliosGuardados || [];
 
-            // Verificar si el folio ya ha sido guardado previamente
+            let nuevosFoliosGuardados;
             if (foliosGuardadosAnteriores.includes(folio)) {
-              // Eliminar el folio del array de folios guardados
-              const nuevosFoliosGuardados = foliosGuardadosAnteriores.filter(
-                (f) => f !== folio
-              );
-
-              // Actualizar el documento del usuario con el nuevo array de folios
-              await updateDoc(userDocRef, {
-                foliosGuardados: nuevosFoliosGuardados,
-              });
-
-              console.log("Folio eliminado  del usuario.");
+              nuevosFoliosGuardados = foliosGuardadosAnteriores.filter(f => f !== folio);
+              console.log("Folio eliminado del usuario.");
             } else {
-              // Agregar el nuevo folio al array de folios guardados
-              const nuevosFoliosGuardados = [
-                ...foliosGuardadosAnteriores,
-                folio,
-              ];
-
-              // Actualizar el documento del usuario con el nuevo array de folios
-              await updateDoc(userDocRef, {
-                foliosGuardados: nuevosFoliosGuardados,
-              });
-
-              console.log("Folio guardado  del usuario.");
+              nuevosFoliosGuardados = [...foliosGuardadosAnteriores, folio];
+              console.log("Folio guardado para el usuario.");
             }
+
+            await updateDoc(userDocRef, {
+              foliosGuardados: nuevosFoliosGuardados,
+            });
           } else {
-            console.error(
-              "El documento del usuario no existe."
-            );
+            console.error("El documento del usuario no existe.");
           }
         } else {
-          console.error(
-            "No se encontró ningún documento de usuario."
-          );
+          console.error("No se encontró ningún documento de usuario.");
         }
       } else {
         console.error("No se proporcionaron datos de usuario válidos.");
@@ -198,27 +174,30 @@ export default function Perfil() {
   const toggleLeftSide = () => {
     setShowLeftSide(!showLeftSide);
   };
-  async function deleteCokies() {
-    const response = await fetch('/api/cookie', {
-      method: 'DELETE'
-    })
-    const data = await response.json()
-    console.log(data)
-    CerrarSesion()
-  }
-  //cerrar sesion y desactivar cuenta
+
   const CerrarSesion = () => {
     signOut(auth)
-      .then(() => 
-        deleteCokies().then(()=>{
+      .then(() => {
+        deleteCokies().then(() => {
+          router.push("/Cuenta");
           console.log("Cierre de sesión exitoso");
-        router.push("/Cuenta");
-        })
-      )
+          window.location.reload();
+        });
+      })
       .catch((error) => {
         console.error("Error al cerrar sesión:", error);
       });
   };
+
+  async function deleteCokies() {
+    /* https://bachecito26.online/api/cookie */
+    const response = await fetch('http://localhost:3000/api/cookie', {
+      method: 'DELETE'
+    });
+    const data = await response.json();
+    console.log(data);
+  }
+
 
   const eliminarCuenta = async () => {
     try {
@@ -250,7 +229,7 @@ export default function Perfil() {
                 <img src={userData.imagen} alt="Imagen de perfil" />
               ) : (
                 <img
-                  src="https://i.pinimg.com/564x/34/f9/c2/34f9c2822cecb80691863fdf76b29dc0.jpg"
+                  src="https://i.postimg.cc/j5Y1PtCd/Cuenta_(1).png"
                   alt="Imagen de perfil predeterminada"
                 />
               )}{" "}
@@ -430,25 +409,6 @@ export default function Perfil() {
                   )}
                 </div>
 
-                <div className="guardar2">
- 
-                  {userData && userData.uid && userData.foliosGuardados && userData.foliosGuardados.includes(reporte.folio) ? (
-                    <img 
-                    className="icon-star2"
-                    src="https://i.postimg.cc/RVrPJ3rN/estrella-1.png"
-                    style={{ opacity: 1, transition: 'opacity 0.3s ease' }}
-                    alt="Folio guardado" 
-                    onClick={() => guardarFoliosEnDB(reporte.folio, userData)}/>
-                  ) : (
-                    <img
-                      className="icon-star2"
-                      src="https://i.postimg.cc/52PmmT4T/estrella.png"
-                      style={{ opacity: 0.5, transition: 'opacity 0.3s ease' }}
-                      alt="Guardar folio"
-                      onClick={() => guardarFoliosEnDB(reporte.folio, userData)}
-                    />
-                  )}
-                </div>
               </div>
 
               <div className="ubicacion2">

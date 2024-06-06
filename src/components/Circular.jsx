@@ -165,8 +165,8 @@ const [dataLoaded, setDataLoaded] = useState(false);
             data={data}
             cx="50%"
             cy="50%"
-            outerRadius={124}
-            innerRadius={35}
+            outerRadius={100}
+            innerRadius={25}
             fill="#8884d8"
             dataKey="value"
           >
