@@ -3,10 +3,8 @@ import React, { useState, useContext, useEffect } from "react";
 import { auth, db } from "../../../firebase";
 import { useRouter } from "next/navigation";
 import Preloader2 from "@/components/preloader1";
-
 import Router from "next/router";
 import Preloader from "@/components/preloader2";
-
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
@@ -28,7 +26,6 @@ import "./registro.css";
 import AuthContext from "../../../context/AuthContext";
 import { dataTable, events, numberDisplay } from "dc";
 import { enc } from "@/scripts/Cifrado/Cifrar";
-
 function Registro() {
   const [loading2, setLoading2] = useState(true);
   useEffect(() => {
@@ -46,6 +43,12 @@ function Registro() {
       Router.events.off("routeChangeError", handleComplete);
     };
   }, []);
+  async function getCokies() {
+    const response = await fetch('http://localhost:3000/api/cookie')
+    const data = await response.json()
+    console.log(data)
+  }
+  
 
   //elementos del router
   const { push } = useRouter();
@@ -58,6 +61,7 @@ function Registro() {
   const [canSubmit, setCanSubmit] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
   const [recoveryEmail, setRecoveryEmail] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
 
   const handleAdminLinkClick = (event) => {
     event.preventDefault();
@@ -146,6 +150,7 @@ function Registro() {
   const [appat, setAppat] = useState("");
   const [apmat, setApmat] = useState("");
   const [error, setError] = useState("");
+  
   //VALIDACIÓN Fecha de nacimiento--------------------------------------------------------------------------------------------------------------------
   const [fechaNacimiento, setFechaNacimiento] = useState(""); // Estado para la fecha de nacimiento
   const [edadValida, setEdadValida] = useState(true); // Estado para la validación de edad
@@ -416,7 +421,10 @@ function Registro() {
             email,
             password
           );
+
+          
           const user = userCredential.user;
+          await getCokies();
           showAlert("Inicio de sesión exitoso");
           push("/Cuenta/Usuario/Perfil");
         } else {
@@ -435,6 +443,7 @@ function Registro() {
           password
         );
         const user = userCredential.user;
+        await getCokies();
         showAlert("Inicio de sesión exitoso");
         push("/Cuenta/Usuario/Perfil");
       } else {
@@ -564,7 +573,7 @@ function Registro() {
                 required
               />
               <input
-                type="password"
+                type={showPassword ? "text" : "password"} 
                 className="datos"
                 name="password"
                 id="password"
@@ -576,6 +585,13 @@ function Registro() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+              <button
+                type="button"
+                className="toggle-password2"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                <img src={showPassword ? "https://i.postimg.cc/52rq6typ/ojos-cruzados-1.png" : "https://i.postimg.cc/pXqBMCtw/ojo-1.png"}/>
+              </button>
               <div className="checkbox-container">
                 <input
                   type="checkbox"
@@ -623,7 +639,7 @@ function Registro() {
                 required
               />
               <input
-                type="password"
+                type={showPassword ? "text" : "password"} 
                 className="datos"
                 placeholder="Contraseña"
                 onBlur={handlePassBlur}
@@ -637,6 +653,13 @@ function Registro() {
                 onChange={(e) => setPassword(e.target.value)}
                 required
               />
+              <button
+                type="button"
+                className="toggle-password3"
+                onClick={() => setShowPassword(!showPassword)}
+              >
+                <img src={showPassword ? "https://i.postimg.cc/52rq6typ/ojos-cruzados-1.png" : "https://i.postimg.cc/pXqBMCtw/ojo-1.png"}/>
+              </button>
               <a id="olvi-contra" onClick={() => setModalVisible(true)}>
                 ¿Olvidaste tu contraseña? 😰
               </a>

@@ -3,7 +3,6 @@ import { NextResponse } from "next/server";
 export async function POST(req, { params }) {
   try {
     const [to, subject, text, incidenciaNum, nombreUsuario] = params.sendEmail;
-    console.log(params.sendEmail);
     // Configura el transportador de nodemailer
     const transporter = nodemailer.createTransport({
       host: "smtp.gmail.com",

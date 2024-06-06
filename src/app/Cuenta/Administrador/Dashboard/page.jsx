@@ -197,12 +197,6 @@ function Dashboard() {
 
       </div>
       
-      <div className="grafica-barras" >
-        <h3>REPORTES POR ALCALDIA</h3>
-        {/* <PieCharts /> */}
-
-      </div>
-      
       
     </div>
   );

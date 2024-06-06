@@ -58,7 +58,7 @@ export default function Perfil() {
           const uid = user.uid;
           fetchData(uid);
         } else {
-          router.push("/login");
+          router.push("/Cuenta");
         }
       });
       return () => unsubscribe();
@@ -197,14 +197,22 @@ export default function Perfil() {
   const toggleLeftSide = () => {
     setShowLeftSide(!showLeftSide);
   };
-
+  async function deleteCokies() {
+    const response = await fetch('http://localhost:3000/api/cookie', {
+      method: 'DELETE'
+    })
+    const data = await response.json()
+    console.log(data)
+  }
   //cerrar sesion y desactivar cuenta
   const CerrarSesion = () => {
     signOut(auth)
-      .then(() => {
-        console.log("Cierre de sesión exitoso");
+      .then(() => 
+        deleteCokies().then(()=>{
+          console.log("Cierre de sesión exitoso");
         router.push("/Cuenta");
-      })
+        })
+      )
       .catch((error) => {
         console.error("Error al cerrar sesión:", error);
       });

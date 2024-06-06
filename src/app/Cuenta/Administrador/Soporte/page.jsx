@@ -979,38 +979,70 @@ function Soporte() {
                 ))}
               </tbody>
             </table>
+
             {showModal && (
               <div className="modal">
+
+                <div className="titul">
+                  <p id="titulin_">Detalles del ticket 📑</p>
+                </div>
+
                 <div className="modal-content">
+
                   <span className="close" onClick={closeModal}>
                     &times;
                   </span>
-                  <p id="titulin_">Detalles del ticket 📑</p>
-                  <p>Prioridad: {ticketEncontrado.priori}</p>
-                  <p>Estado: {ticketEncontrado.estado}</p>
-                  <p>
-                    Fecha Asignado:{" "}
-                    {formatTimestamp(ticketEncontrado.fechaAsignado)}
-                  </p>
-                  <p>
-                    Fecha De Envio:{" "}
-                    {formatTimestamp(ticketEncontrado.fechaDeEnvio)}
-                  </p>
-                  <p>
-                    Fecha De Resuelto:{" "}
-                    {formatTimestamp(ticketEncontrado.fechaResuleto)}
-                  </p>
-                  <p>Folio: {ticketEncontrado.folio}</p>
-                  <p>Area: {ticketEncontrado.areas}</p>
-                  <p>Navegador: {ticketEncontrado.navegador}</p>
-                  <p>Sistema Operativo: {ticketEncontrado.sistemaOperativo}</p>
-                  <p>Tipo de error: {ticketEncontrado.errorE}</p>
-                  <p>Ruta: {ticketEncontrado.rutaE}</p>
-                  <p>
-                    <button className="detallitos" onClick={closeModal}>
-                      Cerrar
-                    </button>
-                  </p>
+
+                  <table className="table-content">
+                    <tr>
+                      <td className="tdsito1"><p className="psito">Prioridad: </p></td>
+                      <td className="tdsito2"><p className="p">{ticketEncontrado.priori}</p></td>
+                    </tr>
+                    <tr>
+                      <td className="tdsito1"><p className="psito">Estado: </p></td>
+                      <td className="tdsito2"><p className="p">{ticketEncontrado.estado}</p></td>
+                    </tr>
+                    <tr>
+                      <td className="tdsito1"><p className="psito">Fecha Asignado:{" "}</p></td>
+                      <td className="tdsito2"><p className="p">{formatTimestamp(ticketEncontrado.fechaAsignado)}</p></td>
+                    </tr>
+                    <tr>
+                      <td className="tdsito1"><p className="psito">Fecha De Envio:{" "}</p></td>
+                      <td className="tdsito2"><p>{formatTimestamp(ticketEncontrado.fechaDeEnvio)}</p></td>
+                    </tr>
+                    <tr>
+                      <td className="tdsito1"><p className="psito">Fecha De Resuelto:{" "}</p></td>
+                      <td className="tdsito2"><p className="p">{formatTimestamp(ticketEncontrado.fechaResuleto)}</p></td>
+                    </tr>
+                    <tr>
+                      <td className="tdsito1"><p className="psito">Folio: </p></td>
+                      <td className="tdsito2"><p className="p">{ticketEncontrado.folio}</p></td>
+                    </tr>
+                    <tr>
+                      <td className="tdsito1"><p className="psito">Area: </p></td>
+                      <td className="tdsito2"><p className="p">{ticketEncontrado.area}</p></td>
+                    </tr>
+                    <tr>
+                      <td className="tdsito1"><p className="psito">Navegador: </p></td>
+                      <td className="tdsito2"><p className="p">{ticketEncontrado.navegador}</p></td>
+                    </tr>
+                    <tr>
+                      <td className="tdsito1"><p className="psito">Sistema Operativo: </p></td>
+                      <td className="tdsito2"><p className="p">{ticketEncontrado.sistemaOperativo}</p></td>
+                    </tr>
+                    <tr>
+                      <td className="tdsito1"><p className="psito">Tipo de error: </p></td>
+                      <td className="tdsito2"><p className="p">{ticketEncontrado.errorSeleccionado}</p></td>
+                    </tr>
+                    <tr>
+                      <td className="tdsito1"><p className="psito">Ruta: </p></td>
+                      <td className="tdsito2"><p className="p">{ticketEncontrado.rutitaD}</p></td>
+                    </tr>
+                  </table>
+
+                  <button className="detallitos" onClick={closeModal}>
+                    Cerrar
+                  </button>
                 </div>
               </div>
             )}
