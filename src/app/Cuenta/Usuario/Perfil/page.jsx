@@ -198,27 +198,29 @@ export default function Perfil() {
   const toggleLeftSide = () => {
     setShowLeftSide(!showLeftSide);
   };
-  async function deleteCokies() {
-    const response = await fetch('/api/cookie', {
-      method: 'DELETE'
-    })
-    const data = await response.json()
-    console.log(data)
-    CerrarSesion()
-  }
-  //cerrar sesion y desactivar cuenta
+
   const CerrarSesion = () => {
     signOut(auth)
-      .then(() => 
-        deleteCokies().then(()=>{
+      .then(() => {
+        deleteCokies().then(() => {
+          router.push("/Cuenta");
           console.log("Cierre de sesión exitoso");
-        router.push("/Cuenta");
-        })
-      )
+        });
+      })
       .catch((error) => {
         console.error("Error al cerrar sesión:", error);
       });
   };
+
+  async function deleteCokies() {
+    /* https://bachecito26.online/api/cookie */
+    const response = await fetch('/api/cookie', {
+      method: 'DELETE'
+    });
+    const data = await response.json();
+    console.log(data);
+  }
+
 
   const eliminarCuenta = async () => {
     try {
