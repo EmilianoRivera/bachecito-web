@@ -36,6 +36,7 @@ export function middleware(req) {
   const isLog = cookieIsLog?.value === 'true';
   const isAdmin = cookieIsAdmin?.value === 'true';
 
+  console.log(isAdmin)
   const url = new URL(req.url);
   const path = url.pathname;
 

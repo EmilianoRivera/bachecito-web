@@ -44,7 +44,7 @@ function Registro() {
     };
   }, []);
   async function getCokies() {
-    const response = await fetch('/api/cookie')
+    const response = await fetch('http://localhost:3000/api/cookie')
     const data = await response.json()
     console.log(data)
   }
