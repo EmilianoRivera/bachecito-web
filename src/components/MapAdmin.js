@@ -841,6 +841,7 @@ const MapAdmin = ( {searchFolio, searchStatus, alcaldia, filtroFecha, startDate,
   };
 
   function getIconUrl(estado) {
+    console.log(estado)
     switch (estado) {
       case "Atendido":
         return atendidoIcon.src;
