@@ -123,7 +123,7 @@ function Administrador() {
   };
   async function getCokies() {
     /* https://bachecito26.online/api/cookie2 */
-    const response = await fetch('/api/cookie2')
+    const response = await fetch('http://localhost:3000/api/cookie2')
 
     const data = await response.json()
     console.log(data)
