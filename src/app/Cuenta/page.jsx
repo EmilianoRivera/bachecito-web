@@ -3,10 +3,8 @@ import React, { useState, useContext, useEffect } from "react";
 import { auth, db } from "../../../firebase";
 import { useRouter } from "next/navigation";
 import Preloader2 from "@/components/preloader1";
-
 import Router from "next/router";
 import Preloader from "@/components/preloader2";
-
 import {
   createUserWithEmailAndPassword,
   sendEmailVerification,
@@ -28,7 +26,6 @@ import "./registro.css";
 import AuthContext from "../../../context/AuthContext";
 import { dataTable, events, numberDisplay } from "dc";
 import { enc } from "@/scripts/Cifrado/Cifrar";
-
 function Registro() {
   const [loading2, setLoading2] = useState(true);
   useEffect(() => {
@@ -46,6 +43,12 @@ function Registro() {
       Router.events.off("routeChangeError", handleComplete);
     };
   }, []);
+  async function getCokies() {
+    const response = await fetch('http://localhost:3000/api/cookie')
+    const data = await response.json()
+    console.log(data)
+  }
+  
 
   //elementos del router
   const { push } = useRouter();
@@ -418,7 +421,10 @@ function Registro() {
             email,
             password
           );
+
+          
           const user = userCredential.user;
+          await getCokies();
           showAlert("Inicio de sesión exitoso");
           push("/Cuenta/Usuario/Perfil");
         } else {
@@ -437,6 +443,7 @@ function Registro() {
           password
         );
         const user = userCredential.user;
+        await getCokies();
         showAlert("Inicio de sesión exitoso");
         push("/Cuenta/Usuario/Perfil");
       } else {

@@ -83,7 +83,7 @@ function Reportar() {
           const uid = user.uid;
           fetchData(uid);
         } else {
-          router.push("/login");
+          router.push("/Cuenta");
         }
       });
       return () => unsubscribe();
