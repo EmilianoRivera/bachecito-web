@@ -7,7 +7,7 @@
   color: var(--text-color);
   font-size: 12px;
   text-align: center;
-  width: 90px;
+  width: 70px;
   top: 16vh;
   margin-left: 30px;
 }
@@ -168,7 +168,8 @@
 
 
 .column-right-superior2 {
-  width: 100%;
+  min-width: 100%;
+  width: 145%;
   display: flex;
   height: 40px;
 }
@@ -248,7 +249,7 @@
   z-index: -10;
   position: relative;
   height: auto;
-  max-height:65vh;
+  max-height:62vh;
 }
 
 

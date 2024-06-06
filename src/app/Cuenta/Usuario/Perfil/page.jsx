@@ -66,6 +66,7 @@ export default function Perfil() {
     }
 
     async function fetchData(uid) {
+      setLoading(true);
       try {
         const Uid = enc(uid)
         const id = encodeURIComponent(Uid)
@@ -89,6 +90,8 @@ export default function Perfil() {
         setReportes(reportesDesc);
       } catch (error) {
         console.error("Error fetching data:", error);
+      }  finally {
+        setLoading(false); // Set loading to false after the fetch is complete
       }
     }
   }, []);
@@ -252,7 +255,7 @@ export default function Perfil() {
                 <img src={userData.imagen} alt="Imagen de perfil" />
               ) : (
                 <img
-                  src="https://i.pinimg.com/564x/34/f9/c2/34f9c2822cecb80691863fdf76b29dc0.jpg"
+                  src="https://i.postimg.cc/j5Y1PtCd/Cuenta_(1).png"
                   alt="Imagen de perfil predeterminada"
                 />
               )}{" "}

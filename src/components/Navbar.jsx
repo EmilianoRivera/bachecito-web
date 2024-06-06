@@ -186,8 +186,8 @@ function Navbar() {
         )}
         {!isLogged && (
           <>
-            <Link href="/SO_temp" className="opc">
-              Sobre Nosotros
+            <Link href="/qr" className="opc">
+              ¡Intalar B26 Móvil!
             </Link>
             <Link href="/Reportes" className="opc">
               Reportes

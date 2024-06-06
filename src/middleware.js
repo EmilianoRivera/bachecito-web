@@ -19,7 +19,7 @@ const pathnamesWithLoginAdmin = [
   '/Cuenta/Administrador/Usuarios',
 ];
 
-const pathnamesWithouthLogin = ['/Cuenta', '/', '/Sobre_Nosotros', '/Reportes', '/Cuenta/Administrador'];
+const pathnamesWithouthLogin = ['/Cuenta', '/', '/qr','/Sobre_Nosotros', '/Reportes', '/Cuenta/Administrador' ];
 
 const pathnames = [
   ...pathnamesWithLoginUser,
@@ -36,7 +36,6 @@ export function middleware(req) {
   const isLog = cookieIsLog?.value === 'true';
   const isAdmin = cookieIsAdmin?.value === 'true';
 
-  console.log(isAdmin)
   const url = new URL(req.url);
   const path = url.pathname;
 
@@ -74,6 +73,7 @@ export const config = {
     '/Cuenta/:path*',
     '/',
     '/Sobre_Nosotros',
+    '/qr',
     '/Reportes',
     '/Cuenta/Administrador/:path*'
   ],
