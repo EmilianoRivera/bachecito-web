@@ -190,8 +190,9 @@ export default function Perfil() {
   };
 
   async function deleteCokies() {
-    /* https://bachecito26.online/api/cookie */
-    const response = await fetch('https://bachecito26.online/api/cookie', {
+    // https://bachecito26.online/api/cookie 
+    // http://localhost:3000/api/cookie
+    const response = await fetch('http://localhost:3000/api/cookie', {
       method: 'DELETE'
     });
     const data = await response.json();

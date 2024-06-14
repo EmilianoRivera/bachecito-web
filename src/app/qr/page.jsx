@@ -1,8 +1,8 @@
 "use client";
 import "./sobrenosotros(TemP).css";
-import React, { useEffect } from 'react';
+import React from 'react';
 
-function SobreNosotros() {
+function SobreNosotrosSimple() {
     return (
         <div className="apk-cont">
             <div className="conttttt">
@@ -14,4 +14,4 @@ function SobreNosotros() {
     )
 }
 
-export default SobreNosotros;
+export default SobreNosotrosSimple;

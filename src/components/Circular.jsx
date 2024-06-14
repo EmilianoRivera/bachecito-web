@@ -154,7 +154,7 @@ const [dataLoaded, setDataLoaded] = useState(false);
     <div>
       {isLoading ? (
         <div style={{ fontFamily: 'sans-serif'}}>
-        <div class="loader-wheel-changer-c">
+        <div className="loader-wheel-changer-c">
           </div>
       </div>
       ) : dataLoaded && data.length === 0 ? (

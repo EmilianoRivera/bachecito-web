@@ -18,7 +18,7 @@ import {
     format
   } from "date-fns";
 
-export default function ReportesAdmin() {
+export default function ReportesAdmin({}) {
     const [rep, setRep] = useState([]);
     const [isEstadoAlertVisible, setIsEstadoAlertVisible] = useState(false);
     const [alertaEstadoData, setAlertaEstadoData] = useState({ folio: null, estadoActual: null });

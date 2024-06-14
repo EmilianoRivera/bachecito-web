@@ -24,6 +24,8 @@ async function fetchFiltroEstado(estado, alcaldia, filtroFecha, startDate, endDa
       /^[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+|[\s🐴🐜🐷🐺🌳🦅🌿🏠🐭🏔🦗🌾🌋🦶🌻🐠]+$/g,
       ""
     );
+    console.log(alcaldia, " ", filtroFecha, " ", startDate, " ", endDate)
+
     const parametros = {
       estado: estado,
       alcaldia:encodeURIComponent(nombreAlcaldia) ,
@@ -110,7 +112,7 @@ const BarrasU = ({ estados, alcaldia, fechaFiltro, startDates, endDates }) => {
             </g>
             <path id="folder-top" d="M140.667 82H51.3329C48.9979 82 47.1594 83.9916 47.3456 86.3191L50.7066 128.319C50.8729 130.398 52.6084 132 54.6938 132H137.308C139.394 132 141.129 130.398 141.296 128.319L144.655 86.3189C144.841 83.9915 143.002 82 140.667 82Z"/>
           </g>
-          <path id="mask" fill-rule="evenodd" clip-rule="evenodd" d="M96 0H0V96V192H96H192V96V0H96ZM96 0C149.019 0 192 42.9807 192 96C192 149.019 149.019 192 96 192C42.9807 192 0 149.019 0 96C0 42.9807 42.9807 0 96 0Z"/>
+          <path id="mask" fillRule="evenodd" clipRule="evenodd" d="M96 0H0V96V192H96H192V96V0H96ZM96 0C149.019 0 192 42.9807 192 96C192 149.019 149.019 192 96 192C42.9807 192 0 149.019 0 96C0 42.9807 42.9807 0 96 0Z"/>
         </g>
       </svg>
       <h2>Recuperando datos 🚥</h2>

@@ -53,7 +53,7 @@ export const useAuthUser = () => {
     }
   };
   useEffect(() => {
-    if (pathname === "/Reportes" || pathname === "/" || pathname === "/Sobre_Nosotros") {
+    if (pathname === "/Reportes" || pathname === "/" || pathname === "/qr") {
       push(pathname);
     } else {
       const unsubscribeAuth = onIdTokenChanged(auth, async (user) => {

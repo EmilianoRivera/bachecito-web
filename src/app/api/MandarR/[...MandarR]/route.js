@@ -5,9 +5,10 @@ import { getDoc } from "firebase/firestore";
 
 const obtenerFolioPorDireccion = async (direccion) => {
   try {
-    const alcaldiasRef = doc(db, 'alcaldia', 'WnV250O8owtOuHIMz54K');
-    const alcaldiasSnap = await getDoc(alcaldiasRef);
 
+    //NFEUuhTpDlLA0ycwqNPm
+    const alcaldiasRef = doc(db, 'alcaldia', 'NFEUuhTpDlLA0ycwqNPm');
+    const alcaldiasSnap = await getDoc(alcaldiasRef);
     if (alcaldiasSnap.exists()) {
       const alcaldiasData = alcaldiasSnap.data();
       let alcaldiaEncontrada = null;
@@ -84,8 +85,7 @@ export async function POST(request, { params }) {
     const folio = await obtenerFolioPorDireccion(ubicacion);
     const cantidadReportes = await contadorFunc(ubicacion);
     const fechaReporte = obtenerFechaActual();
-   
-
+  console.log(folio)
     const docRef = await addDoc(collection(db, "reportes"), {
       apellidoPaterno,
       contador: cantidadReportes + 1,
@@ -93,7 +93,7 @@ export async function POST(request, { params }) {
       eliminado: false,
       estado: "Sin atender",
       fechaReporte: fechaReporte,
-      folio,
+      folio: folio,
       imagenURL,
       nombre,
       ubicacion,

@@ -8,11 +8,8 @@ import {
 } from "../../../../../firebase";
 import { desc, enc } from "../../../../scripts/Cifrado/Cifrar";
 
-//import nodemailer from "nodemailer";
-import { Resend } from "resend";
-
-const resend = new Resend(process.env.NEXT_PUBLIC_SOPORTE_RESEND_API_KEY);
-
+ 
+ 
 async function folioTicket(errorSeleccionado, rutaError) {
   const refTickets = collection(db2, "tickets");
   const querySnapshot = await getDocs(refTickets);
@@ -115,13 +112,7 @@ export async function POST(req, { params }) {
     const areas = desc(ar);
     //console.log(url)
 
-    // Validar los datos si es necesario
-    resend.emails.send({
-      from: "onboarding@resend.dev",
-      to: corr,
-      subject: "Confirmación de recepción de ticket",
-      html: `Se ha recibido su ticket con el folio: ${folio}.`,
-    });
+ 
     const docRef = await addDoc(collection(db2, "tickets"), {
       folio,
       uid,
