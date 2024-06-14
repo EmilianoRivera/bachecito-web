@@ -31,7 +31,7 @@ const obtenerFolioPorDireccion = async (direccion) => {
         return `${folioAlcaldiaEncontrada}-${cantidadReportes + 1}`;
       } else {
         console.log('La dirección no coincide con ninguna alcaldía.');
-        return null;
+        return `000-0`;
       }
     } else {
       console.log('El documento de alcaldías no existe.');
