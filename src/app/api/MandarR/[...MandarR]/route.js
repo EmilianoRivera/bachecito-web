@@ -30,7 +30,7 @@ const obtenerFolioPorDireccion = async (direccion) => {
         return `${folioAlcaldiaEncontrada}-${cantidadReportes + 1}`;
       } else {
         console.log('La dirección no coincide con ninguna alcaldía.');
-        return null;
+        return `000-0`;
       }
     } else {
       console.log('El documento de alcaldías no existe.');
@@ -84,9 +84,9 @@ export async function POST(request, { params }) {
     const folio = await obtenerFolioPorDireccion(ubicacion);
     const cantidadReportes = await contadorFunc(ubicacion);
     const fechaReporte = obtenerFechaActual();
-   
+   console.log(folio)
 
-    const docRef = await addDoc(collection(db, "reportes"), {
+/*     const docRef = await addDoc(collection(db, "reportes"), {
       apellidoPaterno,
       contador: cantidadReportes + 1,
       descripcion,
@@ -98,7 +98,7 @@ export async function POST(request, { params }) {
       nombre,
       ubicacion,
       uid,
-    });
+    }); */
 
     return NextResponse.json("ESTATUS 200");
   } catch (error) {
