@@ -1,6 +1,7 @@
 "use client"
 import React, { useState, useEffect, useContext } from 'react';
 import Link from 'next/link';
+//comentario que no sirve de nada
 function ilusion (){
     return (
         <div>
