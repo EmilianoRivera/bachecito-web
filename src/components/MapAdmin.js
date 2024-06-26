@@ -864,7 +864,7 @@ const MapAdmin = ({
       }
 
       const { lat, lng } = data.results[0].geometry.location;
-
+//SLDKFJSLK
       return { lat: parseFloat(lat), lng: parseFloat(lng) };
     } catch (error) {
       console.error(
